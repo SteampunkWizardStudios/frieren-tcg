@@ -1,0 +1,23 @@
+{
+  "name": "frieren-tcg",
+  "version": "1.0.0",
+  "description": "Discord bot for the Frieren TCG",
+  "main": "main.js",
+  "scripts": {
+    "start": "ts-node src/main.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7",
+    "prettier": "^3.5.3"
+  }
+}
