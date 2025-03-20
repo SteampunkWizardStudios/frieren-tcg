@@ -12,6 +12,17 @@ export const statDetails: Record<StatsEnum, StatInfo> = {
   [StatsEnum.Ability]: { emoji: "✨" },
 };
 
+export enum CharacterEmoji {
+  FRIEREN = "<:Frieren3:790429364570423346>",
+  SENSE = "<:SenseStare:1204637493077610546>",
+  SERIE = "<:SerieHowCute:1346583513297850398>",
+  STILLE = "🐦‍🔥",
+  LINIE = "<:LinieBaka:1343985694351032393>",
+  SEIN = "<:SeinCool:1189748661287137370>",
+  STARK = "<:StarkPoint:1165025263747342386>",
+  LAUFEN = "<:LaufenNom:1198338042449113190>",
+}
+
 export enum CardEmoji {
   HEART = "<:heartCard:1347328439627284560>",
   SHIELD = "<:shieldCard:1347328437618212974>",
@@ -24,13 +35,13 @@ export enum CardEmoji {
   WAIT = "🕙",
   RECYCLE = "<:recycleCard:1347336609829490739>",
 
-  FRIEREN = "<:FrierenCard:1347717556932317234>",
-  SERIE = "<:SerieCard:1347718191136378961>",
-  STILLE = "<:StilleCard:1347722643922751624>",
-  LINIE = "<:LinieCard:1347719706164990065>",
-  SEIN = "<:SeinCard:1347718390235791431>",
-  STARK = "<:StarkCard:1347720915219124264>",
-  LAUFEN = "<:LaufenCard:1347723068943892490>",
+  FRIEREN_CARD = "<:FrierenCard:1347717556932317234>",
+  SERIE_CARD = "<:SerieCard:1347718191136378961>",
+  STILLE_CARD = "<:StilleCard:1347722643922751624>",
+  LINIE_CARD = "<:LinieCard:1347719706164990065>",
+  SEIN_CARD = "<:SeinCard:1347718390235791431>",
+  STARK_CARD = "<:StarkCard:1347720915219124264>",
+  LAUFEN_CARD = "<:LaufenCard:1347723068943892490>",
 
   FLOWER_FIELD = "<:FlowerFieldCard:1347719503290695803>",
 }

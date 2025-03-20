@@ -1,0 +1,215 @@
+import Deck from "../deck";
+import Card from "../card";
+import CommonCardAction from "../util/commonCardActions";
+import { StatsEnum } from "../stats";
+import TimedEffect from "../timedEffect";
+import Rolls from "../util/rolls";
+import { CardEmoji } from "../formatting/emojis";
+
+const a_peck = new Card({
+  title: "Peck",
+  description: ([dmg]) =>
+    `SPD-2. Discard a random card in hand and draw 1 card. DMG ${dmg}.`,
+  emoji: CardEmoji.STILLE_CARD,
+  effects: [5],
+  cardAction: function (this: Card, game, characterIndex) {
+    const character = game.characters[characterIndex];
+    console.log(`${character.name} pecked the opposition!`);
+
+    character.adjustStat(-2, StatsEnum.SPD);
+    character.discardCard(Rolls.rollDAny(5));
+    character.drawCard();
+    CommonCardAction.commonAttack(
+      game,
+      characterIndex,
+      this.calculateEffectValue(this.effects[0]),
+      0,
+      false,
+    );
+  },
+});
+
+const a_ironFeather = new Card({
+  title: "Iron Feather",
+  description: ([def, dmg]) => `SPD-3. DEF+${def}. DMG ${dmg}.`,
+  emoji: CardEmoji.STILLE_CARD,
+  effects: [1, 3],
+  cardAction: function (this: Card, game, characterIndex) {
+    const character = game.characters[characterIndex];
+    console.log(
+      `${character.name} sharpened ${character.cosmetic.pronouns.possessive} feathers!`,
+    );
+
+    character.adjustStat(-3, StatsEnum.SPD);
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[0]),
+      StatsEnum.DEF,
+    );
+    CommonCardAction.commonAttack(
+      game,
+      characterIndex,
+      this.calculateEffectValue(this.effects[1]),
+      0,
+      false,
+    );
+  },
+});
+
+const hide = new Card({
+  title: "Hide",
+  description: ([def]) => `SPD-3. DEF+${def}.`,
+  emoji: CardEmoji.STILLE_CARD,
+  effects: [2],
+  cardAction: function (this: Card, game, characterIndex) {
+    const character = game.characters[characterIndex];
+    console.log(
+      `${character.name} hid ${character.cosmetic.pronouns.reflexive} and flew to safety!`,
+    );
+
+    character.adjustStat(-3, StatsEnum.SPD);
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[0]),
+      StatsEnum.DEF,
+    );
+  },
+});
+
+const roost = new Card({
+  title: "Roost",
+  description: ([hp]) => `SPD-5 for 3 turns. DEF-3 for 2 turns. Heal ${hp}HP.`,
+  emoji: CardEmoji.STILLE_CARD,
+  effects: [5],
+  cardAction: function (this: Card, game, characterIndex) {
+    const character = game.characters[characterIndex];
+    console.log(`${character.name} landed on the ground.`);
+
+    character.adjustStat(-5, StatsEnum.SPD);
+    character.adjustStat(-3, StatsEnum.DEF);
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[0]),
+      StatsEnum.HP,
+    );
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Roost",
+        description: `DEF-3 for 2 turns.`,
+        turnDuration: 2,
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          console.log(`${character.name} opened its wings.`);
+          character.adjustStat(3, StatsEnum.DEF);
+        },
+      }),
+    );
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Roost",
+        description: `SPD-5 for 3 turns.`,
+        turnDuration: 3,
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          console.log(`${character.name} took flight again!`);
+          character.adjustStat(5, StatsEnum.SPD);
+        },
+      }),
+    );
+  },
+});
+
+const deflect = new Card({
+  title: "Deflect",
+  description: ([def]) =>
+    `Priority+1. Increases DEF by ${def} until the end of the turn.`,
+  emoji: CardEmoji.STILLE_CARD,
+  effects: [20],
+  priority: 1,
+  cardAction: function (this: Card, game, characterIndex) {
+    const character = game.getCharacter(characterIndex);
+    console.log(`${character.name} prepares to deflect an attack!`);
+
+    const def = this.calculateEffectValue(this.effects[0]);
+    character.adjustStat(def, StatsEnum.DEF);
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Deflect",
+        description: `Increases DEF by ${def} until the end of the turn.`,
+        turnDuration: 1,
+        priority: -1,
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          character.adjustStat(-def, StatsEnum.DEF);
+        },
+      }),
+    );
+  },
+});
+
+const flyAway = new Card({
+  title: "Fly Away",
+  description: ([spd]) => `Priority+1. SPD + ${spd} until the end of the turn.`,
+  emoji: CardEmoji.STILLE_CARD,
+  priority: 1,
+  effects: [25],
+  cardAction: function (this: Card, game, characterIndex) {
+    const character = game.getCharacter(characterIndex);
+    console.log(`${character.name} flew away!`);
+
+    const spd = this.calculateEffectValue(this.effects[0]);
+    character.adjustStat(spd, StatsEnum.SPD);
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Deflect",
+        description: `Increases SPD by ${spd} until the end of the turn.`,
+        priority: -1,
+        turnDuration: 1,
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          character.adjustStat(-spd, StatsEnum.SPD);
+        },
+      }),
+    );
+  },
+});
+
+export const a_geisel = new Card({
+  title: "Geisel",
+  description: ([dmg]) =>
+    `SPD-20. Lands on a tree and asks its fellow Geisel for help! Geisel (ATK: 15) will show up to attack for ${dmg}DMG between 1 - 3 turns.`,
+  emoji: CardEmoji.STILLE_CARD,
+  effects: [15],
+  cardAction: function (this: Card, game, characterIndex) {
+    const character = game.characters[characterIndex];
+    console.log(
+      `${character.name} called its fellow friends the Geisel for help!`,
+    );
+
+    character.adjustStat(-20, StatsEnum.SPD);
+    const damage = this.calculateEffectValue(this.effects[0]);
+    const turnCount = Rolls.rollDAny(3) + 1;
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Geisel Strike!",
+        description: `Deal ${damage} at each turn's end.`,
+        turnDuration: turnCount,
+        endOfTurnAction: (game, characterIndex) => {
+          console.log("The Geisel doesn't stop!");
+          CommonCardAction.commonAttack(
+            game,
+            characterIndex,
+            damage + 15,
+            0,
+            true,
+          );
+        },
+      }),
+    );
+  },
+});
+
+export const stilleDeck = [
+  { card: a_peck, count: 2 },
+  { card: a_ironFeather, count: 3 },
+  { card: hide, count: 2 },
+  { card: roost, count: 2 },
+  { card: deflect, count: 1 },
+  { card: flyAway, count: 3 },
+  { card: a_geisel, count: 2 },
+];

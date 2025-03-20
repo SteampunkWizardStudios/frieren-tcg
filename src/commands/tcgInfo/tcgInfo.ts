@@ -8,6 +8,7 @@ import {
 import type { Command } from "../../types/command";
 import { showGameHowToPlay } from "./info/gameHowToPlay";
 import { showGameAdvancedRules } from "./info/gameAdvancedRules";
+import { showCharacterInfo } from "./info/characterInfo";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -83,10 +84,7 @@ export const command: Command<ChatInputCommandInteraction> = {
           });
           break;
         case "character":
-          await interaction.reply({
-            content: "Character input",
-            flags: MessageFlags.Ephemeral,
-          });
+          await showCharacterInfo(interaction);
           break;
         default:
           await interaction.reply({

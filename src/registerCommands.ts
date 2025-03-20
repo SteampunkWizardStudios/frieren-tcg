@@ -13,11 +13,8 @@ export const registerCommands = async (
     ? Routes.applicationGuildCommands(clientId, guildId)
     : Routes.applicationCommands(clientId);
 
-  // unregister then re-register all commands only on Prod - avoiding accidental unregister while on dev
-  if (process.env.NODE_ENV === "production") {
-    unregisterAllCommands(rest, clientId, guildId);
-    console.log("Unregistered previous commands");
-  }
+  // deregisterAllCommands(rest, clientId, guildId);
+  // console.log("Unregistered previous commands");
 
   await rest.put(route, {
     body: Object.values(commands).map((cmd) => cmd.data.toJSON()),
@@ -25,7 +22,7 @@ export const registerCommands = async (
   console.log(`Registered ${Object.keys(commands).length} commands`);
 };
 
-export const unregisterAllCommands = async (
+export const _deregisterAllCommands = async (
   rest: REST,
   clientId: string,
   guildId?: string,
