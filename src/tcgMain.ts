@@ -5,7 +5,7 @@ import { getPlayerCharacter } from "./tcgChatInteractions/getPlayerCharacter";
 import Game from "./tcg/game";
 import { MessageCache } from "./tcgChatInteractions/messageCache";
 import {
-  logAndSend,
+  sendToThread,
   TCGThread,
   TCGThreads,
 } from "./tcgChatInteractions/sendGameMessage";
@@ -77,7 +77,7 @@ export const tcgMain = async (
     messageCache.push(printGameState(game), TCGThread.Gameroom);
     console.log();
 
-    await logAndSend(
+    await sendToThread(
       messageCache.flush(TCGThread.Gameroom),
       TCGThread.Gameroom,
       threadsMapping,
@@ -86,13 +86,20 @@ export const tcgMain = async (
 
     // display playable cards
     const characterToPlayableMoveMap: Record<number, Record<string, Card>> = {};
+    const characterToDetailsString: Record<
+      number,
+      { draw: string; hand: string }
+    > = {
+      0: { draw: "", hand: "" },
+      1: { draw: "", hand: "" },
+    };
 
     await Promise.all(
       game.characters.map(async (character, index) => {
         const useChannel =
           index === 0 ? TCGThread.ChallengerThread : TCGThread.OpponentThread;
         messageCache.push(printCharacter(character, false), useChannel);
-        await logAndSend(
+        await sendToThread(
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
@@ -105,17 +112,23 @@ export const tcgMain = async (
             useChannel,
           );
         } else {
+          character.printHand(useChannel);
+          if (gameSettings.revealHand) {
+            characterToDetailsString[index].hand =
+              messageCache.messages[useChannel].join("\n");
+          }
+
           const currUsableCards = character.getUsableCardsForRound(useChannel);
           characterToPlayableMoveMap[index] = currUsableCards;
-          await logAndSend(
+          await sendToThread(
             messageCache.flush(useChannel),
             useChannel,
             threadsMapping,
-            2000,
+            1000,
           );
 
           messageCache.push(`## ${character.name}'s Draws:`, useChannel);
-          await logAndSend(
+          await sendToThread(
             messageCache.flush(useChannel),
             useChannel,
             threadsMapping,
@@ -127,10 +140,15 @@ export const tcgMain = async (
             const currCard = currUsableCards[key];
             draws.push(currCard.printCard(`- ${key}: `));
           });
-          messageCache.push(draws.join("\n"), useChannel);
+          const draw = draws.join("\n");
+          messageCache.push(draw, useChannel);
+
+          if (gameSettings.revealDraw) {
+            characterToDetailsString[index].draw = draw;
+          }
         }
 
-        await logAndSend(
+        await sendToThread(
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
@@ -138,6 +156,28 @@ export const tcgMain = async (
         );
       }),
     );
+
+    for (const [index, character] of game.characters.entries()) {
+      if (gameSettings.revealHand) {
+        await sendToThread(
+          [characterToDetailsString[index].hand],
+          TCGThread.Gameroom,
+          threadsMapping,
+          100,
+        );
+      }
+      if (gameSettings.revealDraw) {
+        await sendToThread(
+          [
+            `## ${character.name}'s Draws: `,
+            characterToDetailsString[index].draw,
+          ],
+          TCGThread.Gameroom,
+          threadsMapping,
+          100,
+        );
+      }
+    }
 
     return { winner: null, loser: null };
 
@@ -177,7 +217,7 @@ export const tcgMain = async (
     //               }
     //               characterToSelectedMoveMap[index] = selectedCard; // moving this before an await command so it resolves definitively
 
-    //               await logAndSend(
+    //               await send(
     //                 [`You played **${selectedCard.getTitle()}**`],
     //                 index === 0 ? RPGChannel.RoomA : RPGChannel.RoomB,
     //               );
@@ -291,7 +331,7 @@ export const tcgMain = async (
     //       // immediately flush message cache
     //       messageCache.push(printGameState(game, false), RPGChannel.Gameroom);
     //       messageCache.push("# Game over!", RPGChannel.Gameroom);
-    //       await logAndSend(
+    //       await send(
     //         messageCache.flush(RPGChannel.Gameroom),
     //         RPGChannel.Gameroom,
     //       );

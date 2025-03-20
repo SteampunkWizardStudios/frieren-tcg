@@ -98,8 +98,6 @@ export default class Character {
   }
 
   getUsableCardsForRound(channel: TCGThread): Record<string, Card> {
-    this.printHand(channel);
-
     const indexToUsableCardMap: Record<string, Card> = {};
     // roll 4d6
     const rolls = [];

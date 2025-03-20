@@ -18,7 +18,7 @@ export type TCGThreads = {
  * @param {TCGThreads} threadsMapping - mapping of thread to send the message to
  * @returns {Promise<boolean>} - A promise that resolves to true if the message was sent successfully, otherwise false.
  */
-export async function logAndSend(
+export async function sendToThread(
   messages: string[],
   thread: TCGThread,
   threadsMapping: TCGThreads,
@@ -28,9 +28,6 @@ export async function logAndSend(
 
   if (targetThread && targetThread instanceof ThreadChannel) {
     for (const message of messages) {
-      // log message
-      console.log(message);
-
       // send message
       await targetThread.send(message);
 

@@ -7,13 +7,16 @@ export class MessageCache {
     opponentThread: [],
   };
 
-  pushAndLog(line: string, channel: TCGThread) {
-    this.push(line, channel);
-    console.log(line);
-  }
-
   push(line: string, channel: TCGThread) {
     this.messages[channel].push(line);
+  }
+
+  join(channel: TCGThread) {
+    this.messages[channel] = [this.messages[channel].join("\n")];
+  }
+
+  append(channelFrom: TCGThread, channelTo: TCGThread) {
+    this.messages[channelTo].push(...this.messages[channelFrom]);
   }
 
   flush(channel: TCGThread): string[] {
