@@ -4,7 +4,7 @@ import { Command } from "./types/command";
 export const registerCommands = async (
   token: string,
   clientId: string,
-  commands: Command<CommandInteraction>[],
+  commands: Record<string, Command<CommandInteraction>>,
   guildId?: string,
 ) => {
   const rest = new REST({ version: "10" }).setToken(token);
@@ -13,14 +13,16 @@ export const registerCommands = async (
     ? Routes.applicationGuildCommands(clientId, guildId)
     : Routes.applicationCommands(clientId);
 
-  // unregister then re-register all commands
-  unregisterAllCommands(rest, clientId, guildId);
-  console.log("Unregistered previous commands");
+  // unregister then re-register all commands only on Prod - avoiding accidental unregister while on dev
+  if (process.env.NODE_ENV === "production") {
+    unregisterAllCommands(rest, clientId, guildId);
+    console.log("Unregistered previous commands");
+  }
 
   await rest.put(route, {
-    body: commands.map((cmd) => cmd.data.toJSON()),
+    body: Object.values(commands).map((cmd) => cmd.data.toJSON()),
   });
-  console.log(`Registered ${commands.length} commands`);
+  console.log(`Registered ${Object.keys(commands).length} commands`);
 };
 
 export const unregisterAllCommands = async (

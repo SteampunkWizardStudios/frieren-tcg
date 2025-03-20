@@ -1,4 +1,4 @@
-import { Client } from "discord.js";
+import { Client, GatewayIntentBits } from "discord.js";
 import "dotenv/config";
 import * as path from "path";
 import { loadCommands } from "./loadCommands";
@@ -13,7 +13,7 @@ const guildId =
 const commandsDir = path.join(__dirname, "commands");
 
 const client = new Client({
-  intents: [],
+  intents: [GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages],
 });
 
 async function main() {

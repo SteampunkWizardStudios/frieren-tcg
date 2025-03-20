@@ -5,25 +5,31 @@ import * as path from "path";
 
 export const loadCommands = async (
   dir: string,
-): Promise<Command<CommandInteraction>[]> => {
-  const commands: Command<CommandInteraction>[] = [];
-  const files = fs.readdirSync(dir);
+): Promise<Record<string, Command<CommandInteraction>>> => {
+  const commands: Record<string, Command<CommandInteraction>> = {};
 
-  for (const file of files) {
-    const filePath = path.join(dir, file);
-    const stat = fs.statSync(filePath);
+  async function loadCommandsRecursive(currentDir: string) {
+    const files = fs.readdirSync(currentDir);
 
-    if (stat.isDirectory()) {
-      commands.push(...(await loadCommands(filePath)));
-    } else if (file.endsWith(".ts")) {
-      const commandModule = await import(filePath);
-      if (commandModule.command) {
-        commands.push(commandModule.command);
+    for (const file of files) {
+      const filePath = path.join(currentDir, file);
+      const stat = fs.statSync(filePath);
+
+      if (stat.isDirectory()) {
+        await loadCommandsRecursive(filePath);
+      } else if (file.endsWith(".ts")) {
+        const commandModule = await import(filePath);
+        if (commandModule.command) {
+          const command = commandModule.command;
+          commands[command.data.name] = command;
+          console.log(`Loaded command: ${command.data.name} from ${filePath}`);
+        }
       }
     }
   }
 
-  console.log(`Fouund ${commands.length} commands.`);
+  await loadCommandsRecursive(dir);
+  console.log(`Loaded ${Object.keys(commands).length} commands`);
 
   return commands;
 };

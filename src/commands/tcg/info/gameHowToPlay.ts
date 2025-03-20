@@ -1,4 +1,5 @@
 import {
+  ChannelType,
   ChatInputCommandInteraction,
   EmbedBuilder,
   MessageFlags,
@@ -8,6 +9,7 @@ export async function showGameHowToPlay(
   interaction: ChatInputCommandInteraction,
 ) {
   const isDetailed = interaction.options.getBoolean("detailed");
+  const dm = interaction.options.getBoolean("dm");
 
   const embed = new EmbedBuilder()
     .setColor(0xc5c3cc)
@@ -51,8 +53,23 @@ export async function showGameHowToPlay(
     );
   }
 
-  await interaction.reply({
-    embeds: [embed],
-    flags: MessageFlags.Ephemeral,
-  });
+  if (interaction.channel?.type === ChannelType.DM || dm) {
+    await interaction.reply({
+      content: `Sending DM...`,
+      flags: MessageFlags.Ephemeral,
+    });
+    await interaction.user.send({ embeds: [embed] }).catch(async (error) => {
+      console.log(error);
+      await interaction.editReply({
+        content: `Failed to send DM. Please check if you have DMs enabled.`,
+      });
+    });
+    return;
+  } else {
+    await interaction.reply({
+      embeds: [embed],
+      flags: MessageFlags.Ephemeral,
+    });
+    return;
+  }
 }

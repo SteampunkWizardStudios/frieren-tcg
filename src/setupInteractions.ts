@@ -3,15 +3,13 @@ import { Command } from "./types/command";
 
 export const setupInteractions = async (
   client: Client,
-  commands: Command<CommandInteraction>[],
+  commands: Record<string, Command<CommandInteraction>>,
 ) => {
   // Set up command handling
   client.on("interactionCreate", async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
-    const command = commands.find(
-      (cmd) => cmd.data.name === interaction.commandName,
-    );
+    const command = commands[interaction.commandName];
     if (!command) return;
 
     try {
