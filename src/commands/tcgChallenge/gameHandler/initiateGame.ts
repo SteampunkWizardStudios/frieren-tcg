@@ -1,18 +1,92 @@
-import { ButtonInteraction, User } from "discord.js";
+import {
+  ChannelType,
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  PrivateThreadChannel,
+  PublicThreadChannel,
+  TextChannel,
+  ThreadAutoArchiveDuration,
+  User,
+} from "discord.js";
 import { GameSettings } from "./gameSettings";
+import { tcgMain } from "../../../tcgMain";
 
 export const initiateGame = async (
-  interaction: ButtonInteraction,
+  interaction: ChatInputCommandInteraction,
+  gameId: string,
   challenger: User,
   opponent: User,
   gameSettings: GameSettings,
   ranked: boolean,
 ) => {
-  console.log(interaction);
-  console.log(challenger.username);
-  console.log(opponent.username);
-  console.log(gameSettings.turnDurationSeconds);
-  console.log(gameSettings.revealHand);
-  console.log(gameSettings.revealDraw);
-  console.log(ranked);
+  try {
+    const channel = (await interaction.client.channels.fetch(
+      interaction.channelId,
+    )) as TextChannel;
+
+    const gameThread = (await channel.threads.create({
+      name: `${ranked ? "Ranked " : ""}TCG Game Thread: ${challenger.username} vs ${opponent.username} (ID: ${gameId})`,
+      autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
+      type: ChannelType.PublicThread,
+    })) as PublicThreadChannel<false>;
+    await gameThread.members.add(challenger.id);
+    await gameThread.members.add(opponent.id);
+
+    const challengerThread = (await channel.threads.create({
+      name: `TCG Move Select: ${challenger.username}'s Private Thread  (ID: ${gameId})`,
+      autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
+      type: ChannelType.PrivateThread,
+    })) as PrivateThreadChannel;
+    await challengerThread.members.add(challenger.id);
+
+    const opponentThread = (await channel.threads.create({
+      name: `TCG Move Select: ${opponent.username}'s Private Thread  (ID: ${gameId})`,
+      autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
+      type: ChannelType.PrivateThread,
+    })) as PrivateThreadChannel;
+    await opponentThread.members.add(opponent.id);
+
+    const { winner, loser } = await tcgMain(
+      challenger,
+      opponent,
+      gameThread,
+      challengerThread,
+      opponentThread,
+      gameSettings,
+    );
+
+    // handle ranking here
+    if (ranked) {
+      console.log("Handle ranking here");
+    }
+
+    const resultEmbed = new EmbedBuilder()
+      .setColor(0xc5c3cc)
+      .setTitle(
+        `Frieren TCG - Results: ${challenger.username} vs ${opponent.username}`,
+      )
+      .setFooter({
+        text: `Game ID: ${gameId}`,
+      });
+    if (winner && loser) {
+      await channel.send({
+        embeds: [
+          resultEmbed.setDescription(`Game over! ${winner} defeated ${loser}!`),
+        ],
+      });
+    } else {
+      await channel.send({
+        embeds: [
+          resultEmbed.setDescription(`Game over! The game ended in a tie!`),
+        ],
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    await interaction.editReply({
+      content: "An error occurred while initiating the game.",
+      embeds: [],
+      components: [],
+    });
+  }
 };

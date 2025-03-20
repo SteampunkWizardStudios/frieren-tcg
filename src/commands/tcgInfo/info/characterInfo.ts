@@ -5,10 +5,12 @@ import {
   StringSelectMenuBuilder,
   StringSelectMenuInteraction,
   ComponentType,
+  MessageFlags,
 } from "discord.js";
 import { characterList } from "../../../tcg/characters/characterList";
 import { sendInfoMessage } from "./util/sendInfoMessage";
 import { statDetails } from "../../../tcg/formatting/emojis";
+import { createCharacterDropdown } from "../../../util/createCharacterDropdown";
 
 export async function showCharacterInfo(
   interaction: ChatInputCommandInteraction,
@@ -16,41 +18,13 @@ export async function showCharacterInfo(
   const dm = interaction.options.getBoolean("dm") ? true : false;
 
   try {
-    // Create the initial embed showing all characters
-    const initialEmbed = new EmbedBuilder()
-      .setColor(0xc5c3cc)
-      .setTitle("Frieren TCG - Characters")
-      .setDescription(
-        "Select a character from the dropdown menu below to view their details.",
-      )
-      .addFields({
-        name: "Available Characters",
-        value: characterList
-          .map((char) => `1. ${char.cosmetic.emoji} ${char.name}`)
-          .join("\n"),
-      });
-
-    // Create the dropdown menu
-    const selectMenu = new StringSelectMenuBuilder()
-      .setCustomId("character-select")
-      .setPlaceholder("Select a Character")
-      .addOptions(
-        characterList.map((char, index) => ({
-          label: `${char.name}`,
-          value: `${index}`,
-          emoji: char.cosmetic.emoji,
-        })),
-      );
-
-    const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-      selectMenu,
-    );
+    const characterDropdown = await createCharacterDropdown();
 
     // Send initial message with the menu
     const response = await sendInfoMessage(
       interaction,
-      initialEmbed,
-      [row],
+      characterDropdown.embed,
+      [characterDropdown.dropdown],
       dm,
     );
 
@@ -58,7 +32,7 @@ export async function showCharacterInfo(
     if (response) {
       const collector = response.createMessageComponentCollector({
         componentType: ComponentType.StringSelect,
-        time: 300000, // 5 minutes
+        time: 300_000, // 5 minutes
       });
 
       collector.on("collect", async (i: StringSelectMenuInteraction) => {
@@ -116,23 +90,23 @@ export async function showCharacterInfo(
 
           await i.update({
             embeds: [characterEmbed],
-            components: [row], // Keep the dropdown menu
+            components: [characterDropdown.dropdown], // Keep the dropdown menu
           });
         } catch (error) {
           console.error(error);
           await i.reply({
             content: "There was an error while fetching character information.",
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
         }
       });
 
       collector.on("end", async () => {
         // When the collector expires, disable the select menu
-        selectMenu.setDisabled(true);
+        characterDropdown.selectMenu.setDisabled(true);
         const disabledRow =
           new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-            selectMenu,
+            characterDropdown.selectMenu,
           );
 
         await interaction

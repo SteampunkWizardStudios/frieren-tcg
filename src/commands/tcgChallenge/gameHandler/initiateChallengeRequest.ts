@@ -1,13 +1,4 @@
-import {
-  ActionRow,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ChatInputCommandInteraction,
-  EmbedBuilder,
-  MessageFlags,
-} from "discord.js";
-import { statDetails } from "../../../tcg/formatting/emojis";
+import { ChatInputCommandInteraction } from "discord.js";
 import { GameSettings } from "./gameSettings";
 import { handleOpponent } from "./utils/handleOpponent";
 import { buildChallengeButtonRespond } from "./utils/buildChallengeButtonRespond";

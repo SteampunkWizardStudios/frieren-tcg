@@ -28,6 +28,7 @@ export interface CharacterProps {
 }
 
 export default class Character {
+  props: CharacterProps;
   name: CharacterName;
   cosmetic: CharacterCosmetic;
 
@@ -44,6 +45,7 @@ export default class Character {
   additionalMetadata: CharacterAdditionalMetadata;
 
   constructor(characterProps: CharacterProps) {
+    this.props = characterProps;
     this.name = characterProps.name;
     this.cosmetic = characterProps.cosmetic;
     this.stats = characterProps.stats;
@@ -214,6 +216,6 @@ export default class Character {
   }
 
   clone() {
-    return new Character({ ...this });
+    return new Character({ ...this.props });
   }
 }

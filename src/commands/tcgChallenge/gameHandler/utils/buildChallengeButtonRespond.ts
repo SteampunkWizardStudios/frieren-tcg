@@ -88,24 +88,31 @@ export const buildChallengeButtonRespond = async (
     });
 
     // handle button clicks
-    collector.on("collect", async (i: ButtonInteraction) => {
-      if (i.customId === ACCEPT_BUTTON_ID) {
+    collector.on("collect", async (buttonInteraction: ButtonInteraction) => {
+      if (buttonInteraction.customId === ACCEPT_BUTTON_ID) {
         const challengeAcceptedEmbed = EmbedBuilder.from(embed).setDescription(
           `Challenge accepted by ${interaction.user}! Setting up game...`,
         );
-        await i.update({
+        await buttonInteraction.update({
           embeds: [challengeAcceptedEmbed],
           components: [],
         });
 
         // start game
-        await initiateGame(i, challenger, opponent, gameSettings, ranked);
-      } else if (i.customId === DECLINE_BUTTON_ID) {
+        await initiateGame(
+          interaction,
+          response.id,
+          challenger,
+          opponent,
+          gameSettings,
+          ranked,
+        );
+      } else if (buttonInteraction.customId === DECLINE_BUTTON_ID) {
         const challengeDeclinedEmbed = EmbedBuilder.from(embed).setDescription(
           `Challenge declined by ${interaction.user}!`,
         );
 
-        return await i.update({
+        return await buttonInteraction.update({
           embeds: [challengeDeclinedEmbed],
           components: [],
         });
