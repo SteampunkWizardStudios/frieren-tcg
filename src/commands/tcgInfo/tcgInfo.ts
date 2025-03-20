@@ -1,4 +1,3 @@
-// src/commands/info.ts
 import {
   SlashCommandBuilder,
   ChatInputCommandInteraction,
@@ -9,6 +8,7 @@ import type { Command } from "../../types/command";
 import { showGameHowToPlay } from "./info/gameHowToPlay";
 import { showGameAdvancedRules } from "./info/gameAdvancedRules";
 import { showCharacterInfo } from "./info/characterInfo";
+import { showRankingSystem } from "./info/rankingSystem";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -52,7 +52,13 @@ export const command: Command<ChatInputCommandInteraction> = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("ranking-system")
-        .setDescription("Get information about the game's ranking system"),
+        .setDescription("Get information about the game's ranking system")
+        .addBooleanOption((option) =>
+          option
+            .setName("dm")
+            .setDescription("DM this information instead. Default: False")
+            .setRequired(false),
+        ),
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -78,10 +84,7 @@ export const command: Command<ChatInputCommandInteraction> = {
           await showGameAdvancedRules(interaction);
           break;
         case "ranking-system":
-          await interaction.reply({
-            content: "TBD AFTER MAIN GAME IMPLEMENTATION",
-            flags: MessageFlags.Ephemeral,
-          });
+          await showRankingSystem(interaction);
           break;
         case "character":
           await showCharacterInfo(interaction);
