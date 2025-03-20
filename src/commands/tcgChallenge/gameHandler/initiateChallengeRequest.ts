@@ -7,10 +7,13 @@ export async function initiateChallengeRequest(
   interaction: ChatInputCommandInteraction,
   gameSettings: GameSettings,
   ranked: boolean,
-) {
+): Promise<void> {
+  await interaction.deferReply();
+
   const challenger = interaction.user;
   const opponent = interaction.options.getUser("opponent")!;
-  if (!handleOpponent(interaction, challenger, opponent)) {
+
+  if (!(await handleOpponent(interaction, challenger, opponent))) {
     return;
   }
 

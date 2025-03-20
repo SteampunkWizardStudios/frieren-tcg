@@ -52,7 +52,7 @@ export const getPlayerCharacter = async (
             if (i.user.id !== player.id) {
               await i.reply({
                 content: "Invalid user.",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
               });
               return;
             }

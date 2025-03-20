@@ -41,7 +41,7 @@ export async function showCharacterInfo(
           if (i.user.id !== interaction.user.id) {
             await i.reply({
               content: "Invalid user.",
-              ephemeral: true,
+              flags: MessageFlags.Ephemeral,
             });
             return;
           }
@@ -123,7 +123,7 @@ export async function showCharacterInfo(
     if (!interaction.replied) {
       await interaction.reply({
         content: "There was an error while fetching character information.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     }
   }

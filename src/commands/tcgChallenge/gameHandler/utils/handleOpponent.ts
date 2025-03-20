@@ -6,25 +6,22 @@ export const handleOpponent = async (
   opponent: User | null,
 ): Promise<boolean> => {
   if (!opponent) {
-    await interaction.reply({
+    await interaction.editReply({
       content: "Please specify an opponent to challenge.",
-      flags: MessageFlags.Ephemeral,
     });
     return false;
   }
 
   if (opponent.bot) {
-    await interaction.reply({
+    await interaction.editReply({
       content: "You cannot challenge a bot.",
-      flags: MessageFlags.Ephemeral,
     });
     return false;
   }
 
   if (opponent.id === challenger.id) {
-    await interaction.reply({
+    await interaction.editReply({
       content: "You cannot challenge yourself.",
-      flags: MessageFlags.Ephemeral,
     });
     return false;
   }

@@ -61,10 +61,9 @@ export const buildChallengeButtonRespond = async (
     .setColor(0xc5c3cc)
     .setTimestamp();
 
-  await interaction.reply({
+  await interaction.editReply({
     embeds: [embed],
     components: [row],
-    withResponse: true,
   });
 
   const response = await interaction.fetchReply();
@@ -79,7 +78,7 @@ export const buildChallengeButtonRespond = async (
           );
           i.reply({
             embeds: [invalidUserEmbed],
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
           return false;
         }
