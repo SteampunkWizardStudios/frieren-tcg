@@ -6,16 +6,18 @@ import CommonCardAction from "../util/commonCardActions";
 import Character from "../character";
 import { CharacterName } from "../characters/metadata/CharacterName";
 import { CardEmoji } from "../formatting/emojis";
+import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_axeSwipe = new Card({
   title: "Axe Swipe",
   description: ([dmg]) => `HP-5. DMG ${dmg}`,
   emoji: CardEmoji.STARK_CARD,
   effects: [9],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} swiped ${character.cosmetic.pronouns.possessive} axe!`,
+      TCGThread.Gameroom,
     );
     CommonCardAction.commonAttack(
       game,
@@ -34,9 +36,12 @@ const offensiveStance = new Card({
   emoji: CardEmoji.STARK_CARD,
   effects: [2, 1],
   tags: { Resolve: 1 },
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} took an offensive stance!`);
+    messageCache.push(
+      `${character.name} took an offensive stance!`,
+      TCGThread.Gameroom,
+    );
 
     const atkChange = this.calculateEffectValue(this.effects[0]);
     const spdChange = this.calculateEffectValue(this.effects[1]);
@@ -54,9 +59,12 @@ const defensiveStance = new Card({
   emoji: CardEmoji.STARK_CARD,
   effects: [2, 1],
   tags: { Resolve: 1 },
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} took a defensive stance!`);
+    messageCache.push(
+      `${character.name} took a defensive stance!`,
+      TCGThread.Gameroom,
+    );
 
     const defChange = this.calculateEffectValue(this.effects[0]);
     const spdChange = this.calculateEffectValue(this.effects[1]);
@@ -73,9 +81,12 @@ const jumboBerrySpecialBreak = new Card({
     `SPD-2 for 2 turns. DEF+${def} for 2 turns. Heal ${hp} HP`,
   emoji: CardEmoji.STARK_CARD,
   effects: [2, 10],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} chowed down on a Jumbo Berry Special!`);
+    messageCache.push(
+      `${character.name} chowed down on a Jumbo Berry Special!`,
+      TCGThread.Gameroom,
+    );
 
     const defChange = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(-2, StatsEnum.SPD);
@@ -90,9 +101,10 @@ const jumboBerrySpecialBreak = new Card({
         name: "Jumbo Berry Special Break",
         description: `SPD-2 for 2 turns. DEF+${defChange} for 2 turns.`,
         turnDuration: 2,
-        endOfTimedEffectAction: (game, characterIndex) => {
-          console.log(
+        endOfTimedEffectAction: (game, characterIndex, messageCache) => {
+          messageCache.push(
             `The break is over. ${character.name} recomposes ${character.cosmetic.pronouns.reflexive}.`,
+            TCGThread.Gameroom,
           );
           game.characters[characterIndex].adjustStat(2, StatsEnum.SPD);
           game.characters[characterIndex].adjustStat(
@@ -112,9 +124,12 @@ const block = new Card({
   emoji: CardEmoji.STARK_CARD,
   effects: [20],
   priority: 1,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} prepares to block an attack!`);
+    messageCache.push(
+      `${character.name} prepares to block an attack!`,
+      TCGThread.Gameroom,
+    );
 
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
@@ -124,7 +139,7 @@ const block = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        endOfTimedEffectAction: (_game, _characterIndex) => {
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
       }),
@@ -139,9 +154,12 @@ const concentration = new Card({
   emoji: CardEmoji.STARK_CARD,
   effects: [2],
   tags: { Resolve: 2 },
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} concentrates on the battle.`);
+    messageCache.push(
+      `${character.name} concentrates on the battle.`,
+      TCGThread.Gameroom,
+    );
 
     const spd = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(spd, StatsEnum.SPD);
@@ -153,9 +171,12 @@ const a_ordensSlashTechnique = new Card({
   description: ([dmg]) => `HP-9. DMG ${dmg}`,
   emoji: CardEmoji.STARK_CARD,
   effects: [12],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} used Orden's Slash Technique!`);
+    messageCache.push(
+      `${character.name} used Orden's Slash Technique!`,
+      TCGThread.Gameroom,
+    );
 
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, damage, 9, false);
@@ -169,10 +190,11 @@ const fearBroughtMeThisFar = new Card({
   emoji: CardEmoji.STARK_CARD,
   effects: [3],
   tags: { Resolve: 2 },
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} resolves ${character.cosmetic.pronouns.reflexive}...`,
+      TCGThread.Gameroom,
     );
 
     const atkDef = this.calculateEffectValue(this.effects[0]);
@@ -187,15 +209,17 @@ const a_eisensAxeCleave = new Card({
     `HP-14. DMG ${dmg}. Cannot take any action next turn.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [18],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     if (character.name === CharacterName.Stark) {
-      console.log(
+      messageCache.push(
         `${character.name} recalls memory of ${character.cosmetic.pronouns.possessive} master's Axe Cleave!`,
+        TCGThread.Gameroom,
       );
     } else {
-      console.log(
+      messageCache.push(
         `${character.name} cleaves ${character.cosmetic.pronouns.possessive} axe.`,
+        TCGThread.Gameroom,
       );
     }
 
@@ -203,8 +227,9 @@ const a_eisensAxeCleave = new Card({
     if (
       CommonCardAction.commonAttack(game, characterIndex, damage, 14, false)
     ) {
-      console.log(
+      messageCache.push(
         `${character.name} recollects ${character.cosmetic.pronouns.reflexive}. ${character.name} skips the next turn!`,
+        TCGThread.Gameroom,
       );
       character.skipTurn = true;
     }
@@ -217,11 +242,11 @@ const a_lightningStrike = new Card({
     `HP-17. DEF-5 for this turn. At this turn's resolution, strike for DMG ${dmg}. Cannot take any action next turn.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [25],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
 
     if (character.adjustStat(-17, StatsEnum.HP)) {
-      console.log(`${character.name} winds up...`);
+      messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
       const damage = this.calculateEffectValue(this.effects[0]);
 
       character.adjustStat(-5, StatsEnum.DEF);
@@ -241,7 +266,10 @@ const a_lightningStrike = new Card({
           description: `Strike for ${damage} damage.`,
           turnDuration: 1,
           endOfTimedEffectAction: (game, characterIndex) => {
-            console.log(`${character.name} performs Lightning Strike!`);
+            messageCache.push(
+              `${character.name} performs Lightning Strike!`,
+              TCGThread.Gameroom,
+            );
             CommonCardAction.commonAttack(
               game,
               characterIndex,
@@ -250,8 +278,9 @@ const a_lightningStrike = new Card({
               true,
             );
 
-            console.log(
+            messageCache.push(
               `${character.name} recollects ${character.cosmetic.pronouns.reflexive}. ${character.name} skips the next turn!`,
+              TCGThread.Gameroom,
             );
             character.skipTurn = true;
           },

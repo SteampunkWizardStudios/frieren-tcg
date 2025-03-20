@@ -55,7 +55,7 @@ export async function showCharacterInfo(
           });
           const characterEmbed = new EmbedBuilder()
             .setColor(char.cosmetic.color)
-            .setTitle(`${char.deck.activePile[0].emoji} ${char.name}`)
+            .setTitle(`${char.cards[0].card.emoji} ${char.name}`)
             .setTimestamp()
             .setThumbnail(char.cosmetic.imageUrl)
             .addFields(

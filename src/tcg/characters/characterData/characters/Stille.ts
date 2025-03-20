@@ -1,10 +1,12 @@
-import Character from "../../character";
-import { stilleDeck } from "../../decks/StilleDeck";
-import { CharacterEmoji } from "../../formatting/emojis";
-import Stats from "../../stats";
-import { StatsEnum } from "../../stats";
-import Rolls from "../../util/rolls";
-import { CharacterName } from "../metadata/CharacterName";
+import { CharacterData } from "../characterData";
+import { stilleDeck } from "../../../decks/StilleDeck";
+import Stats from "../../../stats";
+import { StatsEnum } from "../../../stats";
+import Rolls from "../../../util/rolls";
+import { CharacterName } from "../../metadata/CharacterName";
+import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
+import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "../../../formatting/emojis";
 
 const stilleStats = new Stats({
   [StatsEnum.HP]: 20.0,
@@ -14,7 +16,7 @@ const stilleStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Stille = new Character({
+export const Stille = new CharacterData({
   name: CharacterName.Stille,
   cosmetic: {
     pronouns: {
@@ -34,20 +36,27 @@ export const Stille = new Character({
         If the result is less than the character's SPD minus the opponent's SPD, ignore the attack.
         Afterwards, attack the opponent with DMG equivalent to 1/2 * (opponent's ATK + opponent's move DMG).
         This character does not have access to default card options (Discard/Wait).`,
-    abilityDefendEffect: (game, characterIndex, attackDamage) => {
+    abilityDefendEffect: (
+      game,
+      characterIndex,
+      messageCache: MessageCache,
+      attackDamage,
+    ) => {
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
 
       const roll = Rolls.rollD100();
       const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
-      console.log(`Roll: ${roll}. SPD diff: ${spdDiff}`);
+      messageCache.push(`## **SPD diff**: ${spdDiff}`, TCGThread.Gameroom);
+      messageCache.push(`# Roll: ${roll}`, TCGThread.Gameroom);
 
       if (roll < spdDiff) {
-        console.log("Stille evaded the attack!");
+        messageCache.push("## Stille evaded the attack!", TCGThread.Gameroom);
         game.additionalMetadata.attackMissed[1 - characterIndex] = true;
 
-        console.log(
-          "The Stille's high speed escape reflected the opponent's damage!",
+        messageCache.push(
+          "## The Stille's high speed escape reflected the opponent's damage!",
+          TCGThread.Gameroom,
         );
         game.attack({
           attackerIndex: characterIndex,
@@ -55,7 +64,10 @@ export const Stille = new Character({
           isTimedEffectAttack: false,
         });
       } else {
-        console.log("Stille failed to evade the attack!");
+        messageCache.push(
+          "## Stille failed to evade the attack!",
+          TCGThread.Gameroom,
+        );
         game.additionalMetadata.attackMissed[1 - characterIndex] = false;
       }
     },

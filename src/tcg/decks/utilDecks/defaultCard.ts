@@ -1,3 +1,4 @@
+import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
 import Card from "../../card";
 import { CharacterName } from "../../characters/metadata/CharacterName";
 import { CardEmoji } from "../../formatting/emojis";
@@ -11,10 +12,13 @@ export default class DefaultCards {
     effects: [],
     emoji: CardEmoji.RECYCLE,
     printEmpower: false,
-    cardAction: (game, characterIndex) => {
+    cardAction: (game, characterIndex, messageCache) => {
       const character = game.getCharacter(characterIndex);
       character.empowerHand();
-      console.log(`All cards in ${character.name}'s hand are empowered!`);
+      messageCache.push(
+        `All cards in ${character.name}'s hand are empowered!`,
+        TCGThread.Gameroom,
+      );
 
       const handsIndicesDescending = Object.keys(
         game.additionalMetadata.currentDraws[characterIndex],
@@ -35,11 +39,12 @@ export default class DefaultCards {
     effects: [],
     printEmpower: false,
     emoji: CardEmoji.WAIT,
-    cardAction: (game, characterIndex) => {
+    cardAction: (game, characterIndex, messageCache) => {
       const character = game.getCharacter(characterIndex);
       character.empowerHand();
-      console.log(
+      messageCache.push(
         `${character.name} waited it out! All cards in ${character.name}'s hand are empowered!`,
+        TCGThread.Gameroom,
       );
       character.adjustStat(10, StatsEnum.HP);
     },

@@ -13,6 +13,7 @@ export async function initiateChallengeRequest(
   if (!handleOpponent(interaction, challenger, opponent)) {
     return;
   }
+
   return buildChallengeButtonRespond(
     interaction,
     challenger,

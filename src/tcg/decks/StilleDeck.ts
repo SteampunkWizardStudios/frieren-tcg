@@ -5,6 +5,8 @@ import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import Rolls from "../util/rolls";
 import { CardEmoji } from "../formatting/emojis";
+import { MessageCache } from "../../tcgChatInteractions/messageCache";
+import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_peck = new Card({
   title: "Peck",
@@ -12,9 +14,17 @@ const a_peck = new Card({
     `SPD-2. Discard a random card in hand and draw 1 card. DMG ${dmg}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [5],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (
+    this: Card,
+    game,
+    characterIndex,
+    messageCache: MessageCache,
+  ) {
     const character = game.characters[characterIndex];
-    console.log(`${character.name} pecked the opposition!`);
+    messageCache.push(
+      `${character.name} pecked the opposition!`,
+      TCGThread.Gameroom,
+    );
 
     character.adjustStat(-2, StatsEnum.SPD);
     character.discardCard(Rolls.rollDAny(5));
@@ -34,10 +44,11 @@ const a_ironFeather = new Card({
   description: ([def, dmg]) => `SPD-3. DEF+${def}. DMG ${dmg}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [1, 3],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    console.log(
+    messageCache.push(
       `${character.name} sharpened ${character.cosmetic.pronouns.possessive} feathers!`,
+      TCGThread.Gameroom,
     );
 
     character.adjustStat(-3, StatsEnum.SPD);
@@ -60,10 +71,11 @@ const hide = new Card({
   description: ([def]) => `SPD-3. DEF+${def}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [2],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    console.log(
+    messageCache.push(
       `${character.name} hid ${character.cosmetic.pronouns.reflexive} and flew to safety!`,
+      TCGThread.Gameroom,
     );
 
     character.adjustStat(-3, StatsEnum.SPD);
@@ -79,9 +91,12 @@ const roost = new Card({
   description: ([hp]) => `SPD-5 for 3 turns. DEF-3 for 2 turns. Heal ${hp}HP.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [5],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    console.log(`${character.name} landed on the ground.`);
+    messageCache.push(
+      `${character.name} landed on the ground.`,
+      TCGThread.Gameroom,
+    );
 
     character.adjustStat(-5, StatsEnum.SPD);
     character.adjustStat(-3, StatsEnum.DEF);
@@ -95,9 +110,13 @@ const roost = new Card({
         name: "Roost",
         description: `DEF-3 for 2 turns.`,
         turnDuration: 2,
-        endOfTimedEffectAction: (_game, _characterIndex) => {
-          console.log(`${character.name} opened its wings.`);
+        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
+          messageCache.push(
+            `${character.name} opened its wings.`,
+            TCGThread.Gameroom,
+          );
           character.adjustStat(3, StatsEnum.DEF);
+          TCGThread.Gameroom;
         },
       }),
     );
@@ -107,8 +126,11 @@ const roost = new Card({
         name: "Roost",
         description: `SPD-5 for 3 turns.`,
         turnDuration: 3,
-        endOfTimedEffectAction: (_game, _characterIndex) => {
-          console.log(`${character.name} took flight again!`);
+        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
+          messageCache.push(
+            `${character.name} took flight again!`,
+            TCGThread.Gameroom,
+          );
           character.adjustStat(5, StatsEnum.SPD);
         },
       }),
@@ -123,9 +145,12 @@ const deflect = new Card({
   emoji: CardEmoji.STILLE_CARD,
   effects: [20],
   priority: 1,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} prepares to deflect an attack!`);
+    messageCache.push(
+      `${character.name} prepares to deflect an attack!`,
+      TCGThread.Gameroom,
+    );
 
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
@@ -135,7 +160,7 @@ const deflect = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         turnDuration: 1,
         priority: -1,
-        endOfTimedEffectAction: (_game, _characterIndex) => {
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
       }),
@@ -149,9 +174,9 @@ const flyAway = new Card({
   emoji: CardEmoji.STILLE_CARD,
   priority: 1,
   effects: [25],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} flew away!`);
+    messageCache.push(`${character.name} flew away!`, TCGThread.Gameroom);
 
     const spd = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(spd, StatsEnum.SPD);
@@ -161,7 +186,7 @@ const flyAway = new Card({
         description: `Increases SPD by ${spd} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        endOfTimedEffectAction: (_game, _characterIndex) => {
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-spd, StatsEnum.SPD);
         },
       }),
@@ -175,10 +200,11 @@ export const a_geisel = new Card({
     `SPD-20. Lands on a tree and asks its fellow Geisel for help! Geisel (ATK: 15) will show up to attack for ${dmg}DMG between 1 - 3 turns.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [15],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    console.log(
+    messageCache.push(
       `${character.name} called its fellow friends the Geisel for help!`,
+      TCGThread.Gameroom,
     );
 
     character.adjustStat(-20, StatsEnum.SPD);
@@ -190,7 +216,7 @@ export const a_geisel = new Card({
         description: `Deal ${damage} at each turn's end.`,
         turnDuration: turnCount,
         endOfTurnAction: (game, characterIndex) => {
-          console.log("The Geisel doesn't stop!");
+          messageCache.push("The Geisel doesn't stop!", TCGThread.Gameroom);
           CommonCardAction.commonAttack(
             game,
             characterIndex,

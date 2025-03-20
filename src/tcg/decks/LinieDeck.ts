@@ -4,6 +4,7 @@ import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import CommonCardAction from "../util/commonCardActions";
 import { CardEmoji } from "../formatting/emojis";
+import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const imitate = new Card({
   title: "Imitate",
@@ -11,11 +12,14 @@ const imitate = new Card({
     `Use the card the opponent used last turn at this card's empower level - 2.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
 
-    console.log(`${character.name} imitates ${opponent.name}'s last move.`);
+    messageCache.push(
+      `${character.name} imitates ${opponent.name}'s last move.`,
+      TCGThread.Gameroom,
+    );
 
     const lastCard =
       game.additionalMetadata.lastUsedCards?.[1 - characterIndex];
@@ -25,10 +29,16 @@ const imitate = new Card({
         empowerLevel: this.empowerLevel - 2,
       });
 
-      console.log(`${character.name} uses ${newCard.getTitle()}`);
-      newCard.cardAction(game, characterIndex);
+      messageCache.push(
+        `${character.name} uses ${newCard.getTitle()}`,
+        TCGThread.Gameroom,
+      );
+      newCard.cardAction(game, characterIndex, messageCache);
     } else {
-      console.log("There was no move to imitate. The move failed!");
+      messageCache.push(
+        "There was no move to imitate. The move failed!",
+        TCGThread.Gameroom,
+      );
     }
   },
 });
@@ -39,9 +49,12 @@ const adapt = new Card({
     `SPD+${spd}. If HP > 50, ATK+${atkDef}, DEF+${atkDef}. If HP <= 50, heal ${hp} HP.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [2, 3, 12],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} adapts to the situation.`);
+    messageCache.push(
+      `${character.name} adapts to the situation.`,
+      TCGThread.Gameroom,
+    );
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
@@ -67,9 +80,12 @@ const manaDetection = new Card({
     `SPD+${spd}. If Opp's DEF >= Opp's ATK, ATK+${bigNumber}, DEF+${smallNumber}. Otherwise, ATK+${smallNumber}, DEF+${bigNumber}.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [2, 2, 1],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} detects the opponent's mana flow.`);
+    messageCache.push(
+      `${character.name} detects the opponent's mana flow.`,
+      TCGThread.Gameroom,
+    );
 
     const opponent = game.getCharacter(1 - characterIndex);
     character.adjustStat(
@@ -97,9 +113,12 @@ const parry = new Card({
   emoji: CardEmoji.LINIE_CARD,
   effects: [20],
   priority: 1,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} prepares to parry the opponent's attack.`);
+    messageCache.push(
+      `${character.name} prepares to parry the opponent's attack.`,
+      TCGThread.Gameroom,
+    );
 
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
@@ -122,10 +141,11 @@ export const a_erfassenAxe = new Card({
   description: ([dmg]) => `HP-3. DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [11],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Axe imitation.`,
+      TCGThread.Gameroom,
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -138,10 +158,11 @@ export const a_erfassenSword = new Card({
   description: ([dmg]) => `HP-2. DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [9],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Sword imitation.`,
+      TCGThread.Gameroom,
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -154,10 +175,11 @@ export const a_erfassenSpear = new Card({
   description: ([dmg]) => `HP-1. DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [7],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Spear imitation.`,
+      TCGThread.Gameroom,
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -170,10 +192,11 @@ export const a_erfassenKnife = new Card({
   description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [5],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Knife throw imitation.`,
+      TCGThread.Gameroom,
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);

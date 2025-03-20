@@ -2,6 +2,16 @@ import { PublicThreadChannel, PrivateThreadChannel, User } from "discord.js";
 import { GameSettings } from "./commands/tcgChallenge/gameHandler/gameSettings";
 import Character from "./tcg/character";
 import { getPlayerCharacter } from "./tcgChatInteractions/getPlayerCharacter";
+import Game from "./tcg/game";
+import { MessageCache } from "./tcgChatInteractions/messageCache";
+import {
+  logAndSend,
+  TCGThread,
+  TCGThreads,
+} from "./tcgChatInteractions/sendGameMessage";
+import { printGameState } from "./tcgChatInteractions/printGameState";
+import Card from "./tcg/card";
+import { printCharacter } from "./tcgChatInteractions/printCharacter";
 
 export const tcgMain = async (
   challenger: User,
@@ -29,246 +39,269 @@ export const tcgMain = async (
     return { winner: null, loser: null };
   }
 
-  return { winner: challenger, loser: opponent };
+  const messageCache = new MessageCache();
+  const threadsMapping: TCGThreads = {
+    [TCGThread.Gameroom]: gameThread,
+    [TCGThread.ChallengerThread]: challengerThread,
+    [TCGThread.OpponentThread]: opponentThread,
+  };
 
-  // const game = new Game([
-  //   characterList[characterA].clone(),
-  //   characterList[characterB].clone(),
-  // ]);
-  // game.gameStart();
+  const game = new Game(
+    [
+      new Character({
+        characterData: challengerCharacter.clone(),
+        messageCache: messageCache,
+        characterThread: TCGThread.ChallengerThread,
+      }),
+      new Character({
+        characterData: opponentCharacter.clone(),
+        messageCache: messageCache,
+        characterThread: TCGThread.OpponentThread,
+      }),
+    ],
+    messageCache,
+  );
 
-  // // discord client login
-  // // login();
+  game.gameStart();
 
-  // // game loop
-  // while (true) {
-  //   game.turnCount += 1;
-  //   console.log(`# Turn ${game.turnCount}`);
+  // game loop
+  while (true) {
+    game.turnCount += 1;
+    messageCache.push(`# Turn ${game.turnCount}`, TCGThread.Gameroom);
 
-  //   // start of turn resolution
-  //   game.characters.forEach((character: Character, _index: number) => {
-  //     character.additionalMetadata.attackedThisTurn = false;
-  //     character.additionalMetadata.timedEffectAttackedThisTurn = false;
-  //   });
-  //   printGameState(game);
-  //   console.log();
+    // start of turn resolution
+    game.characters.forEach((character: Character, _index: number) => {
+      character.additionalMetadata.attackedThisTurn = false;
+      character.additionalMetadata.timedEffectAttackedThisTurn = false;
+    });
+    messageCache.push(printGameState(game), TCGThread.Gameroom);
+    console.log();
 
-  //   // display playable cards
-  //   const characterToPlayableMoveMap: Record<number, Record<string, Card>> = {};
-  //   game.characters.forEach((character: Character, index: number) => {
-  //     printCharacter(character, false);
-  //     if (character.skipTurn) {
-  //       console.log(`## ${character.name} skips this turn!`);
-  //     } else {
-  //       const currUsableCards = character.getUsableCardsForRound();
-  //       characterToPlayableMoveMap[index] = currUsableCards;
+    await logAndSend(
+      messageCache.flush(TCGThread.Gameroom),
+      TCGThread.Gameroom,
+      threadsMapping,
+      3000,
+    );
 
-  //       console.log(`## ${character.name}'s Draws: `);
+    // display playable cards
+    const characterToPlayableMoveMap: Record<number, Record<string, Card>> = {};
 
-  //       let vpollOptionsList = "";
-  //       const optionsCount = Object.keys(currUsableCards).length;
+    await Promise.all(
+      game.characters.map(async (character, index) => {
+        const useChannel =
+          index === 0 ? TCGThread.ChallengerThread : TCGThread.OpponentThread;
+        messageCache.push(printCharacter(character, false), useChannel);
+        await logAndSend(
+          messageCache.flush(useChannel),
+          useChannel,
+          threadsMapping,
+          2000,
+        );
 
-  //       Object.keys(currUsableCards).forEach((key: string, index: number) => {
-  //         const currCard = currUsableCards[key];
-  //         currCard.printCard(`- ${key}: `);
-  //         vpollOptionsList += `${key}: ${currCard.getTitle()}`;
-  //         if (index < optionsCount - 1) {
-  //           vpollOptionsList += ", ";
-  //         }
-  //       });
+        if (character.skipTurn) {
+          messageCache.push(
+            `## ${character.name} skips this turn!`,
+            useChannel,
+          );
+        } else {
+          const currUsableCards = character.getUsableCardsForRound(useChannel);
+          characterToPlayableMoveMap[index] = currUsableCards;
+          await logAndSend(
+            messageCache.flush(useChannel),
+            useChannel,
+            threadsMapping,
+            2000,
+          );
 
-  //       console.log("Vpoll command:");
-  //       console.log(
-  //         `/vpoll name:Which Move To Use? options:${vpollOptionsList} end-time:2m multiselect:True`,
-  //       );
-  //     }
-  //     console.log();
-  //   });
-  //   game.additionalMetadata.currentDraws = characterToPlayableMoveMap;
-  //   console.log();
+          messageCache.push(`## ${character.name}'s Draws:`, useChannel);
+          await logAndSend(
+            messageCache.flush(useChannel),
+            useChannel,
+            threadsMapping,
+            1000,
+          );
 
-  //   // move selection step
-  //   const characterToSelectedMoveMap: Record<number, Card> = {};
-  //   game.characters.forEach((character: Character, index: number) => {
-  //     if (character.skipTurn) {
-  //       character.skipTurn = false; // handle turn skip
-  //       return;
-  //     } else {
-  //       let selection: string;
-  //       while (true) {
-  //         selection = readlineSync.question(
-  //           `Which move do you want to use for ${character.name}? (move index) `,
-  //         );
-  //         if (selection in characterToPlayableMoveMap[index]) {
-  //           const selectedCard = characterToPlayableMoveMap[index][selection];
-  //           const confirmation = readlineSync.question(
-  //             `Are you sure you want to play ${selectedCard.getTitle()}? (Y/n) `,
-  //           );
-  //           if (confirmation !== "Y") {
-  //             continue;
-  //           } else {
-  //             const intSelection = parseInt(selection);
-  //             if (intSelection < 6) {
-  //               character.playCard(parseInt(selection));
-  //             }
-  //             console.log(`You played ${selectedCard.getTitle()}`);
-  //             characterToSelectedMoveMap[index] = selectedCard;
-  //             break;
-  //           }
-  //         } else {
-  //           console.log("Invalid selection");
-  //         }
-  //       }
-  //     }
-  //   });
-  //   console.log();
+          let draws: string[] = [];
+          Object.keys(currUsableCards).forEach((key: string) => {
+            const currCard = currUsableCards[key];
+            draws.push(currCard.printCard(`- ${key}: `));
+          });
+          messageCache.push(draws.join("\n"), useChannel);
+        }
 
-  //   // move resolution step
-  //   const moveFirst = game.getFirstMove(characterToSelectedMoveMap);
-  //   const moveOrder = [moveFirst, 1 - moveFirst];
+        await logAndSend(
+          messageCache.flush(useChannel),
+          useChannel,
+          threadsMapping,
+          1000,
+        );
+      }),
+    );
 
-  //   let gameOver = false;
-  //   moveOrder.forEach((characterIndex: number) => {
-  //     if (!gameOver) {
-  //       const card = characterToSelectedMoveMap[characterIndex];
-  //       if (card) {
-  //         const character = game.getCharacter(characterIndex);
-  //         console.log(`## ${character.name} used **${card.getTitle()}**!`);
-  //         card.cardAction?.(game, characterIndex);
-  //         if (character.ability.abilityOnCardUse) {
-  //           character.ability.abilityOnCardUse(game, characterIndex, card);
-  //         }
-  //       }
+    return { winner: null, loser: null };
 
-  //       // check game over state after each move
-  //       if (gameOver || checkGameOver(game)) {
-  //         gameOver = true;
-  //         return;
-  //       }
+    //     console.log(
+    //       `/vpoll name:What move to use? options:${vpollA} end-time:2m multiselect:True`,
+    //     );
+    //     console.log(
+    //       `/vpoll name:What move to use? options:${vpollB} end-time:2m multiselect:True`,
+    //     );
 
-  //       console.log();
-  //     }
-  //   });
-  //   console.log();
+    //     game.additionalMetadata.currentDraws = characterToPlayableMoveMap;
+    //     console.log();
 
-  //   // end of turn resolution
-  //   let negativePriorityTimedEffect: Record<number, TimedEffect[]> = {
-  //     0: [],
-  //     1: [],
-  //   };
+    //     // move selection step
+    //     const characterToSelectedMoveMap: Record<number, Card> = {};
+    //     game.characters.forEach(async (character: Character, index: number) => {
+    //       if (character.skipTurn) {
+    //         character.skipTurn = false; // handle turn skip
+    //         return;
+    //       } else {
+    //         let selection: string;
+    //         while (true) {
+    //           selection = readlineSync.question(
+    //             `Which move do you want to use for ${character.name}? (move index) `,
+    //           );
+    //           if (selection in characterToPlayableMoveMap[index]) {
+    //             const selectedCard = characterToPlayableMoveMap[index][selection];
+    //             const confirmation = readlineSync.question(
+    //               `Are you sure you want to play ${selectedCard.getTitle()}? (Y/n) `,
+    //             );
+    //             if (confirmation !== "Y") {
+    //               continue;
+    //             } else {
+    //               const intSelection = parseInt(selection);
+    //               if (intSelection < 6) {
+    //                 character.playCard(parseInt(selection));
+    //               }
+    //               characterToSelectedMoveMap[index] = selectedCard; // moving this before an await command so it resolves definitively
 
-  //   // handle normal timed effect
-  //   moveOrder.forEach((characterIndex: number) => {
-  //     if (!gameOver) {
-  //       const character = game.getCharacter(characterIndex);
+    //               await logAndSend(
+    //                 [`You played **${selectedCard.getTitle()}**`],
+    //                 index === 0 ? RPGChannel.RoomA : RPGChannel.RoomB,
+    //               );
+    //               break;
+    //             }
+    //           } else {
+    //             console.log("Invalid selection");
+    //           }
+    //         }
+    //       }
+    //     });
+    //     console.log();
 
-  //       character.timedEffects.forEach((timedEffect: TimedEffect) => {
-  //         if (timedEffect.priority < 0) {
-  //           negativePriorityTimedEffect[characterIndex].push(timedEffect);
-  //         } else {
-  //           timedEffect.reduceTimedEffect(game, characterIndex);
-  //         }
-  //       });
+    //     // move resolution step
+    //     const moveFirst = game.getFirstMove(characterToSelectedMoveMap);
+    //     const moveOrder = [moveFirst, 1 - moveFirst];
 
-  //       if (gameOver || checkGameOver(game)) {
-  //         gameOver = true;
-  //         return;
-  //       }
-  //     }
-  //   });
+    //     let gameOver = false;
+    //     moveOrder.forEach(async (characterIndex: number) => {
+    //       if (!gameOver) {
+    //         const card = characterToSelectedMoveMap[characterIndex];
+    //         if (card) {
+    //           const character = game.getCharacter(characterIndex);
+    //           messageCache.push(
+    //             `## ${character.name} used **${card.getTitle()}**!`,
+    //             RPGChannel.Gameroom,
+    //           );
+    //           card.cardAction?.(game, characterIndex, messageCache);
+    //           if (character.ability.abilityOnCardUse) {
+    //             character.ability.abilityOnCardUse(
+    //               game,
+    //               characterIndex,
+    //               messageCache,
+    //               card,
+    //             );
+    //           }
+    //         }
 
-  //   // handle negative priority timed effect
-  //   moveOrder.forEach((characterIndex: number) => {
-  //     if (!gameOver) {
-  //       negativePriorityTimedEffect[characterIndex].forEach(
-  //         (timedEffect: TimedEffect) => {
-  //           timedEffect.reduceTimedEffect(game, characterIndex);
-  //         },
-  //       );
+    //         // check game over state after each move
+    //         if (gameOver || checkGameOver(game)) {
+    //           gameOver = true;
+    //           return;
+    //         }
 
-  //       if (gameOver || checkGameOver(game)) {
-  //         gameOver = true;
-  //         return;
-  //       }
-  //     }
-  //   });
+    //         console.log();
+    //       }
+    //     });
+    //     console.log();
 
-  //   // handle end of turn ability and clean up
-  //   moveOrder.forEach((characterIndex: number) => {
-  //     if (!gameOver) {
-  //       const character = game.getCharacter(characterIndex);
-  //       character.removeExpiredTimedEffects();
-  //       character.ability.abilityEndOfTurnEffect?.(game, characterIndex);
+    //     // end of turn resolution
+    //     let negativePriorityTimedEffect: Record<number, TimedEffect[]> = {
+    //       0: [],
+    //       1: [],
+    //     };
 
-  //       if (gameOver || checkGameOver(game)) {
-  //         gameOver = true;
-  //         return;
-  //       }
-  //     }
-  //   });
+    //     // handle normal timed effect
+    //     moveOrder.forEach((characterIndex: number) => {
+    //       if (!gameOver) {
+    //         const character = game.getCharacter(characterIndex);
 
-  //   if (gameOver || checkGameOver(game)) {
-  //     printGameState(game, false);
-  //     console.log("Game over!");
-  //     return;
-  //   }
+    //         character.timedEffects.forEach((timedEffect: TimedEffect) => {
+    //           if (timedEffect.priority < 0) {
+    //             negativePriorityTimedEffect[characterIndex].push(timedEffect);
+    //           } else {
+    //             timedEffect.reduceTimedEffect(game, characterIndex, messageCache);
+    //           }
+    //         });
 
-  //   game.additionalMetadata.lastUsedCards = characterToSelectedMoveMap;
-  //   console.log();
-  // }
+    //         if (gameOver || checkGameOver(game)) {
+    //           gameOver = true;
+    //           return;
+    //         }
+    //       }
+    //     });
+
+    //     // handle negative priority timed effect
+    //     moveOrder.forEach((characterIndex: number) => {
+    //       if (!gameOver) {
+    //         negativePriorityTimedEffect[characterIndex].forEach(
+    //           (timedEffect: TimedEffect) => {
+    //             timedEffect.reduceTimedEffect(game, characterIndex, messageCache);
+    //           },
+    //         );
+
+    //         if (gameOver || checkGameOver(game)) {
+    //           gameOver = true;
+    //           return;
+    //         }
+    //       }
+    //     });
+
+    //     // handle end of turn ability and clean up
+    //     moveOrder.forEach((characterIndex: number) => {
+    //       if (!gameOver) {
+    //         const character = game.getCharacter(characterIndex);
+    //         character.removeExpiredTimedEffects();
+    //         character.ability.abilityEndOfTurnEffect?.(
+    //           game,
+    //           characterIndex,
+    //           messageCache,
+    //         );
+
+    //         if (gameOver || checkGameOver(game)) {
+    //           gameOver = true;
+    //           return;
+    //         }
+    //       }
+    //     });
+
+    //     if (gameOver || checkGameOver(game)) {
+    //       // immediately flush message cache
+    //       messageCache.push(printGameState(game, false), RPGChannel.Gameroom);
+    //       messageCache.push("# Game over!", RPGChannel.Gameroom);
+    //       await logAndSend(
+    //         messageCache.flush(RPGChannel.Gameroom),
+    //         RPGChannel.Gameroom,
+    //       );
+    //       return;
+    //     }
+
+    //     game.additionalMetadata.lastUsedCards = characterToSelectedMoveMap;
+    //     console.log();
+  }
 };
-
-// only print game state. do not update state
-// function printGameState(
-//   game: Game,
-//   obfuscateInformation: boolean = true,
-// ): void {
-//   game.characters.forEach((character: Character) => {
-//     printCharacter(character, obfuscateInformation);
-//     if (character.skipTurn) {
-//       console.log(`## ${character.name} skips this turn!`);
-//     }
-//   });
-// }
-
-// function printCharacter(
-//   character: Character,
-//   obfuscateInformation: boolean,
-// ): void {
-//   const charStat = character.stats.stats;
-//   let hpInfo: string;
-//   if (character.additionalMetadata.manaSuppressed && obfuscateInformation) {
-//     hpInfo = "?? / ??";
-//   } else {
-//     hpInfo = `${charStat.HP}/${character.initialStats.stats.HP} ${percentBar(charStat.HP, character.initialStats.stats.HP)}`;
-//   }
-//   const lines = [
-//     `# ${character.name}:`,
-//     `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
-//     `- ${statDetails[StatsEnum.ATK].emoji} **ATK**: ${charStat.ATK}`,
-//     `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${charStat.DEF}`,
-//     `- ${statDetails[StatsEnum.SPD].emoji} **SPD**: ${charStat.SPD}`,
-//     `- ${statDetails[StatsEnum.Ability].emoji} **Ability**: ${character.ability.abilityName} - ${charStat.Ability}`,
-//     `  - ${character.ability.abilityEffectString}`,
-//   ];
-//   console.log(lines.join("\n"));
-//   if (character.additionalMetadata.manaSuppressed) {
-//     console.log(
-//       `**Mana Suppression**: ${character.name} suppresses ${character.cosmetic.pronouns.possessive} mana - ${character.cosmetic.pronouns.possessive} HP is hidden.`,
-//     );
-//   }
-//   if (character.additionalMetadata.teaTimeStacks) {
-//     console.log(
-//       `**Tea Time Snacks**: ${character.additionalMetadata.teaTimeStacks}`,
-//     );
-//   }
-//   if (character.timedEffects.length > 0) {
-//     console.log("**Timed effects:**");
-//     character.timedEffects.forEach((effect) => {
-//       effect.printEffect();
-//     });
-//   }
-// }
 
 // function checkGameOver(game: Game): boolean {
 //   if (!game.gameOver) {
@@ -281,4 +314,9 @@ export const tcgMain = async (
 //   return false;
 // }
 
-// main();
+// (async () => {
+//   await login();
+//   client.on(Events.ClientReady, () => {
+//     main();
+//   });
+// })();

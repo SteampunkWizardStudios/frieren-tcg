@@ -2,62 +2,59 @@ import Stats, { StatsEnum } from "./stats";
 import Deck from "./deck";
 import Card from "./card";
 import TimedEffect from "./timedEffect";
-import Game from "./game";
 import { Ability } from "./ability";
-import { CharacterEmoji, statDetails } from "./formatting/emojis";
+import { statDetails } from "./formatting/emojis";
 import Rolls from "./util/rolls";
 import { CharacterAdditionalMetadata } from "./additionalMetadata/characterAdditionalMetadata";
-import Pronouns from "./pronoun";
 import { CharacterName } from "./characters/metadata/CharacterName";
 import DefaultCards from "./decks/utilDecks/defaultCard";
-
-export interface CharacterCosmetic {
-  pronouns: Pronouns;
-  emoji: CharacterEmoji;
-  color: number;
-  imageUrl: string;
-}
+import {
+  CharacterCosmetic,
+  CharacterData,
+} from "./characters/characterData/characterData";
+import { MessageCache } from "../tcgChatInteractions/messageCache";
+import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
 
 export interface CharacterProps {
-  name: CharacterName;
+  characterData: CharacterData;
+  messageCache: MessageCache;
+  characterThread: TCGThread;
+}
+
+export default class Character {
+  name: String;
   cosmetic: CharacterCosmetic;
+
   stats: Stats;
   cards: { card: Card; count: number }[];
   ability: Ability;
   additionalMetadata: CharacterAdditionalMetadata;
-}
-
-export default class Character {
-  props: CharacterProps;
-  name: CharacterName;
-  cosmetic: CharacterCosmetic;
-
-  stats: Stats;
-  cards: { card: Card; count: number }[];
-  deck: Deck;
-  ability: Ability;
 
   initialStats: Stats;
+  deck: Deck;
   hand: Card[];
   timedEffects: TimedEffect[];
   skipTurn: boolean;
 
-  additionalMetadata: CharacterAdditionalMetadata;
+  messageCache: MessageCache;
+  characterThread: TCGThread;
 
   constructor(characterProps: CharacterProps) {
-    this.props = characterProps;
-    this.name = characterProps.name;
-    this.cosmetic = characterProps.cosmetic;
-    this.stats = characterProps.stats;
-    this.cards = characterProps.cards;
-    this.ability = characterProps.ability;
-    this.additionalMetadata = characterProps.additionalMetadata;
+    this.name = characterProps.characterData.name;
+    this.cosmetic = characterProps.characterData.cosmetic;
+    this.stats = characterProps.characterData.stats;
+    this.cards = characterProps.characterData.cards;
+    this.ability = characterProps.characterData.ability;
+    this.additionalMetadata = characterProps.characterData.additionalMetadata;
 
-    this.initialStats = characterProps.stats.clone();
-    this.deck = new Deck(characterProps.cards);
+    this.initialStats = characterProps.characterData.stats.clone();
+    this.deck = new Deck(characterProps.characterData.cards);
     this.hand = [];
     this.timedEffects = [];
     this.skipTurn = false;
+
+    this.messageCache = characterProps.messageCache;
+    this.characterThread = characterProps.characterThread;
   }
 
   drawStartingHand() {
@@ -76,8 +73,9 @@ export default class Character {
     if (handIndex < this.hand.length) {
       const discardedCard = this.hand.splice(handIndex, 1)[0];
       this.deck.discardCard(discardedCard);
-      console.log(
+      this.messageCache.push(
         `Discarded ${discardedCard.title} + ${discardedCard.empowerLevel}`,
+        this.characterThread,
       );
       return discardedCard;
     } else {
@@ -99,8 +97,8 @@ export default class Character {
     return discardedCard;
   }
 
-  getUsableCardsForRound(): Record<string, Card> {
-    this.printHand();
+  getUsableCardsForRound(channel: TCGThread): Record<string, Card> {
+    this.printHand(channel);
 
     const indexToUsableCardMap: Record<string, Card> = {};
     // roll 4d6
@@ -108,7 +106,7 @@ export default class Character {
     for (let i = 0; i < 4; i++) {
       rolls.push(Rolls.rollD6());
     }
-    console.log(`\n### Draws: ${rolls.sort().join(", ")}`);
+    this.messageCache.push(`\n### Draws: ${rolls.sort().join(", ")}`, channel);
     for (const roll of rolls) {
       if (roll < this.hand.length) {
         if (roll in indexToUsableCardMap) {
@@ -126,15 +124,16 @@ export default class Character {
       indexToUsableCardMap["9"] = DefaultCards.waitCard.clone();
     }
 
-    console.log();
     return indexToUsableCardMap;
   }
 
-  printHand() {
-    console.log(`# ${this.name}'s Hand: `);
+  printHand(channel: TCGThread) {
+    let cardsInHand: string[] = [];
+    this.messageCache.push(`# ${this.name}'s Hand: `, channel);
     this.hand.forEach((card, index) => {
-      card.printCard(`- ${index}: `);
+      cardsInHand.push(card.printCard(`- ${index}: `));
     });
+    this.messageCache.push(cardsInHand.join("\n"), channel);
   }
 
   // adjust a character's stat
@@ -149,28 +148,35 @@ export default class Character {
       const statDescription =
         stat === StatsEnum.Ability ? "Ability Counter" : stat;
       if (adjustValue < 0) {
-        console.log(
+        this.messageCache.push(
           `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`,
+          TCGThread.Gameroom,
         );
         if (stat !== StatsEnum.HP || !this.additionalMetadata.manaSuppressed) {
-          console.log(
+          this.messageCache.push(
             `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`,
+            TCGThread.Gameroom,
           );
         }
       } else {
-        console.log(
+        this.messageCache.push(
           `${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`,
+          TCGThread.Gameroom,
         );
         if (stat !== StatsEnum.HP || !this.additionalMetadata.manaSuppressed) {
-          console.log(
+          this.messageCache.push(
             `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`,
+            TCGThread.Gameroom,
           );
         }
       }
 
       return true;
     } else {
-      console.log(`${this.name}'s stat failed to be set! The move failed!`);
+      this.messageCache.push(
+        `${this.name}'s stat failed to be set! The move failed!`,
+        TCGThread.Gameroom,
+      );
       return false;
     }
   }
@@ -179,10 +185,16 @@ export default class Character {
     if (this.setStatValue(statValue, stat)) {
       const statDescription =
         stat === StatsEnum.Ability ? "Ability Counter" : stat;
-      console.log(`${this.name}'s ${statDescription} is set to ${statValue}!`);
+      this.messageCache.push(
+        `${this.name}'s ${statDescription} is set to ${statValue}!`,
+        TCGThread.Gameroom,
+      );
       return true;
     } else {
-      console.log(`${this.name}'s stat failed to be set! The move failed!`);
+      this.messageCache.push(
+        `${this.name}'s stat failed to be set! The move failed!`,
+        TCGThread.Gameroom,
+      );
       return false;
     }
   }
@@ -213,9 +225,5 @@ export default class Character {
     this.hand.forEach((card) => {
       card.empowerLevel += 1;
     });
-  }
-
-  clone() {
-    return new Character({ ...this.props });
   }
 }

@@ -1,10 +1,12 @@
-import Character from "../../character";
-import Stats from "../../stats";
-import { StatsEnum } from "../../stats";
-import { laufenDeck } from "../../decks/LaufenDeck";
-import Rolls from "../../util/rolls";
-import { CharacterName } from "../metadata/CharacterName";
-import { CharacterEmoji } from "../../formatting/emojis";
+import { CharacterData } from "../characterData";
+import Stats from "../../../stats";
+import { StatsEnum } from "../../../stats";
+import { laufenDeck } from "../../../decks/LaufenDeck";
+import Rolls from "../../../util/rolls";
+import { CharacterName } from "../../metadata/CharacterName";
+import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
+import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "../../../formatting/emojis";
 
 const laufenStats = new Stats({
   [StatsEnum.HP]: 90.0,
@@ -14,7 +16,7 @@ const laufenStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Laufen = new Character({
+export const Laufen = new CharacterData({
   name: CharacterName.Laufen,
   cosmetic: {
     pronouns: {
@@ -32,19 +34,28 @@ export const Laufen = new Character({
     abilityName: "Evasive",
     abilityEffectString: `When the opponent attacks, roll a D100.
         If the result is less than the character's speed minus the opponent's speed, the attack deals 0 damage.`,
-    abilityDefendEffect: (game, characterIndex, _attackDamage) => {
+    abilityDefendEffect: (
+      game,
+      characterIndex,
+      messageCache: MessageCache,
+      _attackDamage,
+    ) => {
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
 
       const roll = Rolls.rollD100();
       const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
-      console.log(`Roll: ${roll}. SPD diff: ${spdDiff}`);
+      messageCache.push(`## **SPD diff**: ${spdDiff}`, TCGThread.Gameroom);
+      messageCache.push(`# Roll: ${roll}`, TCGThread.Gameroom);
 
       if (roll < spdDiff) {
-        console.log("Laufen evaded the attack!");
+        messageCache.push("Laufen evaded the attack!", TCGThread.Gameroom);
         game.additionalMetadata.attackMissed[1 - characterIndex] = true;
       } else {
-        console.log("Laufen failed to evade the attack!");
+        messageCache.push(
+          "Laufen failed to evade the attack!",
+          TCGThread.Gameroom,
+        );
         game.additionalMetadata.attackMissed[1 - characterIndex] = false;
       }
     },

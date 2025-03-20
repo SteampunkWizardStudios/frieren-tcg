@@ -5,6 +5,7 @@ import { StatsEnum } from "../stats";
 import CommonCardAction from "../util/commonCardActions";
 import Rolls from "../util/rolls";
 import { CardEmoji } from "../formatting/emojis";
+import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_hairWhip = new Card({
   title: "Hair Whip",
@@ -12,10 +13,11 @@ export const a_hairWhip = new Card({
     `DEF+${def}. Afterwards, HP-3, DMG ${dmg}+DEF/4.`,
   effects: [2, 5],
   emoji: CardEmoji.PUNCH,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} whipped ${character.cosmetic.pronouns.possessive} hair!`,
+      TCGThread.Gameroom,
     );
 
     const defIncrease = this.calculateEffectValue(this.effects[0]);
@@ -32,10 +34,11 @@ const harden = new Card({
   description: ([def]) => `HP-2. DEF+${def}`,
   effects: [2],
   emoji: CardEmoji.SHIELD,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} toughened ${character.cosmetic.pronouns.possessive} hair defense!`,
+      TCGThread.Gameroom,
     );
 
     if (character.adjustStat(-2, StatsEnum.HP)) {
@@ -53,10 +56,11 @@ const holeUp = new Card({
     `Discard 1 card at random and draw 1 card. SPD-2. DEF+${def}`,
   effects: [2],
   emoji: CardEmoji.DICE,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} holed ${character.cosmetic.pronouns.reflexive} up!`,
+      TCGThread.Gameroom,
     );
 
     character.discardCard(Rolls.rollDAny(5));
@@ -74,10 +78,9 @@ const rest = new Card({
   description: ([hp]) => `DEF-2. Heal ${hp} HP`,
   effects: [10],
   emoji: CardEmoji.HEART,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} rests up.`);
-
+    messageCache.push(`${character.name} rests up.`, TCGThread.Gameroom);
     character.adjustStat(-1, StatsEnum.DEF);
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
@@ -92,11 +95,13 @@ export const a_pierce = new Card({
     `HP-7. DMG ${dmg} + (DEF/3). Pierces through 1/5 of the opponent's defense.`,
   effects: [10],
   emoji: CardEmoji.PUNCH,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
-    console.log(`${character.name} pierced the opponent!`);
-
+    messageCache.push(
+      `${character.name} pierced the opponent!`,
+      TCGThread.Gameroom,
+    );
     const damage =
       this.calculateEffectValue(this.effects[0]) +
       character.stats.stats.DEF / 3 +
@@ -112,10 +117,11 @@ const hairBarrier = new Card({
   effects: [20],
   emoji: CardEmoji.HOURGLASS,
   priority: 1,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} surrounded ${character.cosmetic.pronouns.reflexive} in ${character.cosmetic.pronouns.possessive} hair barrier!`,
+      TCGThread.Gameroom,
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -141,11 +147,13 @@ const teaTime = new Card({
   effects: [2, 8],
   tags: { TeaTime: 1 },
   emoji: CardEmoji.HEART,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
-    console.log(`${character.name} enjoyed a cup of tea.`);
-
+    messageCache.push(
+      `${character.name} enjoyed a cup of tea.`,
+      TCGThread.Gameroom,
+    );
     const defBuff = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(defBuff, StatsEnum.DEF);
     opponent.adjustStat(defBuff, StatsEnum.DEF);
@@ -163,11 +171,13 @@ const teaParty = new Card({
   effects: [3, 12],
   tags: { TeaTime: 2 },
   emoji: CardEmoji.RANDOM,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
-    console.log(`${character.name} held a tea party!`);
-
+    messageCache.push(
+      `${character.name} held a tea party!`,
+      TCGThread.Gameroom,
+    );
     const defBuff = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(defBuff, StatsEnum.DEF);
     opponent.adjustStat(defBuff, StatsEnum.DEF);
@@ -184,11 +194,13 @@ export const a_piercingDrill = new Card({
     `HP-14. DMG ${dmg} + DEF/3. Pierces through half of the opponent's defense.`,
   effects: [15],
   emoji: CardEmoji.PUNCH,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
-    console.log(`${character.name} used a piercing drill!`);
-
+    messageCache.push(
+      `${character.name} used a piercing drill!`,
+      TCGThread.Gameroom,
+    );
     const damage =
       this.calculateEffectValue(this.effects[0]) +
       character.stats.stats.DEF / 3 +

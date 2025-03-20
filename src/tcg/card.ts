@@ -1,3 +1,4 @@
+import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { CardEmoji } from "./formatting/emojis";
 import Game from "./game";
 
@@ -5,7 +6,11 @@ export type CardProps = {
   title: string;
   description: (formattedEffects: string[]) => string;
   effects: number[];
-  cardAction: (game: Game, characterIndex: number) => void;
+  cardAction: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) => void;
   priority?: number;
   empowerLevel?: number;
   tags?: Record<string, number>;
@@ -19,7 +24,11 @@ export default class Card implements CardProps {
   title: string;
   description: (formattedEffects: string[]) => string;
   effects: number[];
-  cardAction: (game: Game, characterIndex: number) => void;
+  cardAction: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) => void;
   empowerLevel: number;
   priority: number;
   tags: Record<string, number>;
@@ -39,8 +48,8 @@ export default class Card implements CardProps {
   }
 
   getDescription(): string {
-    const empoweredEffects: string[] = this.effects.map(
-      (effect) => `**${this.calculateEffectValue(effect).toFixed(2)}**`,
+    const empoweredEffects: string[] = this.effects.map((effect) =>
+      this.calculateEffectValue(effect).toFixed(2),
     );
     return this.description(empoweredEffects);
   }
@@ -57,10 +66,10 @@ export default class Card implements CardProps {
 
   printCard(startingString: string = "") {
     const empowerString = this.printEmpower ? ` + ${this.empowerLevel}` : "";
-    console.log(
-      `${startingString}${this.emoji} **${this.title}${empowerString}**`,
+    return (
+      `${startingString}${this.emoji} **${this.title}${empowerString}**\n` +
+      `  - ${this.getDescription()}`
     );
-    console.log(`  - ${this.getDescription()}`);
   }
 
   clone(): Card {

@@ -1,3 +1,4 @@
+import { MessageCache } from "../tcgChatInteractions/messageCache";
 import Game from "./game";
 
 export interface TimedEffectProps {
@@ -5,8 +6,16 @@ export interface TimedEffectProps {
   description: string;
   turnDuration: number;
   priority?: number;
-  endOfTurnAction?: (game: Game, characterIndex: number) => void;
-  endOfTimedEffectAction?: (game: Game, characterIndex: number) => void;
+  endOfTurnAction?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) => void;
+  endOfTimedEffectAction?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) => void;
 }
 
 export default class TimedEffect {
@@ -14,8 +23,16 @@ export default class TimedEffect {
   description: string;
   turnDuration: number;
   priority: number;
-  endOfTurnAction?: (game: Game, characterIndex: number) => void;
-  endOfTimedEffectAction?: (game: Game, characterIndex: number) => void;
+  endOfTurnAction?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) => void;
+  endOfTimedEffectAction?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) => void;
 
   constructor(props: TimedEffectProps) {
     this.name = props.name;
@@ -30,18 +47,19 @@ export default class TimedEffect {
     this.turnDuration -= 1;
   }
 
-  reduceTimedEffect(game: Game, characterIndex: number) {
+  reduceTimedEffect(
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) {
     this.passTurn();
-    this.endOfTurnAction?.(game, characterIndex);
+    this.endOfTurnAction?.(game, characterIndex, messageCache);
     if (this.turnDuration === 0) {
-      this.endOfTimedEffectAction?.(game, characterIndex);
+      this.endOfTimedEffectAction?.(game, characterIndex, messageCache);
     }
   }
 
   printEffect() {
-    console.log(
-      `- ${this.name} (${this.turnDuration} turn${this.turnDuration == 1 ? "" : "s"}): `,
-    );
-    console.log(`  - ${this.description}`);
+    return `- ${this.name} (${this.turnDuration} turn${this.turnDuration == 1 ? "" : "s"}):\n  - ${this.description}`;
   }
 }

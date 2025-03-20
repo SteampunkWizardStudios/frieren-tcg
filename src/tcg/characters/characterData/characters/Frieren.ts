@@ -1,11 +1,14 @@
-import Character from "../../character";
-import Stats from "../../stats";
-import { StatsEnum } from "../../stats";
-import { frierenDeck } from "../../decks/FrierenDeck";
-import { CharacterName } from "../metadata/CharacterName";
-import TimedEffect from "../../timedEffect";
-import Game from "../../game";
-import { CharacterEmoji } from "../../formatting/emojis";
+import { CharacterData } from "../characterData";
+import Stats from "../../../stats";
+import { StatsEnum } from "../../../stats";
+import { frierenDeck } from "../../../decks/FrierenDeck";
+import { CharacterName } from "../../metadata/CharacterName";
+import TimedEffect from "../../../timedEffect";
+import Game from "../../../game";
+import Card from "../../../card";
+import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
+import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "../../../formatting/emojis";
 
 const ANALYSIS_BOOST = 0.05;
 const ANALYSIS_STACK_CAP = 10;
@@ -18,12 +21,16 @@ const frierenStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-const afterAttackEffect = function (game: Game, characterIndex: number) {
+const afterAttackEffect = function (
+  game: Game,
+  characterIndex: number,
+  _messageCache: MessageCache,
+) {
   const character = game.getCharacter(characterIndex);
   character.setStat(0, StatsEnum.Ability);
 };
 
-export const Frieren = new Character({
+export const Frieren = new CharacterData({
   name: CharacterName.Frieren,
   cosmetic: {
     pronouns: {
@@ -44,7 +51,12 @@ export const Frieren = new Character({
         When an attack is used, its damage is increased by ${ANALYSIS_BOOST * 100}% * the number of Analysis stacks.
         After an attack is used, Analysis stacks is reset to 0.
         A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.`,
-    abilityOnCardUse: function (game, characterIndex, card) {
+    abilityOnCardUse: function (
+      game: Game,
+      characterIndex: number,
+      messageCache: MessageCache,
+      card: Card,
+    ) {
       const character = game.getCharacter(characterIndex);
       if ("Analysis" in card.tags) {
         character.adjustStat(card.tags["Analysis"], StatsEnum.Ability);
@@ -59,8 +71,11 @@ export const Frieren = new Character({
             name: "Offensive Magic Analysis: Zoltraak",
             description: `At this turn's resolution, gain ${card.tags["PostAnalysis"]} Analysis stack.`,
             turnDuration: 1,
-            endOfTimedEffectAction: (_game, _characterIndex) => {
-              console.log("Frieren performed her analysis.");
+            endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
+              messageCache.push(
+                "Frieren performed her analysis.",
+                TCGThread.Gameroom,
+              );
               character.adjustStat(
                 card.tags["PostAnalysis"],
                 StatsEnum.Ability,
@@ -70,17 +85,28 @@ export const Frieren = new Character({
         );
       }
     },
-    abilityAttackEffect: function (game, characterIndex) {
+    abilityAttackEffect: function (
+      game: Game,
+      characterIndex: number,
+      _messageCache: MessageCache,
+    ) {
       const character = game.getCharacter(characterIndex);
       game.additionalMetadata.attackModifier[characterIndex] =
         1 + character.stats.stats[StatsEnum.Ability] * ANALYSIS_BOOST;
     },
     abilityAfterDirectAttackEffect: afterAttackEffect,
     abilityAfterTimedAttackEffect: afterAttackEffect,
-    abilityEndOfTurnEffect: function (game, characterIndex) {
+    abilityEndOfTurnEffect: function (
+      game: Game,
+      characterIndex: number,
+      messageCache: MessageCache,
+    ) {
       const character = game.getCharacter(characterIndex);
       if (character.stats.stats.Ability < ANALYSIS_STACK_CAP) {
-        console.log("Frieren continues her Analysis.");
+        messageCache.push(
+          "Frieren continues her Analysis.",
+          TCGThread.Gameroom,
+        );
         character.adjustStat(1, StatsEnum.Ability);
       }
     },

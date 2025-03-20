@@ -12,11 +12,12 @@ import {
 import Character from "../tcg/character";
 import { createCharacterDropdown } from "../util/createCharacterDropdown";
 import { characterList } from "../tcg/characters/characterList";
+import { CharacterData } from "../tcg/characters/characterData/characterData";
 
 export const getPlayerCharacter = async (
   player: User,
   playerThread: PrivateThreadChannel,
-): Promise<Character | null> => {
+): Promise<CharacterData | null> => {
   const timeLimitSeconds = 60;
   const timeLimit = timeLimitSeconds * 1000;
   let isResolved = false;
@@ -27,7 +28,7 @@ export const getPlayerCharacter = async (
     components: [characterDropdown.dropdown],
   });
 
-  return new Promise<Character | null>((resolve, reject) => {
+  return new Promise<CharacterData | null>((resolve, reject) => {
     const fallbackTimeout = setTimeout(() => {
       if (!isResolved) {
         isResolved = true;

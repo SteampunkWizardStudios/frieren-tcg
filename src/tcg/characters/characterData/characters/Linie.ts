@@ -1,9 +1,11 @@
-import Character from "../../character";
-import Stats from "../../stats";
-import { StatsEnum } from "../../stats";
-import { linieDeck } from "../../decks/LinieDeck";
-import { CharacterName } from "../metadata/CharacterName";
-import { CharacterEmoji } from "../../formatting/emojis";
+import { CharacterData } from "../characterData";
+import Stats from "../../../stats";
+import { StatsEnum } from "../../../stats";
+import { linieDeck } from "../../../decks/LinieDeck";
+import { CharacterName } from "../../metadata/CharacterName";
+import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
+import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "../../../formatting/emojis";
 
 const LINIE_CHAIN_BONUS = 0.08;
 
@@ -15,7 +17,7 @@ const linieStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Linie = new Character({
+export const Linie = new CharacterData({
   name: CharacterName.Linie,
   cosmetic: {
     pronouns: {
@@ -39,21 +41,25 @@ export const Linie = new Character({
       game.additionalMetadata.attackModifier[characterIndex] =
         1 + character.stats.stats[StatsEnum.Ability] * LINIE_CHAIN_BONUS;
     },
-    abilityEndOfTurnEffect: (game, characterIndex) => {
+    abilityEndOfTurnEffect: (
+      game,
+      characterIndex,
+      messageCache: MessageCache,
+    ) => {
       const character = game.getCharacter(characterIndex);
       if (
         character.additionalMetadata.attackedThisTurn ||
         character.additionalMetadata.timedEffectAttackedThisTurn
       ) {
         if (character.stats.stats.Ability === 0) {
-          console.log("Linie started her chain");
+          messageCache.push("Linie started her chain", TCGThread.Gameroom);
         } else {
-          console.log("Linie continued her chain");
+          messageCache.push("Linie continued her chain", TCGThread.Gameroom);
         }
         character.adjustStat(1, StatsEnum.Ability);
       } else {
         if (character.stats.stats.Ability > 0) {
-          console.log("Linie ended her chain");
+          messageCache.push("Linie ended her chain", TCGThread.Gameroom);
         }
         character.setStat(0, StatsEnum.Ability);
       }

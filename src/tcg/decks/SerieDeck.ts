@@ -5,15 +5,19 @@ import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import { fieldOfFlower } from "./FrierenDeck";
 import { CardEmoji } from "../formatting/emojis";
+import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_livingGrimoire = new Card({
   title: "Living Grimoire",
   description: () => "Use a random offensive magic",
   emoji: CardEmoji.SERIE_CARD,
   effects: [],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} found an interesting magic.`);
+    messageCache.push(
+      `${character.name} found an interesting magic.`,
+      TCGThread.Gameroom,
+    );
 
     const baseCard =
       offensiveMagic[Math.floor(Math.random() * offensiveMagic.length)];
@@ -22,8 +26,11 @@ const a_livingGrimoire = new Card({
       empowerLevel: this.empowerLevel,
     });
 
-    console.log(`${character.name} used **${newCard.getTitle()}**.`);
-    newCard.cardAction(game, characterIndex);
+    messageCache.push(
+      `${character.name} used **${newCard.getTitle()}**.`,
+      TCGThread.Gameroom,
+    );
+    newCard.cardAction(game, characterIndex, messageCache);
   },
 });
 
@@ -43,9 +50,12 @@ const mock = new Card({
     `HP+${hp}. Opponent's DEF-${def}. Opponent's SPD-${spd}`,
   emoji: CardEmoji.SERIE_CARD,
   effects: [3, 2, 1],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} mocked the opponent.`);
+    messageCache.push(
+      `${character.name} mocked the opponent.`,
+      TCGThread.Gameroom,
+    );
 
     const opponent = game.getCharacter(1 - characterIndex);
     character.adjustStat(
@@ -70,9 +80,12 @@ const basicDefensiveMagic = new Card({
   emoji: CardEmoji.SERIE_CARD,
   effects: [30],
   priority: 1,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} cast basic defensive magic!`);
+    messageCache.push(
+      `${character.name} cast basic defensive magic!`,
+      TCGThread.Gameroom,
+    );
 
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
@@ -96,9 +109,12 @@ const unbreakableBarrier = new Card({
     `HP-7. ATK+${atk} for 3 turns. DEF+${def} for 3 turns. Opponent's SPD-${oppSpd} for 3 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   effects: [3, 3, 3],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} deployed an unbreakable barrier.`);
+    messageCache.push(
+      `${character.name} deployed an unbreakable barrier.`,
+      TCGThread.Gameroom,
+    );
 
     if (character.adjustStat(-7, StatsEnum.HP)) {
       const opponent = game.getCharacter(1 - characterIndex);
@@ -116,7 +132,7 @@ const unbreakableBarrier = new Card({
           description: `DEF+${defBuff}, Opponent's SPD -${spdDebuff} for 3 turns.`,
           turnDuration: 3,
           endOfTimedEffectAction: (_game, _characterIndex) => {
-            console.log("The barrier dissipated.");
+            messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
             character.adjustStat(-1 * atkBuff, StatsEnum.ATK);
             character.adjustStat(-1 * defBuff, StatsEnum.DEF);
             opponent.adjustStat(spdDebuff, StatsEnum.SPD);
@@ -133,9 +149,12 @@ const ancientBarrierMagic = new Card({
     `HP-15. ATK+${atk} for 3 turns. Opponent's DEF-${def} for 3 turns. Opponent's SPD -${oppSpd} for 3 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   effects: [7, 7, 7],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} expanded an ancient barrier magic.`);
+    messageCache.push(
+      `${character.name} expanded an ancient barrier magic.`,
+      TCGThread.Gameroom,
+    );
 
     if (character.adjustStat(-15, StatsEnum.HP)) {
       const opponent = game.getCharacter(1 - characterIndex);
@@ -153,7 +172,7 @@ const ancientBarrierMagic = new Card({
           description: `An omnious barrier envelopes the battlefield...`,
           turnDuration: 3,
           endOfTimedEffectAction: (_game, _characterIndex) => {
-            console.log("The barrier dissipated.");
+            messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
 
             character.adjustStat(-1 * atkBuff, StatsEnum.ATK);
             opponent.adjustStat(defDebuff, StatsEnum.DEF);

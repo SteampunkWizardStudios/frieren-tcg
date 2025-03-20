@@ -1,9 +1,9 @@
-import Character from "../../character";
-import Stats from "../../stats";
-import { StatsEnum } from "../../stats";
-import { starkDeck } from "../../decks/StarkDeck";
-import { CharacterName } from "../metadata/CharacterName";
-import { CharacterEmoji } from "../../formatting/emojis";
+import { CharacterData } from "../characterData";
+import Stats from "../../../stats";
+import { StatsEnum } from "../../../stats";
+import { starkDeck } from "../../../decks/StarkDeck";
+import { CharacterName } from "../../metadata/CharacterName";
+import { CharacterEmoji } from "../../../formatting/emojis";
 
 const starkStats = new Stats({
   [StatsEnum.HP]: 120.0,
@@ -13,7 +13,7 @@ const starkStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Stark = new Character({
+export const Stark = new CharacterData({
   name: CharacterName.Stark,
   cosmetic: {
     pronouns: {
@@ -31,7 +31,7 @@ export const Stark = new Character({
     abilityName: "Bravest Coward",
     abilityEffectString: `Using attacks without (Resolve) reduces its DMG by 20%.
         Using attacks with (Resolve) increases its DMG by 20%.`,
-    abilityOnCardUse: function (game, characterIndex, card) {
+    abilityOnCardUse: function (game, characterIndex, _messageCache, card) {
       const character = game.getCharacter(characterIndex);
       if ("Resolve" in card.tags) {
         character.adjustStat(card.tags["Resolve"], StatsEnum.Ability);

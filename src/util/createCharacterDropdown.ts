@@ -5,6 +5,7 @@ import {
 } from "discord.js";
 import { characterList } from "../tcg/characters/characterList";
 import { createCountdownTimestamp } from "./utils";
+import { CharacterData } from "../tcg/characters/characterData/characterData";
 
 export const createCharacterDropdown = async (
   timeLimitSeconds?: number,
@@ -28,7 +29,7 @@ export const createCharacterDropdown = async (
     .addFields({
       name: "Available Characters",
       value: characterList
-        .map((char) => `1. ${char.cosmetic.emoji} ${char.name}`)
+        .map((char: CharacterData) => `1. ${char.cosmetic.emoji} ${char.name}`)
         .join("\n"),
     });
 

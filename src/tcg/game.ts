@@ -1,6 +1,8 @@
 import Card from "./card";
 import Character from "./character";
 import { GameAdditionalMetadata } from "./additionalMetadata/gameAdditionalMetadata";
+import { MessageCache } from "../tcgChatInteractions/messageCache";
+import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
 
 export default class Game {
   characters: [Character, Character];
@@ -8,7 +10,9 @@ export default class Game {
   gameOver: boolean;
   additionalMetadata: GameAdditionalMetadata;
 
-  constructor(characters: [Character, Character]) {
+  messageCache: MessageCache;
+
+  constructor(characters: [Character, Character], messageCache: MessageCache) {
     this.characters = characters;
     this.gameOver = false;
     this.additionalMetadata = {
@@ -24,6 +28,8 @@ export default class Game {
       lastUsedCards: {},
     };
     this.turnCount = 0;
+
+    this.messageCache = messageCache;
   }
 
   gameStart() {
@@ -46,18 +52,23 @@ export default class Game {
 
     // handle attacker/defender ability
     if (attacker.ability.abilityAttackEffect) {
-      attacker.ability.abilityAttackEffect(this, attackProps.attackerIndex);
+      attacker.ability.abilityAttackEffect(
+        this,
+        attackProps.attackerIndex,
+        this.messageCache,
+      );
     }
     if (defender.ability.abilityDefendEffect) {
       defender.ability.abilityDefendEffect(
         this,
         1 - attackProps.attackerIndex,
+        this.messageCache,
         attackProps.damage,
       );
     }
 
     if (this.additionalMetadata.attackMissed[attackProps.attackerIndex]) {
-      console.log(`# ${attacker.name} missed!`);
+      this.messageCache.push(`# ${attacker.name} missed!`, TCGThread.Gameroom);
       this.additionalMetadata.attackMissed[attackProps.attackerIndex] = false;
       return 0;
     } else {
@@ -74,8 +85,9 @@ export default class Game {
       const hpLeft: string = defender.additionalMetadata.manaSuppressed
         ? ""
         : `${defender.name} has ${defender.stats.stats.HP} left!`;
-      console.log(
+      this.messageCache.push(
         `# ${attacker.name} attacks ${defender.name} for ${actualDamage.toFixed(2)} damage! ${hpLeft}`,
+        TCGThread.Gameroom,
       );
 
       if (attackProps.isTimedEffectAttack) {
@@ -83,6 +95,7 @@ export default class Game {
           attacker.ability.abilityAfterTimedAttackEffect(
             this,
             attackProps.attackerIndex,
+            this.messageCache,
           );
         }
       } else {
@@ -90,6 +103,7 @@ export default class Game {
           attacker.ability.abilityAfterDirectAttackEffect(
             this,
             attackProps.attackerIndex,
+            this.messageCache,
           );
         }
       }
@@ -102,7 +116,10 @@ export default class Game {
   isGameOver(): boolean {
     this.characters.forEach((character) => {
       if (character.stats.stats.HP <= 0) {
-        console.log(`# ${character.name} has been defeated!`);
+        this.messageCache.push(
+          `# ${character.name} has been defeated!`,
+          TCGThread.Gameroom,
+        );
         this.gameOver = true;
       }
     });

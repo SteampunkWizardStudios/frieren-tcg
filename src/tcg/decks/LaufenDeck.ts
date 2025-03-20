@@ -4,6 +4,7 @@ import CommonCardAction from "../util/commonCardActions";
 import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import { CardEmoji } from "../formatting/emojis";
+import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_staffStrike = new Card({
   title: "Staff Strike",
@@ -11,10 +12,11 @@ const a_staffStrike = new Card({
     `SPD+${spd}. Afterwards, HP-2, attack for DMG ${dmg}+SPD/8`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [1, 10],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} striked with ${character.cosmetic.pronouns.possessive} staff!`,
+      TCGThread.Gameroom,
     );
 
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
@@ -32,10 +34,11 @@ const a_staffBash = new Card({
   description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-2, DMG ${dmg}+SPD/8`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [3, 8],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} bashed ${character.cosmetic.pronouns.possessive} staff!`,
+      TCGThread.Gameroom,
     );
 
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
@@ -53,10 +56,11 @@ export const a_whip = new Card({
   description: ([dmg]) => `SPD-3. Afterwards, HP-3, DMG ${dmg}+SPD/6`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [5],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(
+    messageCache.push(
       `${character.name} turned ${character.cosmetic.pronouns.possessive} staff into a whip!`,
+      TCGThread.Gameroom,
     );
 
     character.adjustStat(-3, StatsEnum.SPD);
@@ -73,9 +77,12 @@ const hide = new Card({
     `SPD+${spd}. Increases SPD by an additional ${spdBuff} until the end of the turn. Heal ${hp} HP.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [3, 20, 10],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} hid behind coverings!`);
+    messageCache.push(
+      `${character.name} hid behind coverings!`,
+      TCGThread.Gameroom,
+    );
 
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(spdIncrease, StatsEnum.SPD);
@@ -88,7 +95,7 @@ const hide = new Card({
         description: `Increases SPD by ${spdIncreaseTemp} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        endOfTimedEffectAction: (_game, _characterIndex) => {
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-1 * spdIncreaseTemp, StatsEnum.SPD);
         },
       }),
@@ -106,9 +113,12 @@ export const a_supersonicStrike = new Card({
   description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-7, DMG ${dmg}+SPD/4`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [5, 10],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} striked at supersonic speed!`);
+    messageCache.push(
+      `${character.name} striked at supersonic speed!`,
+      TCGThread.Gameroom,
+    );
 
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(spdIncrease, StatsEnum.SPD);
@@ -127,9 +137,9 @@ const quickDodge = new Card({
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [5, 25],
   priority: 1,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} dodged away!`);
+    messageCache.push(`${character.name} dodged away!`, TCGThread.Gameroom);
 
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(spdIncrease, StatsEnum.SPD);
@@ -142,7 +152,7 @@ const quickDodge = new Card({
         description: `Increases SPD by ${spdIncreaseTemp} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        endOfTimedEffectAction: (_game, _characterIndex) => {
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-1 * spdIncreaseTemp, StatsEnum.SPD);
         },
       }),
@@ -157,9 +167,12 @@ const parry = new Card({
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [20],
   priority: 1,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} switched to a parrying stance!`);
+    messageCache.push(
+      `${character.name} switched to a parrying stance!`,
+      TCGThread.Gameroom,
+    );
 
     const defIncrease = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(defIncrease, StatsEnum.DEF);
@@ -170,7 +183,7 @@ const parry = new Card({
         description: `Increases DEF by ${defIncrease} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        endOfTimedEffectAction: (_game, _characterIndex) => {
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-1 * defIncrease, StatsEnum.DEF);
         },
       }),
@@ -183,9 +196,9 @@ export const jilwer = new Card({
   description: ([spd]) => `HP-20. Increases SPD by ${spd} for 2 turns.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [50],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} used Jilwer!`);
+    messageCache.push(`${character.name} used Jilwer!`, TCGThread.Gameroom);
     if (character.adjustStat(-20, StatsEnum.HP)) {
       const spdIncrease = this.calculateEffectValue(this.effects[0]);
       character.adjustStat(spdIncrease, StatsEnum.SPD);
@@ -196,8 +209,9 @@ export const jilwer = new Card({
           description: `Increases SPD by ${spdIncrease} for 2 turns.`,
           turnDuration: 2,
           endOfTimedEffectAction: (_game, _characterIndex) => {
-            console.log(
+            messageCache.push(
               `${character.name} exits ${character.cosmetic.pronouns.possessive} Jilwer state.`,
+              TCGThread.Gameroom,
             );
             character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
           },

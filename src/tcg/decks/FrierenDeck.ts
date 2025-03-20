@@ -4,6 +4,7 @@ import TimedEffect from "../timedEffect";
 import { StatsEnum } from "../stats";
 import CommonCardAction from "../util/commonCardActions";
 import { CardEmoji } from "../formatting/emojis";
+import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_zoltraak = new Card({
   title: "Offensive Magic Analysis: Zoltraak",
@@ -12,9 +13,9 @@ export const a_zoltraak = new Card({
   emoji: CardEmoji.FRIEREN_CARD,
   tags: { PostAnalysis: 1 },
   effects: [7],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} fired Zoltraak!`);
+    messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
 
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, damage, 5, false);
@@ -27,9 +28,12 @@ export const fieldOfFlower = new Card({
     `Heal ${hp} HP. At the next 3 turn ends, heal ${endHp}.`,
   emoji: CardEmoji.FLOWER_FIELD,
   effects: [5, 3],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} conjured a field of flowers!`);
+    messageCache.push(
+      `${character.name} conjured a field of flowers!`,
+      TCGThread.Gameroom,
+    );
 
     character.adjustStat(5, StatsEnum.HP);
     const endOfTurnHealing = this.calculateEffectValue(this.effects[1]);
@@ -38,15 +42,18 @@ export const fieldOfFlower = new Card({
         name: "Field of Flowers",
         description: `Heal ${endOfTurnHealing} HP`,
         turnDuration: 3,
-        endOfTurnAction: (game, characterIndex) => {
-          console.log(`The Field of Flowers soothes ${character.name}.`);
+        endOfTurnAction: (game, characterIndex, messageCache) => {
+          messageCache.push(
+            `The Field of Flowers soothes ${character.name}.`,
+            TCGThread.Gameroom,
+          );
           game.characters[characterIndex].adjustStat(
             endOfTurnHealing,
             StatsEnum.HP,
           );
         },
-        endOfTimedEffectAction: (_game, _characterIndex) => {
-          console.log("The Field of Flowers fades.");
+        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
+          messageCache.push("The Field of Flowers fades.", TCGThread.Gameroom);
         },
       }),
     );
@@ -58,9 +65,12 @@ export const a_judradjim = new Card({
   description: ([dmg]) => `HP-7. DMG ${dmg}`,
   emoji: CardEmoji.FRIEREN_CARD,
   effects: [10],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} sent forth Judradjim!`);
+    messageCache.push(
+      `${character.name} sent forth Judradjim!`,
+      TCGThread.Gameroom,
+    );
 
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, damage, 7, false);
@@ -72,9 +82,12 @@ export const a_vollzanbel = new Card({
   description: ([dmg]) => `HP-10. DMG ${dmg}`,
   emoji: CardEmoji.FRIEREN_CARD,
   effects: [15],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} summoned Vollzanbel!`);
+    messageCache.push(
+      `${character.name} summoned Vollzanbel!`,
+      TCGThread.Gameroom,
+    );
 
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, damage, 10, false);
@@ -88,9 +101,12 @@ const barrierMagicAnalysis = new Card({
   emoji: CardEmoji.FRIEREN_CARD,
   effects: [2, 1, 1],
   tags: { Analysis: 2 },
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} analyzed the opponent's defense!`);
+    messageCache.push(
+      `${character.name} analyzed the opponent's defense!`,
+      TCGThread.Gameroom,
+    );
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
@@ -113,9 +129,12 @@ const demonMagicAnalysis = new Card({
   emoji: CardEmoji.FRIEREN_CARD,
   effects: [2, 2, 1],
   tags: { Analysis: 2 },
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} analyzed ancient demon's magic!`);
+    messageCache.push(
+      `${character.name} analyzed ancient demon's magic!`,
+      TCGThread.Gameroom,
+    );
 
     game.characters[characterIndex].adjustStat(
       this.calculateEffectValue(this.effects[0]),
@@ -139,9 +158,12 @@ const ordinaryDefensiveMagic = new Card({
   emoji: CardEmoji.FRIEREN_CARD,
   effects: [20],
   priority: 1,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} cast ordinary defensive magic!`);
+    messageCache.push(
+      `${character.name} cast ordinary defensive magic!`,
+      TCGThread.Gameroom,
+    );
 
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
@@ -162,21 +184,27 @@ const ordinaryDefensiveMagic = new Card({
 export const a_theHeightOfMagic = new Card({
   title: `"The Height of Magic"`,
   description: ([dmg]) =>
-    `HP-${dmg}. At this turn's resolution, strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20. `,
+    `HP-50. At this turn's resolution, strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20. `,
   emoji: CardEmoji.FRIEREN_CARD,
   effects: [40],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    console.log(`${character.name} used "The Height of Magic"`);
+    messageCache.push(
+      `${character.name} used "The Height of Magic"`,
+      TCGThread.Gameroom,
+    );
     const endOfTurnDamage = this.calculateEffectValue(this.effects[0]);
-    if (character.adjustStat(-1 * endOfTurnDamage, StatsEnum.HP)) {
+    if (character.adjustStat(-1 * 40, StatsEnum.HP)) {
       character.timedEffects.push(
         new TimedEffect({
           name: "Impending: Height of Magic",
-          description: `At this turn's resolution, strike for ${endOfTurnDamage}. Afterwards, DEF-20, SPD-20.`,
+          description: `At this turn's resolution, strike for ${40}. Afterwards, DEF-20, SPD-20.`,
           turnDuration: 1,
           endOfTimedEffectAction: (game, characterIndex) => {
-            console.log("The Height of Magic is on display.");
+            messageCache.push(
+              "The Height of Magic is on display.",
+              TCGThread.Gameroom,
+            );
             game.attack({
               attackerIndex: characterIndex,
               damage: endOfTurnDamage,
