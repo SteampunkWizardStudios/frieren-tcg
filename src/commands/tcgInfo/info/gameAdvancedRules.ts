@@ -4,6 +4,7 @@ import {
   EmbedBuilder,
   MessageFlags,
 } from "discord.js";
+import { statDetails } from "../../../tcg/formatting/emojis";
 
 export async function showGameAdvancedRules(
   interaction: ChatInputCommandInteraction,
@@ -37,12 +38,12 @@ export async function showGameAdvancedRules(
       },
       {
         name: "Damage Calculation",
-        value: "**Damage Dealt** = (Modifiers x DMG + ATK) - Opponent's DEF",
+        value: `**Damage Dealt** = (Modifiers x DMG + ${statDetails.ATK.emoji} ATK) - Opponent's ${statDetails.DEF.emoji} DEF`,
       },
       {
         name: "Interactions and Edge Cases",
         value: `
-- When a move with HP cost is supposed to set your HP to less than 0, it sets your HP to 1 instead.
+- When a move with ${statDetails.HP.emoji} HP cost is supposed to set your HP to less than 0, it sets your ${statDetails.HP.emoji} HP to 1 instead.
 - For Serie's **Warmonger** ability, end of turn attacks are not counted towards the ability's effect.
 - For Linie's **Chain Attack** ability, end of turn attacks from Timed Effects are counted towards the ability's effect.`,
       },

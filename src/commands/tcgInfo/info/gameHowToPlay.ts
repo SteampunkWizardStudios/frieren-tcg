@@ -4,6 +4,7 @@ import {
   EmbedBuilder,
   MessageFlags,
 } from "discord.js";
+import { statDetails } from "../../../tcg/formatting/emojis";
 
 export async function showGameHowToPlay(
   interaction: ChatInputCommandInteraction,
@@ -21,20 +22,20 @@ export async function showGameHowToPlay(
       name: "How To Play",
       value: `
 - Every turn, you are given **a list of moves** to use.
-- Whoever has the **higher SPD** will move **first**.
-- You **win** when **your opponent's SP drops to 0**!`,
+- Whoever has the **higher ${statDetails.SPD.emoji} SPD** will move **first**.
+- You **win** when **your opponent's ${statDetails.HP.emoji} HP drops to 0**!`,
     });
   } else {
     embed.setTitle("Frieren TCG - Detailed Ruleset").addFields(
       {
         name: "Character and Stats",
         value: `
-        - **SP**: Stamina Points - If this **becomes 0 or less than 0**, the character **loses**. 
-        A character's **own move**, unless specified, **cannot** bring the user's SP to **less than 1**.
-        This means that the only way for your SP to drop to 0 is if it's **at the effect of your opponent's move**.
-- **ATK**: Attack
-- **DEF**: Defense
-- **SPD**: Speed - determines who moves first`,
+        - ${statDetails.HP.emoji} **HP**: Health Points - If this **becomes 0 or less than 0**, the character **loses**. 
+        A character's **own move**, unless specified, **cannot** bring the user's ${statDetails.HP.emoji} HP to **less than 1**.
+        This means that the only way for your ${statDetails.HP.emoji} HP to drop to 0 is if it's **at the effect of your opponent's move**.
+- ${statDetails.ATK.emoji} **ATK**: Attack
+- ${statDetails.DEF.emoji} **DEF**: Defense
+- ${statDetails.SPD.emoji} **SPD**: Speed - determines who moves first`,
       },
       {
         name: "Gameplay",
@@ -48,7 +49,7 @@ export async function showGameHowToPlay(
 - After the card is used, it is **saved in a discard pile**. Draw a new card.
    - Every cards that **were not used** that turn is **Empowered**, increasing their effects.
    - If there is no longer a new card to draw, **shuffle the discard pile** and start drawing from there.
-- The game **ends** when **one of the player's SP reaches 0.**`,
+- The game **ends** when **one of the player's ${statDetails.HP.emoji} HP reaches 0.**`,
       },
     );
   }
