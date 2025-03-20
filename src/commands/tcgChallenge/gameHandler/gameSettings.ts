@@ -1,7 +1,7 @@
 export enum GameMode {
   CLASSIC = "classic",
   BLITZ = "blitz",
-  SLOW = "slow"
+  SLOW = "slow",
 }
 
 export interface GameSettings {

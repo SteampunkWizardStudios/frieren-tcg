@@ -1,4 +1,13 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder, MessageFlags, User } from "discord.js";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonInteraction,
+  ButtonStyle,
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  MessageFlags,
+  User,
+} from "discord.js";
 import { GameSettings } from "../gameSettings";
 import { initiateGame } from "../initiateGame";
 
@@ -10,7 +19,7 @@ export const buildChallengeButtonRespond = async (
   challenger: User,
   opponent: User,
   gameSettings: GameSettings,
-  ranked: boolean
+  ranked: boolean,
 ) => {
   const acceptButton = new ButtonBuilder()
     .setCustomId(ACCEPT_BUTTON_ID)
@@ -24,14 +33,15 @@ export const buildChallengeButtonRespond = async (
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     acceptButton,
-    declineButton
+    declineButton,
   );
 
   const embed = new EmbedBuilder()
     .setTitle(`Frieren TCG - ${ranked ? "Ranked " : ""}Challenge Request`)
     .setDescription(
       `${opponent}, ${challenger} has challenged you to a ${ranked ? "**Ranked** " : ""}TCG duel`,
-    ).addFields(
+    )
+    .addFields(
       {
         name: "Turn Duration",
         value: `${gameSettings.turnDurationSeconds} seconds`,
@@ -46,15 +56,15 @@ export const buildChallengeButtonRespond = async (
         name: "Reveal Draw",
         value: gameSettings.revealDraw ? "Yes" : "No",
         inline: true,
-      }
+      },
     )
     .setColor(0xc5c3cc)
-    .setTimestamp()
+    .setTimestamp();
 
   await interaction.reply({
     embeds: [embed],
     components: [row],
-    withResponse: true
+    withResponse: true,
   });
 
   const response = await interaction.fetchReply();
@@ -64,8 +74,9 @@ export const buildChallengeButtonRespond = async (
       time: 120_000, // 2 minutes timeout
       filter: (i) => {
         if (i.user.id !== opponent.id) {
-          const invalidUserEmbed = EmbedBuilder.from(embed)
-            .setDescription("You are not the opponent of this challenge request.")
+          const invalidUserEmbed = EmbedBuilder.from(embed).setDescription(
+            "You are not the opponent of this challenge request.",
+          );
           i.reply({
             embeds: [invalidUserEmbed],
             ephemeral: true,
@@ -73,47 +84,46 @@ export const buildChallengeButtonRespond = async (
           return false;
         }
         return true;
-      }
+      },
     });
 
     // handle button clicks
     collector.on("collect", async (i: ButtonInteraction) => {
       if (i.customId === ACCEPT_BUTTON_ID) {
-        const challengeAcceptedEmbed = EmbedBuilder.from(embed)
-          .setDescription(
-            `Challenge accepted by ${interaction.user}! Setting up game...`,
-          )
+        const challengeAcceptedEmbed = EmbedBuilder.from(embed).setDescription(
+          `Challenge accepted by ${interaction.user}! Setting up game...`,
+        );
         await i.update({
           embeds: [challengeAcceptedEmbed],
-          components: []
+          components: [],
         });
 
         // start game
         await initiateGame(i, challenger, opponent, gameSettings, ranked);
       } else if (i.customId === DECLINE_BUTTON_ID) {
-        const challengeDeclinedEmbed = EmbedBuilder.from(embed)
-        .setDescription(
+        const challengeDeclinedEmbed = EmbedBuilder.from(embed).setDescription(
           `Challenge declined by ${interaction.user}!`,
-        )
+        );
 
         return await i.update({
           embeds: [challengeDeclinedEmbed],
-          components: []
+          components: [],
         });
       }
     });
 
     // Handle collector end (timeout)
-    collector.on('end', async collected => {
+    collector.on("end", async (collected) => {
       if (collected.size === 0) {
-        const timeoutEmbed = EmbedBuilder.from(embed)
-          .setDescription(`Challenge request expired. ${opponent} did not respond in time.`)
+        const timeoutEmbed = EmbedBuilder.from(embed).setDescription(
+          `Challenge request expired. ${opponent} did not respond in time.`,
+        );
 
         await interaction.editReply({
           embeds: [timeoutEmbed],
-          components: []
+          components: [],
         });
       }
     });
   }
-}
+};

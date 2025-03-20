@@ -10,7 +10,7 @@ export const setupInteractions = async (
     if (interaction.isChatInputCommand()) {
       const command = commands[interaction.commandName];
       if (!command) return;
-  
+
       try {
         await command.execute(interaction);
       } catch (error) {

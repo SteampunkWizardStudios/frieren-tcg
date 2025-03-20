@@ -27,19 +27,26 @@ export const command: Command<ChatInputCommandInteraction> = {
         .addChoices(
           { name: "Classic - 45s Turn Duration", value: "classic" },
           { name: "Blitz - 10s Turn Duration", value: "blitz" },
-          { name: "Slow - 2m Turn Duration. Hands and Draws revealed", value: "slow" },
+          {
+            name: "Slow - 2m Turn Duration. Hands and Draws revealed",
+            value: "slow",
+          },
         ),
     )
-    .addBooleanOption((option) => 
+    .addBooleanOption((option) =>
       option
         .setName("ranked")
-        .setDescription("Whether players can earn rank points from this match. Defaults to False.")
-        .setRequired(false)
+        .setDescription(
+          "Whether players can earn rank points from this match. Defaults to False.",
+        )
+        .setRequired(false),
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
     try {
-      const gamemode = interaction.options.getString("gamemode") as GameMode ?? GameMode.CLASSIC;
+      const gamemode =
+        (interaction.options.getString("gamemode") as GameMode) ??
+        GameMode.CLASSIC;
       const ranked = interaction.options.getBoolean("ranked") ?? false;
       const gameSettings = GAME_SETTINGS[gamemode];
 

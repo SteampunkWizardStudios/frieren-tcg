@@ -46,7 +46,7 @@ export async function showRankingSystem(
           `- **2nd-class Battle Mage**: 400 points`,
           `- **1st-class Battle Mage**: 500 points`,
         ].join("\n"),
-      }
+      },
     );
 
   sendInfoMessage(interaction, embed, [], dm);

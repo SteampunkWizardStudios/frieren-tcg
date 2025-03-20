@@ -6,7 +6,7 @@ export const initiateGame = async (
   challenger: User,
   opponent: User,
   gameSettings: GameSettings,
-  ranked: boolean
+  ranked: boolean,
 ) => {
   console.log(interaction);
   console.log(challenger.username);
@@ -15,4 +15,4 @@ export const initiateGame = async (
   console.log(gameSettings.revealHand);
   console.log(gameSettings.revealDraw);
   console.log(ranked);
-}
+};

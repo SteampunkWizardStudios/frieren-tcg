@@ -39,18 +39,19 @@ export const command: Command<ChatInputCommandInteraction> = {
 
   async execute(interaction: ChatInputCommandInteraction) {
     try {
-      const turnDurationSeconds = interaction.options.getInteger("turn-duration-seconds") ?? 45;
+      const turnDurationSeconds =
+        interaction.options.getInteger("turn-duration-seconds") ?? 45;
       const revealHand = interaction.options.getBoolean("reveal-hand") ?? false;
       const revealDraw = interaction.options.getBoolean("reveal-draw") ?? false;
 
       initiateChallengeRequest(
-        interaction, 
+        interaction,
         {
           turnDurationSeconds,
           revealHand,
           revealDraw,
-        }, 
-        false
+        },
+        false,
       );
     } catch (error) {
       console.log(error);
