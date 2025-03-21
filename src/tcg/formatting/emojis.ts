@@ -25,6 +25,7 @@ export enum CharacterEmoji {
   STONE_GEISEL = "🐦‍⬛",
   FIRE_GOLEM = "❤️‍🔥",
   STONE_GOLEM = "🪨",
+  ANGRY_MIMIC = "<a:FrierenMimicAnimated:1244755028741460029>",
   SHADOW_DRAGON = "👾",
   SPIEGEL_SEIN = "<:SeinDisappointed:782627138808840222>",
   SPIEGEL_SERIE = "<:SerieSmirk:834412553517662219>",

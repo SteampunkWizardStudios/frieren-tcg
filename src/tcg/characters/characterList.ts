@@ -16,6 +16,7 @@ import { SpiegelSerie } from "./characterData/characters/dungeonMonsters/Spiegel
 import { SpiegelSense } from "./characterData/characters/dungeonMonsters/SpiegelSense";
 import { CosmicTon } from "./characterData/characters/dungeonMonsters/CosmicTon";
 import { ShadowDragon } from "./characterData/characters/dungeonMonsters/ShadowDragon";
+import { AngryMimic } from "./characterData/characters/dungeonMonsters/AngryMimic";
 
 const ALLOWLISTED_USER_IDS = new Set([
   "139757382375833600", // Hexa
@@ -37,7 +38,7 @@ export function createCharacterList(user: User): CharacterData[] {
     StoneGeisel,
     FireGolem,
     StoneGolem,
-    // AngryMimic
+    AngryMimic,
     SpiegelSein,
     SpiegelSerie,
     SpiegelSense,

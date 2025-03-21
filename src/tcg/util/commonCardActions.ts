@@ -2,7 +2,7 @@ import Game from "../game";
 import { StatsEnum } from "../stats";
 
 export default class CommonCardAction {
-  // common attack function that returns whether the attack was successful or not
+  // common attack function that returns the attack's damage
   static commonAttack(
     game: Game,
     characterIndex: number,
@@ -11,7 +11,7 @@ export default class CommonCardAction {
       hpCost: number,
       isTimedEffectAttack?: boolean,
     }
-  ): boolean {
+  ): number {
     const isTimedEffectAttack = option.isTimedEffectAttack ?? false;
     const character = game.getCharacter(characterIndex);
     if (option.hpCost === 0 || character.adjustStat(-(option.hpCost), StatsEnum.HP)) {
@@ -20,13 +20,9 @@ export default class CommonCardAction {
         damage: option.damage,
         isTimedEffectAttack,
       });
-      if (actualDamage > 0) {
-        return true;
-      } else {
-        return false;
-      }
+      return actualDamage;
     } else {
-      return false;
+      return 0;
     }
   }
 }

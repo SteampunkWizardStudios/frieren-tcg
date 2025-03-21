@@ -225,7 +225,7 @@ const a_eisensAxeCleave = new Card({
 
     const damage = this.calculateEffectValue(this.effects[0]);
     if (
-      CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 14})
+      CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 14}) > 0
     ) {
       messageCache.push(
         `${character.name} recollects ${character.cosmetic.pronouns.reflexive}. ${character.name} skips the next turn!`,

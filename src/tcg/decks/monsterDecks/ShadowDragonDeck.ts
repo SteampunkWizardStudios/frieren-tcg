@@ -69,7 +69,7 @@ export const a_dragonfire = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    if (CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 10})) {
+    if (CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 10}) > 0) {
       const opponent = game.getCharacter(1 - characterIndex);
       opponent.setStat(1, StatsEnum.DEF);
     }
