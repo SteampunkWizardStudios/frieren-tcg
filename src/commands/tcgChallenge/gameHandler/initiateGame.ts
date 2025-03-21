@@ -6,6 +6,7 @@ import {
   PublicThreadChannel,
   TextChannel,
   ThreadAutoArchiveDuration,
+  ThreadChannel,
   User,
 } from "discord.js";
 import { GameSettings } from "./gameSettings";
@@ -33,17 +34,17 @@ export const initiateGame = async (
     await gameThread.members.add(opponent.id);
 
     const challengerThread = (await channel.threads.create({
-      name: `TCG Move Select: ${challenger.username}'s Private Thread  (ID: ${gameId})`,
+      name: `TCG Move Select: ${challenger.username}'s Move Selection Thread (ID: ${gameId})`,
       autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
       type: ChannelType.PrivateThread,
     })) as PrivateThreadChannel;
     await challengerThread.members.add(challenger.id);
 
     const opponentThread = (await channel.threads.create({
-      name: `TCG Move Select: ${opponent.username}'s Private Thread  (ID: ${gameId})`,
+      name: `TCG Move Select: ${opponent.username}'s Move Selection Thread (ID: ${gameId})`,
       autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-      type: ChannelType.PrivateThread,
-    })) as PrivateThreadChannel;
+      type: gameSettings.publicChallengedThread ? ChannelType.PublicThread : ChannelType.PrivateThread,
+    })) as ThreadChannel;
     await opponentThread.members.add(opponent.id);
 
     const { winner, loser } = await tcgMain(

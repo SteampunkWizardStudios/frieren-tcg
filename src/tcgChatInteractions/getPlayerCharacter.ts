@@ -1,22 +1,18 @@
 import {
-  ActionRowBuilder,
   ComponentType,
-  Embed,
   EmbedBuilder,
   MessageFlags,
-  PrivateThreadChannel,
-  StringSelectMenuBuilder,
   StringSelectMenuInteraction,
+  ThreadChannel,
   User,
 } from "discord.js";
-import Character from "../tcg/character";
 import { createCharacterDropdown } from "../util/createCharacterDropdown";
 import { createCharacterList } from "../tcg/characters/characterList";
 import { CharacterData } from "../tcg/characters/characterData/characterData";
 
 export const getPlayerCharacter = async (
   player: User,
-  playerThread: PrivateThreadChannel,
+  playerThread: ThreadChannel<false>,
 ): Promise<CharacterData | null> => {
   const timeLimitSeconds = 60;
   const timeLimit = timeLimitSeconds * 1000;

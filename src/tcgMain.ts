@@ -1,4 +1,4 @@
-import { PublicThreadChannel, PrivateThreadChannel, User } from "discord.js";
+import { PublicThreadChannel, PrivateThreadChannel, User, ThreadChannel } from "discord.js";
 import { GameSettings } from "./commands/tcgChallenge/gameHandler/gameSettings";
 import Character from "./tcg/character";
 import { getPlayerCharacter } from "./tcgChatInteractions/getPlayerCharacter";
@@ -20,7 +20,7 @@ export const tcgMain = async (
   opponent: User,
   gameThread: PublicThreadChannel<false>,
   challengerThread: PrivateThreadChannel,
-  opponentThread: PrivateThreadChannel,
+  opponentThread: ThreadChannel<false>,
   gameSettings: GameSettings,
 ): Promise<{ winner: User | null; loser: User | null }> => {
   let result: { winner: User | null; loser: User | null } = {

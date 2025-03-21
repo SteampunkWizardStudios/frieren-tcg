@@ -2,9 +2,9 @@ import {
   ActionRowBuilder,
   ComponentType,
   MessageFlags,
-  PrivateThreadChannel,
   StringSelectMenuBuilder,
   StringSelectMenuInteraction,
+  ThreadChannel,
   User,
 } from "discord.js";
 import Character from "../tcg/character";
@@ -15,7 +15,7 @@ import { createCountdownTimestamp } from "../util/utils";
 // returns the card played
 export const playSelectedMove = async (
   player: User,
-  playerThread: PrivateThreadChannel,
+  playerThread: ThreadChannel<false>,
   character: Character,
   playerPossibleMove: Record<string, Card>,
   turnDurationSeconds: number,

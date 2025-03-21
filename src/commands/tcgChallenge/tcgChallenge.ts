@@ -25,11 +25,15 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setDescription("Select the gamemode. Defaults to Classic.")
         .setRequired(false)
         .addChoices(
-          { name: "Classic - 45s Turn Duration", value: "classic" },
-          { name: "Blitz - 10s Turn Duration", value: "blitz" },
+          { name: "Classic - 45s Turn Duration", value: GameMode.CLASSIC },
+          { name: "Blitz - 10s Turn Duration", value: GameMode.BLITZ },
           {
             name: "Slow - 2m Turn Duration. Hands and Draws revealed",
-            value: "slow",
+            value: GameMode.SLOW,
+          },
+          {
+            name: "PvE - 2m Turn Duration. Public challenged player thread. Cannot be Ranked.",
+            value: GameMode.PVE,
           },
         ),
     )
@@ -47,7 +51,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       const gamemode =
         (interaction.options.getString("gamemode") as GameMode) ??
         GameMode.CLASSIC;
-      const ranked = interaction.options.getBoolean("ranked") ?? false;
+      const ranked = (interaction.options.getBoolean("ranked") && gamemode !== GameMode.PVE) ?? false;
       const gameSettings = GAME_SETTINGS[gamemode];
 
       initiateChallengeRequest(interaction, gameSettings, ranked);
