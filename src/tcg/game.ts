@@ -150,9 +150,10 @@ export default class Game {
     return this.characters[characterIndex];
   }
 
-  checkGameOver(): number | null {
-    if (!this.gameOver) {
-      this.characters.forEach((character, index) => {
+  checkGameOver(): number {
+    let losingIndex = 0;
+    this.characters.forEach((character, index) => {
+      if (!this.gameOver) {
         if (character.stats.stats.HP <= 0) {
           this.messageCache.push(
             `# ${character.name} has been defeated!`,
@@ -160,12 +161,13 @@ export default class Game {
           );
           this.gameOver = true;
 
-          return index;
+          losingIndex = index;
+          return;
         }
-      });
-    }
+      }
+    });
 
-    return null;
+    return losingIndex;
   }
 
   private calculateDamage(

@@ -90,7 +90,7 @@ export const buildChallengeButtonRespond = async (
     collector.on("collect", async (buttonInteraction: ButtonInteraction) => {
       if (buttonInteraction.customId === ACCEPT_BUTTON_ID) {
         const challengeAcceptedEmbed = EmbedBuilder.from(embed).setDescription(
-          `Challenge accepted by ${interaction.user}! Setting up game...`,
+          `Challenge accepted by ${opponent}! Setting up game...`,
         );
         await buttonInteraction.update({
           embeds: [challengeAcceptedEmbed],
