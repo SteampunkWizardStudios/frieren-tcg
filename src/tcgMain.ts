@@ -85,7 +85,7 @@ export const tcgMain = async (
       character.additionalMetadata.attackedThisTurn = false;
       character.additionalMetadata.timedEffectAttackedThisTurn = false;
     });
-    messageCache.push(printGameState(game), TCGThread.Gameroom);
+    printGameState(game, messageCache);
 
     await sendToThread(
       messageCache.flush(TCGThread.Gameroom),
@@ -332,7 +332,7 @@ export const tcgMain = async (
 
     if (game.gameOver) {
       // immediately flush message cache
-      messageCache.push(printGameState(game, false), TCGThread.Gameroom);
+      printGameState(game, messageCache, false);
       messageCache.push("# Game over!", TCGThread.Gameroom);
       await sendToThread(
         messageCache.flush(TCGThread.Gameroom),

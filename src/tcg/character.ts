@@ -6,7 +6,10 @@ import { Ability } from "./ability";
 import { statDetails } from "./formatting/emojis";
 import Rolls from "./util/rolls";
 import { CharacterAdditionalMetadata } from "./additionalMetadata/characterAdditionalMetadata";
-import { CharacterName } from "./characters/metadata/CharacterName";
+import {
+  CharacterName,
+  CharactersWithNoAccessToDefaultOptions,
+} from "./characters/metadata/CharacterName";
 import DefaultCards from "./decks/utilDecks/defaultCard";
 import {
   CharacterCosmetic,
@@ -117,7 +120,9 @@ export default class Character {
       }
     }
 
-    if (this.name !== CharacterName.Stille) {
+    if (
+      !CharactersWithNoAccessToDefaultOptions.has(this.name as CharacterName)
+    ) {
       indexToUsableCardMap["8"] = DefaultCards.discardCard.clone();
       indexToUsableCardMap["9"] = DefaultCards.waitCard.clone();
     }

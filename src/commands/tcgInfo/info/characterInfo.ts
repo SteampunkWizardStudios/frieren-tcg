@@ -19,7 +19,7 @@ export async function showCharacterInfo(
   const dm = interaction.options.getBoolean("dm") ? true : false;
 
   try {
-    const characterDropdown = await createCharacterDropdown();
+    const characterDropdown = await createCharacterDropdown(interaction.user);
 
     // Send initial message with the menu
     const response = await sendInfoMessage(
@@ -46,20 +46,13 @@ export async function showCharacterInfo(
             });
             return;
           }
-          const characterList = createCharacterList();
+          const characterList = createCharacterList(interaction.user);
           const char = characterList[parseInt(i.values[0]) ?? 0];
 
           // Create new embed for the selected character
-          const deckString = char.cards.map(
-            (cardCount: { card: Card; count: number }) => {
-              const card = cardCount.card;
-              const count = cardCount.count;
-              return `${card.emoji} **${card.title}** x ${count}:\n${card.getDescription()}`;
-            },
-          );
           const characterEmbed = new EmbedBuilder()
             .setColor(char.cosmetic.color)
-            .setTitle(`${char.cards[0].card.emoji} ${char.name}`)
+            .setTitle(`${char.cosmetic.emoji} ${char.name}`)
             .setTimestamp()
             .setThumbnail(char.cosmetic.imageUrl)
             .addFields(

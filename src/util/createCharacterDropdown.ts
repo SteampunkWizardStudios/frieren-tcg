@@ -2,12 +2,14 @@ import {
   ActionRowBuilder,
   EmbedBuilder,
   StringSelectMenuBuilder,
+  User,
 } from "discord.js";
 import { createCharacterList } from "../tcg/characters/characterList";
 import { createCountdownTimestamp } from "./utils";
 import { CharacterData } from "../tcg/characters/characterData/characterData";
 
 export const createCharacterDropdown = async (
+  user: User,
   timeLimitSeconds?: number,
 ): Promise<{
   embed: EmbedBuilder;
@@ -20,7 +22,7 @@ export const createCharacterDropdown = async (
   }
 
   // Create the initial embed showing all characters
-  const characterList = createCharacterList();
+  const characterList = createCharacterList(user);
   const embed = new EmbedBuilder()
     .setColor(0xc5c3cc)
     .setTitle("Frieren TCG - Characters")

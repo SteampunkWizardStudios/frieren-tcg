@@ -17,6 +17,7 @@ export const printCharacter = (
   }
   const lines = [
     `# ${character.name}:`,
+    `${character.cosmetic.imageUrl}`,
     `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
     `- ${statDetails[StatsEnum.ATK].emoji} **ATK**: ${charStat.ATK}`,
     `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${charStat.DEF}`,

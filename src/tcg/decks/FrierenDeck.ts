@@ -194,11 +194,11 @@ export const a_theHeightOfMagic = new Card({
       TCGThread.Gameroom,
     );
     const endOfTurnDamage = this.calculateEffectValue(this.effects[0]);
-    if (character.adjustStat(-1 * 40, StatsEnum.HP)) {
+    if (character.adjustStat(-1 * 50, StatsEnum.HP)) {
       character.timedEffects.push(
         new TimedEffect({
           name: "Impending: Height of Magic",
-          description: `At this turn's resolution, strike for ${40}. Afterwards, DEF-20, SPD-20.`,
+          description: `At this turn's resolution, strike for ${endOfTurnDamage}. Afterwards, DEF-20, SPD-20.`,
           turnDuration: 1,
           endOfTimedEffectAction: (game, characterIndex) => {
             messageCache.push(

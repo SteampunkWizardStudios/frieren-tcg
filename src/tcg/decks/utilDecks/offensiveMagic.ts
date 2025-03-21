@@ -11,6 +11,7 @@ import {
   a_erfassenSpear,
   a_erfassenSword,
 } from "../LinieDeck";
+import { a_curse, a_killingMagic } from "../monsterDecks/CosmicTonDeck";
 import {
   a_threeSpearsOfTheGoddess,
   a_trustInYourAllyFernsBarrage,
@@ -36,4 +37,7 @@ export const offensiveMagic = [
   a_hairWhip,
   a_pierce,
   a_piercingDrill,
+
+  a_curse,
+  a_killingMagic,
 ];

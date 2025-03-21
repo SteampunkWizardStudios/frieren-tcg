@@ -21,6 +21,14 @@ export enum CharacterEmoji {
   SEIN = "<:SeinCool:1189748661287137370>",
   STARK = "<:StarkPoint:1165025263747342386>",
   LAUFEN = "<:LaufenNom:1198338042449113190>",
+
+  STONE_GEISEL = "🐦‍⬛",
+  FIRE_GOLEM = "❤️‍🔥",
+  STONE_GOLEM = "🪨",
+  SPIEGEL_SEIN = "<:SeinDisappointed:782627138808840222>",
+  SPIEGEL_SERIE = "<:SerieSmirk:834412553517662219>",
+  SPIEGEL_SENSE = "🖤",
+  COSMIC_TON = "👁️",
 }
 
 export enum CardEmoji {

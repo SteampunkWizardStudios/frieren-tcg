@@ -21,7 +21,10 @@ export const getPlayerCharacter = async (
   const timeLimitSeconds = 60;
   const timeLimit = timeLimitSeconds * 1000;
   let isResolved = false;
-  const characterDropdown = await createCharacterDropdown(timeLimitSeconds);
+  const characterDropdown = await createCharacterDropdown(
+    player,
+    timeLimitSeconds,
+  );
 
   const response = await playerThread.send({
     embeds: [characterDropdown.embed],
@@ -59,7 +62,7 @@ export const getPlayerCharacter = async (
 
             if (!isResolved) {
               collector.stop("Character selected");
-              const characterList = createCharacterList();
+              const characterList = createCharacterList(player);
               const selectedCharacter =
                 characterList[parseInt(i.values[0]) ?? 0].clone();
               const characterSelectedEmbed = new EmbedBuilder()
