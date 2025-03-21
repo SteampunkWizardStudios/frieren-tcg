@@ -5,18 +5,22 @@ import CommonCardAction from "../util/commonCardActions";
 import { CharacterName } from "../characters/metadata/CharacterName";
 import TimedEffect from "../timedEffect";
 import { CardEmoji } from "../formatting/emojis";
+import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_trustInYourAllyFrierensZoltraak = new Card({
   title: "Trust in Your Ally: Frieren's Zoltraak",
   description: ([dmg]) => `HP-5. DMG ${dmg} + HP/15`,
   emoji: CardEmoji.SEIN_CARD,
   effects: [5],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     if (character.name === CharacterName.Sein) {
-      console.log(`${character.name} called on help from Frieren!`);
+      messageCache.push(
+        `${character.name} called on help from Frieren!`,
+        TCGThread.Gameroom,
+      );
     } else {
-      console.log(`${character.name} used Zoltraak.`);
+      messageCache.push(`${character.name} used Zoltraak.`, TCGThread.Gameroom);
     }
 
     const damage = Number(
@@ -35,12 +39,18 @@ export const a_trustInYourAllyFernsBarrage = new Card({
     `HP-7. DMG ${dmg}+HP/10 DMG. Next turn, deal ${dmg}+HP/10 DMG at turn end.`,
   emoji: CardEmoji.SEIN_CARD,
   effects: [3],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     if (character.name === CharacterName.Sein) {
-      console.log(`${character.name} called on help from Fern!`);
+      messageCache.push(
+        `${character.name} called on help from Fern!`,
+        TCGThread.Gameroom,
+      );
     } else {
-      console.log(`${character.name} used a simple offensive spell barrage.`);
+      messageCache.push(
+        `${character.name} used a simple offensive spell barrage.`,
+        TCGThread.Gameroom,
+      );
     }
 
     if (character.adjustStat(-7, StatsEnum.HP)) {
@@ -56,8 +66,8 @@ export const a_trustInYourAllyFernsBarrage = new Card({
           name: "Barrage",
           description: `Deal ${damage} at the end of the effect.`,
           turnDuration: 2,
-          endOfTimedEffectAction: (game, characterIndex) => {
-            console.log("The barrage continues!");
+          endOfTimedEffectAction: (game, characterIndex, messageCache) => {
+            messageCache.push("The barrage continues!", TCGThread.Gameroom);
             CommonCardAction.commonAttack(
               game,
               characterIndex,
@@ -78,12 +88,18 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
   emoji: CardEmoji.SEIN_CARD,
   effects: [7],
   priority: -1,
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     if (character.name === CharacterName.Sein) {
-      console.log(`${character.name} called on help from Stark!`);
+      messageCache.push(
+        `${character.name} called on help from Stark!`,
+        TCGThread.Gameroom,
+      );
     } else {
-      console.log(`${character.name} used lightning strike.`);
+      messageCache.push(
+        `${character.name} used lightning strike.`,
+        TCGThread.Gameroom,
+      );
     }
 
     const damage = Number(
@@ -101,9 +117,12 @@ const mugOfBeer = new Card({
   description: ([hp, atk]) => `HP+${hp}. ATK+${atk}. DEF-2. SPD-1.`,
   emoji: CardEmoji.SEIN_CARD,
   effects: [6, 2],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    console.log(`${character.name} downed a mug of beer.`);
+    messageCache.push(
+      `${character.name} downed a mug of beer.`,
+      TCGThread.Gameroom,
+    );
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
@@ -123,9 +142,12 @@ const smokeBreak = new Card({
   description: ([atk, def, spd]) => `HP-3. ATK+${atk}. DEF+${def}. SPD+${spd}.`,
   emoji: CardEmoji.SEIN_CARD,
   effects: [2, 1, 2],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    console.log(`${character.name} took a smoke break.`);
+    messageCache.push(
+      `${character.name} took a smoke break.`,
+      TCGThread.Gameroom,
+    );
     if (character.adjustStat(-3, StatsEnum.HP)) {
       character.adjustStat(
         this.calculateEffectValue(this.effects[0]),
@@ -148,9 +170,9 @@ const awakening = new Card({
   description: ([atk, def, spd]) => `ATK+${atk}. DEF+${def}. SPD+${spd}.`,
   emoji: CardEmoji.SEIN_CARD,
   effects: [2, 1, 2],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    console.log(`${character.name} used Awakening!`);
+    messageCache.push(`${character.name} used Awakening!`, TCGThread.Gameroom);
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
@@ -172,9 +194,12 @@ const poisonCure = new Card({
   description: ([hp]) => `HP+${hp}.`,
   emoji: CardEmoji.SEIN_CARD,
   effects: [10],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    console.log(`${character.name} applied a poison cure.`);
+    messageCache.push(
+      `${character.name} applied a poison cure.`,
+      TCGThread.Gameroom,
+    );
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
       StatsEnum.HP,
@@ -189,15 +214,17 @@ const braceYourself = new Card({
   emoji: CardEmoji.SEIN_CARD,
   priority: 1,
   effects: [20],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     if (character.name === CharacterName.Sein) {
-      console.log(
+      messageCache.push(
         `${character.name} called on ${character.cosmetic.pronouns.possessive} allies to brace themselves!`,
+        TCGThread.Gameroom,
       );
     } else {
-      console.log(
+      messageCache.push(
         `${character.name} braced ${character.cosmetic.pronouns.reflexive}.`,
+        TCGThread.Gameroom,
       );
     }
 
@@ -209,7 +236,7 @@ const braceYourself = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        endOfTimedEffectAction: (_game, _characterIndex) => {
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
       }),
@@ -223,9 +250,12 @@ export const a_threeSpearsOfTheGoddess = new Card({
     `HP-15. At the next 3 turn ends, deal ${dmg}+HP/10 DMG.`,
   emoji: CardEmoji.SEIN_CARD,
   effects: [7],
-  cardAction: function (this: Card, game, characterIndex) {
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    console.log(`${character.name} used Three Spears of the Goddess!`);
+    messageCache.push(
+      `${character.name} used Three Spears of the Goddess!`,
+      TCGThread.Gameroom,
+    );
     if (character.adjustStat(-15, StatsEnum.HP)) {
       const damage = Number(
         (
@@ -239,7 +269,10 @@ export const a_threeSpearsOfTheGoddess = new Card({
           description: `Deal ${damage} at each turn's end.`,
           turnDuration: 3,
           endOfTurnAction: (game, characterIndex) => {
-            console.log("The goddess' spears continue to rain!");
+            messageCache.push(
+              "The goddess' spears continue to rain!",
+              TCGThread.Gameroom,
+            );
             CommonCardAction.commonAttack(
               game,
               characterIndex,

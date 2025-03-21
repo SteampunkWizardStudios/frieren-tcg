@@ -31,8 +31,9 @@ export async function sendToThread(
       // send message
       await targetThread.send(message);
 
-      // add delay
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      // add random delay, between 50% - 100% of base delay
+      const randomDelay = Math.floor(delay * (0.5 + Math.random() * 0.5));
+      await new Promise((resolve) => setTimeout(resolve, randomDelay));
     }
     return true;
   }

@@ -22,7 +22,7 @@ export const registerCommands = async (
   console.log(`Registered ${Object.keys(commands).length} commands`);
 };
 
-export const _deregisterAllCommands = async (
+export const deregisterAllCommands = async (
   rest: REST,
   clientId: string,
   guildId?: string,

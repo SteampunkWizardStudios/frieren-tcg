@@ -112,21 +112,6 @@ export default class Game {
     }
   }
 
-  // check to see if game is over
-  isGameOver(): boolean {
-    this.characters.forEach((character) => {
-      if (character.stats.stats.HP <= 0) {
-        this.messageCache.push(
-          `# ${character.name} has been defeated!`,
-          TCGThread.Gameroom,
-        );
-        this.gameOver = true;
-      }
-    });
-
-    return this.gameOver;
-  }
-
   // check to see which character should move first
   getFirstMove(characterToMoveMap: Record<number, Card>): number {
     if (!(0 in characterToMoveMap)) {
@@ -163,6 +148,24 @@ export default class Game {
     }
 
     return this.characters[characterIndex];
+  }
+
+  checkGameOver(): number | null {
+    if (!this.gameOver) {
+      this.characters.forEach((character, index) => {
+        if (character.stats.stats.HP <= 0) {
+          this.messageCache.push(
+            `# ${character.name} has been defeated!`,
+            TCGThread.Gameroom,
+          );
+          this.gameOver = true;
+
+          return index;
+        }
+      });
+    }
+
+    return null;
   }
 
   private calculateDamage(
