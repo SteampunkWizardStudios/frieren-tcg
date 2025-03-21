@@ -11,7 +11,7 @@ import {
 } from "discord.js";
 import Character from "../tcg/character";
 import { createCharacterDropdown } from "../util/createCharacterDropdown";
-import { characterList } from "../tcg/characters/characterList";
+import { createCharacterList } from "../tcg/characters/characterList";
 import { CharacterData } from "../tcg/characters/characterData/characterData";
 
 export const getPlayerCharacter = async (
@@ -59,6 +59,7 @@ export const getPlayerCharacter = async (
 
             if (!isResolved) {
               collector.stop("Character selected");
+              const characterList = createCharacterList();
               const selectedCharacter =
                 characterList[parseInt(i.values[0]) ?? 0].clone();
               const characterSelectedEmbed = new EmbedBuilder()

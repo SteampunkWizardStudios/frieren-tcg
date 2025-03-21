@@ -7,10 +7,11 @@ import {
   ComponentType,
   MessageFlags,
 } from "discord.js";
-import { characterList } from "../../../tcg/characters/characterList";
+import { createCharacterList } from "../../../tcg/characters/characterList";
 import { sendInfoMessage } from "./util/sendInfoMessage";
 import { statDetails } from "../../../tcg/formatting/emojis";
 import { createCharacterDropdown } from "../../../util/createCharacterDropdown";
+import Card from "../../../tcg/card";
 
 export async function showCharacterInfo(
   interaction: ChatInputCommandInteraction,
@@ -45,14 +46,17 @@ export async function showCharacterInfo(
             });
             return;
           }
+          const characterList = createCharacterList();
           const char = characterList[parseInt(i.values[0]) ?? 0];
 
           // Create new embed for the selected character
-          const deckString = char.cards.map((cardCount) => {
-            const card = cardCount.card;
-            const count = cardCount.count;
-            return `${card.emoji} **${card.title}** x ${count}:\n${card.getDescription()}`;
-          });
+          const deckString = char.cards.map(
+            (cardCount: { card: Card; count: number }) => {
+              const card = cardCount.card;
+              const count = cardCount.count;
+              return `${card.emoji} **${card.title}** x ${count}:\n${card.getDescription()}`;
+            },
+          );
           const characterEmbed = new EmbedBuilder()
             .setColor(char.cosmetic.color)
             .setTitle(`${char.cards[0].card.emoji} ${char.name}`)
@@ -78,7 +82,7 @@ export async function showCharacterInfo(
               },
             )
             .addFields(
-              char.cards.map((cardCount) => {
+              char.cards.map((cardCount: { card: Card; count: number }) => {
                 const card = cardCount.card;
                 const count = cardCount.count;
                 return {
