@@ -13,7 +13,7 @@ const COSMIC_TON_MAX_EVASION =
   COSMIC_TON_BASE_EVASION * COSMIC_TON_MAX_EVASION_TURNS;
 
 const cosmicTonStats = new Stats({
-  [StatsEnum.HP]: 110.0,
+  [StatsEnum.HP]: 120.0,
   [StatsEnum.ATK]: 20.0,
   [StatsEnum.DEF]: 10.0,
   [StatsEnum.SPD]: 15.0,
@@ -30,7 +30,7 @@ export const CosmicTon = new CharacterData({
     emoji: CharacterEmoji.COSMIC_TON,
     color: 0x3b0839,
     imageUrl:
-      "https://cdn.discordapp.com/attachments/1352656084577554472/1352656085231599669/cs.ton_take2.png?ex=67decea5&is=67dd7d25&hm=8ab68fa9177aa2335f1721f2b463a2b60e092f357a0f9c5406af5497582b7595&",
+      "https://cdn.discordapp.com/attachments/1352656084577554472/1352735597525209219/cs.ton_take2.png?ex=67df18b3&is=67ddc733&hm=5faeb7e01fd439cb316a018e35815dce08f054ca88e48f17b7264db38d3f64de&",
   },
   stats: cosmicTonStats,
   cards: cosmicTonDeck,
