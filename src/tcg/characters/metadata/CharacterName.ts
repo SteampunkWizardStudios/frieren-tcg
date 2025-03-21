@@ -11,6 +11,7 @@ export enum CharacterName {
   StoneGeisel = "Stone Geisel",
   FireGolem = "Fire Golem",
   StoneGolem = "Stone Golem",
+  ShadowDragon = "Shadow Dragon",
   SpiegelSein = "Sein...?",
   SpiegelSerie = "Serie...?",
   SpiegelSense = "Sense...?",
@@ -23,4 +24,5 @@ export const CharactersWithNoAccessToDefaultOptions = new Set<CharacterName>([
   CharacterName.StoneGeisel,
   CharacterName.FireGolem,
   CharacterName.StoneGolem,
+  CharacterName.ShadowDragon,
 ]);

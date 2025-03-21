@@ -6,15 +6,18 @@ export default class CommonCardAction {
   static commonAttack(
     game: Game,
     characterIndex: number,
-    damage: number,
-    hpCost: number,
-    isTimedEffectAttack: boolean,
+    option: {
+      damage: number,
+      hpCost: number,
+      isTimedEffectAttack?: boolean,
+    }
   ): boolean {
+    const isTimedEffectAttack = option.isTimedEffectAttack ?? false;
     const character = game.getCharacter(characterIndex);
-    if (hpCost === 0 || character.adjustStat(-hpCost, StatsEnum.HP)) {
+    if (option.hpCost === 0 || character.adjustStat(-(option.hpCost), StatsEnum.HP)) {
       const actualDamage = game.attack({
         attackerIndex: characterIndex,
-        damage,
+        damage: option.damage,
         isTimedEffectAttack,
       });
       if (actualDamage > 0) {

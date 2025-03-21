@@ -18,7 +18,7 @@ const a_flame = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, damage, 5, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 5});
   },
 });
 
@@ -36,7 +36,7 @@ const a_burn = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, damage, 4, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 4});
 
     opponent.adjustStat(
       this.calculateEffectValue(this.effects[1]),
@@ -90,7 +90,7 @@ const a_inferno = new Card({
     );
     character.setStat(1, StatsEnum.HP);
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, damage, 0, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 0});
   },
 });
 

@@ -15,6 +15,7 @@ import { SpiegelSein } from "./characterData/characters/dungeonMonsters/SpiegelS
 import { SpiegelSerie } from "./characterData/characters/dungeonMonsters/SpiegelSerie";
 import { SpiegelSense } from "./characterData/characters/dungeonMonsters/SpiegelSense";
 import { CosmicTon } from "./characterData/characters/dungeonMonsters/CosmicTon";
+import { ShadowDragon } from "./characterData/characters/dungeonMonsters/ShadowDragon";
 
 const ALLOWLISTED_USER_IDS = new Set([
   "139757382375833600", // Hexa
@@ -40,7 +41,7 @@ export function createCharacterList(user: User): CharacterData[] {
     SpiegelSein,
     SpiegelSerie,
     SpiegelSense,
-    // ShadowDragon
+    ShadowDragon,
     CosmicTon,
   ];
 

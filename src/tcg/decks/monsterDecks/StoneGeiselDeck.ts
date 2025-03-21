@@ -15,7 +15,7 @@ export const a_charge = new Card({
     messageCache.push(`${character.name} charged ahead!`, TCGThread.Gameroom);
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, damage, 5, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 5});
   },
 });
 
@@ -85,7 +85,7 @@ export const a_roomCollapse = new Card({
     character.setStat(1, StatsEnum.HP);
     const damage =
       this.calculateEffectValue(this.effects[0]) - character.stats.stats.ATK;
-    CommonCardAction.commonAttack(game, characterIndex, damage, 0, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 0});
   },
 });
 

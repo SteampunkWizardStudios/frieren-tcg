@@ -3,7 +3,6 @@ import Card from "../card";
 import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import CommonCardAction from "../util/commonCardActions";
-import Character from "../character";
 import { CharacterName } from "../characters/metadata/CharacterName";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
@@ -22,9 +21,10 @@ const a_axeSwipe = new Card({
     CommonCardAction.commonAttack(
       game,
       characterIndex,
-      this.calculateEffectValue(this.effects[0]),
-      5,
-      false,
+      {
+        damage: this.calculateEffectValue(this.effects[0]),
+        hpCost: 5,
+      }
     );
   },
 });
@@ -179,7 +179,7 @@ const a_ordensSlashTechnique = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, damage, 9, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 9});
   },
 });
 
@@ -225,7 +225,7 @@ const a_eisensAxeCleave = new Card({
 
     const damage = this.calculateEffectValue(this.effects[0]);
     if (
-      CommonCardAction.commonAttack(game, characterIndex, damage, 14, false)
+      CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 14})
     ) {
       messageCache.push(
         `${character.name} recollects ${character.cosmetic.pronouns.reflexive}. ${character.name} skips the next turn!`,
@@ -273,9 +273,11 @@ const a_lightningStrike = new Card({
             CommonCardAction.commonAttack(
               game,
               characterIndex,
-              damage,
-              0,
-              true,
+              {
+                damage,
+                hpCost: 0,
+                isTimedEffectAttack: true
+              },
             );
 
             messageCache.push(

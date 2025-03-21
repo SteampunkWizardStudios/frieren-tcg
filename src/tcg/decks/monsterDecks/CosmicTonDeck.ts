@@ -96,7 +96,7 @@ export const a_curse = new Card({
             "You feel something gnaws at you from behind.",
             TCGThread.Gameroom,
           );
-          CommonCardAction.commonAttack(game, characterIndex, damage, 0, true);
+          CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 0, isTimedEffectAttack: true});
         },
       }),
     );
@@ -143,7 +143,7 @@ export const a_killingMagic = new Card({
 
     const character = game.getCharacter(characterIndex);
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, damage, 10, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 10});
   },
 });
 

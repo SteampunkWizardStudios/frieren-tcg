@@ -32,9 +32,10 @@ const a_peck = new Card({
     CommonCardAction.commonAttack(
       game,
       characterIndex,
-      this.calculateEffectValue(this.effects[0]),
-      0,
-      false,
+      {
+        damage: this.calculateEffectValue(this.effects[0]),
+        hpCost: 0,
+      }
     );
   },
 });
@@ -59,9 +60,10 @@ const a_ironFeather = new Card({
     CommonCardAction.commonAttack(
       game,
       characterIndex,
-      this.calculateEffectValue(this.effects[1]),
-      0,
-      false,
+      {
+        damage: this.calculateEffectValue(this.effects[1]),
+        hpCost: 0,
+      }
     );
   },
 });
@@ -220,9 +222,11 @@ export const a_geisel = new Card({
           CommonCardAction.commonAttack(
             game,
             characterIndex,
-            damage + 15,
-            0,
-            true,
+            {
+              damage: damage + 15,
+              hpCost: 0,
+              isTimedEffectAttack: true,
+            }
           );
         },
       }),

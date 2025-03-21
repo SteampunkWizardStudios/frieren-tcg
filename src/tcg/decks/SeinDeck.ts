@@ -29,7 +29,7 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
         character.stats.stats.HP / 15
       ).toFixed(2),
     );
-    CommonCardAction.commonAttack(game, characterIndex, damage, 5, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 5});
   },
 });
 
@@ -60,7 +60,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
           character.stats.stats.HP / 10
         ).toFixed(2),
       );
-      CommonCardAction.commonAttack(game, characterIndex, damage, 0, false);
+      CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 0});
       character.timedEffects.push(
         new TimedEffect({
           name: "Barrage",
@@ -71,9 +71,11 @@ export const a_trustInYourAllyFernsBarrage = new Card({
             CommonCardAction.commonAttack(
               game,
               characterIndex,
-              damage,
-              0,
-              true,
+              {
+                damage,
+                hpCost: 0,
+                isTimedEffectAttack: true,
+              }
             );
           },
         }),
@@ -108,7 +110,7 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
         character.stats.stats.HP / 7
       ).toFixed(2),
     );
-    CommonCardAction.commonAttack(game, characterIndex, damage, 9, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 9});
   },
 });
 
@@ -276,9 +278,11 @@ export const a_threeSpearsOfTheGoddess = new Card({
             CommonCardAction.commonAttack(
               game,
               characterIndex,
-              damage,
-              0,
-              true,
+              {
+                damage,
+                hpCost: 0,
+                isTimedEffectAttack: true,
+              }
             );
           },
         }),

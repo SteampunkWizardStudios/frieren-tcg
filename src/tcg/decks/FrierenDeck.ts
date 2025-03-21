@@ -18,7 +18,7 @@ export const a_zoltraak = new Card({
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, damage, 5, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 5});
   },
 });
 
@@ -73,7 +73,7 @@ export const a_judradjim = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, damage, 7, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 7});
   },
 });
 
@@ -90,7 +90,7 @@ export const a_vollzanbel = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, damage, 10, false);
+    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 10});
   },
 });
 
