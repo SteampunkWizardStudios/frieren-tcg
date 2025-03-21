@@ -13,7 +13,7 @@ import { printGameState } from "./tcgChatInteractions/printGameState";
 import Card from "./tcg/card";
 import { printCharacter } from "./tcgChatInteractions/printCharacter";
 import TimedEffect from "./tcg/timedEffect";
-import { getSelectedMove } from "./tcgChatInteractions/getSelectedMove";
+import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
 
 export const tcgMain = async (
   challenger: User,
@@ -194,14 +194,14 @@ export const tcgMain = async (
     // move selection step
     game.additionalMetadata.currentDraws = characterToPlayableMoveMap;
 
-    const challengerSelectedMovePromise = getSelectedMove(
+    const challengerSelectedMovePromise = playSelectedMove(
       challenger,
       challengerThread,
       game.characters[0],
       characterToPlayableMoveMap[0],
       gameSettings.turnDurationSeconds,
     );
-    const opponentSelectedMovePromise = getSelectedMove(
+    const opponentSelectedMovePromise = playSelectedMove(
       opponent,
       opponentThread,
       game.characters[1],

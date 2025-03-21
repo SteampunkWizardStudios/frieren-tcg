@@ -11,7 +11,9 @@ import Character from "../tcg/character";
 import Card from "../tcg/card";
 import { createCountdownTimestamp } from "../util/utils";
 
-export const getSelectedMove = async (
+// handle card selection and play the card
+// returns the card played
+export const playSelectedMove = async (
   player: User,
   playerThread: PrivateThreadChannel,
   character: Character,
@@ -80,8 +82,13 @@ export const getSelectedMove = async (
 
             if (!isResolved) {
               collector.stop("Character selected");
+
+              const selectedCardIndex = parseInt(i.values[0]);
               const selectedCard =
                 playerPossibleMove[i.values[0]] ?? randomCard;
+              if (selectedCardIndex < 6) {
+                character.playCard(selectedCardIndex);
+              }
 
               await i.update({
                 content: `You selected ${selectedCard.emoji} **${selectedCard.title} +${selectedCard.empowerLevel}**`,
