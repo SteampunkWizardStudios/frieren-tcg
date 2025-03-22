@@ -30,7 +30,7 @@ export const CosmicTon = new CharacterData({
     emoji: CharacterEmoji.COSMIC_TON,
     color: 0x3b0839,
     imageUrl:
-      "https://cdn.discordapp.com/attachments/1352656084577554472/1352735597525209219/cs.ton_take2.png?ex=67df18b3&is=67ddc733&hm=5faeb7e01fd439cb316a018e35815dce08f054ca88e48f17b7264db38d3f64de&",
+      "https://cdn.discordapp.com/attachments/1352656084577554472/1353090127974367292/cs.ton_take2.png?ex=67e062e1&is=67df1161&hm=68fda107d9f06a537deedd492894719f19b237c23f13b59e3e77fee539576961&",
   },
   stats: cosmicTonStats,
   cards: cosmicTonDeck,
