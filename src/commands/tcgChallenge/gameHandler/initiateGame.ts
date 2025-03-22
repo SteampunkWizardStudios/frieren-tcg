@@ -43,7 +43,9 @@ export const initiateGame = async (
     const opponentThread = (await channel.threads.create({
       name: `TCG Move Select: ${opponent.username}'s Move Selection Thread (ID: ${gameId})`,
       autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-      type: gameSettings.publicChallengedThread ? ChannelType.PublicThread : ChannelType.PrivateThread,
+      type: gameSettings.publicChallengedThread
+        ? ChannelType.PublicThread
+        : ChannelType.PrivateThread,
     })) as ThreadChannel;
     await opponentThread.members.add(opponent.id);
 

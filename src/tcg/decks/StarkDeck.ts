@@ -18,14 +18,10 @@ const a_axeSwipe = new Card({
       `${character.name} swiped ${character.cosmetic.pronouns.possessive} axe!`,
       TCGThread.Gameroom,
     );
-    CommonCardAction.commonAttack(
-      game,
-      characterIndex,
-      {
-        damage: this.calculateEffectValue(this.effects[0]),
-        hpCost: 5,
-      }
-    );
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage: this.calculateEffectValue(this.effects[0]),
+      hpCost: 5,
+    });
   },
 });
 
@@ -179,7 +175,7 @@ const a_ordensSlashTechnique = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 9});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 9 });
   },
 });
 
@@ -225,7 +221,10 @@ const a_eisensAxeCleave = new Card({
 
     const damage = this.calculateEffectValue(this.effects[0]);
     if (
-      CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 14}) > 0
+      CommonCardAction.commonAttack(game, characterIndex, {
+        damage,
+        hpCost: 14,
+      }) > 0
     ) {
       messageCache.push(
         `${character.name} recollects ${character.cosmetic.pronouns.reflexive}. ${character.name} skips the next turn!`,
@@ -270,15 +269,11 @@ const a_lightningStrike = new Card({
               `${character.name} performs Lightning Strike!`,
               TCGThread.Gameroom,
             );
-            CommonCardAction.commonAttack(
-              game,
-              characterIndex,
-              {
-                damage,
-                hpCost: 0,
-                isTimedEffectAttack: true
-              },
-            );
+            CommonCardAction.commonAttack(game, characterIndex, {
+              damage,
+              hpCost: 0,
+              isTimedEffectAttack: true,
+            });
 
             messageCache.push(
               `${character.name} recollects ${character.cosmetic.pronouns.reflexive}. ${character.name} skips the next turn!`,

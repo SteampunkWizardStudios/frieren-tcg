@@ -149,7 +149,7 @@ export const a_erfassenAxe = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 3});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
   },
 });
 
@@ -166,7 +166,7 @@ export const a_erfassenSword = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 2});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 2 });
   },
 });
 
@@ -183,7 +183,7 @@ export const a_erfassenSpear = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 1});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 1 });
   },
 });
 
@@ -200,7 +200,7 @@ export const a_erfassenKnife = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 0});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
   },
 });
 

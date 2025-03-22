@@ -25,7 +25,7 @@ const a_staffStrike = new Card({
     const damage =
       this.calculateEffectValue(this.effects[1]) +
       character.stats.stats.SPD / 8;
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 2});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 2 });
   },
 });
 
@@ -47,7 +47,7 @@ const a_staffBash = new Card({
     const damage =
       this.calculateEffectValue(this.effects[1]) +
       character.stats.stats.SPD / 8;
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 2});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 2 });
   },
 });
 
@@ -67,7 +67,7 @@ export const a_whip = new Card({
     const damage =
       this.calculateEffectValue(this.effects[0]) +
       character.stats.stats.SPD / 6;
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 3});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
   },
 });
 
@@ -126,7 +126,7 @@ export const a_supersonicStrike = new Card({
     const damage =
       this.calculateEffectValue(this.effects[1]) +
       character.stats.stats.SPD / 4;
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 7});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 7 });
   },
 });
 

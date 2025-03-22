@@ -9,7 +9,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_trustInYourAllyFrierensZoltraak = new Card({
   title: "Trust in Your Ally: Frieren's Zoltraak",
-  description: ([dmg]) => `HP-5. DMG ${dmg} + HP/15`,
+  description: ([dmg]) => `HP-5. DMG ${dmg} + HP/10`,
   emoji: CardEmoji.SEIN_CARD,
   effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -26,10 +26,10 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
     const damage = Number(
       (
         this.calculateEffectValue(this.effects[0]) +
-        character.stats.stats.HP / 15
+        character.stats.stats.HP / 10
       ).toFixed(2),
     );
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 5});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
   },
 });
 
@@ -60,7 +60,10 @@ export const a_trustInYourAllyFernsBarrage = new Card({
           character.stats.stats.HP / 10
         ).toFixed(2),
       );
-      CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 0});
+      CommonCardAction.commonAttack(game, characterIndex, {
+        damage,
+        hpCost: 0,
+      });
       character.timedEffects.push(
         new TimedEffect({
           name: "Barrage",
@@ -68,15 +71,11 @@ export const a_trustInYourAllyFernsBarrage = new Card({
           turnDuration: 2,
           endOfTimedEffectAction: (game, characterIndex, messageCache) => {
             messageCache.push("The barrage continues!", TCGThread.Gameroom);
-            CommonCardAction.commonAttack(
-              game,
-              characterIndex,
-              {
-                damage,
-                hpCost: 0,
-                isTimedEffectAttack: true,
-              }
-            );
+            CommonCardAction.commonAttack(game, characterIndex, {
+              damage,
+              hpCost: 0,
+              isTimedEffectAttack: true,
+            });
           },
         }),
       );
@@ -110,7 +109,7 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
         character.stats.stats.HP / 7
       ).toFixed(2),
     );
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 9});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 9 });
   },
 });
 
@@ -275,15 +274,11 @@ export const a_threeSpearsOfTheGoddess = new Card({
               "The goddess' spears continue to rain!",
               TCGThread.Gameroom,
             );
-            CommonCardAction.commonAttack(
-              game,
-              characterIndex,
-              {
-                damage,
-                hpCost: 0,
-                isTimedEffectAttack: true,
-              }
-            );
+            CommonCardAction.commonAttack(game, characterIndex, {
+              damage,
+              hpCost: 0,
+              isTimedEffectAttack: true,
+            });
           },
         }),
       );

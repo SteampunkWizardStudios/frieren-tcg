@@ -20,7 +20,7 @@ export const ShadowDragon = new CharacterData({
       reflexive: "itself",
     },
     emoji: CharacterEmoji.SHADOW_DRAGON,
-    color: 0x46184B,
+    color: 0x46184b,
     imageUrl:
       "https://cdn.discordapp.com/attachments/1352725898398400512/1352725899010773022/shadow_dragon.png?ex=67df0faa&is=67ddbe2a&hm=3e73986136ba2352adfda87858dd896a1c8643a9e6a791eba80236d0fe1691b3&",
   },

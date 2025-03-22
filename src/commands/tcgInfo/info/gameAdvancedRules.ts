@@ -37,6 +37,10 @@ export async function showGameAdvancedRules(
         value: `**Damage Dealt** = (Modifiers x DMG + ${statDetails.ATK.emoji} ATK) - Opponent's ${statDetails.DEF.emoji} DEF`,
       },
       {
+        name: "Turn Limit",
+        value: `When the game reaches **Turn 50**, the game ends in a draw.`,
+      },
+      {
         name: "Interactions and Edge Cases",
         value: [
           `- When a move with ${statDetails.HP.emoji} HP cost is supposed to set your HP to less than 0, it sets your ${statDetails.HP.emoji} HP to 1 instead.`,

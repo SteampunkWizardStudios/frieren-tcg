@@ -35,7 +35,8 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setDescription("Stat to adjust")
             .setRequired(true)
             .addChoices(
-              { name: "HP", value: "hp" },
+              { name: "CurrHP", value: "currHp" },
+              { name: "MaxHP", value: "maxHp" },
               { name: "ATK", value: "atk" },
               { name: "DEF", value: "def" },
               { name: "SPD", value: "spd" },

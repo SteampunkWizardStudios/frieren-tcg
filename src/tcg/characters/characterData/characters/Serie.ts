@@ -31,21 +31,23 @@ export const createSerie = () =>
     },
     get stats() {
       const characterStats: any = getStats();
-      return new Stats({
-        [StatsEnum.HP]: characterStats.Serie.hp,
-        [StatsEnum.ATK]: characterStats.Serie.atk,
-        [StatsEnum.DEF]: characterStats.Serie.def,
-        [StatsEnum.SPD]: characterStats.Serie.spd,
-        [StatsEnum.Ability]: 0.0,
-      });
+      return new Stats(
+        {
+          [StatsEnum.HP]: characterStats.Serie.maxHp,
+          [StatsEnum.ATK]: characterStats.Serie.atk,
+          [StatsEnum.DEF]: characterStats.Serie.def,
+          [StatsEnum.SPD]: characterStats.Serie.spd,
+          [StatsEnum.Ability]: 0.0,
+        },
+        characterStats.Serie.currHp,
+      );
     },
     cards: serieDeck,
     ability: {
       abilityName: "Warmonger",
-      abilityEffectString: `Any attack used by this character has its DMG+30%.
-        After the character uses any attack, skip next turn.`,
+      abilityEffectString: `Any attack used by this character has its DMG+50%. After this character attacks directly, skip a turn.`,
       abilityAttackEffect(game, characterIndex, _messageCache) {
-        game.additionalMetadata.attackModifier[characterIndex] = 1.3;
+        game.additionalMetadata.attackModifier[characterIndex] = 1.5;
       },
       abilityAfterDirectAttackEffect(
         game,

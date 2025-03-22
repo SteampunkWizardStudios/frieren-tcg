@@ -1,7 +1,7 @@
 import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
 import Card from "../../card";
-import { CharacterName } from "../../characters/metadata/CharacterName";
 import { CardEmoji } from "../../formatting/emojis";
+import Game from "../../game";
 import { StatsEnum } from "../../stats";
 
 export default class DefaultCards {
@@ -47,6 +47,22 @@ export default class DefaultCards {
         TCGThread.Gameroom,
       );
       character.adjustStat(10, StatsEnum.HP);
+    },
+  });
+
+  static readonly forfeitCard: Card = new Card({
+    title: "Forfeit",
+    description: () => "Forfeits the game.",
+    effects: [],
+    printEmpower: false,
+    emoji: CardEmoji.RANDOM,
+    cardAction: (game: Game, characterIndex, messageCache) => {
+      const character = game.getCharacter(characterIndex);
+      messageCache.push(
+        `${character.name} forfeited the game!`,
+        TCGThread.Gameroom,
+      );
+      game.additionalMetadata.forfeited[characterIndex] = true;
     },
   });
 }

@@ -18,7 +18,7 @@ const a_flame = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 5});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
   },
 });
 
@@ -36,10 +36,10 @@ const a_burn = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 4});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
 
     opponent.adjustStat(
-      this.calculateEffectValue(this.effects[1]),
+      this.calculateEffectValue(-this.effects[1]),
       StatsEnum.DEF,
     );
   },
@@ -59,7 +59,7 @@ const extinguish = new Card({
       TCGThread.Gameroom,
     );
 
-    character.adjustStat(10, StatsEnum.ATK);
+    character.adjustStat(-10, StatsEnum.ATK);
 
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
@@ -90,7 +90,7 @@ const a_inferno = new Card({
     );
     character.setStat(1, StatsEnum.HP);
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 0});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
   },
 });
 

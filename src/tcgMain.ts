@@ -1,4 +1,9 @@
-import { PublicThreadChannel, PrivateThreadChannel, User, ThreadChannel } from "discord.js";
+import {
+  PublicThreadChannel,
+  PrivateThreadChannel,
+  User,
+  ThreadChannel,
+} from "discord.js";
 import { GameSettings } from "./commands/tcgChallenge/gameHandler/gameSettings";
 import Character from "./tcg/character";
 import { getPlayerCharacter } from "./tcgChatInteractions/getPlayerCharacter";
@@ -14,6 +19,8 @@ import Card from "./tcg/card";
 import { printCharacter } from "./tcgChatInteractions/printCharacter";
 import TimedEffect from "./tcg/timedEffect";
 import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
+
+const TURN_LIMIT = 50;
 
 export const tcgMain = async (
   challenger: User,
@@ -87,12 +94,27 @@ export const tcgMain = async (
     });
     printGameState(game, messageCache);
 
+    if (game.turnCount === TURN_LIMIT) {
+      game.gameOver = true;
+      messageCache.push(
+        `## 50 Turn Limit Reached - Game Over!`,
+        TCGThread.Gameroom,
+      );
+    }
+
     await sendToThread(
       messageCache.flush(TCGThread.Gameroom),
       TCGThread.Gameroom,
       threadsMapping,
       1000,
     );
+
+    if (game.turnCount === TURN_LIMIT) {
+      return {
+        winner: null,
+        loser: null,
+      };
+    }
 
     // display playable cards
     const characterToPlayableMoveMap: Record<number, Record<string, Card>> = {};
@@ -329,6 +351,42 @@ export const tcgMain = async (
       }
     });
     game.additionalMetadata.lastUsedCards = characterToSelectedMoveMap;
+
+    // check forfeited cases
+    if (
+      game.additionalMetadata.forfeited[0] &&
+      game.additionalMetadata.forfeited[1]
+    ) {
+      game.gameOver = true;
+      result = {
+        winner: null,
+        loser: null,
+      };
+      messageCache.push(
+        "# Both side foreited! The game ended in a draw!",
+        TCGThread.Gameroom,
+      );
+    } else if (game.additionalMetadata.forfeited[0]) {
+      game.gameOver = true;
+      result = {
+        winner: opponent,
+        loser: challenger,
+      };
+      messageCache.push(
+        `# ${game.getCharacter(0).name} forfeited!`,
+        TCGThread.Gameroom,
+      );
+    } else if (game.additionalMetadata.forfeited[1]) {
+      game.gameOver = true;
+      result = {
+        winner: challenger,
+        loser: opponent,
+      };
+      messageCache.push(
+        `# ${game.getCharacter(1).name} forfeited!`,
+        TCGThread.Gameroom,
+      );
+    }
 
     if (game.gameOver) {
       // immediately flush message cache

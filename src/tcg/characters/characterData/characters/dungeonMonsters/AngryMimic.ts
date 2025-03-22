@@ -20,7 +20,7 @@ export const AngryMimic = new CharacterData({
       reflexive: "itself",
     },
     emoji: CharacterEmoji.ANGRY_MIMIC,
-    color: 0x994A44,
+    color: 0x994a44,
     imageUrl:
       "https://cdn.discordapp.com/attachments/1351695922140283012/1352306976217895005/image.png?ex=67dedb03&is=67dd8983&hm=e12d5eeb74a94bdc55cad5477d4bff1c20c2aeaa4f30c684ba7bf0abfb996fa0&",
   },

@@ -58,6 +58,8 @@ export default class Character {
 
     this.messageCache = characterProps.messageCache;
     this.characterThread = characterProps.characterThread;
+
+    this.stats.stats.HP = characterProps.characterData.stats.currHp;
   }
 
   drawStartingHand() {
@@ -126,6 +128,7 @@ export default class Character {
       indexToUsableCardMap["8"] = DefaultCards.discardCard.clone();
       indexToUsableCardMap["9"] = DefaultCards.waitCard.clone();
     }
+    indexToUsableCardMap["10"] = DefaultCards.forfeitCard.clone();
 
     return indexToUsableCardMap;
   }

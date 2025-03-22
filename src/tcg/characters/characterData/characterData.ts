@@ -1,10 +1,8 @@
 import Pronouns from "../../pronoun";
 import { CharacterName } from "../metadata/CharacterName";
-import Deck from "../../deck";
 import { Ability } from "../../ability";
 import Stats from "../../stats";
 import Card from "../../card";
-import TimedEffect from "../../timedEffect";
 import { CharacterAdditionalMetadata } from "../../additionalMetadata/characterAdditionalMetadata";
 import { CharacterEmoji } from "../../formatting/emojis";
 

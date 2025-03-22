@@ -25,7 +25,7 @@ export const a_hairWhip = new Card({
     character.adjustStat(defIncrease, StatsEnum.DEF);
     const damage = this.calculateEffectValue(this.effects[1]) + newDef / 4;
 
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 3});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
   },
 });
 
@@ -106,7 +106,7 @@ export const a_pierce = new Card({
       this.calculateEffectValue(this.effects[0]) +
       character.stats.stats.DEF / 3 +
       opponent.stats.stats.DEF / 5;
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 7});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 7 });
   },
 });
 
@@ -205,7 +205,7 @@ export const a_piercingDrill = new Card({
       this.calculateEffectValue(this.effects[0]) +
       character.stats.stats.DEF / 3 +
       opponent.stats.stats.DEF / 2;
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 14});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 14 });
   },
 });
 

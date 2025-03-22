@@ -26,6 +26,10 @@ export default class Game {
       },
       currentDraws: {},
       lastUsedCards: {},
+      forfeited: {
+        0: false,
+        1: false,
+      },
     };
     this.turnCount = 0;
 

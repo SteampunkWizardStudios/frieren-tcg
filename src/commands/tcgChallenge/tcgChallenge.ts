@@ -51,7 +51,10 @@ export const command: Command<ChatInputCommandInteraction> = {
       const gamemode =
         (interaction.options.getString("gamemode") as GameMode) ??
         GameMode.CLASSIC;
-      const ranked = (interaction.options.getBoolean("ranked") && gamemode !== GameMode.PVE) ?? false;
+      const ranked =
+        (interaction.options.getBoolean("ranked") &&
+          gamemode !== GameMode.PVE) ??
+        false;
       const gameSettings = GAME_SETTINGS[gamemode];
 
       initiateChallengeRequest(interaction, gameSettings, ranked);

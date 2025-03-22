@@ -29,14 +29,10 @@ const a_peck = new Card({
     character.adjustStat(-2, StatsEnum.SPD);
     character.discardCard(Rolls.rollDAny(5));
     character.drawCard();
-    CommonCardAction.commonAttack(
-      game,
-      characterIndex,
-      {
-        damage: this.calculateEffectValue(this.effects[0]),
-        hpCost: 0,
-      }
-    );
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage: this.calculateEffectValue(this.effects[0]),
+      hpCost: 0,
+    });
   },
 });
 
@@ -57,14 +53,10 @@ const a_ironFeather = new Card({
       this.calculateEffectValue(this.effects[0]),
       StatsEnum.DEF,
     );
-    CommonCardAction.commonAttack(
-      game,
-      characterIndex,
-      {
-        damage: this.calculateEffectValue(this.effects[1]),
-        hpCost: 0,
-      }
-    );
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage: this.calculateEffectValue(this.effects[1]),
+      hpCost: 0,
+    });
   },
 });
 
@@ -219,15 +211,11 @@ export const a_geisel = new Card({
         turnDuration: turnCount,
         endOfTurnAction: (game, characterIndex) => {
           messageCache.push("The Geisel doesn't stop!", TCGThread.Gameroom);
-          CommonCardAction.commonAttack(
-            game,
-            characterIndex,
-            {
-              damage: damage + 15,
-              hpCost: 0,
-              isTimedEffectAttack: true,
-            }
-          );
+          CommonCardAction.commonAttack(game, characterIndex, {
+            damage: damage + 15,
+            hpCost: 0,
+            isTimedEffectAttack: true,
+          });
         },
       }),
     );

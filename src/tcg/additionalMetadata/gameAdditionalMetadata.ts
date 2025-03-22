@@ -5,6 +5,7 @@ export interface GameAdditionalMetadataProps {
   attackModifier: Record<number, number>;
   currentDraws: Record<number, Record<string, Card>>;
   lastUsedCards: Record<number, Card>;
+  forfeited: Record<number, boolean>;
 }
 
 export type GameAdditionalMetadata = {
@@ -12,4 +13,5 @@ export type GameAdditionalMetadata = {
   attackModifier: Record<number, number>;
   currentDraws: Record<number, Record<string, Card>>;
   lastUsedCards: Record<number, Card>;
+  forfeited: Record<number, boolean>;
 };

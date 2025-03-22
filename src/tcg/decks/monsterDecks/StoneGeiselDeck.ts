@@ -15,7 +15,7 @@ export const a_charge = new Card({
     messageCache.push(`${character.name} charged ahead!`, TCGThread.Gameroom);
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 5});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
   },
 });
 
@@ -34,7 +34,7 @@ const earPiercingScream = new Card({
 
     character.adjustStat(-2, StatsEnum.HP);
     opponent.adjustStat(
-      -1 * this.calculateEffectValue(this.effects[1]),
+      -1 * this.calculateEffectValue(this.effects[0]),
       StatsEnum.DEF,
     );
   },
@@ -85,7 +85,7 @@ export const a_roomCollapse = new Card({
     character.setStat(1, StatsEnum.HP);
     const damage =
       this.calculateEffectValue(this.effects[0]) - character.stats.stats.ATK;
-    CommonCardAction.commonAttack(game, characterIndex, {damage, hpCost: 0});
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
   },
 });
 

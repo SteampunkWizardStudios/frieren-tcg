@@ -34,13 +34,17 @@ export const createSein = () =>
     },
     get stats() {
       const characterStats: any = getStats();
-      return new Stats({
-        [StatsEnum.HP]: characterStats.Sein.hp,
-        [StatsEnum.ATK]: characterStats.Sein.atk,
-        [StatsEnum.DEF]: characterStats.Sein.def,
-        [StatsEnum.SPD]: characterStats.Sein.spd,
-        [StatsEnum.Ability]: 0.0,
-      });
+      const seinStats = new Stats(
+        {
+          [StatsEnum.HP]: characterStats.Sein.maxHp,
+          [StatsEnum.ATK]: characterStats.Sein.atk,
+          [StatsEnum.DEF]: characterStats.Sein.def,
+          [StatsEnum.SPD]: characterStats.Sein.spd,
+          [StatsEnum.Ability]: 0.0,
+        },
+        characterStats.Sein.currHp,
+      );
+      return seinStats;
     },
     cards: seinDeck,
     ability: {
