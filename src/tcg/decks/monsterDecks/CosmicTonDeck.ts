@@ -133,7 +133,7 @@ export const a_killingMagic = new Card({
   title: "Killing Magic",
   description: ([dmg]) => `HP-10. DMG ${dmg}`,
   emoji: CardEmoji.PUNCH,
-  effects: [12],
+  effects: [15],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const randomMessage = generateCustomRandomString(90, {
       useUppercase: true,

@@ -46,7 +46,7 @@ export const Laufen = new CharacterData({
       const roll = Rolls.rollD100();
       const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
       messageCache.push(`## **SPD diff**: ${spdDiff}`, TCGThread.Gameroom);
-      messageCache.push(`# Roll: ${roll}`, TCGThread.Gameroom);
+      messageCache.push(`# Evasion Roll: ${roll}`, TCGThread.Gameroom);
 
       if (roll < spdDiff) {
         messageCache.push("Laufen evaded the attack!", TCGThread.Gameroom);

@@ -140,16 +140,16 @@ export const mugOfBeer = new Card({
 
 export const smokeBreak = new Card({
   title: "Smoke Break",
-  description: ([atk, def, spd]) => `HP-3. ATK+${atk}. DEF+${def}. SPD+${spd}.`,
+  description: ([atk, def, spd]) => `HP-5. ATK+${atk}. DEF+${def}. SPD+${spd}.`,
   emoji: CardEmoji.SEIN_CARD,
-  effects: [2, 1, 2],
+  effects: [3, 2, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} took a smoke break.`,
       TCGThread.Gameroom,
     );
-    if (character.adjustStat(-3, StatsEnum.HP)) {
+    if (character.adjustStat(-5, StatsEnum.HP)) {
       character.adjustStat(
         this.calculateEffectValue(this.effects[0]),
         StatsEnum.ATK,
@@ -288,12 +288,12 @@ export const a_threeSpearsOfTheGoddess = new Card({
 
 export const seinDeck = [
   { card: a_trustInYourAllyFrierensZoltraak, count: 2 },
-  { card: a_trustInYourAllyStarksLightningStrike, count: 1 },
+  { card: a_trustInYourAllyStarksLightningStrike, count: 2 },
   { card: a_trustInYourAllyFernsBarrage, count: 2 },
   { card: mugOfBeer, count: 2 },
   { card: smokeBreak, count: 1 },
   { card: awakening, count: 2 },
   { card: poisonCure, count: 2 },
   { card: braceYourself, count: 1 },
-  { card: a_threeSpearsOfTheGoddess, count: 2 },
+  { card: a_threeSpearsOfTheGoddess, count: 1 },
 ];

@@ -144,6 +144,15 @@ export const tcgMain = async (
             `## ${character.name} skips this turn!`,
             useChannel,
           );
+          character.empowerHand();
+          messageCache.push(
+            `All cards in ${character.name}'s hand are empowered!`,
+            TCGThread.Gameroom,
+          );
+          messageCache.push(
+            `All cards in ${character.name}'s hand are empowered!`,
+            useChannel,
+          );
         } else {
           character.printHand(useChannel);
           if (gameSettings.revealHand) {
@@ -253,9 +262,15 @@ export const tcgMain = async (
         if (card) {
           const character = game.getCharacter(characterIndex);
           messageCache.push(
-            `## ${character.name} used **${card.getTitle()}**!`,
+            `## ${character.name} used **${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[!](${card.cosmetic?.cardImageUrl})` : "!"}`,
             TCGThread.Gameroom,
           );
+          if (card.cosmetic?.cardGif) {
+            messageCache.push(
+              `[.](${card.cosmetic?.cardGif})`,
+              TCGThread.Gameroom,
+            );
+          }
           card.cardAction?.(game, characterIndex, messageCache);
           if (character.ability.abilityOnCardUse) {
             character.ability.abilityOnCardUse(

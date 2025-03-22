@@ -2,10 +2,17 @@ import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { CardEmoji } from "./formatting/emojis";
 import Game from "./game";
 
+export interface CardCosmetic {
+  cardImageUrl?: string;
+  cardGif?: string;
+}
+
 export type CardProps = {
   title: string;
   description: (formattedEffects: string[]) => string;
   effects: number[];
+  emoji?: CardEmoji;
+  cosmetic?: CardCosmetic;
   cardAction: (
     game: Game,
     characterIndex: number,
@@ -14,7 +21,6 @@ export type CardProps = {
   priority?: number;
   empowerLevel?: number;
   tags?: Record<string, number>;
-  emoji?: CardEmoji;
   printEmpower?: boolean;
 };
 
@@ -24,6 +30,8 @@ export default class Card implements CardProps {
   title: string;
   description: (formattedEffects: string[]) => string;
   effects: number[];
+  emoji: CardEmoji;
+  cosmetic?: CardCosmetic | undefined;
   cardAction: (
     game: Game,
     characterIndex: number,
@@ -32,7 +40,6 @@ export default class Card implements CardProps {
   empowerLevel: number;
   priority: number;
   tags: Record<string, number>;
-  emoji: CardEmoji;
   printEmpower: boolean;
 
   constructor(cardProps: CardProps) {
@@ -44,6 +51,7 @@ export default class Card implements CardProps {
     this.empowerLevel = cardProps.empowerLevel ?? 0;
     this.tags = cardProps.tags ?? {};
     this.emoji = cardProps.emoji ?? CardEmoji.GENERIC;
+    this.cosmetic = cardProps.cosmetic;
     this.printEmpower = cardProps.printEmpower ?? true;
   }
 

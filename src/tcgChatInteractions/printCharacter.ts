@@ -16,8 +16,7 @@ export const printCharacter = (
     hpInfo = `${charStat.HP}/${character.initialStats.stats.HP} ${percentBar(charStat.HP, character.initialStats.stats.HP)}`;
   }
   const lines = [
-    `# ${character.name}:`,
-    `${character.cosmetic.imageUrl}`,
+    `# ${character.name}[:](${character.cosmetic.imageUrl})`,
     `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
     `- ${statDetails[StatsEnum.ATK].emoji} **ATK**: ${charStat.ATK}`,
     `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${charStat.DEF}`,

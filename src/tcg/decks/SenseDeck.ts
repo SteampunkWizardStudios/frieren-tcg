@@ -92,7 +92,7 @@ const rest = new Card({
 export const a_pierce = new Card({
   title: "Pierce",
   description: ([dmg]) =>
-    `HP-7. DMG ${dmg} + (DEF/3). Pierces through 1/5 of the opponent's defense.`,
+    `HP-7. DMG ${dmg} + (DEF/4). Pierces through 1/5 of the opponent's defense.`,
   effects: [10],
   emoji: CardEmoji.PUNCH,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -104,7 +104,7 @@ export const a_pierce = new Card({
     );
     const damage =
       this.calculateEffectValue(this.effects[0]) +
-      character.stats.stats.DEF / 3 +
+      character.stats.stats.DEF / 4 +
       opponent.stats.stats.DEF / 5;
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 7 });
   },
@@ -191,7 +191,7 @@ const teaParty = new Card({
 export const a_piercingDrill = new Card({
   title: "Piercing Drill",
   description: ([dmg]) =>
-    `HP-14. DMG ${dmg} + DEF/3. Pierces through half of the opponent's defense.`,
+    `HP-12. DMG ${dmg} + DEF/3. Pierces through 1/4 of the opponent's defense.`,
   effects: [15],
   emoji: CardEmoji.PUNCH,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -204,8 +204,8 @@ export const a_piercingDrill = new Card({
     const damage =
       this.calculateEffectValue(this.effects[0]) +
       character.stats.stats.DEF / 3 +
-      opponent.stats.stats.DEF / 2;
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 14 });
+      opponent.stats.stats.DEF / 4;
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 12 });
   },
 });
 

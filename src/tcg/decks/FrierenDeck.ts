@@ -26,6 +26,11 @@ export const fieldOfFlower = new Card({
   title: "Spell to make a Field of Flowers",
   description: ([hp, endHp]) =>
     `Heal ${hp} HP. At the next 3 turn ends, heal ${endHp}.`,
+  cosmetic: {
+    cardGif: "https://c.tenor.com/Sd_BDB5kVZ8AAAAd/tenor.gif",
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873016660590653/Spell_to_make_a_field_of_flowers_4.png?ex=67df98ae&is=67de472e&hm=e5080e39c9818eee5f9a3d559a829b6f3ecab15be85b9897fb6c28ea27c6e674&",
+  },
   emoji: CardEmoji.FLOWER_FIELD,
   effects: [5, 3],
   cardAction: function (this: Card, game, characterIndex, messageCache) {

@@ -26,7 +26,6 @@ export const offensiveMagic = [
   a_theHeightOfMagic,
   a_whip,
   a_supersonicStrike,
-  jilwer,
   a_erfassenAxe,
   a_erfassenKnife,
   a_erfassenSpear,
@@ -38,6 +37,6 @@ export const offensiveMagic = [
   a_pierce,
   a_piercingDrill,
 
-  a_curse,
+  // a_curse,
   a_killingMagic,
 ];

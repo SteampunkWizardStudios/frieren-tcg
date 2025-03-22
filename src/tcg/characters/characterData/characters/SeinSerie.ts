@@ -23,10 +23,9 @@ import {
   mock,
 } from "../../../decks/SerieDeck";
 import { fieldOfFlower } from "../../../decks/FrierenDeck";
+import Rolls from "../../../util/rolls";
 
-const SEIN_BASE_HEALING = 3;
-const SEIN_HEALING_RAMP = 0.1;
-const SERIE_WARMONGER_DAMAGE_BONUS = 0.5;
+const GAMBLER_DAMAGE_BONUS = 0.5;
 
 const seinSerieDeck = [
   { card: a_livingGrimoire, count: 2 },
@@ -71,28 +70,24 @@ export const createSeinSerie = () =>
     },
     cards: seinSerieDeck,
     ability: {
-      abilityName: "Warmonger's Blessing",
-      abilityEffectString: `Heal for ${SEIN_BASE_HEALING}HP + ${SEIN_BASE_HEALING} * (Turn Count * ${(SEIN_HEALING_RAMP * 100).toFixed(2)}%) at the end of every turn.
-        This character can be healed past their maxHP.
-        This character's attack is also increased by ${(SERIE_WARMONGER_DAMAGE_BONUS * 100).toFixed(2)}%`,
-      abilityAttackEffect(game, characterIndex, _messageCache) {
-        game.additionalMetadata.attackModifier[characterIndex] =
-          1 + SERIE_WARMONGER_DAMAGE_BONUS;
-      },
-      abilityEndOfTurnEffect: (
-        game,
-        characterIndex,
-        messageCache: MessageCache,
-      ) => {
-        messageCache.push(
-          "Sein sought the Goddess' Blessings.",
-          TCGThread.Gameroom,
-        );
-        const character = game.characters[characterIndex];
-        const healing =
-          SEIN_BASE_HEALING +
-          SEIN_BASE_HEALING * (game.turnCount * SEIN_HEALING_RAMP);
-        character.adjustStat(healing, StatsEnum.HP);
+      abilityName: "Gambler",
+      abilityEffectString: `Roll a D100 for any attack.
+        If the result is >= 76, the attack deals +${(GAMBLER_DAMAGE_BONUS * 100).toFixed(2)}% damage.
+        If the result is <= 24, the attack deals -${(GAMBLER_DAMAGE_BONUS * 100).toFixed(2)}% damage.`,
+      abilityAttackEffect(game, characterIndex, messageCache) {
+        const roll = Rolls.rollD100();
+        messageCache.push(`# Gambler Roll: ${roll}`, TCGThread.Gameroom);
+        if (roll >= 76) {
+          messageCache.push(`## A critical hit!`, TCGThread.Gameroom);
+          game.additionalMetadata.attackModifier[characterIndex] =
+            1 + GAMBLER_DAMAGE_BONUS;
+        } else if (roll <= 24) {
+          messageCache.push(`## The gambit failed!`, TCGThread.Gameroom);
+          game.additionalMetadata.attackModifier[characterIndex] =
+            1 - GAMBLER_DAMAGE_BONUS;
+        } else {
+          messageCache.push(`## A regular hit!`, TCGThread.Gameroom);
+        }
       },
     },
     additionalMetadata: {
