@@ -10,10 +10,10 @@ const SEIN_BASE_HEALING = 3;
 const SEIN_HEALING_RAMP = 0.1;
 
 const spiegelSeinStats = new Stats({
-  [StatsEnum.HP]: 100.0,
-  [StatsEnum.ATK]: 10.0,
-  [StatsEnum.DEF]: 10.0,
-  [StatsEnum.SPD]: 9.0,
+  [StatsEnum.HP]: 110.0,
+  [StatsEnum.ATK]: 11.0,
+  [StatsEnum.DEF]: 11.0,
+  [StatsEnum.SPD]: 10.0,
   [StatsEnum.Ability]: 0.0,
 });
 

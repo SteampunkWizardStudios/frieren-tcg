@@ -8,9 +8,9 @@
   },
   "Serie": {
     "currHp": 100,
-    "maxHp": 100,
-    "atk": 14,
-    "def": 10,
-    "spd": 14
+    "maxHp": 120,
+    "atk": 17,
+    "def": 13,
+    "spd": 17
   }
 }
