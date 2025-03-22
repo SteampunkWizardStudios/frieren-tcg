@@ -9,7 +9,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 const imitate = new Card({
   title: "Imitate",
   description: () =>
-    `Use the card the opponent used last turn at this card's empower level - 2.`,
+    `Use the card the opponent used last turn at this card's empower level -2.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {

@@ -4,94 +4,141 @@ import { CardEmoji } from "../../formatting/emojis";
 import { StatsEnum } from "../../stats";
 import TimedEffect from "../../timedEffect";
 import CommonCardAction from "../../util/commonCardActions";
+import { offensiveMagic } from "../utilDecks/offensiveMagic";
 
-export const a_charge = new Card({
-  title: "Charge",
-  description: ([dmg]) => `HP-5. DMG ${dmg}.`,
-  emoji: CardEmoji.PUNCH,
-  effects: [10],
+// Regurgitate (x5) : use any offensive magic spell you stole from the mages you digested
+// Oh nom nom nom (x3) : 15 DMG, -2 DEF : restores an equal amount of HP compared to the damage
+// Avenging my friends ! (x2) : for one turn, the mimic turns into a clone of another mage the assimilated, with their middle attacking card option.
+// Camouflage (x4) : +5 DE
+// Call to Ctuhlu : 60 DMG, sets HP to 1.
+
+const a_regurgitate = new Card({
+  title: "Regurgitate",
+  description: () => `Use a random offensive spell at Empower level -2`,
+  emoji: CardEmoji.SERIE_CARD,
+  effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    messageCache.push(`${character.name} charged ahead!`, TCGThread.Gameroom);
+    messageCache.push(
+      `${character.name} regurgitated a spell it stole from a mage it munched on.`,
+      TCGThread.Gameroom,
+    );
 
-    const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
+    const baseCard =
+      offensiveMagic[Math.floor(Math.random() * offensiveMagic.length)];
+    const newCard = new Card({
+      ...baseCard,
+      empowerLevel: this.empowerLevel - 2,
+    });
+
+    messageCache.push(
+      `${character.name} used **${newCard.getTitle()}**.`,
+      TCGThread.Gameroom,
+    );
+    newCard.cardAction(game, characterIndex, messageCache);
   },
 });
 
-const earPiercingScream = new Card({
-  title: "Ear Piercing Scream",
-  description: ([def]) => `HP-2. Opponent's DEF-${def}.`,
+const omNomNomNom = new Card({
+  title: "Om Nom Nom Nom",
+  description: ([dmg]) =>
+    `HP-5. DMG ${dmg}. Restores HP by half of the move's dealt damage.`,
   emoji: CardEmoji.ENERGY,
   effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
-      `${character.name} let out an ear-piercing scream!`,
+      `${character.name} gobbles the opposition!`,
       TCGThread.Gameroom,
     );
 
-    character.adjustStat(-2, StatsEnum.HP);
-    opponent.adjustStat(
-      -1 * this.calculateEffectValue(this.effects[1]),
+    const damage = this.calculateEffectValue(this.effects[0]);
+    const dealtDamage = CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: 5,
+    });
+
+    character.adjustStat(dealtDamage / 2, StatsEnum.HP);
+  },
+});
+
+const mimic = new Card({
+  title: "Mimic",
+  description: () =>
+    `Use the card the opponent used last turn at this card's empower level -3.`,
+  emoji: CardEmoji.LINIE_CARD,
+  effects: [],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.getCharacter(characterIndex);
+    const opponent = game.getCharacter(1 - characterIndex);
+
+    messageCache.push(
+      `${character.name} imitates ${opponent.name}'s last move.`,
+      TCGThread.Gameroom,
+    );
+
+    const lastCard =
+      game.additionalMetadata.lastUsedCards?.[1 - characterIndex];
+    if (lastCard) {
+      const newCard = new Card({
+        ...lastCard,
+        empowerLevel: this.empowerLevel - 3,
+      });
+
+      messageCache.push(
+        `${character.name} uses ${newCard.getTitle()}`,
+        TCGThread.Gameroom,
+      );
+      newCard.cardAction(game, characterIndex, messageCache);
+    } else {
+      messageCache.push(
+        "There was no move to imitate. The move failed!",
+        TCGThread.Gameroom,
+      );
+    }
+  },
+});
+
+const camouflage = new Card({
+  title: `Camouflage`,
+  description: ([def]) => `DEF + ${def}`,
+  emoji: CardEmoji.SHIELD,
+  effects: [4],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.getCharacter(characterIndex);
+    messageCache.push(
+      `${character.name} camouflaged itself!`,
+      TCGThread.Gameroom,
+    );
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[0]),
       StatsEnum.DEF,
     );
   },
 });
 
-const hide = new Card({
-  title: "Hide",
-  description: ([def]) =>
-    `Priority+1. Increases DEF by ${def} until the end of the turn.`,
-  emoji: CardEmoji.SHIELD,
-  effects: [20],
-  priority: 1,
+const a_callOfCthulhu = new Card({
+  title: "Call of Cthulhu",
+  description: ([dmg]) => `HP set to 1. DMG ${dmg}.`,
+  emoji: CardEmoji.ENERGY,
+  effects: [30],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
-      `${character.name} made a quick retreat!`,
+      `${character.name} heeds the call of Cthulhu.`,
       TCGThread.Gameroom,
     );
 
-    const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Hide",
-        description: `Increases DEF by ${def} until the end of the turn.`,
-        priority: -1,
-        turnDuration: 1,
-        endOfTimedEffectAction: (_game, _characterIndex) => {
-          character.adjustStat(-def, StatsEnum.DEF);
-        },
-      }),
-    );
-  },
-});
-
-export const a_roomCollapse = new Card({
-  title: `Room Collapse`,
-  description: ([dmg]) =>
-    `DMG ${dmg}. Reduces the user's HP to 1. Does not factor in ATK in Damage calculation.`,
-  emoji: CardEmoji.PUNCH,
-  effects: [50],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} collapsed the ceiling!`,
-      TCGThread.Gameroom,
-    );
     character.setStat(1, StatsEnum.HP);
-    const damage =
-      this.calculateEffectValue(this.effects[0]) - character.stats.stats.ATK;
+    const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
   },
 });
 
 export const angryMimicDeck = [
-  { card: a_charge, count: 5 },
-  { card: hide, count: 5 },
-  { card: earPiercingScream, count: 4 },
-  { card: a_roomCollapse, count: 1 },
+  { card: a_regurgitate, count: 5 },
+  { card: omNomNomNom, count: 3 },
+  { card: mimic, count: 2 },
+  { card: camouflage, count: 4 },
+  { card: a_callOfCthulhu, count: 1 },
 ];

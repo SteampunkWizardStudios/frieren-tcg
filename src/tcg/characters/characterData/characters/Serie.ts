@@ -8,6 +8,8 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { getStats } from "./statsUtil/getStats";
 
+const SERIE_WARMONGER_DAMAGE_BONUS = 0.5;
+
 const serieStats = new Stats({
   [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 14.0,
@@ -45,9 +47,10 @@ export const createSerie = () =>
     cards: serieDeck,
     ability: {
       abilityName: "Warmonger",
-      abilityEffectString: `Any attack used by this character has its DMG+50%. After this character attacks directly, skip a turn.`,
+      abilityEffectString: `Any attack used by this character has its DMG+${(SERIE_WARMONGER_DAMAGE_BONUS * 100).toFixed(2)}%. After this character attacks directly, skip a turn.`,
       abilityAttackEffect(game, characterIndex, _messageCache) {
-        game.additionalMetadata.attackModifier[characterIndex] = 1.5;
+        game.additionalMetadata.attackModifier[characterIndex] =
+          1 + SERIE_WARMONGER_DAMAGE_BONUS;
       },
       abilityAfterDirectAttackEffect(
         game,

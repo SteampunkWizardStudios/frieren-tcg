@@ -34,7 +34,7 @@ export const playSelectedMove = async (
     .setPlaceholder("Select your Move")
     .addOptions(
       Object.entries(playerPossibleMove).map(([index, card]) => ({
-        label: `${card.title} +${card.empowerLevel}`,
+        label: `${card.getTitle()}`,
         value: `${index}`,
         emoji: card.emoji,
       })),
@@ -49,7 +49,8 @@ export const playSelectedMove = async (
   });
 
   const cards: Card[] = Object.values(playerPossibleMove);
-  const randomCard: Card = cards[Math.floor(Math.random() * cards.length)];
+  const randomCard: Card =
+    cards[Math.floor(Math.random() * (cards.length - 1))]; // -1 so Forfeit is always avoided
 
   return new Promise<Card>((resolve, reject) => {
     const fallbackTimeout = setTimeout(() => {
@@ -91,7 +92,7 @@ export const playSelectedMove = async (
               }
 
               await i.update({
-                content: `You selected ${selectedCard.emoji} **${selectedCard.title} +${selectedCard.empowerLevel}**`,
+                content: `You selected ${selectedCard.emoji} **${selectedCard.getTitle()}**`,
                 components: [],
               });
 
@@ -120,7 +121,7 @@ export const playSelectedMove = async (
             if (!isResolved) {
               await response
                 .edit({
-                  content: `Timeout! Playing a random card: ${randomCard.emoji} **${randomCard.title} +${randomCard.empowerLevel}**!`,
+                  content: `Timeout! Playing a random card: ${randomCard.emoji} **${randomCard.getTitle()}**!`,
                   components: [],
                 })
                 .catch(() => {});

@@ -31,6 +31,8 @@ export enum CharacterEmoji {
   SPIEGEL_SERIE = "<:SerieSmirk:834412553517662219>",
   SPIEGEL_SENSE = "🖤",
   COSMIC_TON = "👁️",
+
+  SEIN_SERIE = "🤝",
 }
 
 export enum CardEmoji {

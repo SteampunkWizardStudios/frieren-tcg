@@ -7,7 +7,7 @@ import { fieldOfFlower } from "./FrierenDeck";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
-const a_livingGrimoire = new Card({
+export const a_livingGrimoire = new Card({
   title: "Living Grimoire",
   description: () => "Use a random offensive magic",
   emoji: CardEmoji.SERIE_CARD,
@@ -34,7 +34,7 @@ const a_livingGrimoire = new Card({
   },
 });
 
-const a_livingGrimoire1 = new Card({
+export const a_livingGrimoire1 = new Card({
   ...a_livingGrimoire,
   empowerLevel: 1,
 });
@@ -44,7 +44,7 @@ const a_livingGrimoire2 = new Card({
   empowerLevel: 2,
 });
 
-const mock = new Card({
+export const mock = new Card({
   title: "Mock",
   description: ([hp, def, spd]) =>
     `HP+${hp}. Opponent's DEF-${def}. Opponent's SPD-${spd}`,
@@ -73,7 +73,7 @@ const mock = new Card({
   },
 });
 
-const basicDefensiveMagic = new Card({
+export const basicDefensiveMagic = new Card({
   title: "Basic Defensive Magic",
   description: ([def]) =>
     `Priority+1. Increases DEF by ${def} until the end of the turn.`,
@@ -143,7 +143,7 @@ const unbreakableBarrier = new Card({
   },
 });
 
-const ancientBarrierMagic = new Card({
+export const ancientBarrierMagic = new Card({
   title: "Ancient Barrier Magic",
   description: ([atk, def, oppSpd]) =>
     `HP-15. ATK+${atk} for 3 turns. Opponent's DEF-${def} for 3 turns. Opponent's SPD -${oppSpd} for 3 turns.`,

@@ -38,11 +38,9 @@ app.put("/stats/:character", async (req, res) => {
       await writeFile(statsPath, JSON.stringify(stats, null, 2));
       res.json({ message: `Stats updated successfully` });
     } else {
-      res
-        .status(400)
-        .json({
-          error: `Invalid character ${req.params.character}. Character can only be "Serie" or "Sein".`,
-        });
+      res.status(400).json({
+        error: `Invalid character ${req.params.character}. Character can only be "Serie" or "Sein".`,
+      });
     }
   } catch (error) {
     console.log(error);

@@ -113,7 +113,7 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
   },
 });
 
-const mugOfBeer = new Card({
+export const mugOfBeer = new Card({
   title: "Mug of Beer",
   description: ([hp, atk]) => `HP+${hp}. ATK+${atk}. DEF-2. SPD-1.`,
   emoji: CardEmoji.SEIN_CARD,
@@ -138,7 +138,7 @@ const mugOfBeer = new Card({
   },
 });
 
-const smokeBreak = new Card({
+export const smokeBreak = new Card({
   title: "Smoke Break",
   description: ([atk, def, spd]) => `HP-3. ATK+${atk}. DEF+${def}. SPD+${spd}.`,
   emoji: CardEmoji.SEIN_CARD,
@@ -190,7 +190,7 @@ const awakening = new Card({
   },
 });
 
-const poisonCure = new Card({
+export const poisonCure = new Card({
   title: "Poison Cure",
   description: ([hp]) => `HP+${hp}.`,
   emoji: CardEmoji.SEIN_CARD,
@@ -208,7 +208,7 @@ const poisonCure = new Card({
   },
 });
 
-const braceYourself = new Card({
+export const braceYourself = new Card({
   title: "Brace Yourself",
   description: ([def]) =>
     `Priority+1. Increases DEF by ${def} until the end of the turn.`,

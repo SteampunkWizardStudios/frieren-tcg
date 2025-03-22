@@ -17,6 +17,8 @@ export enum CharacterName {
   SpiegelSerie = "Serie...?",
   SpiegelSense = "Sense...?",
   CosmicTon = "???",
+
+  SeinSerie = "Sein & Serie",
 }
 
 export const CharactersWithNoAccessToDefaultOptions = new Set<CharacterName>([

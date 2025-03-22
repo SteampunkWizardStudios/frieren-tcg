@@ -13,10 +13,10 @@ const COSMIC_TON_MAX_EVASION =
   COSMIC_TON_BASE_EVASION * COSMIC_TON_MAX_EVASION_TURNS;
 
 const cosmicTonStats = new Stats({
-  [StatsEnum.HP]: 120.0,
-  [StatsEnum.ATK]: 20.0,
-  [StatsEnum.DEF]: 10.0,
-  [StatsEnum.SPD]: 15.0,
+  [StatsEnum.HP]: 200.0,
+  [StatsEnum.ATK]: 40.0,
+  [StatsEnum.DEF]: 20.0,
+  [StatsEnum.SPD]: 20.0,
   [StatsEnum.Ability]: COSMIC_TON_BASE_EVASION,
 });
 
