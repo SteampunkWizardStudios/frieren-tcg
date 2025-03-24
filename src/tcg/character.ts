@@ -153,30 +153,23 @@ export default class Character {
     if (this.setStatValue(roundedStatValue, stat)) {
       const statDescription =
         stat === StatsEnum.Ability ? "Ability Counter" : stat;
+      let statUpdateLines: string[] = [];
       if (adjustValue < 0) {
-        this.messageCache.push(
-          `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`,
-          TCGThread.Gameroom,
-        );
-        if (stat !== StatsEnum.HP || !this.additionalMetadata.manaSuppressed) {
-          this.messageCache.push(
-            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`,
-            TCGThread.Gameroom,
-          );
+        statUpdateLines.push(
+          `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`);
+        if (!(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed)) {
+          statUpdateLines.push(`${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`);
         }
       } else {
-        this.messageCache.push(
-          `${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`,
-          TCGThread.Gameroom,
-        );
-        if (stat !== StatsEnum.HP || !this.additionalMetadata.manaSuppressed) {
-          this.messageCache.push(
-            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`,
-            TCGThread.Gameroom,
-          );
+        statUpdateLines.push(
+          `${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`);
+        if (!(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed)) {
+          statUpdateLines.push(
+            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`);
         }
       }
 
+      this.messageCache.push(statUpdateLines.join(". "), TCGThread.Gameroom);
       return true;
     } else {
       this.messageCache.push(
