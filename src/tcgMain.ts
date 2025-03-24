@@ -252,43 +252,6 @@ export const tcgMain = async (
       characterToSelectedMoveMap[1] = opponentSelectedMove;
     }
 
-    // check forfeit
-    // check forfeited cases
-    if (
-      game.additionalMetadata.forfeited[0] &&
-      game.additionalMetadata.forfeited[1]
-    ) {
-      game.gameOver = true;
-      result = {
-        winner: null,
-        loser: null,
-      };
-      messageCache.push(
-        "# Both side foreited! The game ended in a draw!",
-        TCGThread.Gameroom,
-      );
-    } else if (game.additionalMetadata.forfeited[0]) {
-      game.gameOver = true;
-      result = {
-        winner: opponent,
-        loser: challenger,
-      };
-      messageCache.push(
-        `# ${game.getCharacter(0).name} forfeited!`,
-        TCGThread.Gameroom,
-      );
-    } else if (game.additionalMetadata.forfeited[1]) {
-      game.gameOver = true;
-      result = {
-        winner: challenger,
-        loser: opponent,
-      };
-      messageCache.push(
-        `# ${game.getCharacter(1).name} forfeited!`,
-        TCGThread.Gameroom,
-      );
-    }
-
     // move resolution step
     const moveFirst = game.getFirstMove(characterToSelectedMoveMap);
     const moveOrder = [moveFirst, 1 - moveFirst];
@@ -319,17 +282,35 @@ export const tcgMain = async (
           }
         }
 
-        // check game over state after each move
-        const losingCharacterIndex = game.checkGameOver();
-        if (game.gameOver) {
-          result = {
-            winner: indexToUserMapping[1 - losingCharacterIndex!],
-            loser: indexToUserMapping[losingCharacterIndex!],
-          };
-          return;
+        // check game over state after each move if the player didn't forfeit
+        if (!game.additionalMetadata.forfeited[characterIndex]) {
+          const losingCharacterIndex = game.checkGameOver();
+          if (game.gameOver) {
+            result = {
+              winner: indexToUserMapping[1 - losingCharacterIndex!],
+              loser: indexToUserMapping[losingCharacterIndex!],
+            };
+            return;
+          }
         }
       }
     });
+
+    // check forfeited tie cases
+    if (
+      game.additionalMetadata.forfeited[0] &&
+      game.additionalMetadata.forfeited[1]
+    ) {
+      game.gameOver = true;
+      result = {
+        winner: null,
+        loser: null,
+      };
+      messageCache.push(
+        "# Both side foreited! The game ended in a draw!",
+        TCGThread.Gameroom,
+      );
+    }
 
     // end of turn resolution
     let negativePriorityTimedEffect: Record<number, TimedEffect[]> = {

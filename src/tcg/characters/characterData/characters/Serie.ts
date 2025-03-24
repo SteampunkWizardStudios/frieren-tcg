@@ -25,51 +25,51 @@ const serieStats = new Stats({
 });
 
 export const Serie = new CharacterData({
-    name: CharacterName.Serie,
-    cosmetic: {
-      pronouns: {
-        possessive: "her",
-        reflexive: "herself",
-      },
-      emoji: CharacterEmoji.SERIE,
-      color: 0xe8b961,
-      imageUrl: imageUrl.vangerisuCardVer,
+  name: CharacterName.Serie,
+  cosmetic: {
+    pronouns: {
+      possessive: "her",
+      reflexive: "herself",
     },
-    stats: serieStats,
-    // get stats() {
-    //   const characterStats: any = getStats();
-    //   return new Stats(
-    //     {
-    //       [StatsEnum.HP]: characterStats.Serie.maxHp,
-    //       [StatsEnum.ATK]: characterStats.Serie.atk,
-    //       [StatsEnum.DEF]: characterStats.Serie.def,
-    //       [StatsEnum.SPD]: characterStats.Serie.spd,
-    //       [StatsEnum.Ability]: 0.0,
-    //     },
-    //     characterStats.Serie.currHp,
-    //   );
-    // },
-    cards: serieDeck,
-    ability: {
-      abilityName: "Warmonger",
-      abilityEffectString: `Any attack used by this character has its DMG+${(SERIE_WARMONGER_DAMAGE_BONUS * 100).toFixed(2)}%. After this character attacks directly, skip a turn.`,
-      abilityAttackEffect(game, characterIndex, _messageCache) {
-        game.additionalMetadata.attackModifier[characterIndex] =
-          1 + SERIE_WARMONGER_DAMAGE_BONUS;
-      },
-      abilityAfterDirectAttackEffect(
-        game,
-        characterIndex,
-        messageCache: MessageCache,
-      ) {
-        messageCache.push("Serie lazes about", TCGThread.Gameroom);
-        const character = game.getCharacter(characterIndex);
-        character.skipTurn = true;
-      },
+    emoji: CharacterEmoji.SERIE,
+    color: 0xe8b961,
+    imageUrl: imageUrl.vangerisuCardVer,
+  },
+  stats: serieStats,
+  // get stats() {
+  //   const characterStats: any = getStats();
+  //   return new Stats(
+  //     {
+  //       [StatsEnum.HP]: characterStats.Serie.maxHp,
+  //       [StatsEnum.ATK]: characterStats.Serie.atk,
+  //       [StatsEnum.DEF]: characterStats.Serie.def,
+  //       [StatsEnum.SPD]: characterStats.Serie.spd,
+  //       [StatsEnum.Ability]: 0.0,
+  //     },
+  //     characterStats.Serie.currHp,
+  //   );
+  // },
+  cards: serieDeck,
+  ability: {
+    abilityName: "Warmonger",
+    abilityEffectString: `Any attack used by this character has its DMG+${(SERIE_WARMONGER_DAMAGE_BONUS * 100).toFixed(2)}%. After this character attacks directly, skip a turn.`,
+    abilityAttackEffect(game, characterIndex, _messageCache) {
+      game.additionalMetadata.attackModifier[characterIndex] =
+        1 + SERIE_WARMONGER_DAMAGE_BONUS;
     },
-    additionalMetadata: {
-      manaSuppressed: true,
-      attackedThisTurn: false,
-      timedEffectAttackedThisTurn: false,
+    abilityAfterDirectAttackEffect(
+      game,
+      characterIndex,
+      messageCache: MessageCache,
+    ) {
+      messageCache.push("Serie lazes about", TCGThread.Gameroom);
+      const character = game.getCharacter(characterIndex);
+      character.skipTurn = true;
     },
+  },
+  additionalMetadata: {
+    manaSuppressed: true,
+    attackedThisTurn: false,
+    timedEffectAttackedThisTurn: false,
+  },
 });

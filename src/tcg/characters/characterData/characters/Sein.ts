@@ -26,56 +26,56 @@ const seinStats = new Stats({
 });
 
 export const Sein = new CharacterData({
-    name: CharacterName.Sein,
-    cosmetic: {
-      pronouns: {
-        possessive: "his",
-        reflexive: "himself",
-      },
-      emoji: CharacterEmoji.SEIN,
-      color: 0xa3caca,
-      imageUrl: imageUrl.vangerisuCardVer,
+  name: CharacterName.Sein,
+  cosmetic: {
+    pronouns: {
+      possessive: "his",
+      reflexive: "himself",
     },
-    stats: seinStats,
-    // get stats() {
-    //   const characterStats: any = getStats();
-    //   const seinStats = new Stats(
-    //     {
-    //       [StatsEnum.HP]: characterStats.Sein.maxHp,
-    //       [StatsEnum.ATK]: characterStats.Sein.atk,
-    //       [StatsEnum.DEF]: characterStats.Sein.def,
-    //       [StatsEnum.SPD]: characterStats.Sein.spd,
-    //       [StatsEnum.Ability]: 0.0,
-    //     },
-    //     characterStats.Sein.currHp,
-    //   );
-    //   return seinStats;
-    // },
-    cards: seinDeck,
-    ability: {
-      abilityName: "Goddess' Blessing",
-      abilityEffectString: `Heal for ${SEIN_BASE_HEALING}HP + ${SEIN_BASE_HEALING} * (Turn Count * ${(SEIN_HEALING_RAMP * 100).toFixed(2)}%) at the end of every turn.
+    emoji: CharacterEmoji.SEIN,
+    color: 0xa3caca,
+    imageUrl: imageUrl.vangerisuCardVer,
+  },
+  stats: seinStats,
+  // get stats() {
+  //   const characterStats: any = getStats();
+  //   const seinStats = new Stats(
+  //     {
+  //       [StatsEnum.HP]: characterStats.Sein.maxHp,
+  //       [StatsEnum.ATK]: characterStats.Sein.atk,
+  //       [StatsEnum.DEF]: characterStats.Sein.def,
+  //       [StatsEnum.SPD]: characterStats.Sein.spd,
+  //       [StatsEnum.Ability]: 0.0,
+  //     },
+  //     characterStats.Sein.currHp,
+  //   );
+  //   return seinStats;
+  // },
+  cards: seinDeck,
+  ability: {
+    abilityName: "Goddess' Blessing",
+    abilityEffectString: `Heal for ${SEIN_BASE_HEALING}HP + ${SEIN_BASE_HEALING} * (Turn Count * ${(SEIN_HEALING_RAMP * 100).toFixed(2)}%) at the end of every turn.
         This character can be healed past their maxHP.`,
-      abilityEndOfTurnEffect: (
-        game,
-        characterIndex,
-        messageCache: MessageCache,
-      ) => {
-        messageCache.push(
-          "Sein sought the Goddess' Blessings.",
-          TCGThread.Gameroom,
-        );
-        const character = game.characters[characterIndex];
-        const healing =
-          SEIN_BASE_HEALING +
-          SEIN_BASE_HEALING * (game.turnCount * SEIN_HEALING_RAMP);
-        character.adjustStat(healing, StatsEnum.HP);
-      },
+    abilityEndOfTurnEffect: (
+      game,
+      characterIndex,
+      messageCache: MessageCache,
+    ) => {
+      messageCache.push(
+        "Sein sought the Goddess' Blessings.",
+        TCGThread.Gameroom,
+      );
+      const character = game.characters[characterIndex];
+      const healing =
+        SEIN_BASE_HEALING +
+        SEIN_BASE_HEALING * (game.turnCount * SEIN_HEALING_RAMP);
+      character.adjustStat(healing, StatsEnum.HP);
     },
-    additionalMetadata: {
-      attackedThisTurn: false,
-      timedEffectAttackedThisTurn: false,
-      manaSuppressed: false,
-      overheal: true,
-    },
+  },
+  additionalMetadata: {
+    attackedThisTurn: false,
+    timedEffectAttackedThisTurn: false,
+    manaSuppressed: false,
+    overheal: true,
+  },
 });

@@ -63,6 +63,17 @@ export const initiateGame = async (
       console.log("Handle ranking here");
     }
 
+    // thread cleanup
+    await gameThread.setArchived(true, "Game completed.");
+    await gameThread.members.remove(challenger.id);
+    await gameThread.members.remove(opponent.id);
+
+    await challengerThread.setArchived(true, "Game completed.");
+    await challengerThread.members.remove(challenger.id);
+
+    await opponentThread.setArchived(true, "Game completed.");
+    await opponentThread.members.remove(opponent.id);
+
     const resultEmbed = new EmbedBuilder()
       .setColor(0xc5c3cc)
       .setTitle(
@@ -71,17 +82,20 @@ export const initiateGame = async (
       .setFooter({
         text: `Game ID: ${gameId}`,
       });
+
     if (winner && loser) {
       await channel.send({
         embeds: [
           resultEmbed.setDescription(`Game over! ${winner} defeated ${loser}!`),
         ],
+        reply: { messageReference: gameId },
       });
     } else {
       await channel.send({
         embeds: [
           resultEmbed.setDescription(`Game over! The game ended in a tie!`),
         ],
+        reply: { messageReference: gameId },
       });
     }
   } catch (error) {

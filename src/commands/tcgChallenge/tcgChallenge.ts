@@ -31,10 +31,10 @@ export const command: Command<ChatInputCommandInteraction> = {
             name: "Slow - 2m Turn Duration. Hands and Draws revealed",
             value: GameMode.SLOW,
           },
-          {
-            name: "PvE - 2m Turn Duration. Public challenged player thread. Cannot be Ranked.",
-            value: GameMode.PVE,
-          },
+          // {
+          //   name: "PvE - 2m Turn Duration. Public challenged player thread. Cannot be Ranked.",
+          //   value: GameMode.PVE,
+          // },
         ),
     )
     .addBooleanOption((option) =>

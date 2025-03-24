@@ -158,7 +158,10 @@ export default class Game {
     let losingIndex = 0;
     this.characters.forEach((character, index) => {
       if (!this.gameOver) {
-        if (character.stats.stats.HP <= 0) {
+        if (
+          character.stats.stats.HP <= 0 ||
+          this.additionalMetadata.forfeited[index]
+        ) {
           this.messageCache.push(
             `# ${character.name} has been defeated!`,
             TCGThread.Gameroom,
