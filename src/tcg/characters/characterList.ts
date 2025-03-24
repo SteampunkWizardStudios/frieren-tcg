@@ -1,9 +1,9 @@
 import { Frieren } from "./characterData/characters/Frieren";
 import { Sense } from "./characterData/characters/Sense";
 import { Stille } from "./characterData/characters/Stille";
-import { createSerie } from "./characterData/characters/Serie";
+import { Serie } from "./characterData/characters/Serie";
 import { Linie } from "./characterData/characters/Linie";
-import { createSein } from "./characterData/characters/Sein";
+import { Sein } from "./characterData/characters/Sein";
 import { Stark } from "./characterData/characters/Stark";
 import { Laufen } from "./characterData/characters/Laufen";
 import { CharacterData } from "./characterData/characterData";
@@ -31,9 +31,8 @@ export const characterSelectState = {
 
 export function createCharacterList(user: User): CharacterData[] {
   const fullCharacterList = [
-    createSerie(),
-    createSein(),
-    createSeinSerie(),
+    Serie,
+    Sein,
     Frieren,
     Sense,
     Stille,
@@ -41,6 +40,7 @@ export function createCharacterList(user: User): CharacterData[] {
     Stark,
     Laufen,
 
+    createSeinSerie(),
     StoneGeisel,
     FireGolem,
     StoneGolem,
@@ -52,15 +52,17 @@ export function createCharacterList(user: User): CharacterData[] {
     CosmicTon,
   ];
 
-  if (ALLOWLISTED_USER_IDS.has(user.id)) {
-    return fullCharacterList;
-  } else {
-    if (characterSelectState.isSeinSerieEnabled) {
-      return fullCharacterList.slice(0, 3);
-    } else {
-      return fullCharacterList.slice(0, 2); // only Serie/Sein
-    }
-  }
+  return fullCharacterList;
+
+//   if (ALLOWLISTED_USER_IDS.has(user.id)) {
+//     return fullCharacterList;
+//   } else {
+//     if (characterSelectState.isSeinSerieEnabled) {
+//       return fullCharacterList.slice(0, 3);
+//     } else {
+//       return fullCharacterList.slice(0, 2); // only Serie/Sein
+//     }
+//   }
 }
 
 // export const characterList: CharacterData[] = [

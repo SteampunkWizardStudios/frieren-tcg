@@ -13,7 +13,7 @@ export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
     .setName("tcg-admin")
     .setDescription("Admin commands for TCG game")
-    .setContexts([InteractionContextType.Guild, InteractionContextType.BotDM])
+    .setContexts([InteractionContextType.Guild])
     .addSubcommand((subcommand) =>
       subcommand
         .setName("adjust-stat")

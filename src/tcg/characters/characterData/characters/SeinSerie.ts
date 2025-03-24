@@ -52,7 +52,7 @@ export const createSeinSerie = () =>
       emoji: CharacterEmoji.SEIN_SERIE,
       color: 0xc5c3cc,
       imageUrl:
-        "https://cdn.discordapp.com/attachments/1348668478709698621/1351033077773893653/ilovegambling.png?ex=67ded5da&is=67dd845a&hm=85d91cd04eec12a77e90d59aa8d52c76fe31697c7ccfb8fd06ea352d86b5b6c0&",
+        "https://cdn.discordapp.com/attachments/1348668478709698621/1353432381020967095/seriesein.png?ex=67e1a1a1&is=67e05021&hm=86fdf67e8d338417403df66251c676c17edd22ea17221188f7b312b4f40b74e8&",
     },
     get stats() {
       const characterStats: any = getStats();

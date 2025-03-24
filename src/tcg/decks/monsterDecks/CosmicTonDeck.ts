@@ -65,7 +65,7 @@ const solitude = new Card({
     messageCache.push(randomMessage, TCGThread.Gameroom);
 
     const hp = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(hp, StatsEnum.DEF);
+    character.adjustStat(hp, StatsEnum.HP);
   },
 });
 
@@ -109,7 +109,7 @@ export const a_curse = new Card({
 
 const guiltTrip = new Card({
   title: "Guilt Trip",
-  description: ([def, spd]) => `DEF-${def}. SPD-${spd}`,
+  description: ([def, spd]) => `Opp's DEF-${def}. Opp's SPD-${spd}`,
   emoji: CardEmoji.HOURGLASS,
   effects: [3, 3],
   cardAction: function (this: Card, game, characterIndex, messageCache) {

@@ -25,8 +25,7 @@ const seinStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const createSein = () =>
-  new CharacterData({
+export const Sein = new CharacterData({
     name: CharacterName.Sein,
     cosmetic: {
       pronouns: {
@@ -37,20 +36,21 @@ export const createSein = () =>
       color: 0xa3caca,
       imageUrl: imageUrl.vangerisuCardVer,
     },
-    get stats() {
-      const characterStats: any = getStats();
-      const seinStats = new Stats(
-        {
-          [StatsEnum.HP]: characterStats.Sein.maxHp,
-          [StatsEnum.ATK]: characterStats.Sein.atk,
-          [StatsEnum.DEF]: characterStats.Sein.def,
-          [StatsEnum.SPD]: characterStats.Sein.spd,
-          [StatsEnum.Ability]: 0.0,
-        },
-        characterStats.Sein.currHp,
-      );
-      return seinStats;
-    },
+    stats: seinStats,
+    // get stats() {
+    //   const characterStats: any = getStats();
+    //   const seinStats = new Stats(
+    //     {
+    //       [StatsEnum.HP]: characterStats.Sein.maxHp,
+    //       [StatsEnum.ATK]: characterStats.Sein.atk,
+    //       [StatsEnum.DEF]: characterStats.Sein.def,
+    //       [StatsEnum.SPD]: characterStats.Sein.spd,
+    //       [StatsEnum.Ability]: 0.0,
+    //     },
+    //     characterStats.Sein.currHp,
+    //   );
+    //   return seinStats;
+    // },
     cards: seinDeck,
     ability: {
       abilityName: "Goddess' Blessing",
@@ -78,4 +78,4 @@ export const createSein = () =>
       manaSuppressed: false,
       overheal: true,
     },
-  });
+});

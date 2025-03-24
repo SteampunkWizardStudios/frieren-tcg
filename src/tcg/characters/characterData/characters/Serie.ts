@@ -24,8 +24,7 @@ const serieStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const createSerie = () =>
-  new CharacterData({
+export const Serie = new CharacterData({
     name: CharacterName.Serie,
     cosmetic: {
       pronouns: {
@@ -36,19 +35,20 @@ export const createSerie = () =>
       color: 0xe8b961,
       imageUrl: imageUrl.vangerisuCardVer,
     },
-    get stats() {
-      const characterStats: any = getStats();
-      return new Stats(
-        {
-          [StatsEnum.HP]: characterStats.Serie.maxHp,
-          [StatsEnum.ATK]: characterStats.Serie.atk,
-          [StatsEnum.DEF]: characterStats.Serie.def,
-          [StatsEnum.SPD]: characterStats.Serie.spd,
-          [StatsEnum.Ability]: 0.0,
-        },
-        characterStats.Serie.currHp,
-      );
-    },
+    stats: serieStats,
+    // get stats() {
+    //   const characterStats: any = getStats();
+    //   return new Stats(
+    //     {
+    //       [StatsEnum.HP]: characterStats.Serie.maxHp,
+    //       [StatsEnum.ATK]: characterStats.Serie.atk,
+    //       [StatsEnum.DEF]: characterStats.Serie.def,
+    //       [StatsEnum.SPD]: characterStats.Serie.spd,
+    //       [StatsEnum.Ability]: 0.0,
+    //     },
+    //     characterStats.Serie.currHp,
+    //   );
+    // },
     cards: serieDeck,
     ability: {
       abilityName: "Warmonger",
@@ -72,4 +72,4 @@ export const createSerie = () =>
       attackedThisTurn: false,
       timedEffectAttackedThisTurn: false,
     },
-  });
+});
