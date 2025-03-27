@@ -3,23 +3,42 @@ import {
   a_theHeightOfMagic,
   a_vollzanbel,
   a_zoltraak,
+  barrierMagicAnalysis,
+  demonMagicAnalysis,
 } from "../FrierenDeck";
-import { a_supersonicStrike, a_whip, jilwer } from "../LaufenDeck";
+import { a_supersonicStrike, a_whip, hide, jilwer } from "../LaufenDeck";
 import {
   a_erfassenAxe,
   a_erfassenKnife,
   a_erfassenSpear,
   a_erfassenSword,
+  adapt,
+  manaDetection,
 } from "../LinieDeck";
-import { a_curse, a_killingMagic } from "../monsterDecks/CosmicTonDeck";
+import {
+  a_curse,
+  a_killingMagic,
+  solitude,
+} from "../monsterDecks/CosmicTonDeck";
 import {
   a_threeSpearsOfTheGoddess,
   a_trustInYourAllyFernsBarrage,
   a_trustInYourAllyFrierensZoltraak,
+  awakening,
+  poisonCure,
 } from "../SeinDeck";
-import { a_hairWhip, a_pierce, a_piercingDrill } from "../SenseDeck";
+import {
+  a_hairWhip,
+  a_pierce,
+  a_piercingDrill,
+  harden,
+  holeUp,
+  rest,
+  teaParty,
+  teaTime,
+} from "../SenseDeck";
 
-export const offensiveMagic = [
+export const serie_offensiveMagic = [
   a_zoltraak,
   a_judradjim,
   a_vollzanbel,
@@ -39,4 +58,18 @@ export const offensiveMagic = [
 
   // a_curse,
   a_killingMagic,
+];
+
+export const serie_utilityMagic = [
+  solitude,
+  harden,
+  rest,
+  awakening,
+  poisonCure,
+  adapt,
+  manaDetection,
+  jilwer,
+  hide,
+  barrierMagicAnalysis,
+  demonMagicAnalysis,
 ];

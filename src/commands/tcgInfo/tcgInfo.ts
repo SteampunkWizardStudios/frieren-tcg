@@ -6,7 +6,10 @@ import {
 } from "discord.js";
 import type { Command } from "../../types/command";
 import { showGameHowToPlay } from "./info/gameHowToPlay";
-import { showGameAdvancedRules } from "./info/gameAdvancedRules";
+import {
+  AdvancedRulesSection,
+  showGameAdvancedRules,
+} from "./info/gameAdvancedRules";
 import { showCharacterInfo } from "./info/characterInfo";
 import { showRankingSystem } from "./info/rankingSystem";
 
@@ -41,6 +44,30 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setName("advanced-rules")
         .setDescription(
           "Get information about the advanced rules and edge cases",
+        )
+        .addStringOption((option) =>
+          option
+            .setName("section")
+            .setDescription("Select the section to look up information on.")
+            .setRequired(true)
+            .addChoices(
+              {
+                name: "Empowerment and Formulas",
+                value: AdvancedRulesSection.EmpowermentAndEffectCalculation,
+              },
+              {
+                name: "Turn Limit, Interactions and Edge Cases",
+                value: AdvancedRulesSection.InteractionsAndEdgeCases,
+              },
+              {
+                name: "Serie's Living Grimoire: Offensive Chapter's Card Pool",
+                value: AdvancedRulesSection.SeriesPoolOffensive,
+              },
+              {
+                name: "Serie's Living Grimoire: Utility Chapter's Card Pool",
+                value: AdvancedRulesSection.SeriesPoolUtility,
+              },
+            ),
         )
         .addBooleanOption((option) =>
           option

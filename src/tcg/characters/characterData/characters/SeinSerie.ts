@@ -16,8 +16,8 @@ import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import { getStats } from "./statsUtil/getStats";
 import {
-  a_livingGrimoire,
-  a_livingGrimoire1,
+  a_livingGrimoireOffensive,
+  a_livingGrimoireOffensive1,
   ancientBarrierMagic,
   basicDefensiveMagic,
   mock,
@@ -28,8 +28,8 @@ import Rolls from "../../../util/rolls";
 const GAMBLER_DAMAGE_BONUS = 0.5;
 
 const seinSerieDeck = [
-  { card: a_livingGrimoire, count: 2 },
-  { card: a_livingGrimoire1, count: 2 },
+  { card: a_livingGrimoireOffensive, count: 2 },
+  { card: a_livingGrimoireOffensive1, count: 2 },
   { card: a_trustInYourAllyFernsBarrage, count: 2 },
   { card: a_threeSpearsOfTheGoddess, count: 2 },
   { card: poisonCure, count: 1 },

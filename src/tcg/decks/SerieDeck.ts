@@ -1,15 +1,19 @@
 import Deck from "../deck";
 import Card from "../card";
-import { offensiveMagic } from "./utilDecks/offensiveMagic";
+import {
+  serie_offensiveMagic,
+  serie_utilityMagic,
+} from "./utilDecks/serieMagic";
 import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import { fieldOfFlower } from "./FrierenDeck";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
-export const a_livingGrimoire = new Card({
-  title: "Living Grimoire",
-  description: () => "Use a random offensive magic",
+export const a_livingGrimoireOffensive = new Card({
+  title: "Living Grimoire: Offense Chapter",
+  description: () =>
+    "Use a random offensive magic with this card's Empower level + 2.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -24,10 +28,12 @@ export const a_livingGrimoire = new Card({
     );
 
     const baseCard =
-      offensiveMagic[Math.floor(Math.random() * offensiveMagic.length)];
+      serie_offensiveMagic[
+        Math.floor(Math.random() * serie_offensiveMagic.length)
+      ];
     const newCard = new Card({
       ...baseCard,
-      empowerLevel: this.empowerLevel,
+      empowerLevel: this.empowerLevel + 2,
     });
 
     messageCache.push(
@@ -38,8 +44,42 @@ export const a_livingGrimoire = new Card({
   },
 });
 
-export const a_livingGrimoire1 = new Card({
-  ...a_livingGrimoire,
+export const a_livingGrimoireUtility = new Card({
+  title: "Living Grimoire: Utility Chapter",
+  description: () =>
+    "Use a random utility magic with this card's Empower level + 2.",
+  emoji: CardEmoji.SERIE_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=67df98ad&is=67de472d&hm=4e4a0d4882573e7b51f3eacc7fcdd5e77d515168b05e319b221b368a9cfe2d67&",
+  },
+  effects: [],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.getCharacter(characterIndex);
+    messageCache.push(
+      `${character.name} found an interesting magic.`,
+      TCGThread.Gameroom,
+    );
+
+    const baseCard =
+      serie_utilityMagic[
+        Math.floor(Math.random() * serie_offensiveMagic.length)
+      ];
+    const newCard = new Card({
+      ...baseCard,
+      empowerLevel: this.empowerLevel + 2,
+    });
+
+    messageCache.push(
+      `${character.name} used **${newCard.getTitle()}**.`,
+      TCGThread.Gameroom,
+    );
+    newCard.cardAction(game, characterIndex, messageCache);
+  },
+});
+
+export const a_livingGrimoireOffensive1 = new Card({
+  ...a_livingGrimoireOffensive,
   cosmetic: {
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015121150022/Living_Grimoire1_1.png?ex=67df98ad&is=67de472d&hm=db27a11288f3168c98e39af2a3351c777dd280922231f3d422f7f397041b5bbd&",
@@ -47,8 +87,8 @@ export const a_livingGrimoire1 = new Card({
   empowerLevel: 1,
 });
 
-const a_livingGrimoire2 = new Card({
-  ...a_livingGrimoire,
+const a_livingGrimoireOffensive2 = new Card({
+  ...a_livingGrimoireOffensive,
   empowerLevel: 2,
   cosmetic: {
     cardImageUrl:
@@ -123,7 +163,7 @@ export const basicDefensiveMagic = new Card({
   },
 });
 
-const unbreakableBarrier = new Card({
+export const unbreakableBarrier = new Card({
   title: "Unbreakable Barrier",
   description: ([atk, def, oppSpd]) =>
     `HP-10. ATK+${atk} for 5 turns. DEF+${def} for 5 turns. Opponent's SPD-${oppSpd} for 5 turns.`,
@@ -213,9 +253,10 @@ export const ancientBarrierMagic = new Card({
 });
 
 export const serieDeck = [
-  { card: a_livingGrimoire, count: 2 },
-  { card: a_livingGrimoire1, count: 2 },
-  { card: a_livingGrimoire2, count: 2 },
+  { card: a_livingGrimoireOffensive, count: 2 },
+  { card: a_livingGrimoireOffensive1, count: 2 },
+  { card: a_livingGrimoireOffensive2, count: 1 },
+  { card: a_livingGrimoireUtility, count: 2 },
   { card: fieldOfFlower, count: 2 },
   { card: mock, count: 3 },
   { card: basicDefensiveMagic, count: 1 },

@@ -67,7 +67,8 @@ export const fieldOfFlower = new Card({
 
 export const a_judradjim = new Card({
   title: "Destructive Lightning Analysis: Judradjim",
-  description: ([dmg]) => `HP-7. DMG ${dmg}. 1 Analysis stack will be gained after attack.`,
+  description: ([dmg]) =>
+    `HP-7. DMG ${dmg}. 1 Analysis stack will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
   tags: { PostAnalysis: 1 },
   effects: [10],
@@ -100,7 +101,7 @@ export const a_vollzanbel = new Card({
   },
 });
 
-const barrierMagicAnalysis = new Card({
+export const barrierMagicAnalysis = new Card({
   title: "Barrier Magic Analysis",
   description: ([atk, spd, def]) =>
     `ATK+${atk}. SPD+${spd}. Opponent's DEF-${def}`,
@@ -129,7 +130,7 @@ const barrierMagicAnalysis = new Card({
   },
 });
 
-const demonMagicAnalysis = new Card({
+export const demonMagicAnalysis = new Card({
   title: "Demon Magic Analysis",
   description: ([atk, spd, def]) => `ATK+${atk}. SPD+${spd}. DEF+${def}.`,
   emoji: CardEmoji.FRIEREN_CARD,

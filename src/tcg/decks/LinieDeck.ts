@@ -43,7 +43,7 @@ const imitate = new Card({
   },
 });
 
-const adapt = new Card({
+export const adapt = new Card({
   title: "Adapt",
   description: ([spd, atkDef, hp]) =>
     `SPD+${spd}. If HP > 50, ATK+${atkDef}, DEF+${atkDef}. If HP <= 50, heal ${hp} HP.`,
@@ -74,7 +74,7 @@ const adapt = new Card({
   },
 });
 
-const manaDetection = new Card({
+export const manaDetection = new Card({
   title: "Mana Detection",
   description: ([spd, bigNumber, smallNumber]) =>
     `SPD+${spd}. If Opp's DEF >= Opp's ATK, ATK+${bigNumber}, DEF+${smallNumber}. Otherwise, ATK+${smallNumber}, DEF+${bigNumber}.`,

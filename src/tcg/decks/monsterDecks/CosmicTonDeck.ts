@@ -50,7 +50,7 @@ const earPiercingScream = new Card({
   },
 });
 
-const solitude = new Card({
+export const solitude = new Card({
   title: "Solitude",
   description: ([hp]) => `Heal for ${hp}.`,
   emoji: CardEmoji.HEART,

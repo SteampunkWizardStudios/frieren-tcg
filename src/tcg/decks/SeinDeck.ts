@@ -186,7 +186,7 @@ export const smokeBreak = new Card({
   },
 });
 
-const awakening = new Card({
+export const awakening = new Card({
   title: "Awakening",
   description: ([atk, def, spd]) => `ATK+${atk}. DEF+${def}. SPD+${spd}.`,
   emoji: CardEmoji.SEIN_CARD,

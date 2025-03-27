@@ -29,7 +29,7 @@ export const a_hairWhip = new Card({
   },
 });
 
-const harden = new Card({
+export const harden = new Card({
   title: "Harden",
   description: ([def]) => `HP-2. DEF+${def}`,
   effects: [2],
@@ -50,7 +50,7 @@ const harden = new Card({
   },
 });
 
-const holeUp = new Card({
+export const holeUp = new Card({
   title: "Hole Up",
   description: ([def]) =>
     `Discard 1 card at random and draw 1 card. SPD-2. DEF+${def}`,
@@ -73,7 +73,7 @@ const holeUp = new Card({
   },
 });
 
-const rest = new Card({
+export const rest = new Card({
   title: "Rest",
   description: ([hp]) => `DEF-2. Heal ${hp} HP`,
   effects: [10],
@@ -140,7 +140,7 @@ const hairBarrier = new Card({
   },
 });
 
-const teaTime = new Card({
+export const teaTime = new Card({
   title: "Tea Time",
   description: ([def, hp]) =>
     `DEF+${def} for both characters. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
@@ -164,7 +164,7 @@ const teaTime = new Card({
   },
 });
 
-const teaParty = new Card({
+export const teaParty = new Card({
   title: "Tea Party",
   description: ([def, hp]) =>
     `DEF+${def} for both characters. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,

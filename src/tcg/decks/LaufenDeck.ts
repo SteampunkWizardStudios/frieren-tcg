@@ -71,7 +71,7 @@ export const a_whip = new Card({
   },
 });
 
-const hide = new Card({
+export const hide = new Card({
   title: "Hide",
   description: ([spd, spdBuff, hp]) =>
     `SPD+${spd}. Increases SPD by an additional ${spdBuff} until the end of the turn. Heal ${hp} HP.`,
@@ -193,31 +193,39 @@ const parry = new Card({
 
 export const jilwer = new Card({
   title: "Jilwer",
-  description: ([spd]) => `HP-20. Increases SPD by ${spd} for 2 turns.`,
+  description: ([spd]) =>
+    `Increases SPD by ${spd} for 1 - 3 turns. At the end of every turn, HP-10.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [50],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} used Jilwer!`, TCGThread.Gameroom);
-    if (character.adjustStat(-20, StatsEnum.HP)) {
-      const spdIncrease = this.calculateEffectValue(this.effects[0]);
-      character.adjustStat(spdIncrease, StatsEnum.SPD);
 
-      character.timedEffects.push(
-        new TimedEffect({
-          name: "Jilwer",
-          description: `Increases SPD by ${spdIncrease} for 2 turns.`,
-          turnDuration: 2,
-          endOfTimedEffectAction: (_game, _characterIndex) => {
-            messageCache.push(
-              `${character.name} exits ${character.cosmetic.pronouns.possessive} Jilwer state.`,
-              TCGThread.Gameroom,
-            );
-            character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
-          },
-        }),
-      );
-    }
+    const turnCount = Math.floor(Math.random() * 3) + 1;
+    const spdIncrease = this.calculateEffectValue(this.effects[0]);
+    character.adjustStat(spdIncrease, StatsEnum.SPD);
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Jilwer",
+        description: `Increases SPD by ${spdIncrease} for ${turnCount} turns.`,
+        turnDuration: turnCount,
+        endOfTurnAction: (_game, _characterIndex, _messageCache) => {
+          messageCache.push(
+            `${character.name} tires ${character.cosmetic.pronouns.reflexive} out.`,
+            TCGThread.Gameroom,
+          );
+          character.adjustStat(-10, StatsEnum.HP);
+        },
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+          messageCache.push(
+            `${character.name} exits ${character.cosmetic.pronouns.possessive} Jilwer state.`,
+            TCGThread.Gameroom,
+          );
+          character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
+        },
+      }),
+    );
   },
 });
 

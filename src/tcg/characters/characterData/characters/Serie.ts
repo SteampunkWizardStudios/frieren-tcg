@@ -6,9 +6,8 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import { getStats } from "./statsUtil/getStats";
 
-const SERIE_WARMONGER_DAMAGE_BONUS = 1.0;
+const SERIE_WARMONGER_DAMAGE_BONUS = 0.75;
 
 const imageUrl: Record<string, string> = {
   icon: "https://cdn.discordapp.com/attachments/1346555621952192522/1347746220025577511/Serie_anime_portrait.webp?ex=67dcc3fa&is=67db727a&hm=7207f7eb67d49a3ce4bcf6cd0e06128d4e4fe21d53a5c4d47f532162d247dd3f&",
@@ -36,19 +35,6 @@ export const Serie = new CharacterData({
     imageUrl: imageUrl.vangerisuCardVer,
   },
   stats: serieStats,
-  // get stats() {
-  //   const characterStats: any = getStats();
-  //   return new Stats(
-  //     {
-  //       [StatsEnum.HP]: characterStats.Serie.maxHp,
-  //       [StatsEnum.ATK]: characterStats.Serie.atk,
-  //       [StatsEnum.DEF]: characterStats.Serie.def,
-  //       [StatsEnum.SPD]: characterStats.Serie.spd,
-  //       [StatsEnum.Ability]: 0.0,
-  //     },
-  //     characterStats.Serie.currHp,
-  //   );
-  // },
   cards: serieDeck,
   ability: {
     abilityName: "Warmonger",
