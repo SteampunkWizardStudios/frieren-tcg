@@ -40,16 +40,16 @@ export function createCharacterList(user: User): CharacterData[] {
     Stark,
     Laufen,
 
-    createSeinSerie(),
-    StoneGeisel,
-    FireGolem,
-    StoneGolem,
-    AngryMimic,
-    SpiegelSein,
-    SpiegelSerie,
-    SpiegelSense,
-    ShadowDragon,
-    CosmicTon,
+    // createSeinSerie(),
+    // StoneGeisel,
+    // FireGolem,
+    // StoneGolem,
+    // AngryMimic,
+    // SpiegelSein,
+    // SpiegelSerie,
+    // SpiegelSense,
+    // ShadowDragon,
+    // CosmicTon,
   ];
 
   return fullCharacterList;

@@ -8,17 +8,12 @@ export default class DefaultCards {
   static readonly discardCard: Card = new Card({
     title: "Discard",
     description: () =>
-      "Discards all cards in your current draws. Draw the same number of cards you discarded.",
+      "Discards all cards in your current draws. Draw the same number of cards you discarded. Empower all cards in your hand afterwards.",
     effects: [],
     emoji: CardEmoji.RECYCLE,
     printEmpower: false,
     cardAction: (game, characterIndex, messageCache) => {
       const character = game.getCharacter(characterIndex);
-      character.empowerHand();
-      messageCache.push(
-        `All cards in ${character.name}'s hand are empowered!`,
-        TCGThread.Gameroom,
-      );
 
       const handsIndicesDescending = Object.keys(
         game.additionalMetadata.currentDraws[characterIndex],
@@ -30,6 +25,12 @@ export default class DefaultCards {
         character.discardCard(index);
         character.drawCard();
       }
+
+      character.empowerHand();
+      messageCache.push(
+        `All cards in ${character.name}'s hand are empowered!`,
+        TCGThread.Gameroom,
+      );
     },
   });
 

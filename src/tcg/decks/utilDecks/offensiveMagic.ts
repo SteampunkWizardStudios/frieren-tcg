@@ -32,7 +32,7 @@ export const offensiveMagic = [
   a_erfassenSword,
   a_trustInYourAllyFernsBarrage,
   a_trustInYourAllyFrierensZoltraak,
-  a_threeSpearsOfTheGoddess,
+  // a_threeSpearsOfTheGoddess,
   a_hairWhip,
   a_pierce,
   a_piercingDrill,

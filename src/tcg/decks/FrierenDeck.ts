@@ -9,10 +9,10 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 export const a_zoltraak = new Card({
   title: "Offensive Magic Analysis: Zoltraak",
   description: ([dmg]) =>
-    `HP-4. DMG ${dmg}. 1 Analysis stack will be gained after attack.`,
+    `HP-5. DMG ${dmg}. 2 Analysis stacks will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
-  tags: { PostAnalysis: 1 },
-  effects: [7],
+  tags: { PostAnalysis: 2 },
+  effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
@@ -66,9 +66,10 @@ export const fieldOfFlower = new Card({
 });
 
 export const a_judradjim = new Card({
-  title: "Destructive Lightning: Judradjim",
-  description: ([dmg]) => `HP-7. DMG ${dmg}`,
+  title: "Destructive Lightning Analysis: Judradjim",
+  description: ([dmg]) => `HP-7. DMG ${dmg}. 1 Analysis stack will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
+  tags: { PostAnalysis: 1 },
   effects: [10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

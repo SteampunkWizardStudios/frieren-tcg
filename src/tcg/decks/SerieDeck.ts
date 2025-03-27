@@ -126,13 +126,13 @@ export const basicDefensiveMagic = new Card({
 const unbreakableBarrier = new Card({
   title: "Unbreakable Barrier",
   description: ([atk, def, oppSpd]) =>
-    `HP-7. ATK+${atk} for 5 turns. DEF+${def} for 5 turns. Opponent's SPD-${oppSpd} for 5 turns.`,
+    `HP-10. ATK+${atk} for 5 turns. DEF+${def} for 5 turns. Opponent's SPD-${oppSpd} for 5 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873016182177984/Unbreakable_Barrier.png?ex=67df98ae&is=67de472e&hm=ecaf6053851a3bb12e9d9b0ba65dc932f11a6e97c3efe3c4af20126fc8407ba3&",
   },
-  effects: [3, 3, 3],
+  effects: [5, 5, 5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -140,7 +140,7 @@ const unbreakableBarrier = new Card({
       TCGThread.Gameroom,
     );
 
-    if (character.adjustStat(-7, StatsEnum.HP)) {
+    if (character.adjustStat(-10, StatsEnum.HP)) {
       const opponent = game.getCharacter(1 - characterIndex);
       const atkBuff = this.calculateEffectValue(this.effects[0]);
       const defBuff = this.calculateEffectValue(this.effects[1]);
@@ -170,7 +170,7 @@ const unbreakableBarrier = new Card({
 export const ancientBarrierMagic = new Card({
   title: "Ancient Barrier Magic",
   description: ([atk, def, oppSpd]) =>
-    `HP-15. ATK+${atk} for 5 turns. Opponent's DEF-${def} for 5 turns. Opponent's SPD -${oppSpd} for 5 turns.`,
+    `HP-20. ATK+${atk} for 7 turns. Opponent's DEF-${def} for 7 turns. Opponent's SPD -${oppSpd} for 7 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -198,7 +198,7 @@ export const ancientBarrierMagic = new Card({
         new TimedEffect({
           name: "Ancient Barrier Magic",
           description: `An omnious barrier envelopes the battlefield...`,
-          turnDuration: 5,
+          turnDuration: 7,
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
 
@@ -213,11 +213,11 @@ export const ancientBarrierMagic = new Card({
 });
 
 export const serieDeck = [
-  { card: a_livingGrimoire, count: 3 },
+  { card: a_livingGrimoire, count: 2 },
   { card: a_livingGrimoire1, count: 2 },
   { card: a_livingGrimoire2, count: 2 },
   { card: fieldOfFlower, count: 2 },
-  { card: mock, count: 2 },
+  { card: mock, count: 3 },
   { card: basicDefensiveMagic, count: 1 },
   { card: unbreakableBarrier, count: 2 },
   { card: ancientBarrierMagic, count: 1 },
