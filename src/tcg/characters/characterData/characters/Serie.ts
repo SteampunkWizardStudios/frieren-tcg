@@ -7,7 +7,7 @@ import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 
-const SERIE_WARMONGER_DAMAGE_BONUS = 0.75;
+const SERIE_TOYING_DAMAGE_BONUS = 0.75;
 
 const imageUrl: Record<string, string> = {
   icon: "https://cdn.discordapp.com/attachments/1346555621952192522/1347746220025577511/Serie_anime_portrait.webp?ex=67dcc3fa&is=67db727a&hm=7207f7eb67d49a3ce4bcf6cd0e06128d4e4fe21d53a5c4d47f532162d247dd3f&",
@@ -37,25 +37,45 @@ export const Serie = new CharacterData({
   stats: serieStats,
   cards: serieDeck,
   ability: {
-    abilityName: "Warmonger",
-    abilityEffectString: `Any attack used by this character has its DMG+${(SERIE_WARMONGER_DAMAGE_BONUS * 100).toFixed(2)}%. After this character attacks directly, skip a turn.`,
+    abilityName: "Toying Around",
+    abilityEffectString: `Any attack used by this character has its DMG+${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%. 
+      The turn after this character attacks directly, DMG-${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%.`,
+    abilityStartOfTurnEffect(game, characterIndex, messageCache) {
+      const character = game.getCharacter(characterIndex);
+      if (character.additionalMetadata.serieToyingNextTurn) {
+        messageCache.push("Serie acts aloof.", TCGThread.Gameroom);
+        character.additionalMetadata.serieToyingTurn = true;
+        character.additionalMetadata.serieToyingNextTurn = false;
+      } else {
+        character.additionalMetadata.serieToyingTurn = false;
+      }
+    },
     abilityAttackEffect(game, characterIndex, _messageCache) {
-      game.additionalMetadata.attackModifier[characterIndex] =
-        1 + SERIE_WARMONGER_DAMAGE_BONUS;
+      const character = game.getCharacter(characterIndex);
+      if (character.additionalMetadata.serieToyingTurn) {
+        game.additionalMetadata.attackModifier[characterIndex] =
+          1 - SERIE_TOYING_DAMAGE_BONUS;
+      } else {
+        game.additionalMetadata.attackModifier[characterIndex] =
+          1 + SERIE_TOYING_DAMAGE_BONUS;
+      }
     },
     abilityAfterDirectAttackEffect(
       game,
       characterIndex,
-      messageCache: MessageCache,
+      _messageCache: MessageCache,
     ) {
-      messageCache.push("Serie lazes about", TCGThread.Gameroom);
       const character = game.getCharacter(characterIndex);
-      character.skipTurn = true;
+      if (!character.additionalMetadata.serieToyingTurn) {
+        character.additionalMetadata.serieToyingNextTurn = true;
+      }
     },
   },
   additionalMetadata: {
     manaSuppressed: true,
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
+    serieToyingNextTurn: false,
+    serieToyingTurn: false,
   },
 });

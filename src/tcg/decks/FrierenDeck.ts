@@ -12,7 +12,7 @@ export const a_zoltraak = new Card({
     `HP-5. DMG ${dmg}. 2 Analysis stacks will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
   tags: { PostAnalysis: 2 },
-  effects: [5],
+  effects: [7],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
@@ -71,7 +71,7 @@ export const a_judradjim = new Card({
     `HP-7. DMG ${dmg}. 1 Analysis stack will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
   tags: { PostAnalysis: 1 },
-  effects: [10],
+  effects: [12],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -88,7 +88,7 @@ export const a_vollzanbel = new Card({
   title: "Hellfire Summoning: Vollzanbel",
   description: ([dmg]) => `HP-10. DMG ${dmg}`,
   emoji: CardEmoji.FRIEREN_CARD,
-  effects: [15],
+  effects: [18],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -191,37 +191,35 @@ const ordinaryDefensiveMagic = new Card({
 export const a_theHeightOfMagic = new Card({
   title: `"The Height of Magic"`,
   description: ([dmg]) =>
-    `HP-50. At this turn's resolution, strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20. `,
+    `Priority+1. Will fail if used while HP > 25. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1.`,
   emoji: CardEmoji.FRIEREN_CARD,
-  effects: [40],
+  priority: 1,
+  effects: [30],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} used "The Height of Magic"`,
       TCGThread.Gameroom,
     );
-    const endOfTurnDamage = this.calculateEffectValue(this.effects[0]);
-    if (character.adjustStat(-1 * 50, StatsEnum.HP)) {
-      character.timedEffects.push(
-        new TimedEffect({
-          name: "Impending: Height of Magic",
-          description: `At this turn's resolution, strike for ${endOfTurnDamage}. Afterwards, DEF-20, SPD-20.`,
-          turnDuration: 1,
-          endOfTimedEffectAction: (game, characterIndex) => {
-            messageCache.push(
-              "The Height of Magic is on display.",
-              TCGThread.Gameroom,
-            );
-            game.attack({
-              attackerIndex: characterIndex,
-              damage: endOfTurnDamage,
-              isTimedEffectAttack: true,
-            });
-            character.adjustStat(-20, StatsEnum.DEF);
-            character.adjustStat(-20, StatsEnum.SPD);
-          },
-        }),
+
+    if (character.stats.currHp > 25) {
+      messageCache.push(
+        `${character.name}'s HP is greater than 25. The move failed!`,
+        TCGThread.Gameroom,
       );
+    } else {
+      messageCache.push(
+        "The Height of Magic is on display.",
+        TCGThread.Gameroom,
+      );
+      const damage = this.calculateEffectValue(this.effects[0]);
+      CommonCardAction.commonAttack(game, characterIndex, {
+        damage,
+        hpCost: 0,
+      });
+      character.adjustStat(-20, StatsEnum.DEF);
+      character.adjustStat(-20, StatsEnum.SPD);
+      character.setStat(1, StatsEnum.HP);
     }
   },
 });

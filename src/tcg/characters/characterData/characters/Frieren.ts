@@ -10,8 +10,8 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
-const ANALYSIS_BOOST = 0.07;
-const ANALYSIS_STACK_CAP = 10;
+const ANALYSIS_BOOST = 0.05;
+const ANALYSIS_STACK_CAP = 20;
 
 const frierenStats = new Stats({
   [StatsEnum.HP]: 100.0,

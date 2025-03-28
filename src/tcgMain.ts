@@ -88,9 +88,14 @@ export const tcgMain = async (
     messageCache.push(`# Turn ${game.turnCount}`, TCGThread.Gameroom);
 
     // start of turn resolution
-    game.characters.forEach((character: Character, _index: number) => {
+    game.characters.forEach((character: Character, characterIndex: number) => {
       character.additionalMetadata.attackedThisTurn = false;
       character.additionalMetadata.timedEffectAttackedThisTurn = false;
+      character.ability.abilityStartOfTurnEffect?.(
+        game,
+        characterIndex,
+        messageCache,
+      );
     });
     printGameState(game, messageCache);
 

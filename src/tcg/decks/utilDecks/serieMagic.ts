@@ -43,7 +43,7 @@ export const serie_offensiveMagic = [
   a_zoltraak,
   a_judradjim,
   a_vollzanbel,
-  a_theHeightOfMagic,
+  // a_theHeightOfMagic,
   a_whip,
   a_supersonicStrike,
   a_erfassenAxe,

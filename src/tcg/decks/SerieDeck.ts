@@ -235,7 +235,7 @@ export const ancientBarrierMagic = new Card({
       character.timedEffects.push(
         new TimedEffect({
           name: "Ancient Barrier Magic",
-          description: `An omnious barrier envelopes the battlefield...`,
+          description: `An ominous barrier envelopes the battlefield...`,
           turnDuration: 7,
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
@@ -253,8 +253,8 @@ export const ancientBarrierMagic = new Card({
 export const serieDeck = [
   { card: a_livingGrimoireOffensive, count: 2 },
   { card: a_livingGrimoireOffensive1, count: 2 },
-  { card: a_livingGrimoireOffensive2, count: 1 },
-  { card: a_livingGrimoireUtility, count: 3 },
+  { card: a_livingGrimoireOffensive2, count: 2 },
+  { card: a_livingGrimoireUtility, count: 2 },
   { card: fieldOfFlower, count: 1 },
   { card: mock, count: 2 },
   { card: basicDefensiveMagic, count: 1 },
