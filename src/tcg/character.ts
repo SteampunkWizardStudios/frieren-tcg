@@ -17,10 +17,12 @@ import {
 } from "./characters/characterData/characterData";
 import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
+import { User } from "discord.js";
 
 export interface CharacterProps {
   characterData: CharacterData;
   messageCache: MessageCache;
+  characterUser: User;
   characterThread: TCGThread;
 }
 
@@ -40,6 +42,7 @@ export default class Character {
   skipTurn: boolean;
 
   messageCache: MessageCache;
+  characterUser: User;
   characterThread: TCGThread;
 
   constructor(characterProps: CharacterProps) {
@@ -57,6 +60,7 @@ export default class Character {
     this.skipTurn = false;
 
     this.messageCache = characterProps.messageCache;
+    this.characterUser = characterProps.characterUser;
     this.characterThread = characterProps.characterThread;
 
     this.stats.stats.HP = characterProps.characterData.stats.startingHp;

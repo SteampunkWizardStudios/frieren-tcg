@@ -70,11 +70,13 @@ export const tcgMain = async (
       new Character({
         characterData: challengerCharacter.clone(),
         messageCache: messageCache,
+        characterUser: challenger,
         characterThread: TCGThread.ChallengerThread,
       }),
       new Character({
         characterData: opponentCharacter.clone(),
         messageCache: messageCache,
+        characterUser: opponent,
         characterThread: TCGThread.OpponentThread,
       }),
     ],
