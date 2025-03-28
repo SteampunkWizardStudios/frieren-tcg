@@ -1,9 +1,9 @@
 type Config = {
-    debugMode: boolean;
+  debugMode: boolean;
 };
 
 const config: Config = {
-    debugMode: true,
+  debugMode: false,
 } satisfies Config;
 
 export default config;
