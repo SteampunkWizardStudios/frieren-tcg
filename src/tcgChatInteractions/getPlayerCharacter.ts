@@ -59,8 +59,14 @@ export const getPlayerCharacter = async (
             if (!isResolved) {
               collector.stop("Character selected");
               const characterList = createCharacterList(player);
-              const selectedCharacter =
-                characterList[parseInt(i.values[0]) ?? 0].clone();
+              const selection = i.values[0];
+              let index;
+              if (selection === "random") {
+                index = Math.floor(Math.random() * characterList.length);
+              } else {
+                index = parseInt(selection) ?? 0;
+              }
+              const selectedCharacter = characterList[index].clone();
               const characterSelectedEmbed = new EmbedBuilder()
                 .setTitle(
                   `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.name}**`,

@@ -47,7 +47,14 @@ export async function showCharacterInfo(
             return;
           }
           const characterList = createCharacterList(interaction.user);
-          const char = characterList[parseInt(i.values[0]) ?? 0];
+          const selection = i.values[0];
+          let index;
+          if (selection === "random") {
+            index = Math.floor(Math.random() * characterList.length);
+          } else {
+            index = parseInt(selection) ?? 0;
+          }
+          const char = characterList[index];
 
           // Create new embed for the selected character
           const characterEmbed = new EmbedBuilder()

@@ -31,9 +31,12 @@ export const createCharacterDropdown = async (
     )
     .addFields({
       name: "Available Characters",
-      value: characterList
-        .map((char: CharacterData) => `1. ${char.cosmetic.emoji} ${char.name}`)
-        .join("\n"),
+      value: [
+        ...characterList.map(
+          (char: CharacterData) => `1. ${char.cosmetic.emoji} ${char.name}`,
+        ),
+        "?. 🎲 Random Character",
+      ].join("\n"),
     });
 
   // Create the dropdown menu
@@ -46,7 +49,12 @@ export const createCharacterDropdown = async (
         value: `${index}`,
         emoji: char.cosmetic.emoji,
       })),
-    );
+    )
+    .addOptions({
+      label: "Random Character",
+      value: "random",
+      emoji: "🎲",
+    });
 
   const dropdown =
     new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(selectMenu);

@@ -330,54 +330,53 @@ export const tcgMain = async (
     }
 
     // end of turn resolution
-    let negativePriorityTimedEffect: Record<number, TimedEffect[]> = {
-      0: [],
-      1: [],
-    };
-
-    // handle normal timed effect
-    moveOrder.forEach((characterIndex: number) => {
-      if (!game.gameOver) {
-        const character = game.getCharacter(characterIndex);
-
-        character.timedEffects.forEach((timedEffect: TimedEffect) => {
-          if (timedEffect.priority < 0) {
-            negativePriorityTimedEffect[characterIndex].push(timedEffect);
-          } else {
-            timedEffect.reduceTimedEffect(game, characterIndex, messageCache);
-          }
-        });
-
-        const losingCharacterIndex = game.checkGameOver();
-        if (game.gameOver) {
-          result = {
-            winner: indexToUserMapping[1 - losingCharacterIndex!],
-            loser: indexToUserMapping[losingCharacterIndex!],
-          };
-          return;
+    // gather timed effects
+    let priorityToTimedEffect: Record<
+      number,
+      Record<number, TimedEffect[]>
+    > = {};
+    game.characters.forEach((character: Character, characterIndex: number) => {
+      character.timedEffects.forEach((timedEffect: TimedEffect) => {
+        if (!priorityToTimedEffect[timedEffect.priority]) {
+          priorityToTimedEffect[timedEffect.priority] = {};
         }
-      }
-    });
-
-    // handle negative priority timed effect
-    moveOrder.forEach((characterIndex: number) => {
-      if (!game.gameOver) {
-        negativePriorityTimedEffect[characterIndex].forEach(
-          (timedEffect: TimedEffect) => {
-            timedEffect.reduceTimedEffect(game, characterIndex, messageCache);
-          },
+        if (!priorityToTimedEffect[timedEffect.priority][characterIndex]) {
+          priorityToTimedEffect[timedEffect.priority][characterIndex] = [];
+        }
+        priorityToTimedEffect[timedEffect.priority][characterIndex].push(
+          timedEffect,
         );
-
-        const losingCharacterIndex = game.checkGameOver();
-        if (game.gameOver) {
-          result = {
-            winner: indexToUserMapping[1 - losingCharacterIndex!],
-            loser: indexToUserMapping[losingCharacterIndex!],
-          };
-          return;
-        }
-      }
+      });
     });
+
+    // timed effect resolution
+    const sortedPriorities = Object.keys(priorityToTimedEffect)
+      .map(Number)
+      .sort((a, b) => b - a);
+
+    for (const priority of sortedPriorities) {
+      moveOrder.forEach((characterIndex: number) => {
+        if (!game.gameOver) {
+          const currTimedEffects =
+            priorityToTimedEffect[priority][characterIndex];
+
+          if (currTimedEffects) {
+            currTimedEffects.forEach((timedEffect: TimedEffect) => {
+              timedEffect.reduceTimedEffect(game, characterIndex, messageCache);
+            });
+
+            const losingCharacterIndex = game.checkGameOver();
+            if (game.gameOver) {
+              result = {
+                winner: indexToUserMapping[1 - losingCharacterIndex!],
+                loser: indexToUserMapping[losingCharacterIndex!],
+              };
+              return;
+            }
+          }
+        }
+      });
+    }
 
     // handle end of turn ability and clean up
     moveOrder.forEach((characterIndex: number) => {
