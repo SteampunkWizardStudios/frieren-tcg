@@ -195,14 +195,14 @@ const parry = new Card({
 export const jilwer = new Card({
   title: "Jilwer",
   description: ([spd]) =>
-    `Increases SPD by ${spd} for 1 - 3 turns. At the end of every turn, HP-10.`,
+    `Increases SPD by ${spd} for 2 - 3 turns. At the end of every turn, HP-10.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [50],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} used Jilwer!`, TCGThread.Gameroom);
 
-    const turnCount = Math.floor(Math.random() * 3) + 1;
+    const turnCount = Math.floor(Math.random() * 2) + 2;
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(spdIncrease, StatsEnum.SPD);
 
