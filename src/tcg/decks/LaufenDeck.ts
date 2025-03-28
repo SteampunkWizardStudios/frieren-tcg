@@ -11,7 +11,7 @@ const a_staffStrike = new Card({
   description: ([spd, dmg]) =>
     `SPD+${spd}. Afterwards, HP-2, attack for DMG ${dmg}+SPD/8`,
   emoji: CardEmoji.LAUFEN_CARD,
-  effects: [1, 10],
+  effects: [2, 10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -53,9 +53,9 @@ const a_staffBash = new Card({
 
 export const a_whip = new Card({
   title: "Whip",
-  description: ([dmg]) => `SPD-3. Afterwards, HP-3, DMG ${dmg}+SPD/6`,
+  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-3, DMG ${dmg}+SPD/6`,
   emoji: CardEmoji.LAUFEN_CARD,
-  effects: [5],
+  effects: [1, 6],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -63,10 +63,11 @@ export const a_whip = new Card({
       TCGThread.Gameroom,
     );
 
-    character.adjustStat(-3, StatsEnum.SPD);
+    const speed = this.calculateEffectValue(this.effects[0]);
     const damage =
-      this.calculateEffectValue(this.effects[0]) +
+      this.calculateEffectValue(this.effects[1]) +
       character.stats.stats.SPD / 6;
+    character.adjustStat(speed, StatsEnum.SPD);
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
   },
 });

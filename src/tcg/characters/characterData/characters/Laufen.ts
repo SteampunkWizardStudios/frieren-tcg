@@ -12,7 +12,7 @@ const laufenStats = new Stats({
   [StatsEnum.HP]: 90.0,
   [StatsEnum.ATK]: 11.0,
   [StatsEnum.DEF]: 6.0,
-  [StatsEnum.SPD]: 25.0,
+  [StatsEnum.SPD]: 40.0,
   [StatsEnum.Ability]: 0.0,
 });
 
