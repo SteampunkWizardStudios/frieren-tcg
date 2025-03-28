@@ -159,24 +159,24 @@ export default class Character {
       let statUpdateLines: string[] = [];
       if (adjustValue < 0) {
         statUpdateLines.push(
-          `${this.cosmetic.emoji} ${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`,
+          `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`,
         );
         if (
           !(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed)
         ) {
           statUpdateLines.push(
-            `${this.cosmetic.emoji} ${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`,
+            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`,
           );
         }
       } else {
         statUpdateLines.push(
-          `${this.cosmetic.emoji} ${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`,
+          `${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`,
         );
         if (
           !(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed)
         ) {
           statUpdateLines.push(
-            `${this.cosmetic.emoji} ${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`,
+            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`,
           );
         }
       }
@@ -185,7 +185,7 @@ export default class Character {
       return true;
     } else {
       this.messageCache.push(
-        `${this.cosmetic.emoji} ${this.name}'s stat failed to be set! The move failed!`,
+        `${this.name}'s stat failed to be set! The move failed!`,
         TCGThread.Gameroom,
       );
       return false;
@@ -197,13 +197,13 @@ export default class Character {
       const statDescription =
         stat === StatsEnum.Ability ? "Ability Counter" : stat;
       this.messageCache.push(
-        `${this.cosmetic.emoji} ${this.name}'s ${statDescription} is set to ${statValue}!`,
+        `${this.name}'s ${statDescription} is set to ${statValue}!`,
         TCGThread.Gameroom,
       );
       return true;
     } else {
       this.messageCache.push(
-        `${this.cosmetic.emoji} ${this.name}'s stat failed to be set! The move failed!`,
+        `${this.name}'s stat failed to be set! The move failed!`,
         TCGThread.Gameroom,
       );
       return false;
