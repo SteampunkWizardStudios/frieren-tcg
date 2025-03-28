@@ -47,7 +47,7 @@ export const Sein = new CharacterData({
   //       [StatsEnum.SPD]: characterStats.Sein.spd,
   //       [StatsEnum.Ability]: 0.0,
   //     },
-  //     characterStats.Sein.currHp,
+  //     characterStats.Sein.startingHp,
   //   );
   //   return seinStats;
   // },

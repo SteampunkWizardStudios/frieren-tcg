@@ -7,7 +7,7 @@ import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 
-const SERIE_TOYING_DAMAGE_BONUS = 0.75;
+const SERIE_TOYING_DAMAGE_BONUS = 0.3;
 
 const imageUrl: Record<string, string> = {
   icon: "https://cdn.discordapp.com/attachments/1346555621952192522/1347746220025577511/Serie_anime_portrait.webp?ex=67dcc3fa&is=67db727a&hm=7207f7eb67d49a3ce4bcf6cd0e06128d4e4fe21d53a5c4d47f532162d247dd3f&",

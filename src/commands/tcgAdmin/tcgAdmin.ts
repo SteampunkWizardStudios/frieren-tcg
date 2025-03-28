@@ -34,7 +34,7 @@
 //             .setDescription("Stat to adjust")
 //             .setRequired(true)
 //             .addChoices(
-//               { name: "CurrHP", value: "currHp" },
+//               { name: "StartingHP", value: "startingHp" },
 //               { name: "MaxHP", value: "maxHp" },
 //               { name: "ATK", value: "atk" },
 //               { name: "DEF", value: "def" },

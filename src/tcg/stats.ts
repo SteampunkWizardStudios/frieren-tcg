@@ -16,11 +16,11 @@ export enum StatsEnum {
 
 export default class Stats {
   stats: Record<StatsEnum, number>;
-  currHp: number;
+  startingHp: number;
 
-  constructor(stats: Record<StatsEnum, number>, currHp?: number) {
+  constructor(stats: Record<StatsEnum, number>, startingHp?: number) {
     this.stats = stats;
-    this.currHp = currHp ?? stats.HP;
+    this.startingHp = startingHp ?? stats.HP;
   }
 
   clone(): Stats {
@@ -28,7 +28,7 @@ export default class Stats {
       {
         ...this.stats,
       },
-      this.currHp,
+      this.startingHp,
     );
   }
 }

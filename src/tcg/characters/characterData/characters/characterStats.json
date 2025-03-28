@@ -1,13 +1,13 @@
 {
   "Sein": {
-    "currHp": 110,
+    "startingHp": 110,
     "maxHp": 110,
     "atk": 11,
     "def": 11,
     "spd": 10
   },
   "Serie": {
-    "currHp": 100,
+    "startingHp": 100,
     "maxHp": 100,
     "atk": 14,
     "def": 10,

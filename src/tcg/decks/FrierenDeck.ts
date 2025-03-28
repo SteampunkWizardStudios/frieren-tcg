@@ -202,7 +202,7 @@ export const a_theHeightOfMagic = new Card({
       TCGThread.Gameroom,
     );
 
-    if (character.stats.currHp > 25) {
+    if (character.stats.stats.HP > 25) {
       messageCache.push(
         `${character.name}'s HP is greater than 25. The move failed!`,
         TCGThread.Gameroom,

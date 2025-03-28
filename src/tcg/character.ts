@@ -59,7 +59,7 @@ export default class Character {
     this.messageCache = characterProps.messageCache;
     this.characterThread = characterProps.characterThread;
 
-    this.stats.stats.HP = characterProps.characterData.stats.currHp;
+    this.stats.stats.HP = characterProps.characterData.stats.startingHp;
   }
 
   drawStartingHand() {

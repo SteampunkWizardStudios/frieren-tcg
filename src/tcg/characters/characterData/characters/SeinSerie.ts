@@ -65,7 +65,7 @@ export const createSeinSerie = () =>
           [StatsEnum.SPD]: characterStats.Sein.spd + characterStats.Sein.spd,
           [StatsEnum.Ability]: 0.0,
         },
-        characterStats.Sein.currHp + characterStats.Serie.currHp,
+        characterStats.Sein.startingHp + characterStats.Serie.startingHp,
       );
     },
     cards: seinSerieDeck,
