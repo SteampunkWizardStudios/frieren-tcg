@@ -7,7 +7,7 @@ import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 
-const PACIFIST_TURN_COUNT = 2;
+const PACIFIST_TURN_COUNT = 15;
 
 const senseStats = new Stats({
   [StatsEnum.HP]: 90.0,

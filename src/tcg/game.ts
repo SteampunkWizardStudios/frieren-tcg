@@ -90,7 +90,7 @@ export default class Game {
         ? ""
         : `${defender.name} has ${defender.stats.stats.HP} left!`;
       this.messageCache.push(
-        `# ${attacker.name} attacks ${defender.name} for ${actualDamage.toFixed(2)} damage! ${hpLeft}`,
+        `# ${attacker.cosmetic.emoji} ${attacker.name} attacks ${defender.cosmetic.emoji} ${defender.name} for ${actualDamage.toFixed(2)} damage! ${hpLeft}`,
         TCGThread.Gameroom,
       );
 

@@ -273,13 +273,17 @@ export const tcgMain = async (
     const moveFirst = game.getFirstMove(characterToSelectedMoveMap);
     const moveOrder = [moveFirst, 1 - moveFirst];
 
+    messageCache.push(
+      `## ================================`,
+      TCGThread.Gameroom,
+    );
     moveOrder.forEach(async (characterIndex: number) => {
       if (!game.gameOver) {
         const card = characterToSelectedMoveMap[characterIndex];
         if (card) {
           const character = game.getCharacter(characterIndex);
           messageCache.push(
-            `## ${character.name} used **${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[!](${card.cosmetic?.cardImageUrl})` : "!"}`,
+            `## ${character.cosmetic.emoji} ${character.name} (${characterIndex === 0 ? `${challenger.username}` : `${opponent.username}`}) used **${card.emoji} ${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[!](${card.cosmetic?.cardImageUrl})` : "!"}`,
             TCGThread.Gameroom,
           );
           if (card.cosmetic?.cardGif) {
@@ -331,6 +335,10 @@ export const tcgMain = async (
 
     // end of turn resolution
     // gather timed effects
+    messageCache.push(
+      `## ================================`,
+      TCGThread.Gameroom,
+    );
     let priorityToTimedEffect: Record<
       number,
       Record<number, TimedEffect[]>
