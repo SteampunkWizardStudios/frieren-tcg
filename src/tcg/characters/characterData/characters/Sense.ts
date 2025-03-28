@@ -7,7 +7,7 @@ import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 
-const PACIFIST_TURN_COUNT = 15;
+const PACIFIST_TURN_COUNT = 2;
 
 const senseStats = new Stats({
   [StatsEnum.HP]: 90.0,
@@ -71,7 +71,7 @@ export const Sense = new CharacterData({
 
         if (character.stats.stats.Ability === PACIFIST_TURN_COUNT) {
           messageCache.push("# Sense stayed a Pacifist!", TCGThread.Gameroom);
-          game.gameOver = true;
+          game.additionalMetadata.forfeited[1 - characterIndex] = true;
         }
       }
     },
