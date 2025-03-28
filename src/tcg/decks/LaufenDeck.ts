@@ -133,10 +133,10 @@ export const a_supersonicStrike = new Card({
 const quickDodge = new Card({
   title: "Quick Dodge",
   description: ([spd, spdBuff]) =>
-    `Priority+1. SPD+${spd}. Increases SPD by an additional ${spdBuff} until the end of the turn.`,
+    `Priority+2. SPD+${spd}. Increases SPD by an additional ${spdBuff} until the end of the turn.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [5, 25],
-  priority: 1,
+  priority: 2,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} dodged away!`, TCGThread.Gameroom);
@@ -163,10 +163,10 @@ const quickDodge = new Card({
 const parry = new Card({
   title: "Parry",
   description: ([def]) =>
-    `Priority+1. Increases DEF by ${def} until the end of the turn.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [20],
-  priority: 1,
+  priority: 2,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

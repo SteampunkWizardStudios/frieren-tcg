@@ -135,10 +135,10 @@ const roost = new Card({
 const deflect = new Card({
   title: "Deflect",
   description: ([def]) =>
-    `Priority+1. Increases DEF by ${def} until the end of the turn.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [20],
-  priority: 1,
+  priority: 2,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -164,9 +164,9 @@ const deflect = new Card({
 
 const flyAway = new Card({
   title: "Fly Away",
-  description: ([spd]) => `Priority+1. SPD + ${spd} until the end of the turn.`,
+  description: ([spd]) => `Priority+2. SPD + ${spd} until the end of the turn.`,
   emoji: CardEmoji.STILLE_CARD,
-  priority: 1,
+  priority: 2,
   effects: [25],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

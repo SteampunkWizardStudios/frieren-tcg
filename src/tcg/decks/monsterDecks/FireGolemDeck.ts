@@ -48,9 +48,9 @@ const a_burn = new Card({
 const extinguish = new Card({
   title: "Extinguish",
   description: ([def]) =>
-    `Priority+1. Increases DEF by ${def} for 2 turns. ATK-10.`,
+    `Priority+2. Increases DEF by ${def} for 2 turns. ATK-10.`,
   emoji: CardEmoji.SHIELD,
-  priority: 1,
+  priority: 2,
   effects: [50],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

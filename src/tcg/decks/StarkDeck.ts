@@ -116,10 +116,10 @@ const jumboBerrySpecialBreak = new Card({
 const block = new Card({
   title: "Block",
   description: ([def]) =>
-    `Priority+1. Increases DEF by ${def} until the end of the turn.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [20],
-  priority: 1,
+  priority: 2,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

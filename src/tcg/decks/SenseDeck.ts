@@ -113,10 +113,10 @@ export const a_pierce = new Card({
 const hairBarrier = new Card({
   title: "Hair Barrier",
   description: ([def]) =>
-    `Priority+1. Increases DEF by ${def} until the end of the turn.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   effects: [20],
   emoji: CardEmoji.HOURGLASS,
-  priority: 1,
+  priority: 2,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

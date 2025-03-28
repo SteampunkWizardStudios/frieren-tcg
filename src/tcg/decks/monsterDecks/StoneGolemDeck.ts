@@ -30,9 +30,9 @@ export const a_rockTomb = new Card({
 const crystalize = new Card({
   title: "Crystalize",
   description: ([def]) =>
-    `Priority+1. Increases DEF by ${def} for 2 turns. ATK-15 for 2 turns.`,
+    `Priority+2. Increases DEF by ${def} for 2 turns. ATK-15 for 2 turns.`,
   emoji: CardEmoji.SHIELD,
-  priority: 1,
+  priority: 2,
   effects: [30],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

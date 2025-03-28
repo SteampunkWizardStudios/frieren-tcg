@@ -239,13 +239,13 @@ export const poisonCure = new Card({
 export const braceYourself = new Card({
   title: "Brace Yourself",
   description: ([def]) =>
-    `Priority+1. Increases DEF by ${def} until the end of the turn.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1353035308182147102/Brace_Yourself.png?ex=67e02fd3&is=67dede53&hm=b4bcacc46cae5fcd120b76d666ef606186621d3edc230a851e09a77976fce8eb&",
   },
-  priority: 1,
+  priority: 2,
   effects: [20],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];

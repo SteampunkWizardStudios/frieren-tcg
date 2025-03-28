@@ -43,10 +43,10 @@ const earPiercingScream = new Card({
 const hide = new Card({
   title: "Hide",
   description: ([def]) =>
-    `Priority+1. Increases DEF by ${def} until the end of the turn.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SHIELD,
   effects: [20],
-  priority: 1,
+  priority: 2,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

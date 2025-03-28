@@ -12,8 +12,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_livingGrimoireOffensive = new Card({
   title: "Living Grimoire: Offense Chapter",
-  description: () =>
-    "Use a random offensive magic.",
+  description: () => "Use a random offensive magic.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -46,8 +45,7 @@ export const a_livingGrimoireOffensive = new Card({
 
 export const a_livingGrimoireUtility = new Card({
   title: "Living Grimoire: Utility Chapter",
-  description: () =>
-    "Use a random utility magic.",
+  description: () => "Use a random utility magic.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -130,14 +128,14 @@ export const mock = new Card({
 export const basicDefensiveMagic = new Card({
   title: "Basic Defensive Magic",
   description: ([def]) =>
-    `Priority+1. Increases DEF by ${def} until the end of the turn.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014416506932/Basic_Defense_Magic.png?ex=67df98ad&is=67de472d&hm=79bab34bdef07e7fa529c5ac67ed093e7bfa2b69914f644ac434e4a564c47396&",
   },
   effects: [30],
-  priority: 1,
+  priority: 2,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
