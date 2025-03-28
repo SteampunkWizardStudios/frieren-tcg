@@ -10,7 +10,7 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
-const ANALYSIS_BOOST = 0.05;
+const ANALYSIS_BOOST = 0.07;
 const ANALYSIS_STACK_CAP = 10;
 
 const frierenStats = new Stats({
@@ -48,7 +48,7 @@ export const Frieren = new CharacterData({
     abilityName: "Analysis",
     abilityEffectString: `At the end of every turn, gain 1 Analysis stack.
         Whenever an "Analysis" move is used, gain 2 Analysis stacks.
-        When an attack is used, its damage is increased by ${ANALYSIS_BOOST * 100}% * the number of Analysis stacks.
+        When an attack is used, its damage is increased by ${(ANALYSIS_BOOST * 100).toFixed(2)}% * the number of Analysis stacks.
         After an attack is used, Analysis stacks is reset to 0.
         A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.`,
     abilityOnCardUse: function (

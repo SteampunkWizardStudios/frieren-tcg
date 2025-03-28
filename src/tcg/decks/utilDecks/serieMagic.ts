@@ -69,7 +69,6 @@ export const serie_utilityMagic = [
   poisonCure,
   adapt,
   manaDetection,
-  jilwer,
   hide,
   barrierMagicAnalysis,
   demonMagicAnalysis,

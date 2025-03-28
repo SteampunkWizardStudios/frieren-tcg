@@ -10,7 +10,7 @@ import Card from "../../../tcg/card";
 export enum AdvancedRulesSection {
   EmpowermentAndEffectCalculation = "Empowerment and Effect Calculation",
   InteractionsAndEdgeCases = "Interactions and Edge Cases",
-  SeriesPoolOffensive = "Serie's Living Grimoire: Offensive Chapter's Card Pool",
+  SeriesPoolOffense = "Serie's Living Grimoire: Offense Chapter's Card Pool",
   SeriesPoolUtility = "Serie's Living Grimoire: Utility Chapter's Card Pool",
 }
 
@@ -55,9 +55,9 @@ const sectionToFields: Record<
       ].join("\n"),
     },
   ],
-  [AdvancedRulesSection.SeriesPoolOffensive]: [
+  [AdvancedRulesSection.SeriesPoolOffense]: [
     {
-      name: `Living Grimoire: Offensive Chapter - Available Draw Pool:`,
+      name: `Living Grimoire: Offense Chapter - Available Draw Pool:`,
       value: "",
     },
     ...serie_offensiveMagic.map((card: Card) => {

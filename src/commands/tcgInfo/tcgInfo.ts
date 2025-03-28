@@ -60,8 +60,8 @@ export const command: Command<ChatInputCommandInteraction> = {
                 value: AdvancedRulesSection.InteractionsAndEdgeCases,
               },
               {
-                name: "Serie's Living Grimoire: Offensive Chapter's Card Pool",
-                value: AdvancedRulesSection.SeriesPoolOffensive,
+                name: "Serie's Living Grimoire: Offense Chapter's Card Pool",
+                value: AdvancedRulesSection.SeriesPoolOffense,
               },
               {
                 name: "Serie's Living Grimoire: Utility Chapter's Card Pool",

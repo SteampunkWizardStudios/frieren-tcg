@@ -12,4 +12,5 @@ export type CharacterAdditionalMetadata = {
   timedEffectAttackedThisTurn: boolean;
   teaTimeStacks?: number;
   overheal?: boolean;
+  warmongerLazesAbout?: boolean;
 };

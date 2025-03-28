@@ -62,9 +62,7 @@ export const a_livingGrimoireUtility = new Card({
     );
 
     const baseCard =
-      serie_utilityMagic[
-        Math.floor(Math.random() * serie_offensiveMagic.length)
-      ];
+      serie_utilityMagic[Math.floor(Math.random() * serie_utilityMagic.length)];
     const newCard = new Card({
       ...baseCard,
       empowerLevel: this.empowerLevel + 2,
@@ -224,7 +222,7 @@ export const ancientBarrierMagic = new Card({
       TCGThread.Gameroom,
     );
 
-    if (character.adjustStat(-15, StatsEnum.HP)) {
+    if (character.adjustStat(-20, StatsEnum.HP)) {
       const opponent = game.getCharacter(1 - characterIndex);
       const atkBuff = this.calculateEffectValue(this.effects[0]);
       const defDebuff = this.calculateEffectValue(this.effects[1]);
