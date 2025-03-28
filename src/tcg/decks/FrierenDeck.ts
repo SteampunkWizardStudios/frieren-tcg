@@ -40,8 +40,9 @@ export const fieldOfFlower = new Card({
       TCGThread.Gameroom,
     );
 
-    character.adjustStat(5, StatsEnum.HP);
+    const initialHealing = this.calculateEffectValue(this.effects[0]);
     const endOfTurnHealing = this.calculateEffectValue(this.effects[1]);
+    character.adjustStat(initialHealing, StatsEnum.HP);
     character.timedEffects.push(
       new TimedEffect({
         name: "Field of Flowers",

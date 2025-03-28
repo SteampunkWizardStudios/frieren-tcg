@@ -13,7 +13,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 export const a_livingGrimoireOffensive = new Card({
   title: "Living Grimoire: Offense Chapter",
   description: () =>
-    "Use a random offensive magic with this card's Empower level + 2.",
+    "Use a random offensive magic.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -33,7 +33,7 @@ export const a_livingGrimoireOffensive = new Card({
       ];
     const newCard = new Card({
       ...baseCard,
-      empowerLevel: this.empowerLevel + 2,
+      empowerLevel: this.empowerLevel,
     });
 
     messageCache.push(
@@ -47,7 +47,7 @@ export const a_livingGrimoireOffensive = new Card({
 export const a_livingGrimoireUtility = new Card({
   title: "Living Grimoire: Utility Chapter",
   description: () =>
-    "Use a random utility magic with this card's Empower level + 2.",
+    "Use a random utility magic.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -65,7 +65,7 @@ export const a_livingGrimoireUtility = new Card({
       serie_utilityMagic[Math.floor(Math.random() * serie_utilityMagic.length)];
     const newCard = new Card({
       ...baseCard,
-      empowerLevel: this.empowerLevel + 2,
+      empowerLevel: this.empowerLevel,
     });
 
     messageCache.push(
