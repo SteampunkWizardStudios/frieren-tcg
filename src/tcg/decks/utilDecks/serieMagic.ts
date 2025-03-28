@@ -5,6 +5,7 @@ import {
   a_zoltraak,
   barrierMagicAnalysis,
   demonMagicAnalysis,
+  fieldOfFlower,
 } from "../FrierenDeck";
 import { a_supersonicStrike, a_whip, hide, jilwer } from "../LaufenDeck";
 import {
@@ -72,4 +73,5 @@ export const serie_utilityMagic = [
   hide,
   barrierMagicAnalysis,
   demonMagicAnalysis,
+  fieldOfFlower,
 ];
