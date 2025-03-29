@@ -11,6 +11,10 @@ export const a_zoltraak = new Card({
   description: ([dmg]) =>
     `HP-5. DMG ${dmg}. 2 Analysis stacks will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1355588256267501888/Offensive_Magic_Analysis_Zoltraak.png?ex=67e97971&is=67e827f1&hm=193fb4668269bd8509f7b4ce4a092c12af7b44ac8fd5264dfac08c5da5a349bf&",
+  },
   tags: { PostAnalysis: 2 },
   effects: [7],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -29,7 +33,8 @@ export const fieldOfFlower = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/Sd_BDB5kVZ8AAAAd/tenor.gif",
     cardImageUrl:
-      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873016660590653/Spell_to_make_a_field_of_flowers_4.png?ex=67df98ae&is=67de472e&hm=e5080e39c9818eee5f9a3d559a829b6f3ecab15be85b9897fb6c28ea27c6e674&",
+      // "https://cdn.discordapp.com/attachments/1351391350398128159/1352873016660590653/Spell_to_make_a_field_of_flowers_4.png?ex=67df98ae&is=67de472e&hm=e5080e39c9818eee5f9a3d559a829b6f3ecab15be85b9897fb6c28ea27c6e674&",
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1355588255269130370/Spell_to_make_a_field_of_flowers_New.png?ex=67e97971&is=67e827f1&hm=b03c906280c5f4f09d212bae40f29b671377145e137dbfe5f4d5da93be130dd7&",
   },
   emoji: CardEmoji.FLOWER_FIELD,
   effects: [5, 3],
@@ -71,6 +76,10 @@ export const a_judradjim = new Card({
   description: ([dmg]) =>
     `HP-7. DMG ${dmg}. 1 Analysis stack will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1355588256728748365/Destructive_Lightning_Analysis_Judradjim.png?ex=67e97972&is=67e827f2&hm=15cd0d0ef4df4a3d1559b405c3e8843ecbda4b64b349e2149fb9d22db3c5e817&",
+  },
   tags: { PostAnalysis: 1 },
   effects: [12],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -89,6 +98,10 @@ export const a_vollzanbel = new Card({
   title: "Hellfire Summoning: Vollzanbel",
   description: ([dmg]) => `HP-10. DMG ${dmg}`,
   emoji: CardEmoji.FRIEREN_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1355588255923572736/Hellfire_Summoning_Vollzanbel.png?ex=67e97971&is=67e827f1&hm=c31d35c7ce7820b3d386f7f3119f463538d83576ad2a4f0ed2a83370390ce87c&",
+  },
   effects: [18],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -107,6 +120,10 @@ export const barrierMagicAnalysis = new Card({
   description: ([atk, spd, def]) =>
     `ATK+${atk}. SPD+${spd}. Opponent's DEF-${def}`,
   emoji: CardEmoji.FRIEREN_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1355588254463951029/Barrier_Magic_Analysis.png?ex=67e97971&is=67e827f1&hm=d65bb623550e93604fbedbc80cb6638c52b8ead8f1a70114e410a52df1260605&",
+  },
   effects: [2, 1, 1],
   tags: { Analysis: 2 },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -135,6 +152,10 @@ export const demonMagicAnalysis = new Card({
   title: "Demon Magic Analysis",
   description: ([atk, spd, def]) => `ATK+${atk}. SPD+${spd}. DEF+${def}.`,
   emoji: CardEmoji.FRIEREN_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1355588254107439245/Demon_Magic_Analysis.png?ex=67e97971&is=67e827f1&hm=8318bc5d0892f966e0bc07d29fd6042ab37cc93cdc86a3d58feb438631b3b354&",
+  },
   effects: [2, 2, 1],
   tags: { Analysis: 2 },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -164,6 +185,10 @@ const ordinaryDefensiveMagic = new Card({
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.FRIEREN_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1355588255554470018/Ordinary_Defensive_Magic.png?ex=67e97971&is=67e827f1&hm=6e44ae1f09dc7b05f29ddb6a646f9852692ff2427e333e1c0c4562c296918ce9&",
+  },
   effects: [20],
   priority: 2,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -194,6 +219,10 @@ export const a_theHeightOfMagic = new Card({
   description: ([dmg]) =>
     `Priority+1. Will fail if used while HP > 25. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1.`,
   emoji: CardEmoji.FRIEREN_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1355588254866473161/The_Height_of_Magic.png?ex=67e97971&is=67e827f1&hm=0bddcf6c49f763947308ba3e63c58a8727730a9af0ff9c0175e948af704e29b3&",
+  },
   priority: 1,
   effects: [30],
   cardAction: function (this: Card, game, characterIndex, messageCache) {

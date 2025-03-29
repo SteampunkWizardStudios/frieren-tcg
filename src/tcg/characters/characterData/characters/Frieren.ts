@@ -13,6 +13,12 @@ import { CharacterEmoji } from "../../../formatting/emojis";
 const ANALYSIS_BOOST = 0.05;
 const ANALYSIS_STACK_CAP = 20;
 
+const imageUrl: Record<string, string> = {
+  icon: "https://media.discordapp.net/attachments/1346555621952192522/1347399695521026109/Frieren_anime_portrait.webp?ex=67dcd2c0&is=67db8140&hm=0b5f32d66153c8b41d2817170b41b7562e6ef607e9efb1abc220fe5905b7bd77&=&format=webp&width=600&height=600",
+  vangerisuCardVer:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1355588253721297007/Frieren_Card_2.png?ex=67e97971&is=67e827f1&hm=84a89d623d2339ff4ff198d0955843a692a39a9154aeee00e03f027eea19e2e6&",
+};
+
 const frierenStats = new Stats({
   [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 12.0,
@@ -39,8 +45,7 @@ export const Frieren = new CharacterData({
     },
     emoji: CharacterEmoji.FRIEREN,
     color: 0xc5c3cc,
-    imageUrl:
-      "https://media.discordapp.net/attachments/1346555621952192522/1347399695521026109/Frieren_anime_portrait.webp?ex=67dcd2c0&is=67db8140&hm=0b5f32d66153c8b41d2817170b41b7562e6ef607e9efb1abc220fe5905b7bd77&=&format=webp&width=600&height=600",
+    imageUrl: imageUrl.vangerisuCardVer,
   },
   stats: frierenStats,
   cards: frierenDeck,
