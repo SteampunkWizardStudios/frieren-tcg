@@ -48,7 +48,7 @@ export const adapt = new Card({
   description: ([spd, atkDef, hp]) =>
     `SPD+${spd}. If HP > 50, ATK+${atkDef}, DEF+${atkDef}. If HP <= 50, heal ${hp} HP.`,
   emoji: CardEmoji.LINIE_CARD,
-  effects: [2, 3, 12],
+  effects: [2, 2, 10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

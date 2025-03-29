@@ -18,7 +18,7 @@ const imageUrl: Record<string, string> = {
 };
 
 const seinStats = new Stats({
-  [StatsEnum.HP]: 110.0,
+  [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 11.0,
   [StatsEnum.DEF]: 11.0,
   [StatsEnum.SPD]: 10.0,
