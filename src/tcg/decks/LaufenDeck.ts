@@ -15,7 +15,7 @@ const a_staffStrike = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
-      `${character.name} striked with ${character.cosmetic.pronouns.possessive} staff!`,
+      `${character.name} struck with ${character.cosmetic.pronouns.possessive} staff!`,
       TCGThread.Gameroom,
     );
 
@@ -117,7 +117,7 @@ export const a_supersonicStrike = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
-      `${character.name} striked at supersonic speed!`,
+      `${character.name} struck at supersonic speed!`,
       TCGThread.Gameroom,
     );
 
