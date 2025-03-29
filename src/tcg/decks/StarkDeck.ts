@@ -206,7 +206,7 @@ const a_eisensAxeCleave = new Card({
   description: ([dmg]) => `HP-12. DMG ${dmg}. Uses up 2 Resolve stack.`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -2 },
-  effects: [18],
+  effects: [17],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     if (character.name === CharacterName.Stark) {
@@ -236,7 +236,7 @@ const a_lightningStrike = new Card({
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -2 },
   priority: 1,
-  effects: [25],
+  effects: [20],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
 
