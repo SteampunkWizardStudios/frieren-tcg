@@ -40,7 +40,7 @@ export const Sense = new CharacterData({
       game,
       characterIndex,
       messageCache: MessageCache,
-      card
+      card,
     ) {
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
@@ -49,7 +49,7 @@ export const Sense = new CharacterData({
         if (character.additionalMetadata.teaTimeStacks! >= 2) {
           messageCache.push(
             "Sense holds a tea party! Both characters take a turn to enjoy the tea.",
-            TCGThread.Gameroom
+            TCGThread.Gameroom,
           );
           character.additionalMetadata.teaTimeStacks! -= 2;
           character.skipTurn = true;
@@ -60,7 +60,7 @@ export const Sense = new CharacterData({
     abilityEndOfTurnEffect: (
       game,
       characterIndex,
-      messageCache: MessageCache
+      messageCache: MessageCache,
     ) => {
       const character = game.characters[characterIndex];
       if (character.additionalMetadata.attackedThisTurn) {

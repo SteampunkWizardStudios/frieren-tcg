@@ -17,7 +17,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       option
         .setName("opponent")
         .setDescription("The user you want to challenge")
-        .setRequired(true)
+        .setRequired(true),
     )
     .addStringOption((option) =>
       option
@@ -30,16 +30,16 @@ export const command: Command<ChatInputCommandInteraction> = {
             .map(([key, game]) => ({
               name: game.optionName ?? "optionName should be defined",
               value: key,
-            }))
-        )
+            })),
+        ),
     )
     .addBooleanOption((option) =>
       option
         .setName("ranked")
         .setDescription(
-          "Whether players can earn rank points from this match. Defaults to False."
+          "Whether players can earn rank points from this match. Defaults to False.",
         )
-        .setRequired(false)
+        .setRequired(false),
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
