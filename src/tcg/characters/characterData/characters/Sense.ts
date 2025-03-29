@@ -6,9 +6,11 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import config from "@src/config";
+// import config from "@src/config";
 
-const PACIFIST_TURN_COUNT = config.debugMode ? 1 : 15;
+// config module not found for some reason
+// const PACIFIST_TURN_COUNT = config.debugMode ? 1 : 15;
+const PACIFIST_TURN_COUNT = 15;
 
 const senseStats = new Stats({
   [StatsEnum.HP]: 90.0,

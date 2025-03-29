@@ -64,16 +64,16 @@ export const initiateGame = async (
         console.log("Handle ranking here");
       }
 
-    // thread cleanup
-    await Promise.all([
-      gameThread.setArchived(true, "Game completed."),
-      gameThread.members.remove(challenger.id),
-      gameThread.members.remove(opponent.id),
-      challengerThread.setArchived(true, "Game completed."),
-      challengerThread.members.remove(challenger.id),
-      opponentThread.setArchived(true, "Game completed."),
-      opponentThread.members.remove(opponent.id),
-    ]);
+      // thread cleanup
+      await Promise.all([
+        gameThread.setArchived(true, "Game completed."),
+        gameThread.members.remove(challenger.id),
+        gameThread.members.remove(opponent.id),
+        challengerThread.setArchived(true, "Game completed."),
+        challengerThread.members.remove(challenger.id),
+        opponentThread.setArchived(true, "Game completed."),
+        opponentThread.members.remove(opponent.id),
+      ]);
 
       const resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
