@@ -9,8 +9,9 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_axeSwipe = new Card({
   title: "Axe Swipe",
-  description: ([dmg]) => `HP-5. DMG ${dmg}`,
+  description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.STARK_CARD,
+  tags: { Resolve: -1 },
   effects: [9],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -164,8 +165,9 @@ const concentration = new Card({
 
 const a_ordensSlashTechnique = new Card({
   title: "Orden's Slash Technique",
-  description: ([dmg]) => `HP-9. DMG ${dmg}`,
+  description: ([dmg]) => `HP-8. DMG ${dmg}`,
   emoji: CardEmoji.STARK_CARD,
+  tags: { Resolve: -1 },
   effects: [12],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -175,7 +177,7 @@ const a_ordensSlashTechnique = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 9 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 8 });
   },
 });
 
@@ -201,9 +203,9 @@ const fearBroughtMeThisFar = new Card({
 
 const a_eisensAxeCleave = new Card({
   title: "Eisen's Axe Cleave",
-  description: ([dmg]) =>
-    `HP-14. DMG ${dmg}. Cannot take any action next turn.`,
+  description: ([dmg]) => `HP-12. DMG ${dmg}. Uses up 2 Resolve stack.`,
   emoji: CardEmoji.STARK_CARD,
+  tags: { Resolve: -2 },
   effects: [18],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -220,31 +222,25 @@ const a_eisensAxeCleave = new Card({
     }
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    if (
-      CommonCardAction.commonAttack(game, characterIndex, {
-        damage,
-        hpCost: 14,
-      }) > 0
-    ) {
-      messageCache.push(
-        `${character.name} recollects ${character.cosmetic.pronouns.reflexive}. ${character.name} skips the next turn!`,
-        TCGThread.Gameroom,
-      );
-      character.skipTurn = true;
-    }
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: 12,
+    });
   },
 });
 
 const a_lightningStrike = new Card({
   title: "Lightning Strike",
   description: ([dmg]) =>
-    `HP-17. DEF-5 for this turn. At this turn's resolution, strike for DMG ${dmg}. Cannot take any action next turn.`,
+    `HP-15. DEF-5 for this turn. At this turn's resolution, strike for DMG ${dmg}. Uses up 2 Resolve stack.`,
   emoji: CardEmoji.STARK_CARD,
+  tags: { Resolve: -2 },
+  priority: 1,
   effects: [25],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
 
-    if (character.adjustStat(-17, StatsEnum.HP)) {
+    if (character.adjustStat(-15, StatsEnum.HP)) {
       messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
       const damage = this.calculateEffectValue(this.effects[0]);
 
@@ -274,12 +270,6 @@ const a_lightningStrike = new Card({
               hpCost: 0,
               isTimedEffectAttack: true,
             });
-
-            messageCache.push(
-              `${character.name} recollects ${character.cosmetic.pronouns.reflexive}. ${character.name} skips the next turn!`,
-              TCGThread.Gameroom,
-            );
-            character.skipTurn = true;
           },
         }),
       );
