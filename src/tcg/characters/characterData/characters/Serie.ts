@@ -75,6 +75,7 @@ export const Serie = new CharacterData({
     manaSuppressed: true,
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
+    accessToDefaultCardOptions: true,
     serieToyingNextTurn: false,
     serieToyingTurn: false,
   },

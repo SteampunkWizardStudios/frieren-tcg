@@ -68,6 +68,7 @@ export const Linie = new CharacterData({
   additionalMetadata: {
     manaSuppressed: false,
     attackedThisTurn: false,
+    accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
   },
 });

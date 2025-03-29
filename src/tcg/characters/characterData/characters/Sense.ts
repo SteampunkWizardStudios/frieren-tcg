@@ -82,6 +82,7 @@ export const Sense = new CharacterData({
   additionalMetadata: {
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
+    accessToDefaultCardOptions: true,
     manaSuppressed: false,
     teaTimeStacks: 0,
   },

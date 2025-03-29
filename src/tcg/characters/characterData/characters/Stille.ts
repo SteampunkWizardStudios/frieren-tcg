@@ -35,7 +35,17 @@ export const Stille = new CharacterData({
     abilityEffectString: `When the opponent attacks, roll a D100. 
         If the result is less than the character's SPD minus the opponent's SPD, ignore the attack.
         Afterwards, attack the opponent with DMG equivalent to 1/2 * (opponent's ATK + opponent's move DMG).
-        This character does not have access to default card options (Discard/Wait).`,
+        
+        **Sub-Ability: Birdwatching** - Both characters don't have access to default card options (Discard/Wait).`,
+    abilityStartOfTurnEffect: (
+      game,
+      _characterIndex,
+      _messageCache: MessageCache,
+    ) => {
+      game.characters.forEach((character, _characterIndex) => {
+        character.additionalMetadata.accessToDefaultCardOptions = false;
+      });
+    },
     abilityDefendEffect: (
       game,
       characterIndex,
@@ -75,6 +85,7 @@ export const Stille = new CharacterData({
   additionalMetadata: {
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
+    accessToDefaultCardOptions: false,
     manaSuppressed: false,
   },
 });

@@ -93,6 +93,7 @@ export const createSeinSerie = () =>
     additionalMetadata: {
       attackedThisTurn: false,
       timedEffectAttackedThisTurn: false,
+      accessToDefaultCardOptions: true,
       manaSuppressed: false,
       overheal: true,
     },

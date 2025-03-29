@@ -114,6 +114,7 @@ export const Frieren = new CharacterData({
   additionalMetadata: {
     manaSuppressed: true,
     attackedThisTurn: false,
+    accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
   },
 });

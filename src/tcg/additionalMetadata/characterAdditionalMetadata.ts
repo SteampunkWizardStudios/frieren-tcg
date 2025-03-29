@@ -10,6 +10,7 @@ export type CharacterAdditionalMetadata = {
   manaSuppressed: boolean;
   attackedThisTurn: boolean;
   timedEffectAttackedThisTurn: boolean;
+  accessToDefaultCardOptions: boolean;
   teaTimeStacks?: number;
   overheal?: boolean;
   serieToyingNextTurn?: boolean;

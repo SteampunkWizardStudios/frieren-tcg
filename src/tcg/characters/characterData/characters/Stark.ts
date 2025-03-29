@@ -49,6 +49,7 @@ export const Stark = new CharacterData({
   additionalMetadata: {
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
+    accessToDefaultCardOptions: true,
     manaSuppressed: false,
   },
 });

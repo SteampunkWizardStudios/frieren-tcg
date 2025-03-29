@@ -20,13 +20,3 @@ export enum CharacterName {
 
   SeinSerie = "Sein & Serie",
 }
-
-export const CharactersWithNoAccessToDefaultOptions = new Set<CharacterName>([
-  CharacterName.Stille,
-
-  CharacterName.StoneGeisel,
-  CharacterName.FireGolem,
-  CharacterName.StoneGolem,
-  CharacterName.AngryMimic,
-  CharacterName.ShadowDragon,
-]);

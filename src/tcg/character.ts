@@ -6,10 +6,6 @@ import { Ability } from "./ability";
 import { statDetails } from "./formatting/emojis";
 import Rolls from "./util/rolls";
 import { CharacterAdditionalMetadata } from "./additionalMetadata/characterAdditionalMetadata";
-import {
-  CharacterName,
-  CharactersWithNoAccessToDefaultOptions,
-} from "./characters/metadata/CharacterName";
 import DefaultCards from "./decks/utilDecks/defaultCard";
 import {
   CharacterCosmetic,
@@ -126,9 +122,7 @@ export default class Character {
       }
     }
 
-    if (
-      !CharactersWithNoAccessToDefaultOptions.has(this.name as CharacterName)
-    ) {
+    if (this.additionalMetadata.accessToDefaultCardOptions) {
       indexToUsableCardMap["8"] = DefaultCards.discardCard.clone();
       indexToUsableCardMap["9"] = DefaultCards.waitCard.clone();
     }
