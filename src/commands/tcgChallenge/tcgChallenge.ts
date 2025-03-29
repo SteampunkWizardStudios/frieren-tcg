@@ -17,7 +17,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       option
         .setName("opponent")
         .setDescription("The user you want to challenge")
-        .setRequired(true),
+        .setRequired(true)
     )
     .addStringOption((option) =>
       option
@@ -25,25 +25,21 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setDescription("Select the gamemode. Defaults to Classic.")
         .setRequired(false)
         .addChoices(
-          { name: "Classic - 45s Turn Duration", value: GameMode.CLASSIC },
-          { name: "Blitz - 10s Turn Duration", value: GameMode.BLITZ },
-          {
-            name: "Slow - 2m Turn Duration. Hands and Draws revealed",
-            value: GameMode.SLOW,
-          },
-          // {
-          //   name: "PvE - 2m Turn Duration. Public challenged player thread. Cannot be Ranked.",
-          //   value: GameMode.PVE,
-          // },
-        ),
+          Object.entries(GAME_SETTINGS)
+            .filter(([, game]) => game.optionName && game.allowedOption)
+            .map(([key, game]) => ({
+              name: game.optionName ?? "optionName should be defined",
+              value: key,
+            }))
+        )
     )
     .addBooleanOption((option) =>
       option
         .setName("ranked")
         .setDescription(
-          "Whether players can earn rank points from this match. Defaults to False.",
+          "Whether players can earn rank points from this match. Defaults to False."
         )
-        .setRequired(false),
+        .setRequired(false)
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {

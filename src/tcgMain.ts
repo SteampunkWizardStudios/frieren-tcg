@@ -285,12 +285,12 @@ export const tcgMain = async (
         if (card) {
           const character = game.getCharacter(characterIndex);
           messageCache.push(
-            `## ${character.cosmetic.emoji} ${character.name} (${characterIndex === 0 ? `${challenger.username}` : `${opponent.username}`}) used **${card.emoji} ${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[!](${card.cosmetic?.cardImageUrl})` : "!"}`,
+            `## ${character.cosmetic.emoji} ${character.name} (${characterIndex === 0 ? `${challenger.username}` : `${opponent.username}`}) used **${card.emoji} ${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[⠀](${card.cosmetic?.cardImageUrl})` : "!"}`,
             TCGThread.Gameroom,
           );
           if (card.cosmetic?.cardGif) {
             messageCache.push(
-              `[.](${card.cosmetic?.cardGif})`,
+              `[⠀](${card.cosmetic?.cardGif})`,
               TCGThread.Gameroom,
             );
           }
