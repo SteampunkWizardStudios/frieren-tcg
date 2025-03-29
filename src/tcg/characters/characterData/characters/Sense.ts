@@ -13,7 +13,7 @@ const PACIFIST_TURN_COUNT = config.debugMode ? 1 : 15;
 const senseStats = new Stats({
   [StatsEnum.HP]: 90.0,
   [StatsEnum.ATK]: 10.0,
-  [StatsEnum.DEF]: 14.0,
+  [StatsEnum.DEF]: 12.0,
   [StatsEnum.SPD]: 8.0,
   [StatsEnum.Ability]: 0.0,
 });

@@ -33,10 +33,7 @@ import {
   a_pierce,
   a_piercingDrill,
   harden,
-  holeUp,
   rest,
-  teaParty,
-  teaTime,
 } from "../SenseDeck";
 
 export const serie_offensiveMagic = [

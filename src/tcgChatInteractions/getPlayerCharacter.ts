@@ -57,9 +57,20 @@ export const getPlayerCharacter = async (
             }
 
             if (!isResolved) {
+              const immediateResponseEmbed = new EmbedBuilder()
+                .setTitle(`Character selected...`)
+                .setColor(characterDropdown.embed.data.color ?? "#000000");
+
+              await response.edit({
+                embeds: [immediateResponseEmbed],
+                components: [], // Remove all components to prevent double click
+              });
+
               collector.stop("Character selected");
+
               const characterList = createCharacterList(player);
               const selection = i.values[0];
+
               let index;
               if (selection === "random") {
                 index = Math.floor(Math.random() * characterList.length);
