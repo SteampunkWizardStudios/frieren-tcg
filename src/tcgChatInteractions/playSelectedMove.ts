@@ -10,6 +10,7 @@ import {
 import Character from "../tcg/character";
 import Card from "../tcg/card";
 import { createCountdownTimestamp } from "../util/utils";
+import DefaultCards from "../tcg/decks/utilDecks/defaultCard";
 
 // handle card selection and play the card
 // returns the card played
@@ -49,8 +50,6 @@ export const playSelectedMove = async (
   });
 
   const cards: Card[] = Object.values(playerPossibleMove);
-  const randomCard: Card =
-    cards[Math.floor(Math.random() * (cards.length - 1))]; // -1 so Forfeit is always avoided
 
   return new Promise<Card>((resolve, reject) => {
     const fallbackTimeout = setTimeout(() => {
@@ -59,7 +58,7 @@ export const playSelectedMove = async (
         console.warn(
           "Fallback timeout triggered in getSelectedMove function - collector failed to end properly.",
         );
-        resolve(randomCard);
+        resolve(DefaultCards.forfeitCard);
       }
     }, timeLimit + 5000); // 5 additional seconds for fallback timeout
 
@@ -86,7 +85,7 @@ export const playSelectedMove = async (
 
               const selectedCardIndex = parseInt(i.values[0]);
               const selectedCard =
-                playerPossibleMove[i.values[0]] ?? randomCard;
+                playerPossibleMove[i.values[0]] ?? DefaultCards.forfeitCard;
               if (selectedCardIndex < 6) {
                 character.playCard(selectedCardIndex);
               }
@@ -121,14 +120,14 @@ export const playSelectedMove = async (
             if (!isResolved) {
               await response
                 .edit({
-                  content: `Timeout! Playing a random card: ${randomCard.emoji} **${randomCard.getTitle()}**!`,
+                  content: `Timeout! Forfeiting!`,
                   components: [],
                 })
                 .catch(() => {});
 
               isResolved = true;
               clearTimeout(fallbackTimeout);
-              resolve(randomCard);
+              resolve(DefaultCards.forfeitCard);
             }
           }
         });
