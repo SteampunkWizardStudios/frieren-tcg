@@ -19,7 +19,11 @@ export async function showCharacterInfo(
   const dm = interaction.options.getBoolean("dm") ? true : false;
 
   try {
-    const characterDropdown = await createCharacterDropdown(interaction.user);
+    const customCharacterInfoId = `character-info-${interaction.user.id}-${Date.now()}`;
+    const characterDropdown = await createCharacterDropdown(
+      interaction.user,
+      customCharacterInfoId,
+    );
 
     // Send initial message with the menu
     const response = await sendInfoMessage(
@@ -33,6 +37,7 @@ export async function showCharacterInfo(
     if (response) {
       const collector = response.createMessageComponentCollector({
         componentType: ComponentType.StringSelect,
+        filter: (i) => i.customId === customCharacterInfoId,
         time: 300_000, // 5 minutes
       });
 

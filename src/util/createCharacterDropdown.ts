@@ -10,6 +10,7 @@ import { CharacterData } from "../tcg/characters/characterData/characterData";
 
 export const createCharacterDropdown = async (
   user: User,
+  customId: string,
   timeLimitSeconds?: number,
 ): Promise<{
   embed: EmbedBuilder;
@@ -41,7 +42,7 @@ export const createCharacterDropdown = async (
 
   // Create the dropdown menu
   const selectMenu = new StringSelectMenuBuilder()
-    .setCustomId("character-select")
+    .setCustomId(customId)
     .setPlaceholder("Select a Character")
     .addOptions(
       characterList.map((char, index) => ({

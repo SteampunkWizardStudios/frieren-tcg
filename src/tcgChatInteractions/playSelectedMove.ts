@@ -29,8 +29,9 @@ export const playSelectedMove = async (
   let isResolved = false;
 
   // Create the dropdown menu
+  const moveSelectId = `move-select-${player.username}-${Date.now()}`;
   const selectMenu = new StringSelectMenuBuilder()
-    .setCustomId(`move-select-${player.username}`)
+    .setCustomId(moveSelectId)
     .setPlaceholder("Select your Move")
     .addOptions(
       Object.entries(playerPossibleMove).map(([index, card]) => ({
@@ -67,6 +68,7 @@ export const playSelectedMove = async (
       if (response) {
         const collector = response.createMessageComponentCollector({
           componentType: ComponentType.StringSelect,
+          filter: (i) => i.customId === moveSelectId,
           time: timeLimit,
         });
 
@@ -82,6 +84,9 @@ export const playSelectedMove = async (
             }
 
             if (!isResolved) {
+              if (!i.replied && !i.deferred) {
+                await i.deferUpdate();
+              }
               collector.stop("Character selected");
 
               const selectedCardIndex = parseInt(i.values[0]);
@@ -91,7 +96,7 @@ export const playSelectedMove = async (
                 character.playCard(selectedCardIndex);
               }
 
-              await i.update({
+              await i.editReply({
                 content: `You selected ${selectedCard.emoji} **${selectedCard.getTitle()}**`,
                 components: [],
               });
@@ -102,10 +107,19 @@ export const playSelectedMove = async (
             }
           } catch (error) {
             console.error(error);
-            await i.reply({
-              content: "There was an error fetching card.",
-              flags: MessageFlags.Ephemeral,
-            });
+
+            // reply only if hasn't been acknowledged
+            if (!i.replied && !i.deferred) {
+              await i.reply({
+                content: "There was an error fetching card.",
+                flags: MessageFlags.Ephemeral,
+              });
+            } else {
+              await i.editReply({
+                content: "There was an error fetching card.",
+              });
+            }
+
             if (!isResolved) {
               collector.stop("Error occurred");
               isResolved = true;
@@ -116,16 +130,25 @@ export const playSelectedMove = async (
         });
 
         collector.on("end", async (collected) => {
-          // When the collector expires, disable the select menu
-          if (collected.size === 0) {
-            if (!isResolved) {
-              await response
-                .edit({
-                  content: `Timeout! Playing a random card: ${randomCard.emoji} **${randomCard.getTitle()}**!`,
-                  components: [],
-                })
-                .catch(() => {});
+          try {
+            // When the collector expires, disable the select menu
+            if (collected.size === 0) {
+              if (!isResolved) {
+                await response
+                  .edit({
+                    content: `Timeout! Playing a random card: ${randomCard.emoji} **${randomCard.getTitle()}**!`,
+                    components: [],
+                  })
+                  .catch(() => {});
 
+                isResolved = true;
+                clearTimeout(fallbackTimeout);
+                resolve(randomCard);
+              }
+            }
+          } catch (error) {
+            console.error("Error in collector end event:", error);
+            if (!isResolved) {
               isResolved = true;
               clearTimeout(fallbackTimeout);
               resolve(randomCard);

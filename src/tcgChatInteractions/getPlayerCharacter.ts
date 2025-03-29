@@ -17,8 +17,11 @@ export const getPlayerCharacter = async (
   const timeLimitSeconds = 60;
   const timeLimit = timeLimitSeconds * 1000;
   let isResolved = false;
+
+  const characterSelectId = `character-select-${player.id}-${Date.now()}`;
   const characterDropdown = await createCharacterDropdown(
     player,
+    characterSelectId,
     timeLimitSeconds,
   );
 
@@ -42,6 +45,7 @@ export const getPlayerCharacter = async (
       if (response) {
         const collector = response.createMessageComponentCollector({
           componentType: ComponentType.StringSelect,
+          filter: (i) => i.customId === characterSelectId,
           time: timeLimit,
         });
 
@@ -57,15 +61,9 @@ export const getPlayerCharacter = async (
             }
 
             if (!isResolved) {
-              const immediateResponseEmbed = new EmbedBuilder()
-                .setTitle(`Character selected...`)
-                .setColor(characterDropdown.embed.data.color ?? "#000000");
-
-              await response.edit({
-                embeds: [immediateResponseEmbed],
-                components: [], // Remove all components to prevent double click
-              });
-
+              if (!i.replied && !i.deferred) {
+                await i.deferUpdate();
+              }
               collector.stop("Character selected");
 
               const characterList = createCharacterList(player);
@@ -85,7 +83,7 @@ export const getPlayerCharacter = async (
                 .setColor(selectedCharacter.cosmetic.color)
                 .setImage(selectedCharacter.cosmetic.imageUrl);
 
-              await i.update({
+              await i.editReply({
                 content: `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.name}**`,
                 embeds: [characterSelectedEmbed],
                 components: [],
@@ -97,10 +95,17 @@ export const getPlayerCharacter = async (
             }
           } catch (error) {
             console.error(error);
-            await i.reply({
-              content: "There was an error fetching character information.",
-              flags: MessageFlags.Ephemeral,
-            });
+
+            if (!i.replied && !i.deferred) {
+              await i.reply({
+                content: "There was an error fetching character information.",
+                flags: MessageFlags.Ephemeral,
+              });
+            } else {
+              await i.editReply({
+                content: "There was an error fetching character information.",
+              });
+            }
             if (!isResolved) {
               collector.stop("Error occurred");
               isResolved = true;
