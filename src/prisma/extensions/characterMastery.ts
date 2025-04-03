@@ -1,6 +1,5 @@
 import { Prisma } from "@prisma/client";
 
-// prisma computed value, cannot be selected for but is returned in the result
 const masteryExt = Prisma.defineExtension({
   result: {
     characterMastery: {

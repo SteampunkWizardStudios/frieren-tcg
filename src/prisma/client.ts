@@ -7,4 +7,6 @@ const prismaClient = new PrismaClient().$extends({
   ...masteryExt,
 });
 
+// these extensions may or may not be used, they're just examples
+
 export default prismaClient;

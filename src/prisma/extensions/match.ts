@@ -1,6 +1,5 @@
 import { Prisma } from '@prisma/client';
 
-// extension to validate creation of matches, not particularly useful but good example
 const matchExt = Prisma.defineExtension({
     query: {
         match: {

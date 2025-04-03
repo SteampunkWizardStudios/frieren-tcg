@@ -5,98 +5,108 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Player {
-    id           Int           @id @default(autoincrement())
-    discordId    String        @unique
-    achievements Achievement[] @relation("PlayerAchievements")
+  id           Int           @id @default(autoincrement())
+  discordId    String        @unique
+  achievements Achievement[] @relation("PlayerAchievements")
 
-    matchesAsPlayer1   Match[]            @relation("Player1")
-    matchesAsPlayer2   Match[]            @relation("Player2")
-    matchesAsWinner    Match[]            @relation("Winner")
-    characterMasteries CharacterMastery[] @relation("PlayerCharacterMastery")
-    ladderRanks        LadderRank[]       @relation("PlayerLadderRank")
+  matchesAsPlayer1   Match[]            @relation("Player1")
+  matchesAsPlayer2   Match[]            @relation("Player2")
+  matchesAsWinner    Match[]            @relation("Winner")
+  characterMasteries CharacterMastery[] @relation("PlayerCharacterMastery")
+  ladderRanks        LadderRank[]       @relation("PlayerLadderRank")
 }
 
 model LadderRank {
-    id            Int         @id @default(autoincrement())
-    playerId      Int
-    player        Player      @relation("PlayerLadderRank", fields: [playerId], references: [id])
-    ladderResetId Int
-    ladderReset   LadderReset @relation(fields: [ladderResetId], references: [id])
+  id            Int         @id @default(autoincrement())
+  playerId      Int
+  player        Player      @relation("PlayerLadderRank", fields: [playerId], references: [id])
+  ladderResetId Int
+  ladderReset   LadderReset @relation(fields: [ladderResetId], references: [id])
 
-    rank Int
+  rank Int
 
-    @@unique([ladderResetId, playerId])
+  @@unique([ladderResetId, playerId])
 }
 
 model Achievement {
-    id          Int      @id @default(autoincrement())
-    name        String   @unique
-    description String?
-    earners     Player[] @relation("PlayerAchievements")
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?  @db.Text()
+  earners     Player[] @relation("PlayerAchievements")
 }
 
 model Ladder {
-    id   Int    @id @default(autoincrement())
-    name String @unique
+  id   Int    @id @default(autoincrement())
+  name String @unique
 
-    resets LadderReset[] // a snapshot of the ladder 
+  resets LadderReset[] // a snapshot of the ladder 
 }
 
 model LadderReset {
-    id       Int    @id @default(autoincrement())
-    ladderId Int
-    ladder   Ladder @relation(fields: [ladderId], references: [id])
+  id       Int    @id @default(autoincrement())
+  ladderId Int
+  ladder   Ladder @relation(fields: [ladderId], references: [id])
 
-    startedDate DateTime @default(now())
+  startedDate DateTime @default(now())
+  active      Boolean  @default(true)
 
-    matches     Match[]
-    ladderRanks LadderRank[]
+  matches     Match[]
+  ladderRanks LadderRank[]
 }
 
 model Match {
-    id Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-    ladderResetId Int
-    ladderReset   LadderReset @relation(fields: [ladderResetId], references: [id])
+  ladderResetId Int
+  ladderReset   LadderReset @relation(fields: [ladderResetId], references: [id])
 
-    player1Id Int
-    player1   Player @relation("Player1", fields: [player1Id], references: [id])
-    player2Id Int
-    player2   Player @relation("Player2", fields: [player2Id], references: [id])
+  player1Id          Int
+  player1            Player    @relation("Player1", fields: [player1Id], references: [id])
+  player2Id          Int
+  player2            Player    @relation("Player2", fields: [player2Id], references: [id])
+  player1CharacterId Int
+  player1Character   Character @relation("Player1Character", fields: [player1CharacterId], references: [id])
+  player2CharacterId Int
+  player2Character   Character @relation("Player2Character", fields: [player2CharacterId], references: [id])
 
-    winnerId Int
-    winner   Player @relation("Winner", fields: [winnerId], references: [id])
+  winnerId Int
+  winner   Player @relation("Winner", fields: [winnerId], references: [id])
+  winnerCharacterId Int
+  winnerCharacter   Character @relation("WinnerCharacter", fields: [winnerCharacterId], references: [id])
 
-    finishedAt DateTime @default(now())
+  finishedAt DateTime @default(now())
 }
 
 model Character {
-    id   Int    @id @default(autoincrement())
-    name String @unique
+  id   Int    @id @default(autoincrement())
+  name String @unique
 
-    characterMasteries CharacterMastery[] @relation("CharacterMastery")
+  characterMasteries CharacterMastery[] @relation("CharacterMastery")
+  player1Matches     Match[]            @relation("Player1Character")
+  player2Matches     Match[]            @relation("Player2Character")
+  winnerMatches      Match[]            @relation("WinnerCharacter")
 }
 
 model CharacterMastery {
-    id          Int       @id @default(autoincrement())
-    playerId    Int
-    player      Player    @relation("PlayerCharacterMastery", fields: [playerId], references: [id])
-    characterId Int
-    character   Character @relation("CharacterMastery", fields: [characterId], references: [id])
+  id          Int       @id @default(autoincrement())
+  playerId    Int
+  player      Player    @relation("PlayerCharacterMastery", fields: [playerId], references: [id])
+  characterId Int
+  character   Character @relation("CharacterMastery", fields: [characterId], references: [id])
 
-    masteryPoints Int @default(0)
-    wins          Int @default(0)
-    losses        Int @default(0)
-    ties          Int @default(0)
+  masteryPoints Int @default(0)
+  wins          Int @default(0)
+  losses        Int @default(0)
+  ties          Int @default(0)
 
-    @@unique([playerId, characterId])
+  @@unique([playerId, characterId])
 }
