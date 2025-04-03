@@ -9,6 +9,9 @@
     "server": "ts-node src/server/server.ts",
 	"generate": "npx prisma generate"
   },
+  "prisma": {
+	"seed": "ts-node prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

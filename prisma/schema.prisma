@@ -57,7 +57,6 @@ model LadderReset {
   ladder   Ladder @relation(fields: [ladderId], references: [id])
 
   startedDate DateTime @default(now())
-  active      Boolean  @default(true)
 
   matches     Match[]
   ladderRanks LadderRank[]
@@ -78,8 +77,8 @@ model Match {
   player2CharacterId Int
   player2Character   Character @relation("Player2Character", fields: [player2CharacterId], references: [id])
 
-  winnerId Int
-  winner   Player @relation("Winner", fields: [winnerId], references: [id])
+  winnerId          Int
+  winner            Player    @relation("Winner", fields: [winnerId], references: [id])
   winnerCharacterId Int
   winnerCharacter   Character @relation("WinnerCharacter", fields: [winnerCharacterId], references: [id])
 
