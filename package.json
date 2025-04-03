@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ts-node src/main.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "ts-node src/server/server.ts"
+    "server": "ts-node src/server/server.ts",
+	"generate": "npx prisma generate"
   },
   "keywords": [],
   "author": "",
