@@ -1,23 +1,16 @@
+import { GameMode } from "@src/commands/tcgChallenge/gameHandler/gameSettings";
 import prismaClient from "./client";
+import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 
 async function main() {
   await prismaClient.$transaction([
     prismaClient.ladder.createMany({
-      data: [...["Classic", "Blitz", "Slow"].map((name) => ({ name }))],
+      data: Object.values(GameMode).map((name) => ({ name })),
     }),
     prismaClient.character.createMany({
-      data: [
-        ...[
-          "Frieren",
-          "Laufen",
-          "Linie",
-          "Sein",
-          "Sense",
-          "Serie",
-          "Stark",
-          "Stille",
-        ].map((name) => ({ name })),
-      ],
+      data: CHARACTER_LIST.map((character) => character.name).map((name) => ({
+        name,
+      })),
     }),
   ]);
 }

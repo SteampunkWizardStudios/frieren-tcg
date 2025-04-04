@@ -77,12 +77,20 @@ model Match {
   player2CharacterId Int
   player2Character   Character @relation("Player2Character", fields: [player2CharacterId], references: [id])
 
-  winnerId          Int
-  winner            Player    @relation("Winner", fields: [winnerId], references: [id])
-  winnerCharacterId Int
-  winnerCharacter   Character @relation("WinnerCharacter", fields: [winnerCharacterId], references: [id])
+  winnerId          Int?
+  winner            Player?    @relation("Winner", fields: [winnerId], references: [id])
+  winnerCharacterId Int?
+  winnerCharacter   Character? @relation("WinnerCharacter", fields: [winnerCharacterId], references: [id])
 
+  result            MatchResult @default(ONGOING)
   finishedAt DateTime @default(now())
+}
+
+enum MatchResult {
+  ONGOING
+  PLAYER1_WIN
+  PLAYER2_WIN
+  DRAW
 }
 
 model Character {
