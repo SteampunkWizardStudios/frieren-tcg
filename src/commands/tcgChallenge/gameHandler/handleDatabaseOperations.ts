@@ -2,7 +2,7 @@ import { EmbedBuilder, User } from "discord.js";
 import { GameMode } from "./gameSettings";
 import prismaClient from "../../../../prisma/client";
 import { getOrCreatePlayers } from "@src/util/db/getPlayer";
-import { getCharacters } from "@src/util/db/getCharacter";
+import { getOrCreateCharacters } from "@src/util/db/getCharacter";
 import { getCharacterMasteries } from "@src/util/db/getCharacterMastery";
 import { getLadderRanks } from "@src/util/db/getLadderRank";
 import { getRank } from "./rankScoresToRankTitleMapping";
@@ -49,7 +49,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
         loser.id,
       ]);
       const [winnerCharacterDbObject, loserCharacterDbObject] =
-        await getCharacters([winnerCharacter, loserCharacter]);
+        await getOrCreateCharacters([winnerCharacter, loserCharacter]);
       if (
         winnerDbObject &&
         loserDbObject &&
@@ -120,59 +120,63 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             );
 
             // update ladder rank
-            Promise.all([
-              prismaClient.ladderRank.update({
-                where: {
-                  id: winnerLadderRank.id,
-                },
-                data: {
-                  rankPoints: {
-                    increment: winnerScoreGain,
-                  },
-                },
-              }),
-              prismaClient.ladderRank.update({
-                where: {
-                  id: loserLadderRank.id,
-                },
-                data: {
-                  rankPoints: {
-                    decrement: loserScoreLoss,
-                  },
-                },
-              }),
-            ]);
-
-            // update character mastery
-            if (winnerCharacterMastery && loserCharacterMastery) {
+            prismaClient.$transaction(async (tx) => {
               Promise.all([
-                prismaClient.characterMastery.update({
+                tx.ladderRank.update({
                   where: {
-                    id: winnerCharacterMastery.id,
+                    id: winnerLadderRank.id,
                   },
                   data: {
-                    masteryPoints: {
+                    rankPoints: {
                       increment: winnerScoreGain,
-                    },
-                    wins: {
-                      increment: 1,
                     },
                   },
                 }),
-                prismaClient.characterMastery.update({
+                tx.ladderRank.update({
                   where: {
-                    id: loserCharacterMastery.id,
+                    id: loserLadderRank.id,
                   },
                   data: {
-                    masteryPoints: {
+                    rankPoints: {
                       decrement: loserScoreLoss,
-                    },
-                    losses: {
-                      increment: 1,
                     },
                   },
                 }),
               ]);
+            });
+
+            // update character mastery
+            if (winnerCharacterMastery && loserCharacterMastery) {
+              prismaClient.$transaction(async (tx) => {
+                Promise.all([
+                  tx.characterMastery.update({
+                    where: {
+                      id: winnerCharacterMastery.id,
+                    },
+                    data: {
+                      masteryPoints: {
+                        increment: winnerScoreGain,
+                      },
+                      wins: {
+                        increment: 1,
+                      },
+                    },
+                  }),
+                  tx.characterMastery.update({
+                    where: {
+                      id: loserCharacterMastery.id,
+                    },
+                    data: {
+                      masteryPoints: {
+                        decrement: loserScoreLoss,
+                      },
+                      losses: {
+                        increment: 1,
+                      },
+                    },
+                  }),
+                ]);
+              });
             } else {
               let errors = [];
               if (!winnerCharacterMastery) {
