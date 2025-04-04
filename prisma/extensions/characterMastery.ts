@@ -4,8 +4,8 @@ const masteryExt = Prisma.defineExtension({
   result: {
     characterMastery: {
       totalMatches: {
-        compute({ matchesLost, matchesWon, matchesTied }): number {
-          return matchesLost + matchesWon + matchesTied;
+        compute({ losses, wins }): number {
+          return losses + wins;
         },
       },
     },

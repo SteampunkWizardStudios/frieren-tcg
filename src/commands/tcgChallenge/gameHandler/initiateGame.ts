@@ -9,8 +9,9 @@ import {
   ThreadChannel,
   User,
 } from "discord.js";
-import { GameSettings } from "./gameSettings";
+import { GameMode, GameSettings } from "./gameSettings";
 import { tcgMain } from "../../../tcgMain";
+import { handleDatabaseOperationsWithResultEmbedSideEffect } from "./handleDatabaseOperations";
 
 export const initiateGame = async (
   interaction: ChatInputCommandInteraction,
@@ -19,6 +20,7 @@ export const initiateGame = async (
   opponent: User,
   gameSettings: GameSettings,
   ranked: boolean,
+  gameMode?: GameMode,
 ) => {
   try {
     const channel = (await interaction.client.channels.fetch(
@@ -50,7 +52,7 @@ export const initiateGame = async (
       })) as ThreadChannel;
       await opponentThread.members.add(opponent.id);
 
-      const { winner, loser } = await tcgMain(
+      const { winner, winnerCharacter, loser, loserCharacter } = await tcgMain(
         challenger,
         opponent,
         gameThread,
@@ -58,11 +60,6 @@ export const initiateGame = async (
         opponentThread,
         gameSettings,
       );
-
-      // handle ranking here
-      if (ranked) {
-        console.log("Handle ranking here");
-      }
 
       // thread cleanup
       await Promise.all([
@@ -83,6 +80,26 @@ export const initiateGame = async (
         .setFooter({
           text: `Game ID: ${gameId}`,
         });
+
+      // handle database operations
+      if (winner && winnerCharacter && loser && loserCharacter && gameMode) {
+        try {
+          handleDatabaseOperationsWithResultEmbedSideEffect({
+            winner,
+            winnerCharacter,
+            loser,
+            loserCharacter,
+            ranked,
+            gameMode,
+            resultEmbed,
+          });
+        } catch (error) {
+          console.error(
+            `Error in database operation calculation for Winner UserID ${winner.id} vs Loser UserID ${loser.id}`,
+          );
+          console.error(error); // just log and continue
+        }
+      }
 
       if (winner && loser) {
         await channel.send({

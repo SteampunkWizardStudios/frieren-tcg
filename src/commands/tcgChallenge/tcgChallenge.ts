@@ -50,7 +50,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       const ranked = interaction.options.getBoolean("ranked") ?? false;
       const gameSettings = GAME_SETTINGS[gamemode];
 
-      initiateChallengeRequest(interaction, gameSettings, ranked);
+      initiateChallengeRequest(interaction, gameSettings, ranked, gamemode);
     } catch (error) {
       console.log(error);
       await interaction.reply({

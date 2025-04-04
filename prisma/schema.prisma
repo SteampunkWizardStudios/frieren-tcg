@@ -18,9 +18,8 @@ model Player {
   discordId    String        @unique
   achievements Achievement[] @relation("PlayerAchievements")
 
-  matchesAsPlayer1   Match[]            @relation("Player1")
-  matchesAsPlayer2   Match[]            @relation("Player2")
   matchesAsWinner    Match[]            @relation("Winner")
+  matchesAsLoser     Match[]            @relation("Loser")
   characterMasteries CharacterMastery[] @relation("PlayerCharacterMastery")
   ladderRanks        LadderRank[]       @relation("PlayerLadderRank")
 }
@@ -32,7 +31,7 @@ model LadderRank {
   ladderResetId Int
   ladderReset   LadderReset @relation(fields: [ladderResetId], references: [id])
 
-  rank Int
+  rankPoints Int @default(0)
 
   @@unique([ladderResetId, playerId])
 }
@@ -56,7 +55,8 @@ model LadderReset {
   ladderId Int
   ladder   Ladder @relation(fields: [ladderId], references: [id])
 
-  startedDate DateTime @default(now())
+  startDate DateTime @default(now())
+  endDate DateTime?
 
   matches     Match[]
   ladderRanks LadderRank[]
@@ -68,29 +68,17 @@ model Match {
   ladderResetId Int
   ladderReset   LadderReset @relation(fields: [ladderResetId], references: [id])
 
-  player1Id          Int
-  player1            Player    @relation("Player1", fields: [player1Id], references: [id])
-  player2Id          Int
-  player2            Player    @relation("Player2", fields: [player2Id], references: [id])
-  player1CharacterId Int
-  player1Character   Character @relation("Player1Character", fields: [player1CharacterId], references: [id])
-  player2CharacterId Int
-  player2Character   Character @relation("Player2Character", fields: [player2CharacterId], references: [id])
+  winnerId          Int
+  winner            Player    @relation("Winner", fields: [winnerId], references: [id])
+  winnerCharacterId Int
+  winnerCharacter   Character @relation("WinnerCharacter", fields: [winnerCharacterId], references: [id])
 
-  winnerId          Int?
-  winner            Player?    @relation("Winner", fields: [winnerId], references: [id])
-  winnerCharacterId Int?
-  winnerCharacter   Character? @relation("WinnerCharacter", fields: [winnerCharacterId], references: [id])
+  loserId           Int
+  loser             Player    @relation("Loser", fields: [loserId], references: [id])
+  loserCharacterId  Int
+  loserCharacter    Character @relation("LoserCharacter", fields: [loserCharacterId], references: [id])
 
-  result            MatchResult @default(ONGOING)
   finishedAt DateTime @default(now())
-}
-
-enum MatchResult {
-  ONGOING
-  PLAYER1_WIN
-  PLAYER2_WIN
-  DRAW
 }
 
 model Character {
@@ -98,9 +86,8 @@ model Character {
   name String @unique
 
   characterMasteries CharacterMastery[] @relation("CharacterMastery")
-  player1Matches     Match[]            @relation("Player1Character")
-  player2Matches     Match[]            @relation("Player2Character")
   winnerMatches      Match[]            @relation("WinnerCharacter")
+  loserMatches       Match[]            @relation("LoserCharacter")
 }
 
 model CharacterMastery {
@@ -113,7 +100,6 @@ model CharacterMastery {
   masteryPoints Int @default(0)
   wins          Int @default(0)
   losses        Int @default(0)
-  ties          Int @default(0)
 
   @@unique([playerId, characterId])
 }

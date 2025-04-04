@@ -7,7 +7,7 @@ import {
   ComponentType,
   MessageFlags,
 } from "discord.js";
-import { createCharacterList } from "../../../tcg/characters/characterList";
+import { CHARACTER_LIST } from "../../../tcg/characters/characterList";
 import { sendInfoMessage } from "./util/sendInfoMessage";
 import { statDetails } from "../../../tcg/formatting/emojis";
 import { createCharacterDropdown } from "../../../util/createCharacterDropdown";
@@ -51,15 +51,14 @@ export async function showCharacterInfo(
             });
             return;
           }
-          const characterList = createCharacterList(interaction.user);
           const selection = i.values[0];
           let index;
           if (selection === "random") {
-            index = Math.floor(Math.random() * characterList.length);
+            index = Math.floor(Math.random() * CHARACTER_LIST.length);
           } else {
             index = parseInt(selection) ?? 0;
           }
-          const char = characterList[index];
+          const char = CHARACTER_LIST[index];
 
           // Create new embed for the selected character
           const characterEmbed = new EmbedBuilder()

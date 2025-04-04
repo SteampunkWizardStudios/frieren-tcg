@@ -52,6 +52,7 @@ export const command: Command<ChatInputCommandInteraction> = {
           revealDraw,
         },
         false,
+        undefined,
       );
     } catch (error) {
       console.log(error);

@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction } from "discord.js";
-import { GameSettings } from "./gameSettings";
+import { GameMode, GameSettings } from "./gameSettings";
 import { handleOpponent } from "./utils/handleOpponent";
 import { buildChallengeButtonRespond } from "./utils/buildChallengeButtonRespond";
 
@@ -7,6 +7,7 @@ export async function initiateChallengeRequest(
   interaction: ChatInputCommandInteraction,
   gameSettings: GameSettings,
   ranked: boolean,
+  gameMode?: GameMode,
 ): Promise<void> {
   await interaction.deferReply();
 
@@ -23,5 +24,6 @@ export async function initiateChallengeRequest(
     opponent,
     gameSettings,
     ranked,
+    gameMode,
   );
 }
