@@ -6,12 +6,18 @@ export interface TimedEffectProps {
   description: string;
   turnDuration: number;
   priority?: number;
+  tags?: Record<string, number>;
   endOfTurnAction?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
   ) => void;
   endOfTimedEffectAction?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) => void;
+  replacedAction?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
@@ -23,6 +29,7 @@ export default class TimedEffect {
   description: string;
   turnDuration: number;
   priority: number;
+  tags: Record<string, number>;
   endOfTurnAction?: (
     game: Game,
     characterIndex: number,
@@ -33,14 +40,21 @@ export default class TimedEffect {
     characterIndex: number,
     messageCache: MessageCache,
   ) => void;
+  replacedAction?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) => void;
 
   constructor(props: TimedEffectProps) {
     this.name = props.name;
     this.description = props.description;
     this.turnDuration = props.turnDuration;
     this.priority = props.priority ? props.priority : 0;
+    this.tags = props.tags ?? {};
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
+    this.replacedAction = props.replacedAction;
   }
 
   passTurn() {

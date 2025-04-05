@@ -198,24 +198,24 @@ export const tcgMain = async (
           );
 
           let draws: string[] = [];
-          let vpollOptionsList = "";
+          // let vpollOptionsList = "";
           const optionsCount = Object.keys(currUsableCards).length;
 
           Object.keys(currUsableCards).forEach((key: string) => {
             const currCard = currUsableCards[key];
             draws.push(currCard.printCard(`- ${key}: `));
-            vpollOptionsList += `${key}: ${currCard.getTitle()}`;
-            if (index < optionsCount - 1) {
-              vpollOptionsList += ", ";
-            }
+            // vpollOptionsList += `${key}: ${currCard.getTitle()}`;
+            // if (index < optionsCount - 1) {
+            //   vpollOptionsList += ", ";
+            // }
           });
 
           const draw = draws.join("\n");
           messageCache.push(draw, useChannel);
-          messageCache.push(
-            `Vpoll command - /vpoll name:Which Move To Use? options:${vpollOptionsList} end-time:2m multiselect:True`,
-            useChannel,
-          );
+          // messageCache.push(
+          //   `Vpoll command - /vpoll name:Which Move To Use? options:${vpollOptionsList} end-time:2m multiselect:True`,
+          //   useChannel,
+          // );
 
           if (gameSettings.revealDraw) {
             characterToDetailsString[index].draw = draw;

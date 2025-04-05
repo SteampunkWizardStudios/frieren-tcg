@@ -39,12 +39,16 @@ export const Stille = new CharacterData({
         **Sub-Ability: Birdwatching** - Both characters don't have access to default card options (Discard/Wait).`,
     abilityStartOfTurnEffect: (
       game,
-      _characterIndex,
+      characterIndex,
       _messageCache: MessageCache,
     ) => {
-      game.characters.forEach((character, _characterIndex) => {
-        character.additionalMetadata.accessToDefaultCardOptions = false;
-      });
+      const character = game.characters[characterIndex];
+      const opponent = game.getCharacter(1 - characterIndex);
+      const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
+
+      character.setStat(100 - spdDiff, StatsEnum.Ability, false);
+      character.additionalMetadata.accessToDefaultCardOptions = false;
+      opponent.additionalMetadata.accessToDefaultCardOptions = false;
     },
     abilityDefendEffect: (
       game,
