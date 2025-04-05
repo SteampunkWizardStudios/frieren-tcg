@@ -195,12 +195,13 @@ export default class Character {
     stat: StatsEnum,
     sendMessage: boolean = true,
   ): boolean {
-    if (this.setStatValue(statValue, stat)) {
+    const roundedStatValue = Number(statValue.toFixed(2));
+    if (this.setStatValue(roundedStatValue, stat)) {
       const statDescription =
         stat === StatsEnum.Ability ? "Ability Counter" : stat;
       if (sendMessage) {
         this.messageCache.push(
-          `${this.name}'s ${statDescription} is set to ${statValue}!`,
+          `${this.name}'s ${statDescription} is set to ${roundedStatValue}.`,
           TCGThread.Gameroom,
         );
       }

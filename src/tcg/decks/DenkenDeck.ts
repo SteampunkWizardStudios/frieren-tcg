@@ -10,7 +10,7 @@ const a_jab = new Card({
   description: ([hp, def, spd, dmg]) =>
     `HP+${hp}. DEF+${def}. SPD+${spd}. DMG ${dmg}.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 2, 1, 2],
+  effects: [2, 1, 1, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -41,7 +41,7 @@ const a_hook = new Card({
   title: "Hook",
   description: ([hp, atk, dmg]) => `HP+${hp}. ATK+${atk}. DMG ${dmg}.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 2, 3],
+  effects: [2, 2, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -69,7 +69,7 @@ const a_uppercut = new Card({
   description: ([hp, atk, spd, dmg]) =>
     `HP+${hp}. ATK+${atk}. SPD+${spd}. DMG ${dmg}.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [3, 2, 1, 2],
+  effects: [2, 1, 1, 3],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     const damage = this.calculateEffectValue(this.effects[3]);

@@ -1,5 +1,6 @@
 import Game from "../game";
 import { StatsEnum } from "../stats";
+import TimedEffect from "../timedEffect";
 
 export default class CommonCardAction {
   // common attack function that returns the attack's damage
@@ -26,6 +27,34 @@ export default class CommonCardAction {
       return actualDamage;
     } else {
       return 0;
+    }
+  }
+
+  // function that looks up a character's timed effect and replace a timed effect with certain tag
+  // mainly used for Himmel
+  static replaceOrAddNewTimedEffect(
+    game: Game,
+    characterIndex: number,
+    tag: string,
+    newTimedEffect: TimedEffect,
+  ) {
+    const character = game.getCharacter(characterIndex);
+    const timedEffectIndex = character.timedEffects.findIndex(
+      (timedEffect) => tag in timedEffect.tags,
+    );
+    if (timedEffectIndex !== -1) {
+      const previousTimedEffect = character.timedEffects.splice(
+        timedEffectIndex,
+        1,
+        newTimedEffect,
+      );
+      previousTimedEffect[0].replacedAction?.(
+        game,
+        characterIndex,
+        game.messageCache,
+      );
+    } else {
+      character.timedEffects.push(newTimedEffect);
     }
   }
 }

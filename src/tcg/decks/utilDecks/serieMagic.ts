@@ -21,10 +21,7 @@ import {
   adapt,
   manaDetection,
 } from "../LinieDeck";
-import {
-  a_killingMagic,
-  solitude,
-} from "../monsterDecks/CosmicTonDeck";
+import { a_killingMagic, solitude } from "../monsterDecks/CosmicTonDeck";
 import {
   a_threeSpearsOfTheGoddess,
   a_trustInYourAllyFernsBarrage,

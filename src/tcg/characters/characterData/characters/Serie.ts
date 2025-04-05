@@ -58,8 +58,18 @@ export const Serie = new CharacterData({
         messageCache.push("## Serie acts aloof.", TCGThread.Gameroom);
         character.additionalMetadata.serieToyingTurn = true;
         character.additionalMetadata.serieToyingNextTurn = false;
+        character.setStat(
+          1 - SERIE_TOYING_DAMAGE_BONUS,
+          StatsEnum.Ability,
+          false,
+        );
       } else {
         character.additionalMetadata.serieToyingTurn = false;
+        character.setStat(
+          1 + SERIE_TOYING_DAMAGE_BONUS,
+          StatsEnum.Ability,
+          false,
+        );
       }
     },
     abilityAttackEffect(game, characterIndex, _messageCache) {

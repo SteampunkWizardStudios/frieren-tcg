@@ -84,9 +84,10 @@ export default class Game {
         defender.stats.stats.DEF,
       );
 
-      defender.stats.stats.HP = Number(
+      const defenderRemainingHp = Number(
         (defender.stats.stats.HP - actualDamage).toFixed(2),
       );
+      defender.stats.stats.HP = defenderRemainingHp;
       const hpLeft: string = defender.additionalMetadata.manaSuppressed
         ? ""
         : `${defender.name} has ${defender.stats.stats.HP} left!`;
@@ -94,6 +95,23 @@ export default class Game {
         `# ${attacker.cosmetic.emoji} ${attacker.name} attacks ${defender.cosmetic.emoji} ${defender.name} for ${actualDamage.toFixed(2)} damage! ${hpLeft}`,
         TCGThread.Gameroom,
       );
+
+      // early game over check
+      if (defenderRemainingHp <= 0) {
+        this.checkGameOver();
+        if (this.gameOver) {
+          return actualDamage;
+        }
+      }
+
+      if (defender.ability.abilityCounterEffect) {
+        defender.ability.abilityCounterEffect(
+          this,
+          1 - attackProps.attackerIndex,
+          this.messageCache,
+          attackProps.damage,
+        );
+      }
 
       if (attackProps.isTimedEffectAttack) {
         if (attacker.ability.abilityAfterTimedAttackEffect) {

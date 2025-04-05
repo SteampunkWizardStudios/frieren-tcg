@@ -6,7 +6,6 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
-import { getStats } from "./statsUtil/getStats";
 
 const SEIN_BASE_HEALING = 3;
 const SEIN_HEALING_RAMP = 0.1;
@@ -42,6 +41,19 @@ export const Sein = new CharacterData({
     abilityName: "Goddess' Blessing",
     abilityEffectString: `Heal for ${SEIN_BASE_HEALING}HP + ${SEIN_BASE_HEALING} * (Turn Count * ${(SEIN_HEALING_RAMP * 100).toFixed(2)}%) at the end of every turn.
         This character can be healed past their maxHP.`,
+    abilityStartOfTurnEffect: function (
+      this,
+      game,
+      characterIndex,
+      _messageCache,
+    ) {
+      const character = game.characters[characterIndex];
+      const healing =
+        SEIN_BASE_HEALING +
+        SEIN_BASE_HEALING * (game.turnCount * SEIN_HEALING_RAMP);
+
+      character.setStat(healing, StatsEnum.Ability, false);
+    },
     abilityEndOfTurnEffect: (
       game,
       characterIndex,
@@ -52,10 +64,7 @@ export const Sein = new CharacterData({
         TCGThread.Gameroom,
       );
       const character = game.characters[characterIndex];
-      const healing =
-        SEIN_BASE_HEALING +
-        SEIN_BASE_HEALING * (game.turnCount * SEIN_HEALING_RAMP);
-      character.adjustStat(healing, StatsEnum.HP);
+      character.adjustStat(character.stats.stats.Ability, StatsEnum.HP);
     },
   },
   additionalMetadata: {

@@ -17,6 +17,11 @@ export interface TimedEffectProps {
     characterIndex: number,
     messageCache: MessageCache,
   ) => void;
+  replacedAction?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) => void;
 }
 
 export default class TimedEffect {
@@ -35,6 +40,11 @@ export default class TimedEffect {
     characterIndex: number,
     messageCache: MessageCache,
   ) => void;
+  replacedAction?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+  ) => void;
 
   constructor(props: TimedEffectProps) {
     this.name = props.name;
@@ -44,6 +54,7 @@ export default class TimedEffect {
     this.tags = props.tags ?? {};
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
+    this.replacedAction = props.replacedAction;
   }
 
   passTurn() {

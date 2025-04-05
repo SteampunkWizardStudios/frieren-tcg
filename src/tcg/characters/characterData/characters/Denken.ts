@@ -9,7 +9,7 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 const DENKEN_STEEL_YOURSELF_TURN_COUNT = 3;
 
 const denkenStats = new Stats({
-  [StatsEnum.HP]: 10.0,
+  [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 11.0,
   [StatsEnum.DEF]: 11.0,
   [StatsEnum.SPD]: 10.0,
