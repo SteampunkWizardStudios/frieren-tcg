@@ -3,16 +3,28 @@ import prismaClient from "./client";
 import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 
 async function main() {
-  await prismaClient.$transaction([
-    prismaClient.ladder.createMany({
-      data: Object.values(GameMode).map((name) => ({ name })),
-    }),
-    prismaClient.character.createMany({
+  await prismaClient.$transaction(async (tx) => {
+    await tx.character.createMany({
       data: CHARACTER_LIST.map((character) => character.name).map((name) => ({
         name,
       })),
-    }),
-  ]);
+    });
+
+    const createdLadders = await Promise.all(
+      Object.values(GameMode).map((name) =>
+        tx.ladder.create({
+          data: { name }
+        })
+      ),
+    );
+
+    await tx.ladderReset.createMany({
+      data: createdLadders.map((ladder) => ({
+        ladderId: ladder.id,
+        startDate: new Date(),
+      }))
+    });
+  });
 }
 
 main()

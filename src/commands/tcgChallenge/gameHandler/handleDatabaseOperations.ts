@@ -9,6 +9,8 @@ import { getRank } from "./rankScoresToRankTitleMapping";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { createMatch } from "@src/util/db/createMatch";
 
+const BASE_RANKED_PONT_GAIN = 90;
+
 export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
   winner: User;
   loser: User;
@@ -38,6 +40,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
   if (currLadder) {
     const currLadderReset = await prismaClient.ladderReset.findFirst({
       where: {
+        ladderId: currLadder.id,
         endDate: null,
       },
     });
@@ -96,7 +99,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             const loserRank = getRank(loserLadderRank.rankPoints);
 
             const winnerScoreGain =
-              20 * 2 ** (loserRank.rankLevel - winnerRank.rankLevel);
+              BASE_RANKED_PONT_GAIN * 2 ** (loserRank.rankLevel - winnerRank.rankLevel);
             const loserScoreLoss =
               loserRank.rankLevel >= 3 ? winnerScoreGain / 2 : 0;
 
