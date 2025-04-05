@@ -21,6 +21,8 @@ export enum CharacterEmoji {
   SEIN = "<:SeinCool:1189748661287137370>",
   STARK = "<:StarkPoint:1165025263747342386>",
   LAUFEN = "<:LaufenNom:1198338042449113190>",
+  DENKEN = "<:DenkenOld:1198339325436371074>",
+  HIMMEL = "<:HimmelCharming:1185700266452992010>",
 
   STONE_GEISEL = "🐦‍⬛",
   FIRE_GOLEM = "❤️‍🔥",
@@ -54,6 +56,8 @@ export enum CardEmoji {
   SEIN_CARD = "<:SeinCard:1347718390235791431>",
   STARK_CARD = "<:StarkCard:1347720915219124264>",
   LAUFEN_CARD = "<:LaufenCard:1347723068943892490>",
+  DENKEN_CARD = "<:DenkenCard:1358052686418673725>",
+  HIMMEL_CARD = "<:HimmelCard:1358052672787185845>",
 
   FLOWER_FIELD = "<:FlowerFieldCard:1347719503290695803>",
 }

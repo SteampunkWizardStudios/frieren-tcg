@@ -286,7 +286,7 @@ export const a_threeSpearsOfTheGoddess = new Card({
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1353035307397681172/Three_Spears_of_the_Godess.png?ex=67e02fd3&is=67dede53&hm=671b75347795840779fe6e5007f8a0918b04e3b6a558b561ca9ce4b4c18694a8&",
   },
-  effects: [7],
+  effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(

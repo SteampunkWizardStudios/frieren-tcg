@@ -6,6 +6,7 @@ export interface TimedEffectProps {
   description: string;
   turnDuration: number;
   priority?: number;
+  tags?: Record<string, number>;
   endOfTurnAction?: (
     game: Game,
     characterIndex: number,
@@ -23,6 +24,7 @@ export default class TimedEffect {
   description: string;
   turnDuration: number;
   priority: number;
+  tags: Record<string, number>;
   endOfTurnAction?: (
     game: Game,
     characterIndex: number,
@@ -39,6 +41,7 @@ export default class TimedEffect {
     this.description = props.description;
     this.turnDuration = props.turnDuration;
     this.priority = props.priority ? props.priority : 0;
+    this.tags = props.tags ?? {};
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
   }

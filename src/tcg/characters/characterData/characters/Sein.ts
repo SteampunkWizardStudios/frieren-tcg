@@ -37,20 +37,6 @@ export const Sein = new CharacterData({
     imageUrl: imageUrl.vangerisuCardVer,
   },
   stats: seinStats,
-  // get stats() {
-  //   const characterStats: any = getStats();
-  //   const seinStats = new Stats(
-  //     {
-  //       [StatsEnum.HP]: characterStats.Sein.maxHp,
-  //       [StatsEnum.ATK]: characterStats.Sein.atk,
-  //       [StatsEnum.DEF]: characterStats.Sein.def,
-  //       [StatsEnum.SPD]: characterStats.Sein.spd,
-  //       [StatsEnum.Ability]: 0.0,
-  //     },
-  //     characterStats.Sein.startingHp,
-  //   );
-  //   return seinStats;
-  // },
   cards: seinDeck,
   ability: {
     abilityName: "Goddess' Blessing",

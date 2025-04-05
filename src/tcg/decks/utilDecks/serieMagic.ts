@@ -1,13 +1,18 @@
 import {
+  a_catastravia,
+  a_concentratedOffensiveMagicZoltraak,
+  a_daosdorg,
+  a_waldgose,
+} from "../DenkenDeck";
+import {
   a_judradjim,
-  a_theHeightOfMagic,
   a_vollzanbel,
   a_zoltraak,
   barrierMagicAnalysis,
   demonMagicAnalysis,
   fieldOfFlower,
 } from "../FrierenDeck";
-import { a_supersonicStrike, a_whip, hide, jilwer } from "../LaufenDeck";
+import { a_supersonicStrike, a_whip, hide } from "../LaufenDeck";
 import {
   a_erfassenAxe,
   a_erfassenKnife,
@@ -17,7 +22,6 @@ import {
   manaDetection,
 } from "../LinieDeck";
 import {
-  a_curse,
   a_killingMagic,
   solitude,
 } from "../monsterDecks/CosmicTonDeck";
@@ -40,7 +44,6 @@ export const serie_offensiveMagic = [
   a_zoltraak,
   a_judradjim,
   a_vollzanbel,
-  // a_theHeightOfMagic,
   a_whip,
   a_supersonicStrike,
   a_erfassenAxe,
@@ -49,12 +52,15 @@ export const serie_offensiveMagic = [
   a_erfassenSword,
   a_trustInYourAllyFernsBarrage,
   a_trustInYourAllyFrierensZoltraak,
-  // a_threeSpearsOfTheGoddess,
+  a_threeSpearsOfTheGoddess,
   a_hairWhip,
   a_pierce,
   a_piercingDrill,
+  a_waldgose,
+  a_daosdorg,
+  a_concentratedOffensiveMagicZoltraak,
+  a_catastravia,
 
-  // a_curse,
   a_killingMagic,
 ];
 

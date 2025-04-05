@@ -236,7 +236,7 @@ const a_lightningStrike = new Card({
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -2 },
   priority: 1,
-  effects: [20],
+  effects: [22],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
 

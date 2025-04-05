@@ -190,35 +190,58 @@ export default class Character {
     }
   }
 
-  setStat(statValue: number, stat: StatsEnum): boolean {
+  setStat(
+    statValue: number,
+    stat: StatsEnum,
+    sendMessage: boolean = true,
+  ): boolean {
     if (this.setStatValue(statValue, stat)) {
       const statDescription =
         stat === StatsEnum.Ability ? "Ability Counter" : stat;
-      this.messageCache.push(
-        `${this.name}'s ${statDescription} is set to ${statValue}!`,
-        TCGThread.Gameroom,
-      );
+      if (sendMessage) {
+        this.messageCache.push(
+          `${this.name}'s ${statDescription} is set to ${statValue}!`,
+          TCGThread.Gameroom,
+        );
+      }
       return true;
     } else {
       this.messageCache.push(
         `${this.name}'s stat failed to be set! The move failed!`,
         TCGThread.Gameroom,
-      );
+      ); // send regardless
       return false;
     }
   }
 
   private setStatValue(newValue: number, stat: StatsEnum): boolean {
-    if (newValue <= 1 && stat !== StatsEnum.Ability) {
-      this.stats.stats[stat] = 1;
-    } else if (
-      stat === StatsEnum.HP &&
-      newValue > this.initialStats.stats.HP &&
-      !this.additionalMetadata.overheal
-    ) {
-      this.stats.stats[stat] = this.initialStats.stats.HP;
+    if (stat === StatsEnum.HP) {
+      if (newValue <= 1) {
+        if (this.stats.stats.HP <= 0) {
+          // special denken negative HP case
+          // if starting HP is already negative and new value is also negative, don't set it to 1
+          this.stats.stats.HP = newValue;
+        } else {
+          this.stats.stats.HP = 1;
+        }
+      } else if (
+        newValue > this.initialStats.stats.HP &&
+        !this.additionalMetadata.overheal
+      ) {
+        // prevent overheal if not enabled
+        this.stats.stats.HP = this.initialStats.stats.HP;
+      } else {
+        this.stats.stats.HP = newValue;
+      }
+    } else if (stat === StatsEnum.Ability) {
+      this.stats.stats.Ability = newValue;
     } else {
-      this.stats.stats[stat] = newValue;
+      // ATK DEF SPD
+      if (newValue <= 1) {
+        this.stats.stats[stat] = 1;
+      } else {
+        this.stats.stats[stat] = newValue;
+      }
     }
 
     return true;

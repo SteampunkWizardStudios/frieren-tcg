@@ -6,6 +6,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
+import Game from "@src/tcg/game";
 
 const SERIE_TOYING_DAMAGE_BONUS = 0.3;
 
@@ -23,6 +24,17 @@ const serieStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
+const afterAttackEffect = function (
+  game: Game,
+  characterIndex: number,
+  _messageCache: MessageCache,
+) {
+  const character = game.getCharacter(characterIndex);
+  if (!character.additionalMetadata.serieToyingTurn) {
+    character.additionalMetadata.serieToyingNextTurn = true;
+  }
+};
+
 export const Serie = new CharacterData({
   name: CharacterName.Serie,
   cosmetic: {
@@ -39,11 +51,11 @@ export const Serie = new CharacterData({
   ability: {
     abilityName: "Toying Around",
     abilityEffectString: `Any attack used by this character has its DMG+${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%. 
-      The turn after this character attacks directly, DMG-${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%.`,
+      The turn after this character performs any attack, DMG-${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%.`,
     abilityStartOfTurnEffect(game, characterIndex, messageCache) {
       const character = game.getCharacter(characterIndex);
       if (character.additionalMetadata.serieToyingNextTurn) {
-        messageCache.push("Serie acts aloof.", TCGThread.Gameroom);
+        messageCache.push("## Serie acts aloof.", TCGThread.Gameroom);
         character.additionalMetadata.serieToyingTurn = true;
         character.additionalMetadata.serieToyingNextTurn = false;
       } else {
@@ -60,16 +72,8 @@ export const Serie = new CharacterData({
           1 + SERIE_TOYING_DAMAGE_BONUS;
       }
     },
-    abilityAfterDirectAttackEffect(
-      game,
-      characterIndex,
-      _messageCache: MessageCache,
-    ) {
-      const character = game.getCharacter(characterIndex);
-      if (!character.additionalMetadata.serieToyingTurn) {
-        character.additionalMetadata.serieToyingNextTurn = true;
-      }
-    },
+    abilityAfterDirectAttackEffect: afterAttackEffect,
+    abilityAfterTimedAttackEffect: afterAttackEffect,
   },
   additionalMetadata: {
     manaSuppressed: true,

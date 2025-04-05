@@ -7,6 +7,8 @@ import { Sein } from "./characterData/characters/Sein";
 import { Stark } from "./characterData/characters/Stark";
 import { Laufen } from "./characterData/characters/Laufen";
 import { CharacterData } from "./characterData/characterData";
+import { Denken } from "./characterData/characters/Denken";
+import { Himmel } from "./characterData/characters/Himmel";
 
 const ALLOWLISTED_USER_IDS = new Set([
   "139757382375833600", // Hexa
@@ -23,6 +25,8 @@ export const CHARACTER_LIST: CharacterData[] = [
   Sein,
   Stark,
   Laufen,
+  Denken,
+  Himmel,
 ];
 
 //   if (ALLOWLISTED_USER_IDS.has(user.id)) {
