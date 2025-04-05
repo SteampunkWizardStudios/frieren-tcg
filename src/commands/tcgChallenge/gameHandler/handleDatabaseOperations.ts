@@ -9,7 +9,7 @@ import { getRank } from "./rankScoresToRankTitleMapping";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { createMatch } from "@src/util/db/createMatch";
 
-const BASE_RANKED_PONT_GAIN = 90;
+const BASE_RANKED_PONT_GAIN = 20;
 
 export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
   winner: User;
@@ -19,7 +19,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
   ranked: boolean;
   gameMode: GameMode;
   resultEmbed: EmbedBuilder;
-}): Promise<void> => {
+}): Promise<EmbedBuilder> => {
   const {
     winner,
     loser,
@@ -99,7 +99,8 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             const loserRank = getRank(loserLadderRank.rankPoints);
 
             const winnerScoreGain =
-              BASE_RANKED_PONT_GAIN * 2 ** (loserRank.rankLevel - winnerRank.rankLevel);
+              BASE_RANKED_PONT_GAIN *
+              2 ** (loserRank.rankLevel - winnerRank.rankLevel);
             const loserScoreLoss =
               loserRank.rankLevel >= 3 ? winnerScoreGain / 2 : 0;
 
@@ -113,18 +114,16 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
               {
                 name: `Winner: ${winner.username}`,
                 value: `Rank Points: ${winnerNewPoints} (+**${winnerScoreGain}**) ${winnerNewRank.rankLevel > winnerRank.rankLevel ? `(Rank Up! New Rank: **${winnerNewRank.rankTitle}**)` : ""}`,
-                inline: true,
               },
               {
                 name: `Loser: ${loser.username}`,
                 value: `Rank Points: ${loserNewPoints} (-**${loserScoreLoss}**) ${loserNewRank.rankLevel < loserRank.rankLevel ? `(Rank Down... New Rank: **${loserNewRank.rankTitle}**)` : ""}`,
-                inline: true,
               },
             );
 
             // update ladder rank
             prismaClient.$transaction(async (tx) => {
-              Promise.all([
+              await Promise.all([
                 tx.ladderRank.update({
                   where: {
                     id: winnerLadderRank.id,
@@ -151,7 +150,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             // update character mastery
             if (winnerCharacterMastery && loserCharacterMastery) {
               prismaClient.$transaction(async (tx) => {
-                Promise.all([
+                await Promise.all([
                   tx.characterMastery.update({
                     where: {
                       id: winnerCharacterMastery.id,
@@ -239,4 +238,6 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
   } else {
     throw new Error(`Ladder for gameMode ${gameMode} not found`);
   }
+
+  return resultEmbed;
 };

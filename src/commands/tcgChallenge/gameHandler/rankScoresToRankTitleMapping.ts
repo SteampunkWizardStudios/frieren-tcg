@@ -33,6 +33,8 @@ const rankScoresToRankTitleMapping: Record<number, Rank> = {
 export const getRank = (score: number): Rank => {
   if (score >= 500) {
     return rankScoresToRankTitleMapping[500];
+  } else if (score <= 0) {
+    return rankScoresToRankTitleMapping[0];
   } else {
     const flooredScore = Math.floor(score / 100) * 100;
     if (flooredScore in rankScoresToRankTitleMapping) {

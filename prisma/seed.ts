@@ -13,8 +13,8 @@ async function main() {
     const createdLadders = await Promise.all(
       Object.values(GameMode).map((name) =>
         tx.ladder.create({
-          data: { name }
-        })
+          data: { name },
+        }),
       ),
     );
 
@@ -22,7 +22,7 @@ async function main() {
       data: createdLadders.map((ladder) => ({
         ladderId: ladder.id,
         startDate: new Date(),
-      }))
+      })),
     });
   });
 }

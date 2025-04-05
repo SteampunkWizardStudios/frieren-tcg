@@ -72,7 +72,7 @@ export const initiateGame = async (
         opponentThread.members.remove(opponent.id),
       ]);
 
-      const resultEmbed = new EmbedBuilder()
+      let resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
         .setTitle(
           `Frieren TCG - Results: ${challenger.username} vs ${opponent.username}`,
@@ -84,15 +84,17 @@ export const initiateGame = async (
       // handle database operations
       if (winner && winnerCharacter && loser && loserCharacter && gameMode) {
         try {
-          handleDatabaseOperationsWithResultEmbedSideEffect({
-            winner,
-            winnerCharacter,
-            loser,
-            loserCharacter,
-            ranked,
-            gameMode,
-            resultEmbed,
-          });
+          resultEmbed = await handleDatabaseOperationsWithResultEmbedSideEffect(
+            {
+              winner,
+              winnerCharacter,
+              loser,
+              loserCharacter,
+              ranked,
+              gameMode,
+              resultEmbed,
+            },
+          );
         } catch (error) {
           console.error(
             `Error in database operation calculation for Winner UserID ${winner.id} vs Loser UserID ${loser.id}`,

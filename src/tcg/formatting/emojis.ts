@@ -15,7 +15,7 @@ export const statDetails: Record<StatsEnum, StatInfo> = {
 export enum CharacterEmoji {
   FRIEREN = "<:Frieren3:790429364570423346>",
   SENSE = "<:SenseStare:1204637493077610546>",
-  SERIE = "<:SerieHowCute:1346583513297850398>",
+  SERIE = "<:SerieHowCute:1357814502023758205>",
   STILLE = "🐦‍🔥",
   LINIE = "<:LinieBaka:1343985694351032393>",
   SEIN = "<:SeinCool:1189748661287137370>",
