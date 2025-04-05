@@ -7,8 +7,8 @@ import {
   User,
 } from "discord.js";
 import { createCharacterDropdown } from "../util/createCharacterDropdown";
-import { createCharacterList } from "../tcg/characters/characterList";
 import { CharacterData } from "../tcg/characters/characterData/characterData";
+import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 
 export const getPlayerCharacter = async (
   player: User,
@@ -66,7 +66,7 @@ export const getPlayerCharacter = async (
               }
               collector.stop("Character selected");
 
-              const characterList = createCharacterList(player);
+              const characterList = CHARACTER_LIST;
               const selection = i.values[0];
 
               let index;

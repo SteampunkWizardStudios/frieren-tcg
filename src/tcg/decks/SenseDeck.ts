@@ -50,38 +50,15 @@ export const harden = new Card({
   },
 });
 
-// export const holeUp = new Card({
-//   title: "Hole Up",
-//   description: ([def]) =>
-//     `Discard 1 card at random and draw 1 card. SPD-2. DEF+${def}`,
-//   effects: [2],
-//   emoji: CardEmoji.DICE,
-//   cardAction: function (this: Card, game, characterIndex, messageCache) {
-//     const character = game.getCharacter(characterIndex);
-//     messageCache.push(
-//       `${character.name} holed ${character.cosmetic.pronouns.reflexive} up!`,
-//       TCGThread.Gameroom,
-//     );
-
-//     character.discardCard(Rolls.rollDAny(5));
-//     character.drawCard();
-//     character.adjustStat(-2, StatsEnum.SPD);
-//     character.adjustStat(
-//       this.calculateEffectValue(this.effects[0]),
-//       StatsEnum.DEF,
-//     );
-//   },
-// });
-
 export const rest = new Card({
   title: "Rest",
-  description: ([hp]) => `DEF-4. Heal ${hp} HP`,
+  description: ([hp]) => `DEF-2. Heal ${hp} HP`,
   effects: [10],
   emoji: CardEmoji.HEART,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} rests up.`, TCGThread.Gameroom);
-    character.adjustStat(-4, StatsEnum.DEF);
+    character.adjustStat(-2, StatsEnum.DEF);
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
       StatsEnum.HP,
@@ -146,9 +123,9 @@ const hairBarrier = new Card({
 
 export const teaTime = new Card({
   title: "Tea Time",
-  description: ([def, hp]) =>
-    `DEF+${def} for both characters. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
-  effects: [1, 5],
+  description: ([atk, hp]) =>
+    `ATK+${atk} for both characters. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
+  effects: [2, 5],
   tags: { TeaTime: 1 },
   emoji: CardEmoji.HEART,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -158,9 +135,9 @@ export const teaTime = new Card({
       `${character.name} enjoyed a cup of tea.`,
       TCGThread.Gameroom,
     );
-    const defBuff = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(defBuff, StatsEnum.DEF);
-    opponent.adjustStat(defBuff, StatsEnum.DEF);
+    const atkBuff = this.calculateEffectValue(this.effects[0]);
+    character.adjustStat(atkBuff, StatsEnum.ATK);
+    opponent.adjustStat(atkBuff, StatsEnum.ATK);
 
     const hpHeal = this.calculateEffectValue(this.effects[1]);
     character.adjustStat(hpHeal, StatsEnum.HP);
@@ -170,9 +147,9 @@ export const teaTime = new Card({
 
 export const teaParty = new Card({
   title: "Tea Party",
-  description: ([def, hp]) =>
-    `DEF+${def} for both characters. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
-  effects: [2, 7],
+  description: ([atk, hp]) =>
+    `ATK+${atk} for both characters. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
+  effects: [3, 7],
   tags: { TeaTime: 2 },
   emoji: CardEmoji.RANDOM,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -182,9 +159,9 @@ export const teaParty = new Card({
       `${character.name} held a tea party!`,
       TCGThread.Gameroom,
     );
-    const defBuff = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(defBuff, StatsEnum.DEF);
-    opponent.adjustStat(defBuff, StatsEnum.DEF);
+    const atkBuff = this.calculateEffectValue(this.effects[0]);
+    character.adjustStat(atkBuff, StatsEnum.ATK);
+    opponent.adjustStat(atkBuff, StatsEnum.ATK);
 
     const hpHeal = this.calculateEffectValue(this.effects[1]);
     character.adjustStat(hpHeal, StatsEnum.HP);

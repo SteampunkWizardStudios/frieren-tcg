@@ -7,16 +7,6 @@ export enum CharacterName {
   Sein = "Sein",
   Stark = "Stark",
   Laufen = "Laufen",
-
-  StoneGeisel = "Stone Geisel",
-  FireGolem = "Fire Golem",
-  StoneGolem = "Stone Golem",
-  AngryMimic = "Angry Mimic",
-  ShadowDragon = "Shadow Dragon",
-  SpiegelSein = "Sein...?",
-  SpiegelSerie = "Serie...?",
-  SpiegelSense = "Sense...?",
-  CosmicTon = "???",
-
-  SeinSerie = "Sein & Serie",
+  Denken = "Denken",
+  Himmel = "Himmel",
 }

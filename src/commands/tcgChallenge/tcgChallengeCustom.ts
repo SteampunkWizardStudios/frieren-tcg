@@ -44,15 +44,16 @@ export const command: Command<ChatInputCommandInteraction> = {
       const revealHand = interaction.options.getBoolean("reveal-hand") ?? false;
       const revealDraw = interaction.options.getBoolean("reveal-draw") ?? false;
 
-      initiateChallengeRequest(
+      initiateChallengeRequest({
         interaction,
-        {
+        gameSettings: {
           turnDurationSeconds,
           revealHand,
           revealDraw,
         },
-        false,
-      );
+        ranked: false,
+        gamemode: undefined,
+      });
     } catch (error) {
       console.log(error);
       await interaction.reply({

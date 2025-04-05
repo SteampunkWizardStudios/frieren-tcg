@@ -8,7 +8,7 @@ import {
   MessageFlags,
   User,
 } from "discord.js";
-import { GameSettings } from "../gameSettings";
+import { GameMode, GameSettings } from "../gameSettings";
 import { initiateGame } from "../initiateGame";
 
 const ACCEPT_BUTTON_ID = "tcg-accept";
@@ -20,6 +20,7 @@ export const buildChallengeButtonRespond = async (
   opponent: User,
   gameSettings: GameSettings,
   ranked: boolean,
+  gameMode?: GameMode,
 ) => {
   const acceptButton = new ButtonBuilder()
     .setCustomId(ACCEPT_BUTTON_ID)
@@ -105,6 +106,7 @@ export const buildChallengeButtonRespond = async (
           opponent,
           gameSettings,
           ranked,
+          gameMode,
         );
       } else if (buttonInteraction.customId === DECLINE_BUTTON_ID) {
         const challengeDeclinedEmbed = EmbedBuilder.from(embed).setDescription(

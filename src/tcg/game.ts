@@ -3,6 +3,7 @@ import Character from "./character";
 import { GameAdditionalMetadata } from "./additionalMetadata/gameAdditionalMetadata";
 import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
+import { CharacterName } from "./characters/metadata/CharacterName";
 
 export default class Game {
   characters: [Character, Character];
@@ -83,9 +84,10 @@ export default class Game {
         defender.stats.stats.DEF,
       );
 
-      defender.stats.stats.HP = Number(
+      const defenderRemainingHp = Number(
         (defender.stats.stats.HP - actualDamage).toFixed(2),
       );
+      defender.stats.stats.HP = defenderRemainingHp;
       const hpLeft: string = defender.additionalMetadata.manaSuppressed
         ? ""
         : `${defender.name} has ${defender.stats.stats.HP} left!`;
@@ -93,6 +95,23 @@ export default class Game {
         `# ${attacker.cosmetic.emoji} ${attacker.name} attacks ${defender.cosmetic.emoji} ${defender.name} for ${actualDamage.toFixed(2)} damage! ${hpLeft}`,
         TCGThread.Gameroom,
       );
+
+      // early game over check
+      if (defenderRemainingHp <= 0) {
+        this.checkGameOver();
+        if (this.gameOver) {
+          return actualDamage;
+        }
+      }
+
+      if (defender.ability.abilityCounterEffect) {
+        defender.ability.abilityCounterEffect(
+          this,
+          1 - attackProps.attackerIndex,
+          this.messageCache,
+          attackProps.damage,
+        );
+      }
 
       if (attackProps.isTimedEffectAttack) {
         if (attacker.ability.abilityAfterTimedAttackEffect) {
@@ -147,7 +166,7 @@ export default class Game {
   }
 
   getCharacter(characterIndex: number): Character {
-    if (characterIndex != 0 && characterIndex != 1) {
+    if (characterIndex !== 0 && characterIndex !== 1) {
       throw new Error("characterIndex must be 0 or 1");
     }
 
@@ -158,10 +177,20 @@ export default class Game {
     let losingIndex = 0;
     this.characters.forEach((character, index) => {
       if (!this.gameOver) {
+        let characterDefeated = false;
+
         if (
-          character.stats.stats.HP <= 0 ||
-          this.additionalMetadata.forfeited[index]
+          character.stats.stats.HP <= 0 &&
+          character.name !== CharacterName.Denken
         ) {
+          characterDefeated = true;
+        }
+
+        if (this.additionalMetadata.forfeited[index]) {
+          characterDefeated = true;
+        }
+
+        if (characterDefeated) {
           this.messageCache.push(
             `# ${character.name} has been defeated!`,
             TCGThread.Gameroom,

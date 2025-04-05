@@ -2,7 +2,6 @@ export enum GameMode {
   CLASSIC = "classic",
   BLITZ = "blitz",
   SLOW = "slow",
-  PVE = "pve",
 }
 
 export interface GameSettings {
@@ -35,11 +34,5 @@ export const GAME_SETTINGS: Record<GameMode, GameSettings> = {
     revealDraw: true,
     optionName: "Slow - 2m Turn Duration. Hands and Draws revealed",
     allowedOption: true,
-  },
-  [GameMode.PVE]: {
-    turnDurationSeconds: 120,
-    revealHand: false,
-    revealDraw: false,
-    publicChallengedThread: true,
   },
 };

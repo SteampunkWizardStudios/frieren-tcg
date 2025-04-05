@@ -34,6 +34,18 @@ export const Laufen = new CharacterData({
     abilityName: "Evasive",
     abilityEffectString: `When the opponent attacks, roll a D100.
         If the result is less than the character's speed minus the opponent's speed, the attack deals 0 damage.`,
+    abilityStartOfTurnEffect: function (
+      this,
+      game,
+      characterIndex,
+      _messageCache,
+    ) {
+      const character = game.characters[characterIndex];
+      const opponent = game.getCharacter(1 - characterIndex);
+      const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
+
+      character.setStat(100 - spdDiff, StatsEnum.Ability, false);
+    },
     abilityDefendEffect: (
       game,
       characterIndex,

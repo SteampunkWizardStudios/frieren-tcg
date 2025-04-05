@@ -9,7 +9,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 const a_staffStrike = new Card({
   title: "Staff Strike",
   description: ([spd, dmg]) =>
-    `SPD+${spd}. Afterwards, HP-2, attack for DMG ${dmg}+SPD/8`,
+    `SPD+${spd}. Afterwards, HP-4, attack for DMG ${dmg}+SPD/6`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [2, 10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -24,16 +24,16 @@ const a_staffStrike = new Card({
 
     const damage =
       this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.SPD / 8;
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 2 });
+      character.stats.stats.SPD / 6;
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
   },
 });
 
 const a_staffBash = new Card({
   title: "Staff Bash",
-  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-2, DMG ${dmg}+SPD/7`,
+  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-4, DMG ${dmg}+SPD/5`,
   emoji: CardEmoji.LAUFEN_CARD,
-  effects: [3, 7],
+  effects: [2, 8],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -46,16 +46,16 @@ const a_staffBash = new Card({
 
     const damage =
       this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.SPD / 7;
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 2 });
+      character.stats.stats.SPD / 5;
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
   },
 });
 
 export const a_whip = new Card({
   title: "Whip",
-  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-3, DMG ${dmg}+SPD/5`,
+  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-5, DMG ${dmg}+SPD/4`,
   emoji: CardEmoji.LAUFEN_CARD,
-  effects: [1, 5],
+  effects: [1, 6],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -66,9 +66,9 @@ export const a_whip = new Card({
     const speed = this.calculateEffectValue(this.effects[0]);
     const damage =
       this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.SPD / 6;
+      character.stats.stats.SPD / 4;
     character.adjustStat(speed, StatsEnum.SPD);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
   },
 });
 
@@ -111,9 +111,9 @@ export const hide = new Card({
 
 export const a_supersonicStrike = new Card({
   title: "Supersonic Strike",
-  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-7, DMG ${dmg}+SPD/4`,
+  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-7, DMG ${dmg}+SPD/3`,
   emoji: CardEmoji.LAUFEN_CARD,
-  effects: [5, 10],
+  effects: [3, 10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -126,7 +126,7 @@ export const a_supersonicStrike = new Card({
 
     const damage =
       this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.SPD / 4;
+      character.stats.stats.SPD / 3;
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 7 });
   },
 });
@@ -202,7 +202,6 @@ export const jilwer = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} used Jilwer!`, TCGThread.Gameroom);
 
-    // const turnCount = Math.floor(Math.random() * 2) + 2;
     const turnCount = 2;
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(spdIncrease, StatsEnum.SPD);
