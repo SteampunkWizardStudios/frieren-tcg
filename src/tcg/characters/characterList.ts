@@ -24,13 +24,3 @@ export const CHARACTER_LIST: CharacterData[] = [
   Stark,
   Laufen,
 ];
-
-//   if (ALLOWLISTED_USER_IDS.has(user.id)) {
-//     return fullCharacterList;
-//   } else {
-//     if (characterSelectState.isSeinSerieEnabled) {
-//       return fullCharacterList.slice(0, 3);
-//     } else {
-//       return fullCharacterList.slice(0, 2); // only Serie/Sein
-//     }
-//   }
