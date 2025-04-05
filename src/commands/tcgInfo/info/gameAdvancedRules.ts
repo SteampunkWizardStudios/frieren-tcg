@@ -50,7 +50,7 @@ const sectionToFields: Record<
       name: "Interactions and Edge Cases",
       value: [
         `- When a move with ${statDetails.HP.emoji} HP cost is supposed to set your HP to less than 0, it sets your ${statDetails.HP.emoji} HP to 1 instead.`,
-        `- For Serie's **Warmonger** ability, end of turn attacks are not counted towards the ability's effect.`,
+        `- For Serie's **Toying Around** ability, end of turn attacks **are counted** towards the ability's effect.`,
         `- For Linie's **Chain Attack** ability, end of turn attacks from Timed Effects are counted towards the ability's effect.`,
       ].join("\n"),
     },

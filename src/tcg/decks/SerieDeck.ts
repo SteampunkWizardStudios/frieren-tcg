@@ -139,7 +139,7 @@ export const basicDefensiveMagic = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
-      `${character.name} cast basic defensive magic!`,
+      `${character.name} casted a basic defensive magic!`,
       TCGThread.Gameroom,
     );
 

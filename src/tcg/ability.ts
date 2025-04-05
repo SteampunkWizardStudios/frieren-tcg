@@ -16,6 +16,18 @@ export type Ability = {
     characterIndex: number,
     messageCache: MessageCache,
   ) => void;
+  abilityDefendEffect?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+    attackDamage: number,
+  ) => void;
+  abilityCounterEffect?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+    attackDamage: number,
+  ) => void;
   abilityAfterDirectAttackEffect?: (
     game: Game,
     characterIndex: number,
@@ -25,12 +37,6 @@ export type Ability = {
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
-  ) => void;
-  abilityDefendEffect?: (
-    game: Game,
-    characterIndex: number,
-    messageCache: MessageCache,
-    attackDamage: number,
   ) => void;
   abilityStartOfTurnEffect?: (
     game: Game,

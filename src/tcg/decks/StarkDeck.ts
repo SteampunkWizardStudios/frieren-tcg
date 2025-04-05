@@ -232,11 +232,11 @@ const a_eisensAxeCleave = new Card({
 const a_lightningStrike = new Card({
   title: "Lightning Strike",
   description: ([dmg]) =>
-    `HP-15. DEF-5 for this turn. At this turn's resolution, strike for DMG ${dmg}. Uses up 2 Resolve stack.`,
+    `Priority+1. HP-15. DEF-5 for this turn. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack.`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -2 },
   priority: 1,
-  effects: [20],
+  effects: [22],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
 
