@@ -12,7 +12,12 @@ const playerRankedStats = (discordId?: string) => {
     },
     select: {
       discordId: true,
-
+      characterMasteries: {
+        select: {
+          character: { select: { name: true } },
+          masteryPoints: true,
+        },
+      },
       ladderRanks: {
         where: {
           ladderReset: {
