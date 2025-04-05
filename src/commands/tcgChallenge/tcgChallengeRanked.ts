@@ -10,8 +10,8 @@ import { GAME_SETTINGS, GameMode } from "./gameHandler/gameSettings";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
-    .setName("tcg-challenge")
-    .setDescription("Challenge another user to a duel!")
+    .setName("tcg-ranked-challenge")
+    .setDescription("Challenge another user to a Ranked duel!")
     .setContexts([InteractionContextType.Guild])
     .addUserOption((option) =>
       option
@@ -44,7 +44,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       initiateChallengeRequest({
         interaction,
         gameSettings,
-        ranked: false,
+        ranked: true,
         gamemode,
       });
     } catch (error) {
