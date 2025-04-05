@@ -7,7 +7,7 @@ import { CharacterEmoji } from "../../../formatting/emojis";
 
 const starkStats = new Stats({
   [StatsEnum.HP]: 110.0,
-  [StatsEnum.ATK]: 12.0,
+  [StatsEnum.ATK]: 11.0,
   [StatsEnum.DEF]: 10.0,
   [StatsEnum.SPD]: 8.0,
   [StatsEnum.Ability]: 0.0,
