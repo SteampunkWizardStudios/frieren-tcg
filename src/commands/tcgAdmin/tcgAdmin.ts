@@ -6,6 +6,7 @@ import {
 } from "discord.js";
 import type { Command } from "../../types/command";
 import handleAchievementAutocomplete from "./achievementHandler/handleAchievementAutocomplete";
+import handleGrantAchievement from "./achievementHandler/handleGrantAchievement";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -41,11 +42,17 @@ export const command: Command<ChatInputCommandInteraction> = {
             ephemeral: true,
           });
 
-          // handle
-
-          await interaction.editReply({
-            content: "Achievement granted successfully.",
-          });
+          try {
+            await handleGrantAchievement(interaction);
+            await interaction.editReply({
+              content: "Achievement granted successfully.",
+            });
+          } catch (error) {
+            console.error("Error granting achievement:", error);
+            await interaction.editReply({
+              content: "Failed to grant achievement.",
+            });
+          }
       }
     } catch (error) {
       console.error(error);
