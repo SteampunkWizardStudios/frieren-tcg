@@ -5,6 +5,7 @@ import {
   InteractionContextType,
 } from "discord.js";
 import type { Command } from "../../types/command";
+import handleAchievementAutocomplete from "./achievementHandler/handleAchievementAutocomplete";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -40,7 +41,7 @@ export const command: Command<ChatInputCommandInteraction> = {
             ephemeral: true,
           });
 
-		  // handle
+          // handle
 
           await interaction.editReply({
             content: "Achievement granted successfully.",
@@ -52,6 +53,15 @@ export const command: Command<ChatInputCommandInteraction> = {
         content: "Interaction failed.",
         flags: MessageFlags.Ephemeral,
       });
+    }
+  },
+
+  async autocomplete(interaction) {
+    try {
+      return await handleAchievementAutocomplete(interaction);
+    } catch (error) {
+      console.error("Error in achievement autocomplete:", error);
+      await interaction.respond([]);
     }
   },
 };
