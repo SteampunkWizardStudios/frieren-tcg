@@ -21,6 +21,11 @@ export default class Game {
         0: false,
         1: false,
       },
+      // whether a character's attack was already countered
+      attackCountered: {
+        0: false,
+        1: false,
+      },
       attackModifier: {
         0: 1,
         1: 1,
@@ -63,6 +68,7 @@ export default class Game {
         this.messageCache,
       );
     }
+    // counter attacks should not be under defend effect
     if (defender.ability.abilityDefendEffect) {
       defender.ability.abilityDefendEffect(
         this,
@@ -96,15 +102,24 @@ export default class Game {
         TCGThread.Gameroom,
       );
 
-      // early game over check
+      // early exit if opponent's already defeated
+      // to prevent counter ability from firing off in defeat
       if (defenderRemainingHp <= 0) {
-        this.checkCharacterDefeated(defender, 1 - attackProps.attackerIndex);
-        if (this.gameOver) {
+        if (
+          this.checkCharacterDefeated(defender, 1 - attackProps.attackerIndex)
+        ) {
           return actualDamage;
         }
       }
 
-      if (defender.ability.abilityCounterEffect) {
+      // there should only be 1 counter trigger per attack step
+      // essentially, if attacker not countered this attack step, perform the counter
+      if (
+        !this.additionalMetadata.attackCountered[attackProps.attackerIndex] &&
+        defender.ability.abilityCounterEffect
+      ) {
+        this.additionalMetadata.attackCountered[attackProps.attackerIndex] =
+          true; // countered
         defender.ability.abilityCounterEffect(
           this,
           1 - attackProps.attackerIndex,
@@ -130,6 +145,10 @@ export default class Game {
           );
         }
       }
+
+      // reset counter step before return
+      this.additionalMetadata.attackCountered[attackProps.attackerIndex] =
+        false;
 
       return actualDamage;
     }

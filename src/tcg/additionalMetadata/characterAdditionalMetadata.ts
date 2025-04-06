@@ -15,4 +15,5 @@ export type CharacterAdditionalMetadata = {
   overheal?: boolean;
   serieToyingNextTurn?: boolean;
   serieToyingTurn?: boolean;
+  stilleCounter?: boolean;
 };
