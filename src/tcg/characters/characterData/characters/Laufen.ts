@@ -38,7 +38,7 @@ export const Laufen = new CharacterData({
       this,
       game,
       characterIndex,
-      _messageCache,
+      _messageCache
     ) {
       const character = game.characters[characterIndex];
       const opponent = game.getCharacter(1 - characterIndex);
@@ -50,7 +50,7 @@ export const Laufen = new CharacterData({
       game,
       characterIndex,
       messageCache: MessageCache,
-      _attackDamage,
+      _attackDamage
     ) => {
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
@@ -66,7 +66,7 @@ export const Laufen = new CharacterData({
       } else {
         messageCache.push(
           "Laufen failed to evade the attack!",
-          TCGThread.Gameroom,
+          TCGThread.Gameroom
         );
         game.additionalMetadata.attackMissed[1 - characterIndex] = false;
       }

@@ -16,25 +16,25 @@ export const command: Command<ChatInputCommandInteraction> = {
       option
         .setName("opponent")
         .setDescription("The user you want to challenge")
-        .setRequired(true),
+        .setRequired(true)
     )
     .addIntegerOption((option) =>
       option
         .setName("turn-duration-seconds")
         .setDescription("The turn duration in seconds")
-        .setRequired(true),
+        .setRequired(true)
     )
     .addBooleanOption((option) =>
       option
         .setName("reveal-hand")
         .setDescription("Whether the player's hands are revealed.")
-        .setRequired(true),
+        .setRequired(true)
     )
     .addBooleanOption((option) =>
       option
         .setName("reveal-draw")
         .setDescription("Whether the player's draws are revealed.")
-        .setRequired(true),
+        .setRequired(true)
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {

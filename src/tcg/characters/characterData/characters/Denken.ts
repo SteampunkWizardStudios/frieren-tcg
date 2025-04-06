@@ -37,7 +37,7 @@ export const Denken = new CharacterData({
       this,
       game,
       characterIndex,
-      _messageCache,
+      _messageCache
     ) {
       const character = game.characters[characterIndex];
 
@@ -49,7 +49,7 @@ export const Denken = new CharacterData({
       this,
       game,
       characterIndex,
-      messageCache,
+      messageCache
     ) {
       const character = game.characters[characterIndex];
 

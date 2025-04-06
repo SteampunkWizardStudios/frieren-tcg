@@ -2,7 +2,7 @@ import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import prismaClient from "../../../prisma/client";
 
 export const getOrCreateCharacters = async (
-  characterNames: CharacterName[],
+  characterNames: CharacterName[]
 ): Promise<({ id: number; name: string } | null)[]> => {
   return prismaClient.$transaction(async (tx) => {
     return await Promise.all(
@@ -16,7 +16,7 @@ export const getOrCreateCharacters = async (
             name: characterName,
           },
         });
-      }),
+      })
     );
   });
 };

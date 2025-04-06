@@ -15,20 +15,20 @@ const a_jab = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} jabbed with ${character.cosmetic.pronouns.possessive} fist.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP,
+      StatsEnum.HP
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD,
+      StatsEnum.SPD
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[3]),
@@ -46,16 +46,16 @@ const a_hook = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} threw out a hook!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP,
+      StatsEnum.HP
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.ATK,
+      StatsEnum.ATK
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
@@ -75,20 +75,20 @@ const a_uppercut = new Card({
     const damage = this.calculateEffectValue(this.effects[3]);
     messageCache.push(
       `${character.name} threw out ${damage > 10 ? "a sharp" : "an"} uppercut from below!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP,
+      StatsEnum.HP
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.ATK,
+      StatsEnum.ATK
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD,
+      StatsEnum.SPD
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
@@ -108,7 +108,7 @@ const bareHandedBlock = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} raised his hands to prepare to block the opponent's attack!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -126,7 +126,7 @@ const bareHandedBlock = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-tempDef, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -149,7 +149,7 @@ export const a_waldgose = new Card({
     } else {
       messageCache.push(
         `${character.name} whipped up a tornado!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
       const damage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {
@@ -179,7 +179,7 @@ export const a_waldgose = new Card({
               isTimedEffectAttack: true,
             });
           },
-        }),
+        })
       );
     }
   },
@@ -202,7 +202,7 @@ export const a_daosdorg = new Card({
     } else {
       messageCache.push(
         `${character.name} set the sky aflame.`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
 
       CommonCardAction.commonAttack(game, characterIndex, {
@@ -215,7 +215,7 @@ export const a_daosdorg = new Card({
       for (const timedEffect of character.timedEffects) {
         if ("WaldgoseDamage" in timedEffect.tags) {
           timedEffect.tags.WaldgoseDamage += this.calculateEffectValue(
-            this.effects[1],
+            this.effects[1]
           );
           hasWaldgose = true;
         }
@@ -224,7 +224,7 @@ export const a_daosdorg = new Card({
       if (hasWaldgose) {
         messageCache.push(
           `The hellfire infused itself into the raging winds!`,
-          TCGThread.Gameroom,
+          TCGThread.Gameroom
         );
       }
     }
@@ -248,7 +248,7 @@ export const a_catastravia = new Card({
     } else {
       messageCache.push(
         `${character.name} covered the sky in stars.`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
 
       const damage = this.calculateEffectValue(this.effects[0]);
@@ -265,7 +265,7 @@ export const a_catastravia = new Card({
           endOfTurnAction: (game, characterIndex) => {
             messageCache.push(
               "The lights of judgment lit up the sky.",
-              TCGThread.Gameroom,
+              TCGThread.Gameroom
             );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
@@ -273,7 +273,7 @@ export const a_catastravia = new Card({
               isTimedEffectAttack: true,
             });
           },
-        }),
+        })
       );
     }
   },
@@ -297,7 +297,7 @@ const elementaryDefensiveMagic = new Card({
     } else {
       messageCache.push(
         `${character.name} casted an elementary defensive spell!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
 
       const def = this.calculateEffectValue(this.effects[0]);
@@ -311,7 +311,7 @@ const elementaryDefensiveMagic = new Card({
           endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
             character.adjustStat(-def, StatsEnum.DEF);
           },
-        }),
+        })
       );
     }
   },
@@ -326,7 +326,7 @@ export const a_concentratedOffensiveMagicZoltraak = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} sent forth a concentrated blast of Zoltraak.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     CommonCardAction.commonAttack(game, characterIndex, {

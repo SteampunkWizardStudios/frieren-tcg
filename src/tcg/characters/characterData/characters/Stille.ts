@@ -40,7 +40,7 @@ export const Stille = new CharacterData({
     abilityStartOfTurnEffect: (
       game,
       characterIndex,
-      _messageCache: MessageCache,
+      _messageCache: MessageCache
     ) => {
       const character = game.characters[characterIndex];
       const opponent = game.getCharacter(1 - characterIndex);
@@ -54,7 +54,7 @@ export const Stille = new CharacterData({
       game,
       characterIndex,
       messageCache: MessageCache,
-      _attackDamage,
+      _attackDamage
     ) => {
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
@@ -70,7 +70,7 @@ export const Stille = new CharacterData({
       } else {
         messageCache.push(
           "## Stille failed to evade the attack!",
-          TCGThread.Gameroom,
+          TCGThread.Gameroom
         );
         game.additionalMetadata.attackMissed[1 - characterIndex] = false;
       }
@@ -79,14 +79,14 @@ export const Stille = new CharacterData({
       game,
       characterIndex,
       messageCache: MessageCache,
-      attackDamage,
+      attackDamage
     ) => {
       const opponent = game.getCharacter(1 - characterIndex);
 
       if (game.additionalMetadata.attackMissed[1 - characterIndex]) {
         messageCache.push(
           "## The Stille's high speed escape reflected the opponent's damage!",
-          TCGThread.Gameroom,
+          TCGThread.Gameroom
         );
         game.attack({
           attackerIndex: characterIndex,

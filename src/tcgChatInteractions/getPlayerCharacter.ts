@@ -12,7 +12,7 @@ import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 
 export const getPlayerCharacter = async (
   player: User,
-  playerThread: ThreadChannel<false>,
+  playerThread: ThreadChannel<false>
 ): Promise<CharacterData | null> => {
   const timeLimitSeconds = 60;
   const timeLimit = timeLimitSeconds * 1000;
@@ -22,7 +22,7 @@ export const getPlayerCharacter = async (
   const characterDropdown = await createCharacterDropdown(
     player,
     characterSelectId,
-    timeLimitSeconds,
+    timeLimitSeconds
   );
 
   const response = await playerThread.send({
@@ -35,7 +35,7 @@ export const getPlayerCharacter = async (
       if (!isResolved) {
         isResolved = true;
         console.warn(
-          "Fallback timeout triggered in getPlayerCharacter function - collector failed to end properly.",
+          "Fallback timeout triggered in getPlayerCharacter function - collector failed to end properly."
         );
         resolve(null);
       }
@@ -78,7 +78,7 @@ export const getPlayerCharacter = async (
               const selectedCharacter = characterList[index].clone();
               const characterSelectedEmbed = new EmbedBuilder()
                 .setTitle(
-                  `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.name}**`,
+                  `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.name}**`
                 )
                 .setColor(selectedCharacter.cosmetic.color)
                 .setImage(selectedCharacter.cosmetic.imageUrl);
@@ -120,7 +120,7 @@ export const getPlayerCharacter = async (
           if (collected.size === 0) {
             if (!isResolved) {
               const timeoutEmbed = EmbedBuilder.from(
-                characterDropdown.embed,
+                characterDropdown.embed
               ).setFooter({
                 text: "Timeout! You didn't select a character in time.",
               });

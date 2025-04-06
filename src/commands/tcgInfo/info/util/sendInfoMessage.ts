@@ -11,7 +11,7 @@ export const sendInfoMessage = async (
   interaction: ChatInputCommandInteraction,
   embed: EmbedBuilder,
   components?: ActionRowBuilder<StringSelectMenuBuilder>[],
-  dm?: boolean,
+  dm?: boolean
 ) => {
   if (interaction.channel?.type === ChannelType.DM || dm) {
     await interaction.reply({
@@ -19,11 +19,11 @@ export const sendInfoMessage = async (
       flags: MessageFlags.Ephemeral,
     });
 
-	if(!interaction.user.dmChannel) {
-		return await interaction.editReply({
-			content: `Could not find DM channel. Please check your privacy settings.`,
-		});
-	}
+    if (!interaction.user.dmChannel) {
+      return await interaction.editReply({
+        content: `Could not find DM channel. Please check your privacy settings.`,
+      });
+    }
 
     return await interaction.user
       .send({ embeds: [embed], components: components })

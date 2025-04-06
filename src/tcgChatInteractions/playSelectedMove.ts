@@ -18,7 +18,7 @@ export const playSelectedMove = async (
   playerThread: ThreadChannel<false>,
   character: Character,
   playerPossibleMove: Record<string, Card>,
-  turnDurationSeconds: number,
+  turnDurationSeconds: number
 ): Promise<Card | null> => {
   if (character.skipTurn) {
     character.skipTurn = false;
@@ -38,7 +38,7 @@ export const playSelectedMove = async (
         label: `${card.getTitle()}`,
         value: `${index}`,
         emoji: card.emoji,
-      })),
+      }))
     );
 
   const dropdown =
@@ -58,7 +58,7 @@ export const playSelectedMove = async (
       if (!isResolved) {
         isResolved = true;
         console.warn(
-          "Fallback timeout triggered in getSelectedMove function - collector failed to end properly.",
+          "Fallback timeout triggered in getSelectedMove function - collector failed to end properly."
         );
         resolve(randomCard);
       }

@@ -29,13 +29,13 @@ const earPiercingScream = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
       `${character.name} let out an ear-piercing scream!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(-2, StatsEnum.HP);
     opponent.adjustStat(
       -1 * this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
   },
 });
@@ -51,7 +51,7 @@ const hide = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} made a quick retreat!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -65,7 +65,7 @@ const hide = new Card({
         endOfTimedEffectAction: (_game, _characterIndex) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -80,7 +80,7 @@ export const a_roomCollapse = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} collapsed the ceiling!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     character.setStat(1, StatsEnum.HP);
     const damage =

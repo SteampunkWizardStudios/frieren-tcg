@@ -17,7 +17,7 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} called on help from Frieren!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const damage = this.calculateEffectValue(this.effects[0]);
 
@@ -33,7 +33,7 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
         endOfTimedEffectAction: function (this, game, characterIndex) {
           messageCache.push(
             "Frieren strikes the weakpoint!",
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage,
@@ -41,7 +41,7 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
             isTimedEffectAttack: true,
           });
         },
-      }),
+      })
     );
 
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
@@ -58,7 +58,7 @@ const a_FrierenBackMeUp = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} called on help from Frieren!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const damage = this.calculateEffectValue(this.effects[0]);
 
@@ -74,7 +74,7 @@ const a_FrierenBackMeUp = new Card({
         endOfTurnAction: function (this, game, characterIndex) {
           messageCache.push(
             "Frieren provides supporting fire!",
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage,
@@ -82,7 +82,7 @@ const a_FrierenBackMeUp = new Card({
             isTimedEffectAttack: true,
           });
         },
-      }),
+      })
     );
 
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
@@ -99,7 +99,7 @@ const a_EisenTheEnemysOpen = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} called on help from Eisen!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const def = this.calculateEffectValue(this.effects[0]);
     const damage = this.calculateEffectValue(this.effects[1]);
@@ -127,7 +127,7 @@ const a_EisenTheEnemysOpen = new Card({
           messageCache.push("Eisen shifted his stance.", TCGThread.Gameroom);
           character.adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -142,7 +142,7 @@ const a_EisenCoverMyBack = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} called on help from Eisen!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const def = this.calculateEffectValue(this.effects[0]);
     const counterDmg = this.calculateEffectValue(this.effects[1]);
@@ -152,7 +152,7 @@ const a_EisenCoverMyBack = new Card({
       game,
       characterIndex,
       messageCache: MessageCache,
-      _attackDamage,
+      _attackDamage
     ) => {
       messageCache.push("Eisen counters the attack!", TCGThread.Gameroom);
       CommonCardAction.commonAttack(game, characterIndex, {
@@ -164,7 +164,7 @@ const a_EisenCoverMyBack = new Card({
     const endOfTimedEffectAction = function (
       _game: Game,
       _characterIndex: number,
-      messageCache: MessageCache,
+      messageCache: MessageCache
     ) {
       messageCache.push("Eisen shifted his stance.", TCGThread.Gameroom);
       character.adjustStat(-def, StatsEnum.DEF);
@@ -182,7 +182,7 @@ const a_EisenCoverMyBack = new Card({
         tags: { Eisen: 1 },
         endOfTimedEffectAction: endOfTimedEffectAction,
         replacedAction: endOfTimedEffectAction,
-      }),
+      })
     );
   },
 });
@@ -196,7 +196,7 @@ const eisenHoldTheLine = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} called on help from Eisen!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
@@ -204,7 +204,7 @@ const eisenHoldTheLine = new Card({
     const endOfTimedEffectAction = function (
       _game: Game,
       _characterIndex: number,
-      messageCache: MessageCache,
+      messageCache: MessageCache
     ) {
       messageCache.push("Eisen backed down.", TCGThread.Gameroom);
       character.adjustStat(-def, StatsEnum.DEF);
@@ -221,7 +221,7 @@ const eisenHoldTheLine = new Card({
         tags: { Eisen: 1 },
         endOfTimedEffectAction: endOfTimedEffectAction,
         replacedAction: endOfTimedEffectAction,
-      }),
+      })
     );
   },
 });
@@ -236,7 +236,7 @@ const heiterEmergency = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} called on help from Heiter!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const heal = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(heal, StatsEnum.HP);
@@ -254,7 +254,7 @@ const heiterEmergency = new Card({
           messageCache.push("Heiter provides first-aid!", TCGThread.Gameroom);
           character.adjustStat(heal, StatsEnum.HP);
         },
-      }),
+      })
     );
   },
 });
@@ -269,7 +269,7 @@ const a_heiterThreeSpears = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} called on help from Heiter!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.replaceOrAddNewTimedEffect(
@@ -284,7 +284,7 @@ const a_heiterThreeSpears = new Card({
         endOfTurnAction: (game, characterIndex) => {
           messageCache.push(
             "The goddess' spears continue to rain!",
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
@@ -292,7 +292,7 @@ const a_heiterThreeSpears = new Card({
             isTimedEffectAttack: true,
           });
         },
-      }),
+      })
     );
   },
 });
@@ -307,7 +307,7 @@ const heiterTrustYou = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} called on help from Heiter!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const atkSpd = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(atkSpd, StatsEnum.ATK);
@@ -325,7 +325,7 @@ const heiterTrustYou = new Card({
         endOfTimedEffectAction: function (this, _game, _characterIndex) {
           messageCache.push(
             "Heiter needs to take a breather.",
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           character.adjustStat(-atkSpd, StatsEnum.ATK);
           character.adjustStat(-atkSpd, StatsEnum.SPD);
@@ -335,7 +335,7 @@ const heiterTrustYou = new Card({
           character.adjustStat(-atkSpd, StatsEnum.ATK);
           character.adjustStat(-atkSpd, StatsEnum.SPD);
         },
-      }),
+      })
     );
   },
 });
@@ -351,7 +351,7 @@ const quickBlock = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} swiftly readied ${character.cosmetic.pronouns.possessive} sword to prepare for the opponent's attack!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -365,7 +365,7 @@ const quickBlock = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -380,7 +380,7 @@ const rally = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} rallied ${character.cosmetic.pronouns.possessive} allies!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const activeAllies = 1 + character.timedEffects.length;
@@ -404,7 +404,7 @@ export const a_extremeSpeed = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} dashed at the opponent!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -421,7 +421,7 @@ export const a_realHeroSwing = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `The Hero ${character.name} heaved his sword!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);

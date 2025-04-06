@@ -10,17 +10,17 @@ export interface TimedEffectProps {
   endOfTurnAction?: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
   endOfTimedEffectAction?: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
   replacedAction?: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
 }
 
@@ -33,17 +33,17 @@ export default class TimedEffect {
   endOfTurnAction?: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
   endOfTimedEffectAction?: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
   replacedAction?: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
 
   constructor(props: TimedEffectProps) {
@@ -64,7 +64,7 @@ export default class TimedEffect {
   reduceTimedEffect(
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) {
     this.passTurn();
     this.endOfTurnAction?.(game, characterIndex, messageCache);

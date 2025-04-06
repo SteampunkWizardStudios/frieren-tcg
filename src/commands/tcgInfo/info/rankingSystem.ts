@@ -2,14 +2,14 @@ import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { sendInfoMessage } from "./util/sendInfoMessage";
 
 export async function showRankingSystem(
-  interaction: ChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction
 ) {
   const dm = interaction.options.getBoolean("dm") ? true : false;
 
   const embed = new EmbedBuilder()
     .setTitle("Frieren TCG - Ranking System")
     .setDescription(
-      "Ranking System. Do `/tcg-stat personal` to view your personal stat, and `/tcg-stat global` for serverwide stats!",
+      "Ranking System. Do `/tcg-stat personal` to view your personal stat, and `/tcg-stat global` for serverwide stats!"
     )
     .setColor(0xc5c3cc)
     .setTimestamp()
@@ -46,7 +46,7 @@ export async function showRankingSystem(
           `- **2nd-class Battle Mage**: 400 points`,
           `- **1st-class Battle Mage**: 500 points`,
         ].join("\n"),
-      },
+      }
     );
 
   sendInfoMessage(interaction, embed, [], dm);

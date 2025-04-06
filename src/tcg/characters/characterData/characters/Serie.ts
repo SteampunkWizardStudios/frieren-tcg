@@ -27,7 +27,7 @@ const serieStats = new Stats({
 const afterAttackEffect = function (
   game: Game,
   characterIndex: number,
-  _messageCache: MessageCache,
+  _messageCache: MessageCache
 ) {
   const character = game.getCharacter(characterIndex);
   if (!character.additionalMetadata.serieToyingTurn) {
@@ -61,14 +61,14 @@ export const Serie = new CharacterData({
         character.setStat(
           1 - SERIE_TOYING_DAMAGE_BONUS,
           StatsEnum.Ability,
-          false,
+          false
         );
       } else {
         character.additionalMetadata.serieToyingTurn = false;
         character.setStat(
           1 + SERIE_TOYING_DAMAGE_BONUS,
           StatsEnum.Ability,
-          false,
+          false
         );
       }
     },

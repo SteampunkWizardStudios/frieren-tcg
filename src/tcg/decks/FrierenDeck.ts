@@ -42,7 +42,7 @@ export const fieldOfFlower = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} conjured a field of flowers!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const initialHealing = this.calculateEffectValue(this.effects[0]);
@@ -56,17 +56,17 @@ export const fieldOfFlower = new Card({
         endOfTurnAction: (game, characterIndex, messageCache) => {
           messageCache.push(
             `The Field of Flowers soothes ${character.name}.`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           game.characters[characterIndex].adjustStat(
             endOfTurnHealing,
-            StatsEnum.HP,
+            StatsEnum.HP
           );
         },
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push("The Field of Flowers fades.", TCGThread.Gameroom);
         },
-      }),
+      })
     );
   },
 });
@@ -86,7 +86,7 @@ export const a_judradjim = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} sent forth Judradjim!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -107,7 +107,7 @@ export const a_vollzanbel = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} summoned Vollzanbel!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -130,20 +130,20 @@ export const barrierMagicAnalysis = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} analyzed the opponent's defense!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.ATK,
+      StatsEnum.ATK
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.SPD,
+      StatsEnum.SPD
     );
     game.characters[1 - characterIndex].adjustStat(
       -1 * this.calculateEffectValue(this.effects[2]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
   },
 });
@@ -162,20 +162,20 @@ export const demonMagicAnalysis = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} analyzed ancient demon's magic!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     game.characters[characterIndex].adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.ATK,
+      StatsEnum.ATK
     );
     game.characters[characterIndex].adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.SPD,
+      StatsEnum.SPD
     );
     game.characters[characterIndex].adjustStat(
       this.calculateEffectValue(this.effects[2]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
   },
 });
@@ -195,7 +195,7 @@ const ordinaryDefensiveMagic = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} cast ordinary defensive magic!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -209,7 +209,7 @@ const ordinaryDefensiveMagic = new Card({
         endOfTimedEffectAction: (_game, _characterIndex) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -229,18 +229,18 @@ export const a_theHeightOfMagic = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} used "The Height of Magic"`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     if (character.stats.stats.HP > 25) {
       messageCache.push(
         `${character.name}'s HP is greater than 25. The move failed!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     } else {
       messageCache.push(
         "The Height of Magic is on display.",
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
       const damage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {

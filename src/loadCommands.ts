@@ -4,7 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 export const loadCommands = async (
-  dir: string,
+  dir: string
 ): Promise<Record<string, Command<CommandInteraction>>> => {
   const commands: Record<string, Command<CommandInteraction>> = {};
 

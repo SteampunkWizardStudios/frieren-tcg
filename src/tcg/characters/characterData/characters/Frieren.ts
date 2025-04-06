@@ -30,7 +30,7 @@ const frierenStats = new Stats({
 const afterAttackEffect = function (
   game: Game,
   characterIndex: number,
-  _messageCache: MessageCache,
+  _messageCache: MessageCache
 ) {
   const character = game.getCharacter(characterIndex);
   character.setStat(0, StatsEnum.Ability);
@@ -60,7 +60,7 @@ export const Frieren = new CharacterData({
       game: Game,
       characterIndex: number,
       messageCache: MessageCache,
-      card: Card,
+      card: Card
     ) {
       const character = game.getCharacter(characterIndex);
       if ("Analysis" in card.tags) {
@@ -79,21 +79,21 @@ export const Frieren = new CharacterData({
             endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
               messageCache.push(
                 "Frieren performed her analysis.",
-                TCGThread.Gameroom,
+                TCGThread.Gameroom
               );
               character.adjustStat(
                 card.tags["PostAnalysis"],
-                StatsEnum.Ability,
+                StatsEnum.Ability
               );
             },
-          }),
+          })
         );
       }
     },
     abilityAttackEffect: function (
       game: Game,
       characterIndex: number,
-      _messageCache: MessageCache,
+      _messageCache: MessageCache
     ) {
       const character = game.getCharacter(characterIndex);
       game.additionalMetadata.attackModifier[characterIndex] =
@@ -104,13 +104,13 @@ export const Frieren = new CharacterData({
     abilityEndOfTurnEffect: function (
       game: Game,
       characterIndex: number,
-      messageCache: MessageCache,
+      messageCache: MessageCache
     ) {
       const character = game.getCharacter(characterIndex);
       if (character.stats.stats.Ability < ANALYSIS_STACK_CAP) {
         messageCache.push(
           "Frieren continues her Analysis.",
-          TCGThread.Gameroom,
+          TCGThread.Gameroom
         );
         character.adjustStat(1, StatsEnum.Ability);
       }

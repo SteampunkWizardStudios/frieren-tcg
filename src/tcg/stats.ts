@@ -28,7 +28,7 @@ export default class Stats {
       {
         ...this.stats,
       },
-      this.startingHp,
+      this.startingHp
     );
   }
 }

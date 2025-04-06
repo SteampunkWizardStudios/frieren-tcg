@@ -16,7 +16,7 @@ export const a_rockTomb = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
       `${character.name} formed a tomb of rock!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -38,7 +38,7 @@ const crystalize = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} crystalizes ${character.cosmetic.pronouns.reflexive}!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -53,12 +53,12 @@ const crystalize = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} breaks out of ${character.cosmetic.pronouns.possessive} crystalization.`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           character.adjustStat(-def, StatsEnum.DEF);
           character.adjustStat(15, StatsEnum.ATK);
         },
-      }),
+      })
     );
   },
 });
@@ -73,7 +73,7 @@ const a_crusher = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
       `${character.name} crushes the opposition!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -81,7 +81,7 @@ const a_crusher = new Card({
 
     opponent.adjustStat(
       -1 * this.calculateEffectValue(this.effects[1]),
-      StatsEnum.SPD,
+      StatsEnum.SPD
     );
   },
 });

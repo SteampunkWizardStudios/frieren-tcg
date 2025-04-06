@@ -11,7 +11,7 @@ export default class CommonCardAction {
       damage: number;
       hpCost: number;
       isTimedEffectAttack?: boolean;
-    },
+    }
   ): number {
     const isTimedEffectAttack = option.isTimedEffectAttack ?? false;
     const character = game.getCharacter(characterIndex);
@@ -36,22 +36,22 @@ export default class CommonCardAction {
     game: Game,
     characterIndex: number,
     tag: string,
-    newTimedEffect: TimedEffect,
+    newTimedEffect: TimedEffect
   ) {
     const character = game.getCharacter(characterIndex);
     const timedEffectIndex = character.timedEffects.findIndex(
-      (timedEffect) => tag in timedEffect.tags,
+      (timedEffect) => tag in timedEffect.tags
     );
     if (timedEffectIndex !== -1) {
       const previousTimedEffect = character.timedEffects.splice(
         timedEffectIndex,
         1,
-        newTimedEffect,
+        newTimedEffect
       );
       previousTimedEffect[0].replacedAction?.(
         game,
         characterIndex,
-        game.messageCache,
+        game.messageCache
       );
     } else {
       character.timedEffects.push(newTimedEffect);

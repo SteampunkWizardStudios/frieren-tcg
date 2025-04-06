@@ -26,6 +26,6 @@ export async function initiateChallengeRequest(prop: {
     opponent,
     gameSettings,
     ranked,
-    gamemode,
+    gamemode
   );
 }

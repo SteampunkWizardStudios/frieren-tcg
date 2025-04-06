@@ -82,7 +82,7 @@ const sectionToFields: Record<
 };
 
 export async function showGameAdvancedRules(
-  interaction: ChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction
 ) {
   const dm = interaction.options.getBoolean("dm") ? true : false;
   const section =
@@ -92,7 +92,7 @@ export async function showGameAdvancedRules(
   const embed = new EmbedBuilder()
     .setTitle("Frieren TCG - Advanced Rules, Formulas and Edge Cases")
     .setDescription(
-      "Advanced Rules, Formulas and Edge Cases. Use `/tcp info how-to-play` instead for How to Play the game!",
+      "Advanced Rules, Formulas and Edge Cases. Use `/tcp info how-to-play` instead for How to Play the game!"
     )
     .setColor(0xc5c3cc)
     .setTimestamp()

@@ -45,7 +45,7 @@ const earPiercingScream = new Card({
     character.adjustStat(-2, StatsEnum.HP);
     opponent.adjustStat(
       -1 * this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
   },
 });
@@ -94,7 +94,7 @@ export const a_curse = new Card({
         endOfTurnAction: (game, characterIndex, messageCache) => {
           messageCache.push(
             "You feel something gnaws at you from behind.",
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
@@ -102,7 +102,7 @@ export const a_curse = new Card({
             isTimedEffectAttack: true,
           });
         },
-      }),
+      })
     );
   },
 });
@@ -171,7 +171,7 @@ export const a_solitaryPractice = new Card({
           endOfTimedEffectAction: (game, characterIndex) => {
             messageCache.push(
               "The Height of one's Solitary Practice is on display.",
-              TCGThread.Gameroom,
+              TCGThread.Gameroom
             );
             game.attack({
               attackerIndex: characterIndex,
@@ -181,7 +181,7 @@ export const a_solitaryPractice = new Card({
             character.adjustStat(-20, StatsEnum.DEF);
             character.adjustStat(-20, StatsEnum.SPD);
           },
-        }),
+        })
       );
     }
   },

@@ -1,7 +1,7 @@
 import prismaClient from "../../../prisma/client";
 
 export const getCharacterMasteries = async (
-  props: { playerId: number; characterId: number }[],
+  props: { playerId: number; characterId: number }[]
 ): Promise<{ id: number }[]> => {
   return prismaClient.$transaction(async (tx) => {
     return await Promise.all(
@@ -21,7 +21,7 @@ export const getCharacterMasteries = async (
             characterId,
           },
         });
-      }),
+      })
     );
   });
 };

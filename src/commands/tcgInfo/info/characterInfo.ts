@@ -14,7 +14,7 @@ import { createCharacterDropdown } from "../../../util/createCharacterDropdown";
 import Card from "../../../tcg/card";
 
 export async function showCharacterInfo(
-  interaction: ChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction
 ) {
   const dm = interaction.options.getBoolean("dm") ? true : false;
 
@@ -22,7 +22,7 @@ export async function showCharacterInfo(
     const customCharacterInfoId = `character-info-${interaction.user.id}-${Date.now()}`;
     const characterDropdown = await createCharacterDropdown(
       interaction.user,
-      customCharacterInfoId,
+      customCharacterInfoId
     );
 
     // Send initial message with the menu
@@ -30,7 +30,7 @@ export async function showCharacterInfo(
       interaction,
       characterDropdown.embed,
       [characterDropdown.dropdown],
-      dm,
+      dm
     );
 
     // Create a collector for the dropdown menu
@@ -83,7 +83,7 @@ export async function showCharacterInfo(
               {
                 name: `Deck: 15 Cards`,
                 value: "",
-              },
+              }
             )
             .addFields(
               char.cards.map((cardCount: { card: Card; count: number }) => {
@@ -93,7 +93,7 @@ export async function showCharacterInfo(
                   name: `${card.emoji} **${card.title}** x ${count}:`,
                   value: `${card.getDescription()}`,
                 };
-              }),
+              })
             );
 
           await i.update({
@@ -114,7 +114,7 @@ export async function showCharacterInfo(
         characterDropdown.selectMenu.setDisabled(true);
         const disabledRow =
           new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-            characterDropdown.selectMenu,
+            characterDropdown.selectMenu
           );
 
         await interaction

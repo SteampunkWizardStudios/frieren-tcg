@@ -18,7 +18,7 @@ const imitate = new Card({
 
     messageCache.push(
       `${character.name} imitates ${opponent.name}'s last move.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const lastCard =
@@ -31,13 +31,13 @@ const imitate = new Card({
 
       messageCache.push(
         `${character.name} uses ${newCard.getTitle()}`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
       newCard.cardAction(game, characterIndex, messageCache);
     } else {
       messageCache.push(
         "There was no move to imitate. The move failed!",
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     }
   },
@@ -53,12 +53,12 @@ export const adapt = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} adapts to the situation.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.SPD,
+      StatsEnum.SPD
     );
 
     const atkDefAdjust = this.calculateEffectValue(this.effects[1]);
@@ -68,7 +68,7 @@ export const adapt = new Card({
     } else {
       character.adjustStat(
         this.calculateEffectValue(this.effects[2]),
-        StatsEnum.HP,
+        StatsEnum.HP
       );
     }
   },
@@ -84,13 +84,13 @@ export const manaDetection = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} detects the opponent's mana flow.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const opponent = game.getCharacter(1 - characterIndex);
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.SPD,
+      StatsEnum.SPD
     );
 
     const bigNumber = this.calculateEffectValue(this.effects[1]);
@@ -117,7 +117,7 @@ const parry = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} prepares to parry the opponent's attack.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -131,7 +131,7 @@ const parry = new Card({
         endOfTimedEffectAction: (game, characterIndex) => {
           game.characters[characterIndex].adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -145,7 +145,7 @@ export const a_erfassenAxe = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Axe imitation.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -162,7 +162,7 @@ export const a_erfassenSword = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Sword imitation.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -179,7 +179,7 @@ export const a_erfassenSpear = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Spear imitation.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -196,7 +196,7 @@ export const a_erfassenKnife = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Knife throw imitation.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
