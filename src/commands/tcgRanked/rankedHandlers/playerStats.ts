@@ -14,7 +14,7 @@ const playerRankedStats = (discordId?: string) => {
       discordId: true,
       characterMasteries: {
         select: {
-          character: { select: { name: true } },
+          character: { select: { id: true, name: true } },
           masteryPoints: true,
         },
       },
@@ -86,7 +86,7 @@ export default async function handlePlayerStats(
   );
 
   // yes, all that typescript earlier was just to move it to another function 😭
-  const embed = playerStatsEmbed(player, targetPlayer);
+  const embed = await playerStatsEmbed(player, targetPlayer);
 
   await interaction.editReply({
     embeds: [embed],
