@@ -24,14 +24,14 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setDescription("Value of the progress bar")
             .setMinValue(0)
             .setMaxValue(100)
-            .setRequired(true)
+            .setRequired(true),
         )
         .addIntegerOption((option) =>
           option
             .setName("length")
             .setDescription("How many emojis long the progress bar is")
             .setMinValue(4)
-            .setRequired(false)
+            .setRequired(false),
         )
         .addIntegerOption((option) =>
           option
@@ -39,8 +39,8 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setDescription("Max value of the progress bar")
             .setMinValue(0)
             .setMaxValue(100)
-            .setRequired(false)
-        )
+            .setRequired(false),
+        ),
     )
 
     .addSubcommand((subcommand) =>
@@ -51,15 +51,15 @@ export const command: Command<ChatInputCommandInteraction> = {
           option
             .setName("user")
             .setDescription("User to grant the achievement to")
-            .setRequired(true)
+            .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("achievement")
             .setDescription("Achievement to grant")
             .setRequired(true)
-            .setAutocomplete(true)
-        )
+            .setAutocomplete(true),
+        ),
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {

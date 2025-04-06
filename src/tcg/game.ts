@@ -98,7 +98,7 @@ export default class Game {
 
       // early game over check
       if (defenderRemainingHp <= 0) {
-        this.checkGameOver();
+        this.checkCharacterDefeated(defender, 1 - attackProps.attackerIndex);
         if (this.gameOver) {
           return actualDamage;
         }
@@ -177,20 +177,7 @@ export default class Game {
     let losingIndex = 0;
     this.characters.forEach((character, index) => {
       if (!this.gameOver) {
-        let characterDefeated = false;
-
-        if (
-          character.stats.stats.HP <= 0 &&
-          character.name !== CharacterName.Denken
-        ) {
-          characterDefeated = true;
-        }
-
-        if (this.additionalMetadata.forfeited[index]) {
-          characterDefeated = true;
-        }
-
-        if (characterDefeated) {
+        if (this.checkCharacterDefeated(character, index)) {
           this.messageCache.push(
             `# ${character.name} has been defeated!`,
             TCGThread.Gameroom,
@@ -204,6 +191,26 @@ export default class Game {
     });
 
     return losingIndex;
+  }
+
+  private checkCharacterDefeated(
+    character: Character,
+    characterIndex: number,
+  ): boolean {
+    let characterDefeated = false;
+
+    if (
+      character.stats.stats.HP <= 0 &&
+      character.name !== CharacterName.Denken
+    ) {
+      characterDefeated = true;
+    }
+
+    if (this.additionalMetadata.forfeited[characterIndex]) {
+      characterDefeated = true;
+    }
+
+    return characterDefeated;
   }
 
   private calculateDamage(

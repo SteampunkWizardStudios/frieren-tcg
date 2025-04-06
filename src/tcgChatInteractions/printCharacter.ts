@@ -5,7 +5,7 @@ import { StatsEnum } from "../tcg/stats";
 
 export const printCharacter = (
   character: Character,
-  obfuscateInformation: boolean
+  obfuscateInformation: boolean,
 ): string => {
   const printStack: String[] = [];
   const charStat = character.stats.stats;
@@ -32,12 +32,12 @@ export const printCharacter = (
   printStack.push(lines.join("\n"));
   if (character.additionalMetadata.manaSuppressed) {
     printStack.push(
-      `**Mana Suppression**: ${character.name} suppresses ${character.cosmetic.pronouns.possessive} mana - ${character.cosmetic.pronouns.possessive} HP is hidden.`
+      `**Mana Suppression**: ${character.name} suppresses ${character.cosmetic.pronouns.possessive} mana - ${character.cosmetic.pronouns.possessive} HP is hidden.`,
     );
   }
   if (character.additionalMetadata.teaTimeStacks) {
     printStack.push(
-      `**Tea Time Snacks**: ${character.additionalMetadata.teaTimeStacks}`
+      `**Tea Time Snacks**: ${character.additionalMetadata.teaTimeStacks}`,
     );
   }
   if (character.timedEffects.length > 0) {
