@@ -1,6 +1,6 @@
 import { Client, CommandInteraction, MessageFlags } from "discord.js";
 import { Command } from "./types/command";
-
+import { Interaction } from "discord.js";
 export const setupInteractions = async (
   client: Client,
   commands: Record<string, Command<CommandInteraction>>,
@@ -43,15 +43,7 @@ export const setupInteractions = async (
         await interaction.respond([]);
       }
     } else {
-      console.error(
-        `Unhandled interaction type: ${interaction.type}\nInteraction: ${interaction}`,
-      );
-      if (interaction.isRepliable()) {
-        return await interaction.reply({
-          content: "Interaction not recognized.",
-          flags: MessageFlags.Ephemeral,
-        });
-      }
+      return;
     }
   });
 };
