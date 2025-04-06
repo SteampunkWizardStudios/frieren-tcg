@@ -21,15 +21,15 @@ export const command: Command<ChatInputCommandInteraction> = {
           option
             .setName("user")
             .setDescription("User to grant the achievement to")
-            .setRequired(true)
+            .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("achievement")
             .setDescription("Achievement to grant")
             .setRequired(true)
-            .setAutocomplete(true)
-        )
+            .setAutocomplete(true),
+        ),
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {

@@ -10,13 +10,13 @@ import { getRank } from "@src/commands/tcgChallenge/gameHandler/rankScoresToRank
 
 export default async function playerStatsEmbed(
   stats: PlayerRankedStats,
-  user: User
+  user: User,
 ) {
   const ladderRankFields = await Promise.all(
     stats.ladderRanks.map(async (ladderRank) => {
       const relativeRank = await getRelativeRank(
         ladderRank.ladderReset.id,
-        ladderRank.rankPoints
+        ladderRank.rankPoints,
       );
       const totalPlayers = await getTotalPlayers(ladderRank.ladderReset.id);
       return {
@@ -25,20 +25,20 @@ export default async function playerStatsEmbed(
         }`,
         value: `Points: ${ladderRank.rankPoints} (#${relativeRank}/${totalPlayers})`,
       };
-    })
+    }),
   );
 
   const characterLines = await Promise.all(
     stats.characterMasteries.map(async (mastery) => {
       const relativeCharacterRank = await getRelativeCharacterRank(
         mastery.masteryPoints,
-        mastery.character.id
+        mastery.character.id,
       );
       const totalCharacterPlayers = await getTotalCharacterPlayers(
-        mastery.character.id
+        mastery.character.id,
       );
       return `${mastery.character.name} - ${mastery.masteryPoints} (#${relativeCharacterRank}/${totalCharacterPlayers})`;
-    })
+    }),
   );
 
   const embed = new EmbedBuilder()
