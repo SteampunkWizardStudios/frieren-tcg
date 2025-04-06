@@ -45,7 +45,7 @@ export const Sein = new CharacterData({
       this,
       game,
       characterIndex,
-      _messageCache,
+      _messageCache
     ) {
       const character = game.characters[characterIndex];
       const healing =
@@ -57,11 +57,11 @@ export const Sein = new CharacterData({
     abilityEndOfTurnEffect: (
       game,
       characterIndex,
-      messageCache: MessageCache,
+      messageCache: MessageCache
     ) => {
       messageCache.push(
         "Sein sought the Goddess' Blessings.",
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
       const character = game.characters[characterIndex];
       character.adjustStat(character.stats.stats.Ability, StatsEnum.HP);

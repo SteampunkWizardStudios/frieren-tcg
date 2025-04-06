@@ -14,7 +14,7 @@ const a_flame = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} sets the floor ablaze!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -32,7 +32,7 @@ const a_burn = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
       `${character.name} torches the opposition!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -40,7 +40,7 @@ const a_burn = new Card({
 
     opponent.adjustStat(
       this.calculateEffectValue(-this.effects[1]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
   },
 });
@@ -56,7 +56,7 @@ const extinguish = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} extinguishes itself!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(-10, StatsEnum.ATK);
@@ -72,7 +72,7 @@ const extinguish = new Card({
         endOfTimedEffectAction: (_game, _characterIndex) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -86,7 +86,7 @@ const a_inferno = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} lets out a gigantic inferno!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     character.setStat(1, StatsEnum.HP);
     const damage = this.calculateEffectValue(this.effects[0]);

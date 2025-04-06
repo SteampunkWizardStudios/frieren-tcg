@@ -9,7 +9,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       option
         .setName("input")
         .setDescription("The input to echo back")
-        .setRequired(true),
+        .setRequired(true)
     ),
   async execute(interaction: ChatInputCommandInteraction) {
     const input = interaction.options.getString("input");

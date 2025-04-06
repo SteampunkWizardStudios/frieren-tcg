@@ -21,7 +21,7 @@ const a_regurgitate = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} regurgitated a spell it stole from a mage it munched on.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const baseCard =
@@ -35,7 +35,7 @@ const a_regurgitate = new Card({
 
     messageCache.push(
       `${character.name} used **${newCard.getTitle()}**.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     newCard.cardAction(game, characterIndex, messageCache);
   },
@@ -51,7 +51,7 @@ const omNomNomNom = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} gobbles the opposition!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -76,7 +76,7 @@ const mimic = new Card({
 
     messageCache.push(
       `${character.name} imitates ${opponent.name}'s last move.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const lastCard =
@@ -89,13 +89,13 @@ const mimic = new Card({
 
       messageCache.push(
         `${character.name} uses ${newCard.getTitle()}`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
       newCard.cardAction(game, characterIndex, messageCache);
     } else {
       messageCache.push(
         "There was no move to imitate. The move failed!",
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     }
   },
@@ -110,11 +110,11 @@ const camouflage = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} camouflaged itself!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
   },
 });
@@ -128,7 +128,7 @@ const a_callOfCthulhu = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} heeds the call of Cthulhu.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.setStat(1, StatsEnum.HP);

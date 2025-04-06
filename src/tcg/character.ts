@@ -80,7 +80,7 @@ export default class Character {
       this.deck.discardCard(discardedCard);
       this.messageCache.push(
         `Discarded ${discardedCard.title} + ${discardedCard.empowerLevel}`,
-        this.characterThread,
+        this.characterThread
       );
       return discardedCard;
     } else {
@@ -135,7 +135,7 @@ export default class Character {
     let cardsInHand: string[] = [];
     this.messageCache.push(
       `# ${this.cosmetic.emoji} ${this.name}'s Hand: `,
-      channel,
+      channel
     );
     this.hand.forEach((card, index) => {
       cardsInHand.push(card.printCard(`- ${index}: `));
@@ -149,7 +149,7 @@ export default class Character {
   adjustStat(adjustValue: number, stat: StatsEnum): boolean {
     const roundedAdjustValue = Number(adjustValue.toFixed(2));
     const roundedStatValue = Number(
-      (this.stats.stats[stat] + roundedAdjustValue).toFixed(2),
+      (this.stats.stats[stat] + roundedAdjustValue).toFixed(2)
     );
     if (this.setStatValue(roundedStatValue, stat)) {
       const statDescription =
@@ -157,24 +157,24 @@ export default class Character {
       let statUpdateLines: string[] = [];
       if (adjustValue < 0) {
         statUpdateLines.push(
-          `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`,
+          `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`
         );
         if (
           !(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed)
         ) {
           statUpdateLines.push(
-            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`,
+            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`
           );
         }
       } else {
         statUpdateLines.push(
-          `${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`,
+          `${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`
         );
         if (
           !(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed)
         ) {
           statUpdateLines.push(
-            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`,
+            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`
           );
         }
       }
@@ -184,7 +184,7 @@ export default class Character {
     } else {
       this.messageCache.push(
         `${this.name}'s stat failed to be set! The move failed!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
       return false;
     }
@@ -193,7 +193,7 @@ export default class Character {
   setStat(
     statValue: number,
     stat: StatsEnum,
-    sendMessage: boolean = true,
+    sendMessage: boolean = true
   ): boolean {
     const roundedStatValue = Number(statValue.toFixed(2));
     if (this.setStatValue(roundedStatValue, stat)) {
@@ -202,14 +202,14 @@ export default class Character {
       if (sendMessage) {
         this.messageCache.push(
           `${this.name}'s ${statDescription} is set to ${roundedStatValue}.`,
-          TCGThread.Gameroom,
+          TCGThread.Gameroom
         );
       }
       return true;
     } else {
       this.messageCache.push(
         `${this.name}'s stat failed to be set! The move failed!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       ); // send regardless
       return false;
     }
@@ -250,7 +250,7 @@ export default class Character {
 
   removeExpiredTimedEffects() {
     this.timedEffects = this.timedEffects.filter(
-      (timedEffect) => timedEffect.turnDuration > 0,
+      (timedEffect) => timedEffect.turnDuration > 0
     );
   }
 

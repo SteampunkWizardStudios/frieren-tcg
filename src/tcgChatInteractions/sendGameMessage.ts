@@ -22,7 +22,7 @@ export async function sendToThread(
   messages: string[],
   thread: TCGThread,
   threadsMapping: TCGThreads,
-  delay: number,
+  delay: number
 ): Promise<boolean> {
   const targetThread = threadsMapping[thread];
 

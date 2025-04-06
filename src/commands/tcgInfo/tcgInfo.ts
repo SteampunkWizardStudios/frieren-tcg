@@ -22,28 +22,28 @@ export const command: Command<ChatInputCommandInteraction> = {
       subcommand
         .setName("how-to-play")
         .setDescription(
-          "Get information about the game's rules and how-to-play",
+          "Get information about the game's rules and how-to-play"
         )
         .addBooleanOption((option) =>
           option
             .setName("detailed")
             .setDescription(
-              "Show detailed game rules information. Default: False",
+              "Show detailed game rules information. Default: False"
             )
-            .setRequired(false),
+            .setRequired(false)
         )
         .addBooleanOption((option) =>
           option
             .setName("dm")
             .setDescription("DM this information instead. Default: False")
-            .setRequired(false),
-        ),
+            .setRequired(false)
+        )
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("advanced-rules")
         .setDescription(
-          "Get information about the advanced rules and edge cases",
+          "Get information about the advanced rules and edge cases"
         )
         .addStringOption((option) =>
           option
@@ -66,15 +66,15 @@ export const command: Command<ChatInputCommandInteraction> = {
               {
                 name: "Serie's Living Grimoire: Utility Chapter's Card Pool",
                 value: AdvancedRulesSection.SeriesPoolUtility,
-              },
-            ),
+              }
+            )
         )
         .addBooleanOption((option) =>
           option
             .setName("dm")
             .setDescription("DM this information instead. Default: False")
-            .setRequired(false),
-        ),
+            .setRequired(false)
+        )
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -84,8 +84,8 @@ export const command: Command<ChatInputCommandInteraction> = {
           option
             .setName("dm")
             .setDescription("DM this information instead. Default: False")
-            .setRequired(false),
-        ),
+            .setRequired(false)
+        )
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -95,8 +95,8 @@ export const command: Command<ChatInputCommandInteraction> = {
           option
             .setName("dm")
             .setDescription("DM this information instead. Default: False")
-            .setRequired(false),
-        ),
+            .setRequired(false)
+        )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {

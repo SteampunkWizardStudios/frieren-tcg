@@ -11,7 +11,7 @@ import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 export const createCharacterDropdown = async (
   user: User,
   customId: string,
-  timeLimitSeconds?: number,
+  timeLimitSeconds?: number
 ): Promise<{
   embed: EmbedBuilder;
   selectMenu: StringSelectMenuBuilder;
@@ -27,13 +27,13 @@ export const createCharacterDropdown = async (
     .setColor(0xc5c3cc)
     .setTitle("Frieren TCG - Characters")
     .setDescription(
-      `${timeLimitString ? `${timeLimitString} to ` : ""}Choose your character.`,
+      `${timeLimitString ? `${timeLimitString} to ` : ""}Choose your character.`
     )
     .addFields({
       name: "Available Characters",
       value: [
         ...CHARACTER_LIST.map(
-          (char: CharacterData) => `1. ${char.cosmetic.emoji} ${char.name}`,
+          (char: CharacterData) => `1. ${char.cosmetic.emoji} ${char.name}`
         ),
         "?. 🎲 Random Character",
       ].join("\n"),
@@ -48,7 +48,7 @@ export const createCharacterDropdown = async (
         label: `${char.name}`,
         value: `${index}`,
         emoji: char.cosmetic.emoji,
-      })),
+      }))
     )
     .addOptions({
       label: "Random Character",

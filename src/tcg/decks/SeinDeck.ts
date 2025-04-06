@@ -21,7 +21,7 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
     if (character.name === CharacterName.Sein) {
       messageCache.push(
         `${character.name} called on help from Frieren!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     } else {
       messageCache.push(`${character.name} used Zoltraak.`, TCGThread.Gameroom);
@@ -31,7 +31,7 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
       (
         this.calculateEffectValue(this.effects[0]) +
         character.stats.stats.HP / 10
-      ).toFixed(2),
+      ).toFixed(2)
     );
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
   },
@@ -52,12 +52,12 @@ export const a_trustInYourAllyFernsBarrage = new Card({
     if (character.name === CharacterName.Sein) {
       messageCache.push(
         `${character.name} called on help from Fern!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     } else {
       messageCache.push(
         `${character.name} used a simple offensive spell barrage.`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     }
 
@@ -66,7 +66,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
         (
           this.calculateEffectValue(this.effects[0]) +
           character.stats.stats.HP / 10
-        ).toFixed(2),
+        ).toFixed(2)
       );
       CommonCardAction.commonAttack(game, characterIndex, {
         damage,
@@ -85,7 +85,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
               isTimedEffectAttack: true,
             });
           },
-        }),
+        })
       );
     }
   },
@@ -106,12 +106,12 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
     if (character.name === CharacterName.Sein) {
       messageCache.push(
         `${character.name} called on help from Stark!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     } else {
       messageCache.push(
         `${character.name} used lightning strike.`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     }
 
@@ -119,7 +119,7 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
       (
         this.calculateEffectValue(this.effects[0]) +
         character.stats.stats.HP / 7
-      ).toFixed(2),
+      ).toFixed(2)
     );
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 9 });
   },
@@ -138,16 +138,16 @@ export const mugOfBeer = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} downed a mug of beer.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP,
+      StatsEnum.HP
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.ATK,
+      StatsEnum.ATK
     );
     character.adjustStat(-2, StatsEnum.DEF);
     character.adjustStat(-1, StatsEnum.SPD);
@@ -167,20 +167,20 @@ export const smokeBreak = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} took a smoke break.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     if (character.adjustStat(-5, StatsEnum.HP)) {
       character.adjustStat(
         this.calculateEffectValue(this.effects[0]),
-        StatsEnum.ATK,
+        StatsEnum.ATK
       );
       character.adjustStat(
         this.calculateEffectValue(this.effects[1]),
-        StatsEnum.DEF,
+        StatsEnum.DEF
       );
       character.adjustStat(
         this.calculateEffectValue(this.effects[2]),
-        StatsEnum.SPD,
+        StatsEnum.SPD
       );
     }
   },
@@ -201,15 +201,15 @@ export const awakening = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.ATK,
+      StatsEnum.ATK
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD,
+      StatsEnum.SPD
     );
   },
 });
@@ -227,11 +227,11 @@ export const poisonCure = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} applied a poison cure.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP,
+      StatsEnum.HP
     );
   },
 });
@@ -252,12 +252,12 @@ export const braceYourself = new Card({
     if (character.name === CharacterName.Sein) {
       messageCache.push(
         `${character.name} called on ${character.cosmetic.pronouns.possessive} allies to brace themselves!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     } else {
       messageCache.push(
         `${character.name} braced ${character.cosmetic.pronouns.reflexive}.`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     }
 
@@ -272,7 +272,7 @@ export const braceYourself = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -291,14 +291,14 @@ export const a_threeSpearsOfTheGoddess = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} used Three Spears of the Goddess!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     if (character.adjustStat(-15, StatsEnum.HP)) {
       const damage = Number(
         (
           this.calculateEffectValue(this.effects[0]) +
           character.stats.stats.HP / 10
-        ).toFixed(2),
+        ).toFixed(2)
       );
       character.timedEffects.push(
         new TimedEffect({
@@ -308,7 +308,7 @@ export const a_threeSpearsOfTheGoddess = new Card({
           endOfTurnAction: (game, characterIndex) => {
             messageCache.push(
               "The goddess' spears continue to rain!",
-              TCGThread.Gameroom,
+              TCGThread.Gameroom
             );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
@@ -316,7 +316,7 @@ export const a_threeSpearsOfTheGoddess = new Card({
               isTimedEffectAttack: true,
             });
           },
-        }),
+        })
       );
     }
   },

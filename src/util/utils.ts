@@ -12,7 +12,7 @@ export const generateCustomRandomString = (
     useSpecial?: boolean;
     randomizeLength?: boolean;
     minimumLength?: number;
-  } = {},
+  } = {}
 ): string => {
   let chars = "";
   let length = maxLength;

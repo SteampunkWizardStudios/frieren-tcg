@@ -17,7 +17,7 @@ const a_axeSwipe = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} swiped ${character.cosmetic.pronouns.possessive} axe!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
@@ -37,7 +37,7 @@ const offensiveStance = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} took an offensive stance!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const atkChange = this.calculateEffectValue(this.effects[0]);
@@ -60,7 +60,7 @@ const defensiveStance = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} took a defensive stance!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const defChange = this.calculateEffectValue(this.effects[0]);
@@ -82,7 +82,7 @@ const jumboBerrySpecialBreak = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} chowed down on a Jumbo Berry Special!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const defChange = this.calculateEffectValue(this.effects[0]);
@@ -90,7 +90,7 @@ const jumboBerrySpecialBreak = new Card({
     character.adjustStat(defChange, StatsEnum.DEF);
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.HP,
+      StatsEnum.HP
     );
 
     character.timedEffects.push(
@@ -101,15 +101,15 @@ const jumboBerrySpecialBreak = new Card({
         endOfTimedEffectAction: (game, characterIndex, messageCache) => {
           messageCache.push(
             `The break is over. ${character.name} recomposes ${character.cosmetic.pronouns.reflexive}.`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           game.characters[characterIndex].adjustStat(2, StatsEnum.SPD);
           game.characters[characterIndex].adjustStat(
             -1 * defChange,
-            StatsEnum.DEF,
+            StatsEnum.DEF
           );
         },
-      }),
+      })
     );
   },
 });
@@ -125,7 +125,7 @@ const block = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} prepares to block an attack!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -139,7 +139,7 @@ const block = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -155,7 +155,7 @@ const concentration = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} concentrates on the battle.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const spd = this.calculateEffectValue(this.effects[0]);
@@ -173,7 +173,7 @@ const a_ordensSlashTechnique = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} used Orden's Slash Technique!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -192,7 +192,7 @@ const fearBroughtMeThisFar = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} resolves ${character.cosmetic.pronouns.reflexive}...`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const atkDef = this.calculateEffectValue(this.effects[0]);
@@ -212,12 +212,12 @@ const a_eisensAxeCleave = new Card({
     if (character.name === CharacterName.Stark) {
       messageCache.push(
         `${character.name} recalls memory of ${character.cosmetic.pronouns.possessive} master's Axe Cleave!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     } else {
       messageCache.push(
         `${character.name} cleaves ${character.cosmetic.pronouns.possessive} axe.`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     }
 
@@ -253,7 +253,7 @@ const a_lightningStrike = new Card({
           endOfTimedEffectAction: (game, characterIndex) => {
             game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
           },
-        }),
+        })
       );
       game.characters[characterIndex].timedEffects.push(
         new TimedEffect({
@@ -263,7 +263,7 @@ const a_lightningStrike = new Card({
           endOfTimedEffectAction: (game, characterIndex) => {
             messageCache.push(
               `${character.name} performs Lightning Strike!`,
-              TCGThread.Gameroom,
+              TCGThread.Gameroom
             );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
@@ -271,7 +271,7 @@ const a_lightningStrike = new Card({
               isTimedEffectAttack: true,
             });
           },
-        }),
+        })
       );
     }
   },

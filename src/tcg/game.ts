@@ -65,7 +65,7 @@ export default class Game {
       attacker.ability.abilityAttackEffect(
         this,
         attackProps.attackerIndex,
-        this.messageCache,
+        this.messageCache
       );
     }
     // counter attacks should not be under defend effect
@@ -74,7 +74,7 @@ export default class Game {
         this,
         1 - attackProps.attackerIndex,
         this.messageCache,
-        attackProps.damage,
+        attackProps.damage
       );
     }
 
@@ -87,11 +87,11 @@ export default class Game {
         attackProps.damage *
           this.additionalMetadata.attackModifier[attackProps.attackerIndex],
         attacker.stats.stats.ATK,
-        defender.stats.stats.DEF,
+        defender.stats.stats.DEF
       );
 
       const defenderRemainingHp = Number(
-        (defender.stats.stats.HP - actualDamage).toFixed(2),
+        (defender.stats.stats.HP - actualDamage).toFixed(2)
       );
       defender.stats.stats.HP = defenderRemainingHp;
       const hpLeft: string = defender.additionalMetadata.manaSuppressed
@@ -99,7 +99,7 @@ export default class Game {
         : `${defender.name} has ${defender.stats.stats.HP} left!`;
       this.messageCache.push(
         `# ${attacker.cosmetic.emoji} ${attacker.name} attacks ${defender.cosmetic.emoji} ${defender.name} for ${actualDamage.toFixed(2)} damage! ${hpLeft}`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
 
       // early exit if opponent's already defeated
@@ -124,7 +124,7 @@ export default class Game {
         this,
         1 - attackProps.attackerIndex,
         this.messageCache,
-        attackProps.damage,
+        attackProps.damage
       );
     }
 
@@ -135,7 +135,7 @@ export default class Game {
           attacker.ability.abilityAfterTimedAttackEffect(
             this,
             attackProps.attackerIndex,
-            this.messageCache,
+            this.messageCache
           );
         }
       } else {
@@ -143,7 +143,7 @@ export default class Game {
           attacker.ability.abilityAfterDirectAttackEffect(
             this,
             attackProps.attackerIndex,
-            this.messageCache,
+            this.messageCache
           );
         }
       }
@@ -201,7 +201,7 @@ export default class Game {
         if (this.checkCharacterDefeated(character, index)) {
           this.messageCache.push(
             `# ${character.name} has been defeated!`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           this.gameOver = true;
 
@@ -216,7 +216,7 @@ export default class Game {
 
   private checkCharacterDefeated(
     character: Character,
-    characterIndex: number,
+    characterIndex: number
   ): boolean {
     let characterDefeated = false;
 
@@ -237,7 +237,7 @@ export default class Game {
   private calculateDamage(
     moveDamage: number,
     attackerAttack: number,
-    defenderDefense: number,
+    defenderDefense: number
   ) {
     return Math.max(1, moveDamage + attackerAttack - defenderDefense);
   }

@@ -8,7 +8,7 @@ import { statDetails } from "../../../tcg/formatting/emojis";
 import { sendInfoMessage } from "./util/sendInfoMessage";
 
 export async function showGameHowToPlay(
-  interaction: ChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction
 ) {
   const isDetailed = interaction.options.getBoolean("detailed");
   const dm = interaction.options.getBoolean("dm") ? true : false;
@@ -54,7 +54,7 @@ export async function showGameHowToPlay(
           `    - If there is no longer a new card to draw, **shuffle the discard pile** and start drawing from there.`,
           `- The game **ends** when **one of the player's ${statDetails.HP.emoji} HP reaches 0.**`,
         ].join("\n"),
-      },
+      }
     );
   }
 
