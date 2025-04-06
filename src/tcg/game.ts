@@ -78,12 +78,12 @@ export default class Game {
       );
     }
 
+    // damage calculation
+    let actualDamage = 0;
     if (this.additionalMetadata.attackMissed[attackProps.attackerIndex]) {
       this.messageCache.push(`# ${attacker.name} missed!`, TCGThread.Gameroom);
-      this.additionalMetadata.attackMissed[attackProps.attackerIndex] = false;
-      return 0;
     } else {
-      const actualDamage = this.calculateDamage(
+      actualDamage = this.calculateDamage(
         attackProps.damage *
           this.additionalMetadata.attackModifier[attackProps.attackerIndex],
         attacker.stats.stats.ATK,
@@ -111,23 +111,25 @@ export default class Game {
           return actualDamage;
         }
       }
+    }
 
-      // there should only be 1 counter trigger per attack step
-      // essentially, if attacker not countered this attack step, perform the counter
-      if (
-        !this.additionalMetadata.attackCountered[attackProps.attackerIndex] &&
-        defender.ability.abilityCounterEffect
-      ) {
-        this.additionalMetadata.attackCountered[attackProps.attackerIndex] =
-          true; // countered
-        defender.ability.abilityCounterEffect(
-          this,
-          1 - attackProps.attackerIndex,
-          this.messageCache,
-          attackProps.damage,
-        );
-      }
+    // there should only be 1 counter trigger per attack step
+    // essentially, if attacker not countered this attack step, perform the counter
+    if (
+      !this.additionalMetadata.attackCountered[attackProps.attackerIndex] &&
+      defender.ability.abilityCounterEffect
+    ) {
+      this.additionalMetadata.attackCountered[attackProps.attackerIndex] = true; // countered
+      defender.ability.abilityCounterEffect(
+        this,
+        1 - attackProps.attackerIndex,
+        this.messageCache,
+        attackProps.damage,
+      );
+    }
 
+    // if attack didn't miss
+    if (!this.additionalMetadata.attackMissed[attackProps.attackerIndex]) {
       if (attackProps.isTimedEffectAttack) {
         if (attacker.ability.abilityAfterTimedAttackEffect) {
           attacker.ability.abilityAfterTimedAttackEffect(
@@ -145,13 +147,13 @@ export default class Game {
           );
         }
       }
-
-      // reset counter step before return
-      this.additionalMetadata.attackCountered[attackProps.attackerIndex] =
-        false;
-
-      return actualDamage;
     }
+
+    // reset metadata
+    this.additionalMetadata.attackMissed[attackProps.attackerIndex] = false;
+    this.additionalMetadata.attackCountered[attackProps.attackerIndex] = false;
+
+    return actualDamage;
   }
 
   // check to see which character should move first

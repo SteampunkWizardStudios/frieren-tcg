@@ -67,7 +67,6 @@ export const Stille = new CharacterData({
       if (roll < spdDiff) {
         messageCache.push("## Stille evaded the attack!", TCGThread.Gameroom);
         game.additionalMetadata.attackMissed[1 - characterIndex] = true;
-        character.additionalMetadata.stilleCounter = true;
       } else {
         messageCache.push(
           "## Stille failed to evade the attack!",
@@ -82,10 +81,9 @@ export const Stille = new CharacterData({
       messageCache: MessageCache,
       attackDamage,
     ) => {
-      const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
 
-      if (character.additionalMetadata.stilleCounter) {
+      if (game.additionalMetadata.attackMissed[1 - characterIndex]) {
         messageCache.push(
           "## The Stille's high speed escape reflected the opponent's damage!",
           TCGThread.Gameroom,
@@ -95,8 +93,6 @@ export const Stille = new CharacterData({
           damage: (opponent.stats.stats.ATK + attackDamage) / 2,
           isTimedEffectAttack: false,
         });
-
-        character.additionalMetadata.stilleCounter = false;
       }
     },
   },
@@ -105,6 +101,5 @@ export const Stille = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: false,
     manaSuppressed: false,
-    stilleCounter: false,
   },
 });
