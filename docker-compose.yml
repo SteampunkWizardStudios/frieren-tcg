@@ -2,8 +2,6 @@ version: "3.8"
 services:
   postgres:
     image: postgres:latest
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -16,6 +14,8 @@ services:
       timeout: 2s
       retries: 20
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
 
   app:
     build: .
