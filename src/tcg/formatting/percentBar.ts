@@ -61,7 +61,7 @@ export class ProgressBarBuilder {
   }
 
   public setValue(value: number) {
-    this.value = value;
+    this.value = value < 0 ? 0 : value;
     return this;
   }
 
