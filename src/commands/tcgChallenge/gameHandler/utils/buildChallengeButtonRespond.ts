@@ -54,7 +54,7 @@ export const buildChallengeButtonRespond = async (
         inline: true,
       },
       {
-        name: "Reveal Draw",
+        name: "Reveal Active Cards",
         value: gameSettings.revealDraw ? "Yes" : "No",
         inline: true,
       }
