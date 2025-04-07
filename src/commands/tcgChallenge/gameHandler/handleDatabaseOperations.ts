@@ -9,7 +9,7 @@ import { getRank } from "./rankScoresToRankTitleMapping";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { createMatch } from "@src/util/db/createMatch";
 
-const BASE_RANKED_PONT_GAIN = 20;
+const BASE_RANKED_POINT_GAIN = 20;
 
 export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
   winner: User;
@@ -98,9 +98,10 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             const winnerRank = getRank(winnerLadderRank.rankPoints);
             const loserRank = getRank(loserLadderRank.rankPoints);
 
+            const rankDiff = loserRank.rankLevel - winnerRank.rankLevel;
+            const cappedRankDiff = Math.min(1, Math.max(-2, rankDiff));
             const winnerScoreGain =
-              BASE_RANKED_PONT_GAIN *
-              2 ** (loserRank.rankLevel - winnerRank.rankLevel);
+              BASE_RANKED_POINT_GAIN * 2 ** cappedRankDiff;
             const loserScoreLoss =
               loserRank.rankLevel >= 3 ? winnerScoreGain / 2 : 0;
 
@@ -118,7 +119,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
               {
                 name: `Loser: ${loser.username}`,
                 value: `Rank Points: ${loserNewPoints} (-**${loserScoreLoss}**) ${loserNewRank.rankLevel < loserRank.rankLevel ? `(Rank Down... New Rank: **${loserNewRank.rankTitle}**)` : ""}`,
-              },
+              }
             );
 
             // update ladder rank
@@ -183,12 +184,12 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
               let errors = [];
               if (!winnerCharacterMastery) {
                 errors.push(
-                  `Failed to find or create winner character mastery for player ${winner.id} and character ${winnerCharacter}`,
+                  `Failed to find or create winner character mastery for player ${winner.id} and character ${winnerCharacter}`
                 );
               }
               if (!loserCharacterMastery) {
                 errors.push(
-                  `Failed to find or create loser character mastery for player ${winner.id} and character ${loserCharacter}`,
+                  `Failed to find or create loser character mastery for player ${winner.id} and character ${loserCharacter}`
                 );
               }
               throw new Error(errors.join(";"));
@@ -197,12 +198,12 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             let errors = [];
             if (!winnerLadderRank) {
               errors.push(
-                `Failed to find or create winner ladder rank for player ${winner.id} and ladderReset ${currLadderReset.id}`,
+                `Failed to find or create winner ladder rank for player ${winner.id} and ladderReset ${currLadderReset.id}`
               );
             }
             if (!loserLadderRank) {
               errors.push(
-                `Failed to find or create loser ladder rank for player ${winner.id} and ladderReset ${currLadderReset.id}`,
+                `Failed to find or create loser ladder rank for player ${winner.id} and ladderReset ${currLadderReset.id}`
               );
             }
             throw new Error(errors.join(";"));
@@ -212,22 +213,22 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
         let errors = [];
         if (!winnerDbObject) {
           errors.push(
-            `Failed to find or create winning player ${winner.id} in database`,
+            `Failed to find or create winning player ${winner.id} in database`
           );
         }
         if (!winnerCharacterDbObject) {
           errors.push(
-            `Failed to find winning character ${winnerCharacter} in database`,
+            `Failed to find winning character ${winnerCharacter} in database`
           );
         }
         if (!loserDbObject) {
           errors.push(
-            `Failed to find or create losing player ${loser.id} in database`,
+            `Failed to find or create losing player ${loser.id} in database`
           );
         }
         if (!loserCharacterDbObject) {
           errors.push(
-            `Failed to find losing character ${loserCharacter} in database`,
+            `Failed to find losing character ${loserCharacter} in database`
           );
         }
         throw new Error(errors.join(";"));

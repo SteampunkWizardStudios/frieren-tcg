@@ -16,7 +16,7 @@ export type CardProps = {
   cardAction: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
   priority?: number;
   empowerLevel?: number;
@@ -35,7 +35,7 @@ export default class Card implements CardProps {
   cardAction: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
   empowerLevel: number;
   priority: number;
@@ -57,7 +57,7 @@ export default class Card implements CardProps {
 
   getDescription(): string {
     const empoweredEffects: string[] = this.effects.map((effect) =>
-      this.calculateEffectValue(effect).toFixed(2),
+      this.calculateEffectValue(effect).toFixed(2)
     );
     return this.description(empoweredEffects);
   }
@@ -68,7 +68,7 @@ export default class Card implements CardProps {
 
   calculateEffectValue(effect: number) {
     return Number(
-      (effect * (1 + this.empowerLevel * this.EMPOWER_BOOST)).toFixed(2),
+      (effect * (1 + this.empowerLevel * this.EMPOWER_BOOST)).toFixed(2)
     );
   }
 

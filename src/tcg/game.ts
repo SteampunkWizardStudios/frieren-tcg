@@ -21,6 +21,11 @@ export default class Game {
         0: false,
         1: false,
       },
+      // whether a character's attack was already countered
+      attackCountered: {
+        0: false,
+        1: false,
+      },
       attackModifier: {
         0: 1,
         1: 1,
@@ -60,32 +65,33 @@ export default class Game {
       attacker.ability.abilityAttackEffect(
         this,
         attackProps.attackerIndex,
-        this.messageCache,
+        this.messageCache
       );
     }
+    // counter attacks should not be under defend effect
     if (defender.ability.abilityDefendEffect) {
       defender.ability.abilityDefendEffect(
         this,
         1 - attackProps.attackerIndex,
         this.messageCache,
-        attackProps.damage,
+        attackProps.damage
       );
     }
 
+    // damage calculation
+    let actualDamage = 0;
     if (this.additionalMetadata.attackMissed[attackProps.attackerIndex]) {
       this.messageCache.push(`# ${attacker.name} missed!`, TCGThread.Gameroom);
-      this.additionalMetadata.attackMissed[attackProps.attackerIndex] = false;
-      return 0;
     } else {
-      const actualDamage = this.calculateDamage(
+      actualDamage = this.calculateDamage(
         attackProps.damage *
           this.additionalMetadata.attackModifier[attackProps.attackerIndex],
         attacker.stats.stats.ATK,
-        defender.stats.stats.DEF,
+        defender.stats.stats.DEF
       );
 
       const defenderRemainingHp = Number(
-        (defender.stats.stats.HP - actualDamage).toFixed(2),
+        (defender.stats.stats.HP - actualDamage).toFixed(2)
       );
       defender.stats.stats.HP = defenderRemainingHp;
       const hpLeft: string = defender.additionalMetadata.manaSuppressed
@@ -93,32 +99,43 @@ export default class Game {
         : `${defender.name} has ${defender.stats.stats.HP} left!`;
       this.messageCache.push(
         `# ${attacker.cosmetic.emoji} ${attacker.name} attacks ${defender.cosmetic.emoji} ${defender.name} for ${actualDamage.toFixed(2)} damage! ${hpLeft}`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
 
-      // early game over check
+      // early exit if opponent's already defeated
+      // to prevent counter ability from firing off in defeat
       if (defenderRemainingHp <= 0) {
-        this.checkGameOver();
-        if (this.gameOver) {
+        if (
+          this.checkCharacterDefeated(defender, 1 - attackProps.attackerIndex)
+        ) {
           return actualDamage;
         }
       }
+    }
 
-      if (defender.ability.abilityCounterEffect) {
-        defender.ability.abilityCounterEffect(
-          this,
-          1 - attackProps.attackerIndex,
-          this.messageCache,
-          attackProps.damage,
-        );
-      }
+    // there should only be 1 counter trigger per attack step
+    // essentially, if attacker not countered this attack step, perform the counter
+    if (
+      !this.additionalMetadata.attackCountered[attackProps.attackerIndex] &&
+      defender.ability.abilityCounterEffect
+    ) {
+      this.additionalMetadata.attackCountered[attackProps.attackerIndex] = true; // countered
+      defender.ability.abilityCounterEffect(
+        this,
+        1 - attackProps.attackerIndex,
+        this.messageCache,
+        attackProps.damage
+      );
+    }
 
+    // if attack didn't miss
+    if (!this.additionalMetadata.attackMissed[attackProps.attackerIndex]) {
       if (attackProps.isTimedEffectAttack) {
         if (attacker.ability.abilityAfterTimedAttackEffect) {
           attacker.ability.abilityAfterTimedAttackEffect(
             this,
             attackProps.attackerIndex,
-            this.messageCache,
+            this.messageCache
           );
         }
       } else {
@@ -126,13 +143,17 @@ export default class Game {
           attacker.ability.abilityAfterDirectAttackEffect(
             this,
             attackProps.attackerIndex,
-            this.messageCache,
+            this.messageCache
           );
         }
       }
-
-      return actualDamage;
     }
+
+    // reset metadata
+    this.additionalMetadata.attackMissed[attackProps.attackerIndex] = false;
+    this.additionalMetadata.attackCountered[attackProps.attackerIndex] = false;
+
+    return actualDamage;
   }
 
   // check to see which character should move first
@@ -177,23 +198,10 @@ export default class Game {
     let losingIndex = 0;
     this.characters.forEach((character, index) => {
       if (!this.gameOver) {
-        let characterDefeated = false;
-
-        if (
-          character.stats.stats.HP <= 0 &&
-          character.name !== CharacterName.Denken
-        ) {
-          characterDefeated = true;
-        }
-
-        if (this.additionalMetadata.forfeited[index]) {
-          characterDefeated = true;
-        }
-
-        if (characterDefeated) {
+        if (this.checkCharacterDefeated(character, index)) {
           this.messageCache.push(
             `# ${character.name} has been defeated!`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           this.gameOver = true;
 
@@ -206,10 +214,30 @@ export default class Game {
     return losingIndex;
   }
 
+  private checkCharacterDefeated(
+    character: Character,
+    characterIndex: number
+  ): boolean {
+    let characterDefeated = false;
+
+    if (
+      character.stats.stats.HP <= 0 &&
+      character.name !== CharacterName.Denken
+    ) {
+      characterDefeated = true;
+    }
+
+    if (this.additionalMetadata.forfeited[characterIndex]) {
+      characterDefeated = true;
+    }
+
+    return characterDefeated;
+  }
+
   private calculateDamage(
     moveDamage: number,
     attackerAttack: number,
-    defenderDefense: number,
+    defenderDefense: number
   ) {
     return Math.max(1, moveDamage + attackerAttack - defenderDefense);
   }

@@ -1,7 +1,7 @@
 import prismaClient from "../../../prisma/client";
 
 export const getLadderRanks = async (
-  props: { playerId: number; ladderResetId: number }[],
+  props: { playerId: number; ladderResetId: number }[]
 ): Promise<{ id: number; rankPoints: number }[]> => {
   return prismaClient.$transaction(async (tx) => {
     return await Promise.all(
@@ -24,7 +24,7 @@ export const getLadderRanks = async (
             rankPoints: true,
           },
         });
-      }),
+      })
     );
   });
 };

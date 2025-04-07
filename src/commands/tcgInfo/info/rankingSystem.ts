@@ -2,14 +2,14 @@ import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { sendInfoMessage } from "./util/sendInfoMessage";
 
 export async function showRankingSystem(
-  interaction: ChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction
 ) {
   const dm = interaction.options.getBoolean("dm") ? true : false;
 
   const embed = new EmbedBuilder()
     .setTitle("Frieren TCG - Ranking System")
     .setDescription(
-      "Ranking System. Do `/tcg-stat personal` to view your personal stat, and `/tcg-stat global` for serverwide stats!",
+      "Ranking System. Do `/tcg-stat personal` to view your personal stat, and `/tcg-stat global` for serverwide stats!"
     )
     .setColor(0xc5c3cc)
     .setTimestamp()
@@ -19,9 +19,9 @@ export async function showRankingSystem(
         value: [
           `When you challenge another player while setting Ranked to True, the match will count towards your ranking.`,
           `Currently, there are 3 Ranked ladders available, for 3 different game modes:`,
-          `- **Classic**: Turn Duration=45s, RevealHands=False, RevealDraws=False`,
-          `- **Blitz**: Turn Duration=10s, RevealHands=False, RevealDraws=False`,
-          `- **Slow**: Turn Duration=2m, RevealHands=True, RevealDraws=True`,
+          `- **Classic**: Turn Duration=45s, RevealHands=False, RevealActiveCards=False`,
+          `- **Blitz**: Turn Duration=10s, RevealHands=False, RevealActiveCards=False`,
+          `- **Slow**: Turn Duration=2m, RevealHands=True, RevealActiveCards=True`,
         ].join("\n"),
       },
       {
@@ -46,7 +46,7 @@ export async function showRankingSystem(
           `- **2nd-class Battle Mage**: 400 points`,
           `- **1st-class Battle Mage**: 500 points`,
         ].join("\n"),
-      },
+      }
     );
 
   sendInfoMessage(interaction, embed, [], dm);

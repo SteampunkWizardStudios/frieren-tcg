@@ -18,12 +18,12 @@ const a_peck = new Card({
     this: Card,
     game,
     characterIndex,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} pecked the opposition!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(-2, StatsEnum.SPD);
@@ -45,13 +45,13 @@ const a_ironFeather = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} sharpened ${character.cosmetic.pronouns.possessive} feathers!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(-3, StatsEnum.SPD);
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[1]),
@@ -69,13 +69,13 @@ const hide = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} hid ${character.cosmetic.pronouns.reflexive} and flew to safety!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(-3, StatsEnum.SPD);
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
   },
 });
@@ -89,14 +89,14 @@ const roost = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} landed on the ground.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(-5, StatsEnum.SPD);
     character.adjustStat(-3, StatsEnum.DEF);
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP,
+      StatsEnum.HP
     );
 
     character.timedEffects.push(
@@ -107,12 +107,12 @@ const roost = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} opened its wings.`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           character.adjustStat(3, StatsEnum.DEF);
           TCGThread.Gameroom;
         },
-      }),
+      })
     );
 
     character.timedEffects.push(
@@ -123,11 +123,11 @@ const roost = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} took flight again!`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           character.adjustStat(5, StatsEnum.SPD);
         },
-      }),
+      })
     );
   },
 });
@@ -143,7 +143,7 @@ const deflect = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} prepares to deflect an attack!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -157,7 +157,7 @@ const deflect = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -183,7 +183,7 @@ const flyAway = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-spd, StatsEnum.SPD);
         },
-      }),
+      })
     );
   },
 });
@@ -198,7 +198,7 @@ export const a_geisel = new Card({
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} called its fellow friends the Geisel for help!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     character.adjustStat(-20, StatsEnum.SPD);
@@ -217,7 +217,7 @@ export const a_geisel = new Card({
             isTimedEffectAttack: true,
           });
         },
-      }),
+      })
     );
   },
 });

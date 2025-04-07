@@ -9,45 +9,45 @@ export type Ability = {
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
-    card: Card,
+    card: Card
   ) => void;
   abilityAttackEffect?: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
   abilityDefendEffect?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
-    attackDamage: number,
+    attackDamage: number
   ) => void;
   abilityCounterEffect?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
-    attackDamage: number,
+    attackDamage: number
   ) => void;
   abilityAfterDirectAttackEffect?: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
   abilityAfterTimedAttackEffect?: (
     game: Game,
     characterIndex: number,
-    messageCache: MessageCache,
+    messageCache: MessageCache
   ) => void;
   abilityStartOfTurnEffect?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
-    additionalParam?: Record<any, any>,
+    additionalParam?: Record<any, any>
   ) => void;
   abilityEndOfTurnEffect?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
-    additionalParam?: Record<any, any>,
+    additionalParam?: Record<any, any>
   ) => void;
 };

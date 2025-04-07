@@ -40,13 +40,13 @@ export const Himmel = new CharacterData({
       this,
       game,
       characterIndex,
-      _messageCache,
+      _messageCache
     ) {
       const character = game.characters[characterIndex];
       character.setStat(
         character.timedEffects.length,
         StatsEnum.Ability,
-        false,
+        false
       );
     },
     abilityAttackEffect(game, characterIndex, _messageCache) {

@@ -8,7 +8,7 @@ export default class DefaultCards {
   static readonly discardCard: Card = new Card({
     title: "Discard",
     description: () =>
-      "Discards all cards in your current draws. Draw the same number of cards you discarded. Empower all cards in your hand afterwards.",
+      "Discards all of your current active cards. Draw the same number of cards you discarded. Empower all cards in your hand afterwards.",
     effects: [],
     emoji: CardEmoji.RECYCLE,
     printEmpower: false,
@@ -16,7 +16,7 @@ export default class DefaultCards {
       const character = game.getCharacter(characterIndex);
 
       const handsIndicesDescending = Object.keys(
-        game.additionalMetadata.currentDraws[characterIndex],
+        game.additionalMetadata.currentDraws[characterIndex]
       )
         .map((stringIndex: string) => parseInt(stringIndex))
         .filter((a) => a < 6)
@@ -29,7 +29,7 @@ export default class DefaultCards {
       character.empowerHand();
       messageCache.push(
         `All cards in ${character.name}'s hand are empowered!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     },
   });
@@ -45,7 +45,7 @@ export default class DefaultCards {
       character.empowerHand();
       messageCache.push(
         `${character.name} waited it out! All cards in ${character.name}'s hand are empowered!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
       character.adjustStat(10, StatsEnum.HP);
     },
@@ -61,7 +61,7 @@ export default class DefaultCards {
       const character = game.getCharacter(characterIndex);
       messageCache.push(
         `${character.name} forfeited the game!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
       game.additionalMetadata.forfeited[characterIndex] = true;
     },

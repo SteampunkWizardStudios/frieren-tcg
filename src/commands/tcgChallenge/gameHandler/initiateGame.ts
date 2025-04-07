@@ -20,11 +20,11 @@ export const initiateGame = async (
   opponent: User,
   gameSettings: GameSettings,
   ranked: boolean,
-  gameMode?: GameMode,
+  gameMode?: GameMode
 ) => {
   try {
     const channel = (await interaction.client.channels.fetch(
-      interaction.channelId,
+      interaction.channelId
     )) as TextChannel;
 
     if (channel) {
@@ -58,7 +58,7 @@ export const initiateGame = async (
         gameThread,
         challengerThread,
         opponentThread,
-        gameSettings,
+        gameSettings
       );
 
       // thread cleanup
@@ -75,7 +75,7 @@ export const initiateGame = async (
       let resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
         .setTitle(
-          `Frieren TCG - Results: ${challenger.username} vs ${opponent.username}`,
+          `Frieren TCG - Results: ${challenger.username} vs ${opponent.username}`
         )
         .setFooter({
           text: `Game ID: ${gameId}`,
@@ -93,11 +93,11 @@ export const initiateGame = async (
               ranked,
               gameMode,
               resultEmbed,
-            },
+            }
           );
         } catch (error) {
           console.error(
-            `Error in database operation calculation for Winner UserID ${winner.id} vs Loser UserID ${loser.id}`,
+            `Error in database operation calculation for Winner UserID ${winner.id} vs Loser UserID ${loser.id}`
           );
           console.error(error); // just log and continue
         }
@@ -107,7 +107,7 @@ export const initiateGame = async (
         await channel.send({
           embeds: [
             resultEmbed.setDescription(
-              `Game over! ${winner} defeated ${loser}!`,
+              `Game over! ${winner} defeated ${loser}!`
             ),
           ],
           reply: { messageReference: gameId },

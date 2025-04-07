@@ -23,7 +23,7 @@ export const a_livingGrimoireOffensive = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} found an interesting magic.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const baseCard =
@@ -37,7 +37,7 @@ export const a_livingGrimoireOffensive = new Card({
 
     messageCache.push(
       `${character.name} used **${newCard.getTitle()}**.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     newCard.cardAction(game, characterIndex, messageCache);
   },
@@ -56,7 +56,7 @@ export const a_livingGrimoireUtility = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} found an interesting magic.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const baseCard =
@@ -68,7 +68,7 @@ export const a_livingGrimoireUtility = new Card({
 
     messageCache.push(
       `${character.name} used **${newCard.getTitle()}**.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     newCard.cardAction(game, characterIndex, messageCache);
   },
@@ -106,21 +106,21 @@ export const mock = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} mocked the opponent.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const opponent = game.getCharacter(1 - characterIndex);
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP,
+      StatsEnum.HP
     );
     opponent.adjustStat(
       -1 * this.calculateEffectValue(this.effects[1]),
-      StatsEnum.DEF,
+      StatsEnum.DEF
     );
     opponent.adjustStat(
       -1 * this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD,
+      StatsEnum.SPD
     );
   },
 });
@@ -140,7 +140,7 @@ export const basicDefensiveMagic = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} casted a basic defensive magic!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -154,7 +154,7 @@ export const basicDefensiveMagic = new Card({
         endOfTimedEffectAction: (_game, _characterIndex) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -173,7 +173,7 @@ export const unbreakableBarrier = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} deployed an unbreakable barrier.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     if (character.adjustStat(-10, StatsEnum.HP)) {
@@ -191,13 +191,14 @@ export const unbreakableBarrier = new Card({
           name: "Unbreakable Barrier",
           description: `ATK+${atkBuff}. DEF+${defBuff}, Opponent's SPD -${spdDebuff} for 5 turns.`,
           turnDuration: 5,
+          priority: -1,
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
             character.adjustStat(-1 * atkBuff, StatsEnum.ATK);
             character.adjustStat(-1 * defBuff, StatsEnum.DEF);
             opponent.adjustStat(spdDebuff, StatsEnum.SPD);
           },
-        }),
+        })
       );
     }
   },
@@ -217,7 +218,7 @@ export const ancientBarrierMagic = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} expanded an ancient barrier magic.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     if (character.adjustStat(-20, StatsEnum.HP)) {
@@ -235,6 +236,7 @@ export const ancientBarrierMagic = new Card({
           name: "Ancient Barrier Magic",
           description: `An ominous barrier envelopes the battlefield...`,
           turnDuration: 7,
+          priority: -1,
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
 
@@ -242,7 +244,7 @@ export const ancientBarrierMagic = new Card({
             opponent.adjustStat(defDebuff, StatsEnum.DEF);
             opponent.adjustStat(spdDebuff, StatsEnum.SPD);
           },
-        }),
+        })
       );
     }
   },

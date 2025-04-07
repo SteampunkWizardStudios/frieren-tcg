@@ -39,7 +39,7 @@ export class StatAction implements CardAction {
   execute(onCharacter: Character) {
     onCharacter.setStat(
       onCharacter.stats.stats[this.stat] + this.amount,
-      this.stat,
+      this.stat
     );
   }
 }

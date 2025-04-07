@@ -8,17 +8,17 @@ import { TCGThread } from "./sendGameMessage";
 export const printGameState = (
   game: Game,
   messageCache: MessageCache,
-  obfuscateInformation: boolean = true,
+  obfuscateInformation: boolean = true
 ) => {
   game.characters.forEach((character: Character) => {
     messageCache.push(
       printCharacter(character, obfuscateInformation),
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     if (character.skipTurn) {
       messageCache.push(
         `## ${character.name} skips this turn!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     }
   });

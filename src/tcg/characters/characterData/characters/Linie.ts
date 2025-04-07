@@ -44,7 +44,7 @@ export const Linie = new CharacterData({
     abilityEndOfTurnEffect: (
       game,
       characterIndex,
-      messageCache: MessageCache,
+      messageCache: MessageCache
     ) => {
       const character = game.getCharacter(characterIndex);
       if (

@@ -41,7 +41,7 @@ export const getRank = (score: number): Rank => {
       return rankScoresToRankTitleMapping[flooredScore];
     } else {
       throw new Error(
-        `Invalid score ${score} with floored score ${flooredScore}`,
+        `Invalid score ${score} with floored score ${flooredScore}`
       );
     }
   }

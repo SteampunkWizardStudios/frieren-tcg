@@ -3,7 +3,7 @@ import { ChatInputCommandInteraction, MessageFlags, User } from "discord.js";
 export const handleOpponent = async (
   interaction: ChatInputCommandInteraction,
   challenger: User,
-  opponent: User | null,
+  opponent: User | null
 ): Promise<boolean> => {
   if (!opponent) {
     await interaction.editReply({

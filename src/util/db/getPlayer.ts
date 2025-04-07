@@ -1,7 +1,7 @@
 import prismaClient from "../../../prisma/client";
 
 export const getOrCreatePlayers = async (
-  discordIds: string[],
+  discordIds: string[]
 ): Promise<{ id: number; discordId: string }[]> => {
   return prismaClient.$transaction(async (tx) => {
     return await Promise.all(
@@ -15,7 +15,7 @@ export const getOrCreatePlayers = async (
             discordId: discordId,
           },
         });
-      }),
+      })
     );
   });
 };

@@ -20,7 +20,7 @@ export const buildChallengeButtonRespond = async (
   opponent: User,
   gameSettings: GameSettings,
   ranked: boolean,
-  gameMode?: GameMode,
+  gameMode?: GameMode
 ) => {
   const acceptButton = new ButtonBuilder()
     .setCustomId(ACCEPT_BUTTON_ID)
@@ -34,13 +34,13 @@ export const buildChallengeButtonRespond = async (
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     acceptButton,
-    declineButton,
+    declineButton
   );
 
   const embed = new EmbedBuilder()
     .setTitle(`Frieren TCG - ${ranked ? "Ranked " : ""}Challenge Request`)
     .setDescription(
-      `${opponent}, ${challenger} has challenged you to a ${ranked ? "**Ranked** " : ""}TCG duel`,
+      `${opponent}, ${challenger} has challenged you to a ${ranked ? "**Ranked** " : ""}TCG duel`
     )
     .addFields(
       {
@@ -54,10 +54,10 @@ export const buildChallengeButtonRespond = async (
         inline: true,
       },
       {
-        name: "Reveal Draw",
+        name: "Reveal Active Cards",
         value: gameSettings.revealDraw ? "Yes" : "No",
         inline: true,
-      },
+      }
     )
     .setColor(0xc5c3cc)
     .setTimestamp();
@@ -75,7 +75,7 @@ export const buildChallengeButtonRespond = async (
       filter: (i) => {
         if (i.user.id !== opponent.id) {
           const invalidUserEmbed = EmbedBuilder.from(embed).setDescription(
-            "You are not the opponent of this challenge request.",
+            "You are not the opponent of this challenge request."
           );
           i.reply({
             embeds: [invalidUserEmbed],
@@ -91,7 +91,7 @@ export const buildChallengeButtonRespond = async (
     collector.on("collect", async (buttonInteraction: ButtonInteraction) => {
       if (buttonInteraction.customId === ACCEPT_BUTTON_ID) {
         const challengeAcceptedEmbed = EmbedBuilder.from(embed).setDescription(
-          `Challenge accepted by ${opponent}! Setting up game...`,
+          `Challenge accepted by ${opponent}! Setting up game...`
         );
         await buttonInteraction.update({
           embeds: [challengeAcceptedEmbed],
@@ -106,11 +106,11 @@ export const buildChallengeButtonRespond = async (
           opponent,
           gameSettings,
           ranked,
-          gameMode,
+          gameMode
         );
       } else if (buttonInteraction.customId === DECLINE_BUTTON_ID) {
         const challengeDeclinedEmbed = EmbedBuilder.from(embed).setDescription(
-          `Challenge declined by ${interaction.user}!`,
+          `Challenge declined by ${interaction.user}!`
         );
 
         return await buttonInteraction.update({
@@ -124,7 +124,7 @@ export const buildChallengeButtonRespond = async (
     collector.on("end", async (collected) => {
       if (collected.size === 0) {
         const timeoutEmbed = EmbedBuilder.from(embed).setDescription(
-          `Challenge request expired. ${opponent} did not respond in time.`,
+          `Challenge request expired. ${opponent} did not respond in time.`
         );
 
         await interaction.editReply({

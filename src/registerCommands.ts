@@ -5,7 +5,7 @@ export const registerCommands = async (
   token: string,
   clientId: string,
   commands: Record<string, Command<CommandInteraction>>,
-  guildId?: string,
+  guildId?: string
 ) => {
   const rest = new REST({ version: "10" }).setToken(token);
 
@@ -25,7 +25,7 @@ export const registerCommands = async (
 export const deregisterAllCommands = async (
   rest: REST,
   clientId: string,
-  guildId?: string,
+  guildId?: string
 ) => {
   if (guildId) {
     await rest.put(Routes.applicationGuildCommands(clientId, guildId), {

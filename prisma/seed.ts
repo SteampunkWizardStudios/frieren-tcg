@@ -14,8 +14,8 @@ async function main() {
       Object.values(GameMode).map((name) =>
         tx.ladder.create({
           data: { name },
-        }),
-      ),
+        })
+      )
     );
 
     await tx.ladderReset.createMany({

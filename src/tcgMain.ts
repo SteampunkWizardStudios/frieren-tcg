@@ -29,7 +29,7 @@ export const tcgMain = async (
   gameThread: PublicThreadChannel<false>,
   challengerThread: PrivateThreadChannel,
   opponentThread: ThreadChannel<false>,
-  gameSettings: GameSettings,
+  gameSettings: GameSettings
 ): Promise<{
   winner?: User;
   winnerCharacter?: CharacterName;
@@ -54,11 +54,11 @@ export const tcgMain = async (
   // game start - ask for character selection
   const challengerCharacterResponsePromise = getPlayerCharacter(
     challenger,
-    challengerThread,
+    challengerThread
   );
   const opponentCharacterResponsePromise = getPlayerCharacter(
     opponent,
-    opponentThread,
+    opponentThread
   );
   const [challengerCharacter, opponentCharacter] = await Promise.all([
     challengerCharacterResponsePromise,
@@ -93,7 +93,7 @@ export const tcgMain = async (
         characterThread: TCGThread.OpponentThread,
       }),
     ],
-    messageCache,
+    messageCache
   );
   game.gameStart();
 
@@ -109,7 +109,7 @@ export const tcgMain = async (
       character.ability.abilityStartOfTurnEffect?.(
         game,
         characterIndex,
-        messageCache,
+        messageCache
       );
     });
     printGameState(game, messageCache);
@@ -118,7 +118,7 @@ export const tcgMain = async (
       game.gameOver = true;
       messageCache.push(
         `## 50 Turn Limit Reached - Game Over!`,
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     }
 
@@ -126,7 +126,7 @@ export const tcgMain = async (
       messageCache.flush(TCGThread.Gameroom),
       TCGThread.Gameroom,
       threadsMapping,
-      1000,
+      1000
     );
 
     if (game.turnCount === TURN_LIMIT) {
@@ -156,22 +156,22 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          1000,
+          1000
         );
 
         if (character.skipTurn) {
           messageCache.push(
             `## ${character.name} skips this turn!`,
-            useChannel,
+            useChannel
           );
           character.empowerHand();
           messageCache.push(
             `All cards in ${character.name}'s hand are empowered!`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           messageCache.push(
             `All cards in ${character.name}'s hand are empowered!`,
-            useChannel,
+            useChannel
           );
         } else {
           character.printHand(useChannel);
@@ -186,20 +186,20 @@ export const tcgMain = async (
             messageCache.flush(useChannel),
             useChannel,
             threadsMapping,
-            1000,
+            1000
           );
 
-          messageCache.push(`## ${character.name}'s Draws:`, useChannel);
+          messageCache.push(`## ${character.name}'s Active Cards:`, useChannel);
           await sendToThread(
             messageCache.flush(useChannel),
             useChannel,
             threadsMapping,
-            1000,
+            1000
           );
 
           let draws: string[] = [];
           // let vpollOptionsList = "";
-          const optionsCount = Object.keys(currUsableCards).length;
+          // const optionsCount = Object.keys(currUsableCards).length;
 
           Object.keys(currUsableCards).forEach((key: string) => {
             const currCard = currUsableCards[key];
@@ -226,9 +226,9 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          1000,
+          1000
         );
-      }),
+      })
     );
 
     // reveal hand and draw if set
@@ -238,18 +238,18 @@ export const tcgMain = async (
           [characterToDetailsString[index].hand],
           TCGThread.Gameroom,
           threadsMapping,
-          100,
+          100
         );
       }
       if (gameSettings.revealDraw) {
         await sendToThread(
           [
-            `## ${character.name}'s Draws: `,
+            `## ${character.name}'s Active Cards: `,
             characterToDetailsString[index].draw,
           ],
           TCGThread.Gameroom,
           threadsMapping,
-          100,
+          100
         );
       }
     }
@@ -262,14 +262,14 @@ export const tcgMain = async (
       challengerThread,
       game.characters[0],
       characterToPlayableMoveMap[0],
-      gameSettings.turnDurationSeconds,
+      gameSettings.turnDurationSeconds
     );
     const opponentSelectedMovePromise = playSelectedMove(
       opponent,
       opponentThread,
       game.characters[1],
       characterToPlayableMoveMap[1],
-      gameSettings.turnDurationSeconds,
+      gameSettings.turnDurationSeconds
     );
     const [challengerSelectedMove, opponentSelectedMove] = await Promise.all([
       challengerSelectedMovePromise,
@@ -290,7 +290,7 @@ export const tcgMain = async (
 
     messageCache.push(
       `## ================================`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     moveOrder.forEach(async (characterIndex: number) => {
       if (!game.gameOver) {
@@ -299,12 +299,12 @@ export const tcgMain = async (
           const character = game.getCharacter(characterIndex);
           messageCache.push(
             `## ${character.cosmetic.emoji} ${character.name} (${characterIndex === 0 ? `${challenger.username}` : `${opponent.username}`}) used **${card.emoji} ${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[⠀](${card.cosmetic?.cardImageUrl})` : "!"}`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           if (card.cosmetic?.cardGif) {
             messageCache.push(
               `[⠀](${card.cosmetic?.cardGif})`,
-              TCGThread.Gameroom,
+              TCGThread.Gameroom
             );
           }
           card.cardAction?.(game, characterIndex, messageCache);
@@ -313,7 +313,7 @@ export const tcgMain = async (
               game,
               characterIndex,
               messageCache,
-              card,
+              card
             );
           }
         }
@@ -352,7 +352,7 @@ export const tcgMain = async (
       };
       messageCache.push(
         "# Both side foreited! The game ended in a draw!",
-        TCGThread.Gameroom,
+        TCGThread.Gameroom
       );
     }
 
@@ -360,7 +360,7 @@ export const tcgMain = async (
     // gather timed effects
     messageCache.push(
       `## ================================`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     let priorityToTimedEffect: Record<
       number,
@@ -375,7 +375,7 @@ export const tcgMain = async (
           priorityToTimedEffect[timedEffect.priority][characterIndex] = [];
         }
         priorityToTimedEffect[timedEffect.priority][characterIndex].push(
-          timedEffect,
+          timedEffect
         );
       });
     });
@@ -425,7 +425,7 @@ export const tcgMain = async (
         character.ability.abilityEndOfTurnEffect?.(
           game,
           characterIndex,
-          messageCache,
+          messageCache
         );
 
         const losingCharacterIndex = game.checkGameOver();
@@ -456,7 +456,7 @@ export const tcgMain = async (
         messageCache.flush(TCGThread.Gameroom),
         TCGThread.Gameroom,
         threadsMapping,
-        1000,
+        1000
       );
     }
   }

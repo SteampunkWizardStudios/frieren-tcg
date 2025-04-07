@@ -17,7 +17,7 @@ export const a_hairWhip = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} whipped ${character.cosmetic.pronouns.possessive} hair!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const defIncrease = this.calculateEffectValue(this.effects[0]);
@@ -38,13 +38,13 @@ export const harden = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} toughened ${character.cosmetic.pronouns.possessive} hair defense!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     if (character.adjustStat(-2, StatsEnum.HP)) {
       character.adjustStat(
         this.calculateEffectValue(this.effects[0]),
-        StatsEnum.DEF,
+        StatsEnum.DEF
       );
     }
   },
@@ -61,7 +61,7 @@ export const rest = new Card({
     character.adjustStat(-2, StatsEnum.DEF);
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP,
+      StatsEnum.HP
     );
   },
 });
@@ -77,7 +77,7 @@ export const a_pierce = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
       `${character.name} pierced the opponent!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -102,7 +102,7 @@ const hairBarrier = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} surrounded ${character.cosmetic.pronouns.reflexive} in ${character.cosmetic.pronouns.possessive} hair barrier!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
@@ -116,7 +116,7 @@ const hairBarrier = new Card({
         endOfTimedEffectAction: (_game, _characterIndex) => {
           character.adjustStat(-1 * def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -133,7 +133,7 @@ export const teaTime = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
       `${character.name} enjoyed a cup of tea.`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const atkBuff = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(atkBuff, StatsEnum.ATK);
@@ -157,7 +157,7 @@ export const teaParty = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
       `${character.name} held a tea party!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const atkBuff = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(atkBuff, StatsEnum.ATK);
@@ -180,7 +180,7 @@ export const a_piercingDrill = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
       `${character.name} used a piercing drill!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
     const damage =
       this.calculateEffectValue(this.effects[0]) +

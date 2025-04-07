@@ -15,7 +15,7 @@ const a_shadowImpalement = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} dropped a shadow nail!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
@@ -33,7 +33,7 @@ const camouflage = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} camouflaged ${character.cosmetic.pronouns.reflexive} in the shadow!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const atk = this.calculateEffectValue(this.effects[0]);
@@ -48,12 +48,12 @@ const camouflage = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} came out of ${character.cosmetic.pronouns.possessive} camouflage!`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           character.adjustStat(-atk, StatsEnum.ATK);
           character.adjustStat(-def, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -67,7 +67,7 @@ export const a_dragonfire = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} breath forth a purple stream of flame!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);

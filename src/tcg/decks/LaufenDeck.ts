@@ -16,7 +16,7 @@ const a_staffStrike = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} struck with ${character.cosmetic.pronouns.possessive} staff!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
@@ -38,7 +38,7 @@ const a_staffBash = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} bashed ${character.cosmetic.pronouns.possessive} staff!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
@@ -60,7 +60,7 @@ export const a_whip = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} turned ${character.cosmetic.pronouns.possessive} staff into a whip!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const speed = this.calculateEffectValue(this.effects[0]);
@@ -82,7 +82,7 @@ export const hide = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} hid behind coverings!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
@@ -99,12 +99,12 @@ export const hide = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-1 * spdIncreaseTemp, StatsEnum.SPD);
         },
-      }),
+      })
     );
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[2]),
-      StatsEnum.HP,
+      StatsEnum.HP
     );
   },
 });
@@ -118,7 +118,7 @@ export const a_supersonicStrike = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} struck at supersonic speed!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
@@ -156,7 +156,7 @@ const quickDodge = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-1 * spdIncreaseTemp, StatsEnum.SPD);
         },
-      }),
+      })
     );
   },
 });
@@ -172,7 +172,7 @@ const parry = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} switched to a parrying stance!`,
-      TCGThread.Gameroom,
+      TCGThread.Gameroom
     );
 
     const defIncrease = this.calculateEffectValue(this.effects[0]);
@@ -187,7 +187,7 @@ const parry = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-1 * defIncrease, StatsEnum.DEF);
         },
-      }),
+      })
     );
   },
 });
@@ -214,18 +214,18 @@ export const jilwer = new Card({
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} tires ${character.cosmetic.pronouns.reflexive} out.`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           character.adjustStat(-10, StatsEnum.HP);
         },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} exits ${character.cosmetic.pronouns.possessive} Jilwer state.`,
-            TCGThread.Gameroom,
+            TCGThread.Gameroom
           );
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
         },
-      }),
+      })
     );
   },
 });
