@@ -99,7 +99,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             const loserRank = getRank(loserLadderRank.rankPoints);
 
             const rankDiff = loserRank.rankLevel - winnerRank.rankLevel;
-            const cappedRankDiff = rankDiff >= 2 ? 2 : rankDiff;
+            const cappedRankDiff = Math.min(2, Math.max(-2, rankDiff));
             const winnerScoreGain =
               BASE_RANKED_POINT_GAIN * 2 ** cappedRankDiff;
             const loserScoreLoss =
