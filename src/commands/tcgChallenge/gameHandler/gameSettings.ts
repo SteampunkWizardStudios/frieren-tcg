@@ -32,7 +32,7 @@ export const GAME_SETTINGS: Record<GameMode, GameSettings> = {
     turnDurationSeconds: 120,
     revealHand: true,
     revealDraw: true,
-    optionName: "Slow - 2m Turn Duration. Hands and Draws revealed",
+    optionName: "Slow - 2m Turn Duration. Hands and Active Cards revealed",
     allowedOption: true,
   },
 };

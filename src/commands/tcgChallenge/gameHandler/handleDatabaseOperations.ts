@@ -9,7 +9,7 @@ import { getRank } from "./rankScoresToRankTitleMapping";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { createMatch } from "@src/util/db/createMatch";
 
-const BASE_RANKED_PONT_GAIN = 20;
+const BASE_RANKED_POINT_GAIN = 20;
 
 export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
   winner: User;
@@ -98,9 +98,10 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             const winnerRank = getRank(winnerLadderRank.rankPoints);
             const loserRank = getRank(loserLadderRank.rankPoints);
 
+            const rankDiff = loserRank.rankLevel - winnerRank.rankLevel;
+            const cappedRankDiff = Math.min(1, Math.max(-2, rankDiff));
             const winnerScoreGain =
-              BASE_RANKED_PONT_GAIN *
-              2 ** (loserRank.rankLevel - winnerRank.rankLevel);
+              BASE_RANKED_POINT_GAIN * 2 ** cappedRankDiff;
             const loserScoreLoss =
               loserRank.rankLevel >= 3 ? winnerScoreGain / 2 : 0;
 

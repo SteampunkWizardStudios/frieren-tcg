@@ -19,9 +19,9 @@ export async function showRankingSystem(
         value: [
           `When you challenge another player while setting Ranked to True, the match will count towards your ranking.`,
           `Currently, there are 3 Ranked ladders available, for 3 different game modes:`,
-          `- **Classic**: Turn Duration=45s, RevealHands=False, RevealDraws=False`,
-          `- **Blitz**: Turn Duration=10s, RevealHands=False, RevealDraws=False`,
-          `- **Slow**: Turn Duration=2m, RevealHands=True, RevealDraws=True`,
+          `- **Classic**: Turn Duration=45s, RevealHands=False, RevealActiveCards=False`,
+          `- **Blitz**: Turn Duration=10s, RevealHands=False, RevealActiveCards=False`,
+          `- **Slow**: Turn Duration=2m, RevealHands=True, RevealActiveCards=True`,
         ].join("\n"),
       },
       {

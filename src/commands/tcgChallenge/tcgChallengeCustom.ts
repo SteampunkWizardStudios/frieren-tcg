@@ -32,8 +32,8 @@ export const command: Command<ChatInputCommandInteraction> = {
     )
     .addBooleanOption((option) =>
       option
-        .setName("reveal-draw")
-        .setDescription("Whether the player's draws are revealed.")
+        .setName("reveal-active-card")
+        .setDescription("Whether the player's active cards are revealed.")
         .setRequired(true)
     ),
 
@@ -42,7 +42,8 @@ export const command: Command<ChatInputCommandInteraction> = {
       const turnDurationSeconds =
         interaction.options.getInteger("turn-duration-seconds") ?? 45;
       const revealHand = interaction.options.getBoolean("reveal-hand") ?? false;
-      const revealDraw = interaction.options.getBoolean("reveal-draw") ?? false;
+      const revealDraw =
+        interaction.options.getBoolean("reveal-active-card") ?? false;
 
       initiateChallengeRequest({
         interaction,

@@ -189,7 +189,7 @@ export const tcgMain = async (
             1000
           );
 
-          messageCache.push(`## ${character.name}'s Draws:`, useChannel);
+          messageCache.push(`## ${character.name}'s Active Cards:`, useChannel);
           await sendToThread(
             messageCache.flush(useChannel),
             useChannel,
@@ -244,7 +244,7 @@ export const tcgMain = async (
       if (gameSettings.revealDraw) {
         await sendToThread(
           [
-            `## ${character.name}'s Draws: `,
+            `## ${character.name}'s Active Cards: `,
             characterToDetailsString[index].draw,
           ],
           TCGThread.Gameroom,
