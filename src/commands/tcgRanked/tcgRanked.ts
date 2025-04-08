@@ -3,10 +3,19 @@ import {
   ChatInputCommandInteraction,
   MessageFlags,
   InteractionContextType,
+  EmbedBuilder,
 } from "discord.js";
 import type { Command } from "../../types/command";
 import handlePlayerStats from "./rankedHandlers/playerStats";
-import { GAME_SETTINGS } from "../tcgChallenge/gameHandler/gameSettings";
+import {
+  GAME_SETTINGS,
+  GameMode,
+} from "../tcgChallenge/gameHandler/gameSettings";
+import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import {
+  getTop5PlayersInGamemode,
+  getTop5PlayersPerCharacter,
+} from "./rankedHandlers/globalStats";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -47,6 +56,18 @@ export const command: Command<ChatInputCommandInteraction> = {
                 }))
             )
         )
+        .addStringOption((option) =>
+          option
+            .setName("character")
+            .setDescription("Select the character to get stats for")
+            .setRequired(false)
+            .addChoices(
+              Object.entries(CHARACTER_LIST).map(([key, character]) => ({
+                name: character.name,
+                value: character.name.toLowerCase(),
+              }))
+            )
+        )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -61,6 +82,47 @@ export const command: Command<ChatInputCommandInteraction> = {
         case "player": {
           await handlePlayerStats(interaction);
         }
+        case "global":
+          const gamemode: GameMode =
+            (interaction.options.getString("gamemode") as GameMode) ??
+            GameMode.CLASSIC;
+
+          const character = interaction.options.getString("character");
+          if (character) {
+            const top = await getTop5PlayersPerCharacter(gamemode);
+            const topForCharacter = top[character];
+
+            const embed = new EmbedBuilder()
+              .setColor("Blurple")
+              .setTitle(`${gamemode} Ranked Top 5 Players for ${character}`)
+              .setDescription(
+                topForCharacter
+                  .map((player) => `${player.discordId}: ${player.rankPoints}`)
+                  .join("\n")
+              );
+
+            await interaction.editReply({
+              embeds: [embed],
+            });
+          } else {
+            const top = await getTop5PlayersInGamemode(gamemode);
+
+            const embed = new EmbedBuilder()
+              .setColor("Blurple")
+              .setTitle(`${gamemode} Ranked Top 5 Players`)
+              .setDescription(
+                top
+                  .map(
+                    (player) =>
+                      `${player.player.discordId}: ${player.rankPoints}`
+                  )
+                  .join("\n")
+              );
+
+            await interaction.editReply({
+              embeds: [embed],
+            });
+          }
       }
     } catch (error) {
       console.log(error);

@@ -1,10 +1,11 @@
-import type { Player } from "@prisma/client";
 import prismaClient from "@prismaClient";
 import { GameMode } from "@src/commands/tcgChallenge/gameHandler/gameSettings";
+import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import { getOrCreateCharacters } from "@src/util/db/getCharacter";
 
-export async function getTop5PlayersInBracket(bracketName: GameMode) {
+export async function getTop5PlayersInGamemode(gamemode: GameMode) {
   const ladder = await prismaClient.ladder.findUnique({
-    where: { name: bracketName },
+    where: { name: gamemode },
     include: {
       resets: {
         orderBy: { startDate: "desc" },
@@ -14,7 +15,7 @@ export async function getTop5PlayersInBracket(bracketName: GameMode) {
   });
 
   if (!ladder || ladder.resets.length === 0) {
-    throw new Error(`No ladder or resets found for bracket: ${bracketName}`);
+    throw new Error(`No ladder or resets found for gamemode: ${gamemode}`);
   }
 
   const latestResetId = ladder.resets[0].id;
@@ -31,9 +32,9 @@ export async function getTop5PlayersInBracket(bracketName: GameMode) {
   return top5;
 }
 
-export async function getTop5PlayersPerCharacter(bracketName: GameMode) {
+export async function getTop5PlayersPerCharacter(gamemode: GameMode) {
   const ladder = await prismaClient.ladder.findUnique({
-    where: { name: bracketName },
+    where: { name: gamemode },
     include: {
       resets: {
         orderBy: { startDate: "desc" },
@@ -43,22 +44,28 @@ export async function getTop5PlayersPerCharacter(bracketName: GameMode) {
   });
 
   if (!ladder || ladder.resets.length === 0) {
-    throw new Error(`No ladder or resets found for bracket: ${bracketName}`);
+    throw new Error(`No ladder or resets found for gamemode: ${gamemode}`);
   }
 
   const latestResetId = ladder.resets[0].id;
 
-  const characters = await prismaClient.character.findMany();
+  const characters = CHARACTER_LIST;
 
   const result: Record<string, PlayerStats[]> = {};
 
   for (const character of characters) {
+    const [characterDbObject] = await getOrCreateCharacters([character.name]);
+    if (!characterDbObject) {
+      console.log(`Character ${character.name} not found in database`);
+      continue;
+    }
+
     const matches = await prismaClient.match.findMany({
       where: {
         ladderResetId: latestResetId,
         OR: [
-          { winnerCharacterId: character.id },
-          { loserCharacterId: character.id },
+          { winnerCharacterId: characterDbObject.id },
+          { loserCharacterId: characterDbObject.id },
         ],
       },
       select: {
