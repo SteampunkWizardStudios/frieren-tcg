@@ -114,11 +114,11 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             resultEmbed.addFields(
               {
                 name: `Winner: ${winner.displayName}`,
-                value: `Rank Points: ${winnerNewPoints} (+**${winnerScoreGain}**) ${winnerNewRank.rankLevel > winnerRank.rankLevel ? `(Rank Up! New Rank: **${winnerNewRank.rankTitle}**)` : ""}`,
+                value: `Rank Points: ${winnerNewPoints} (${winnerScoreGain > 0 ? `+**${winnerScoreGain}**` : "Unchanged"}) ${winnerNewRank.rankLevel > winnerRank.rankLevel ? `(Rank Up! New Rank: **${winnerNewRank.rankTitle}**)` : ""}`,
               },
               {
                 name: `Loser: ${loser.displayName}`,
-                value: `Rank Points: ${loserNewPoints} (-**${loserScoreLoss}**) ${loserNewRank.rankLevel < loserRank.rankLevel ? `(Rank Down... New Rank: **${loserNewRank.rankTitle}**)` : ""}`,
+                value: `Rank Points: ${loserNewPoints} (${loserScoreLoss > 0 ? `-**${loserScoreLoss}**` : "Unchanged"}) ${loserNewRank.rankLevel < loserRank.rankLevel ? `(Rank Down... New Rank: **${loserNewRank.rankTitle}**)` : ""}`,
               }
             );
 
