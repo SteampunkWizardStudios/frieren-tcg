@@ -34,7 +34,7 @@ const sectionToFields: Record<
     },
     {
       name: "Empowerment Effect",
-      value: `Increases the **effect **of the card by (**empower level**)*10%.`,
+      value: `Increases the **effect** of the card by (**empower level**)*10%.`,
     },
     {
       name: "Damage Calculation",
@@ -92,7 +92,7 @@ export async function showGameAdvancedRules(
   const embed = new EmbedBuilder()
     .setTitle("Frieren TCG - Advanced Rules, Formulas and Edge Cases")
     .setDescription(
-      "Advanced Rules, Formulas and Edge Cases. Use `/tcp info how-to-play` instead for How to Play the game!"
+      "Advanced Rules, Formulas and Edge Cases. Use `/tcg info how-to-play` instead for How to Play the game!"
     )
     .setColor(0xc5c3cc)
     .setTimestamp()
