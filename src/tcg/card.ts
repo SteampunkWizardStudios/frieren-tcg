@@ -63,7 +63,7 @@ export default class Card implements CardProps {
   }
 
   getTitle(): string {
-    return `${this.title} + ${this.empowerLevel}`;
+    return `${this.title} + ${this.printEmpower ? this.empowerLevel: ""}`;
   }
 
   calculateEffectValue(effect: number) {
