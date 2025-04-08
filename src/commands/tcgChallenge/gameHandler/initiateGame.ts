@@ -29,7 +29,7 @@ export const initiateGame = async (
 
     if (channel) {
       const gameThread = (await channel.threads.create({
-        name: `${ranked ? "Ranked " : ""}TCG Game Thread: ${challenger.username} vs ${opponent.username} (ID: ${gameId})`,
+        name: `${ranked ? "Ranked " : ""}TCG Game Thread: ${challenger.displayName} vs ${opponent.displayName} (ID: ${gameId})`,
         autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
         type: ChannelType.PublicThread,
       })) as PublicThreadChannel<false>;
@@ -37,14 +37,14 @@ export const initiateGame = async (
       await gameThread.members.add(opponent.id);
 
       const challengerThread = (await channel.threads.create({
-        name: `TCG Move Select: ${challenger.username}'s Move Selection Thread (ID: ${gameId})`,
+        name: `TCG Move Select: ${challenger.displayName}'s Move Selection Thread (ID: ${gameId})`,
         autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
         type: ChannelType.PrivateThread,
       })) as PrivateThreadChannel;
       await challengerThread.members.add(challenger.id);
 
       const opponentThread = (await channel.threads.create({
-        name: `TCG Move Select: ${opponent.username}'s Move Selection Thread (ID: ${gameId})`,
+        name: `TCG Move Select: ${opponent.displayName}'s Move Selection Thread (ID: ${gameId})`,
         autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
         type: gameSettings.publicChallengedThread
           ? ChannelType.PublicThread
@@ -75,7 +75,7 @@ export const initiateGame = async (
       let resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
         .setTitle(
-          `Frieren TCG - Results: ${challenger.username} vs ${opponent.username}`
+          `Frieren TCG - Results: ${challenger.displayName} vs ${opponent.displayName}`
         )
         .setFooter({
           text: `Game ID: ${gameId}`,

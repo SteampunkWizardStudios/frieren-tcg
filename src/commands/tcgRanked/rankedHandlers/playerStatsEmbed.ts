@@ -53,7 +53,7 @@ export default async function playerStatsEmbed(
 
   const embed = new EmbedBuilder()
     .setColor("Blurple")
-    .setTitle(`${user.username}'s ranked stats`)
+    .setTitle(`${user.displayName}'s ranked stats`)
     .addFields({
       name: "Ladder Ranks:",
       value: ladderRankFields
