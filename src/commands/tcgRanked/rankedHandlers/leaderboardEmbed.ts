@@ -26,10 +26,9 @@ export default async function leaderboardEmbed(props: {
   const { idsToPoints, leaderboard, isCharacterLeaderboard } = props;
 
   // when isCharacterLeaderboard is true, leaderboard is a character name, otherwise it's the name of a ladder
-  const leaderboardTitle =
-    (isCharacterLeaderboard
-      ? `${characterNameToEmoji[leaderboard as CharacterName]}`
-      : `${leaderboard} Ranked`) + "Global Leaderboard";
+  const leaderboardTitle = isCharacterLeaderboard
+    ? characterNameToEmoji[leaderboard as CharacterName]
+    : leaderboard + "Ranked Global Leaderboard";
 
   const userLines = idsToPoints.map((idtoPoint, index) => {
     const { id, points } = idtoPoint;
