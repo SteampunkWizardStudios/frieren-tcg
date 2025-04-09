@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, MessageFlags, User } from "discord.js";
+import { ChatInputCommandInteraction, User } from "discord.js";
 
 export const handleOpponent = async (
   interaction: ChatInputCommandInteraction,
@@ -6,10 +6,7 @@ export const handleOpponent = async (
   opponent: User | null
 ): Promise<boolean> => {
   if (!opponent) {
-    await interaction.editReply({
-      content: "Please specify an opponent to challenge.",
-    });
-    return false;
+    return true;
   }
 
   if (opponent.bot) {
