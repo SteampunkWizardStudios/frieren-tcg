@@ -1,114 +1,69 @@
 import prismaClient from "@prismaClient";
 import { GameMode } from "@src/commands/tcgChallenge/gameHandler/gameSettings";
-import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
-import { getOrCreateCharacters } from "@src/util/db/getCharacter";
+import { getLatestLadderReset } from "@src/util/db/getLatestLadderReset";
+import { ChatInputCommandInteraction } from "discord.js";
+import { Prisma } from "@prisma/client";
+import { capitalizeFirstLetter } from "@src/util/utils";
+import leaderboardEmbed from "./leaderboardEmbed";
 
-export async function getTop5PlayersInGamemode(gamemode: GameMode) {
-  const ladder = await prismaClient.ladder.findUnique({
-    where: { name: gamemode },
-    include: {
-      resets: {
-        orderBy: { startDate: "desc" },
-        take: 1,
-      },
-    },
-  });
+export type LadderRankWithPlayer = Prisma.LadderRankGetPayload<{
+  include: { player: true };
+}>;
 
-  if (!ladder || ladder.resets.length === 0) {
-    throw new Error(`No ladder or resets found for gamemode: ${gamemode}`);
-  }
+const getTopNPlayersInGamemode = async function (
+  gamemode: GameMode,
+  count: number
+): Promise<LadderRankWithPlayer[] | null> {
+  const currLadderReset = await getLatestLadderReset({ gamemode });
 
-  const latestResetId = ladder.resets[0].id;
-
-  const top5 = await prismaClient.ladderRank.findMany({
-    where: { ladderResetId: latestResetId },
-    orderBy: { rankPoints: "desc" },
-    take: 5,
-    include: {
-      player: true,
-    },
-  });
-
-  return top5;
-}
-
-export async function getTop5PlayersPerCharacter(gamemode: GameMode) {
-  const ladder = await prismaClient.ladder.findUnique({
-    where: { name: gamemode },
-    include: {
-      resets: {
-        orderBy: { startDate: "desc" },
-        take: 1,
-      },
-    },
-  });
-
-  if (!ladder || ladder.resets.length === 0) {
-    throw new Error(`No ladder or resets found for gamemode: ${gamemode}`);
-  }
-
-  const latestResetId = ladder.resets[0].id;
-
-  const characters = CHARACTER_LIST;
-
-  const result: Record<string, PlayerStats[]> = {};
-
-  for (const character of characters) {
-    const [characterDbObject] = await getOrCreateCharacters([character.name]);
-    if (!characterDbObject) {
-      console.log(`Character ${character.name} not found in database`);
-      continue;
-    }
-
-    const matches = await prismaClient.match.findMany({
-      where: {
-        ladderResetId: latestResetId,
-        OR: [
-          { winnerCharacterId: characterDbObject.id },
-          { loserCharacterId: characterDbObject.id },
-        ],
-      },
-      select: {
-        winnerId: true,
-        loserId: true,
-      },
-    });
-
-    // Extract unique player IDs
-    const playerIds = Array.from(
-      new Set(matches.flatMap((m) => [m.winnerId, m.loserId]))
-    );
-
-    if (playerIds.length === 0) {
-      continue;
-    }
-
-    const topPlayers = await prismaClient.ladderRank.findMany({
-      where: {
-        ladderResetId: latestResetId,
-        playerId: { in: playerIds },
-      },
+  if (currLadderReset) {
+    const topN = await prismaClient.ladderRank.findMany({
+      where: { ladderResetId: currLadderReset.id },
+      orderBy: { rankPoints: "desc" },
+      take: count,
       include: {
         player: true,
       },
-      orderBy: {
-        rankPoints: "desc",
-      },
-      take: 5,
     });
 
-    result[character.name] = topPlayers.map((rank) => ({
-      playerId: rank.playerId,
-      discordId: rank.player.discordId,
-      rankPoints: rank.rankPoints,
-    }));
+    return topN;
+  } else {
+    return null;
   }
+};
 
-  return result;
-}
+export async function handleGlobalStats(
+  interaction: ChatInputCommandInteraction
+) {
+  const gamemode: GameMode =
+    (interaction.options.getString("gamemode") as GameMode) ?? GameMode.CLASSIC;
+  const top10 = await getTopNPlayersInGamemode(gamemode, 10);
 
-interface PlayerStats {
-  playerId: number;
-  discordId: string;
-  rankPoints: number;
+  if (top10) {
+    const userPromises = top10.map((playerObject) =>
+      interaction.client.users
+        .fetch(playerObject.player.discordId)
+        .then((user) => user?.displayName ?? "Unknown User")
+        .catch(() => "Unknown User")
+    );
+    const usernames = await Promise.all(userPromises);
+    const usernamePoints = usernames.map((username, index) => ({
+      username: username,
+      points: top10[index]?.rankPoints ?? 0,
+    }));
+
+    await interaction.editReply({
+      embeds: [
+        await leaderboardEmbed({
+          usernamePoints,
+          leaderboard: capitalizeFirstLetter(gamemode),
+          isCharacterLeaderboard: false,
+        }),
+      ],
+    });
+  } else {
+    await interaction.editReply({
+      content: "Failed to fetch Global Leaderboard.",
+    });
+  }
 }
