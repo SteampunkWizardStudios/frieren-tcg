@@ -8,9 +8,9 @@ const rankEmotes: Record<number, String> = {
   3: "🥉",
 };
 
-function getRankString(rank: number, username: string): string {
+function getRankString(rank: number, id: string): string {
   const hasRankEmotes = rank in rankEmotes;
-  let rankString = `${hasRankEmotes ? `${rankEmotes[rank]} ` : ""}${rank}. ${username}`;
+  let rankString = `${hasRankEmotes ? `${rankEmotes[rank]} ` : ""}${rank}. <@${id}>`;
   if (hasRankEmotes) {
     return "**" + rankString + "**";
   } else {
@@ -19,17 +19,17 @@ function getRankString(rank: number, username: string): string {
 }
 
 export default async function leaderboardEmbed(props: {
-  usernamePoints: { username: string; points: number }[];
+  idsToPoints: { id: string; points: number }[];
   leaderboard: string;
   isCharacterLeaderboard: boolean;
 }): Promise<EmbedBuilder> {
-  const { usernamePoints, leaderboard, isCharacterLeaderboard } = props;
+  const { idsToPoints, leaderboard, isCharacterLeaderboard } = props;
 
-  const leaderboardTitle = `${isCharacterLeaderboard ? `${characterNameToEmoji[leaderboard as CharacterName]} ` : ""}${leaderboard} Ranked Global Leaderboard`;
-  const userLines = usernamePoints.map((usernamePoint, index) => {
-    const { username, points } = usernamePoint;
+  const leaderboardTitle = `${isCharacterLeaderboard ? `${characterNameToEmoji[leaderboard as CharacterName]} ` : ""}${leaderboard} Global Leaderboard`;
+  const userLines = idsToPoints.map((idtoPoint, index) => {
+    const { id, points } = idtoPoint;
     const rank = index + 1;
-    return `${getRankString(rank, username)}: ${points} pts`;
+    return `${getRankString(rank, id)}: ${points} pts`;
   });
 
   return new EmbedBuilder()

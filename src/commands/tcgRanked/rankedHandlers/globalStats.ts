@@ -40,22 +40,16 @@ export async function handleGlobalStats(
   const top10 = await getTopNPlayersInGamemode(gamemode, 10);
 
   if (top10) {
-    const userPromises = top10.map((playerObject) =>
-      interaction.client.users
-        .fetch(playerObject.player.discordId)
-        .then((user) => user?.displayName ?? "Unknown User")
-        .catch(() => "Unknown User")
-    );
-    const usernames = await Promise.all(userPromises);
-    const usernamePoints = usernames.map((username, index) => ({
-      username: username,
-      points: top10[index]?.rankPoints ?? 0,
-    }));
+
+	const idsToPoints = top10.map(({player, rankPoints}) => ({
+	  id: player.discordId,
+	  points: rankPoints,
+	}));
 
     await interaction.editReply({
       embeds: [
         await leaderboardEmbed({
-          usernamePoints,
+			idsToPoints,
           leaderboard: capitalizeFirstLetter(gamemode),
           isCharacterLeaderboard: false,
         }),
