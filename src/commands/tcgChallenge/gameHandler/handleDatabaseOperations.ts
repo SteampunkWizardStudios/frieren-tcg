@@ -94,8 +94,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             loserRank.rankLevel >= 3 ? winnerScoreGain / 2 : 0;
 
           // update embed
-          const winnerNewPoints =
-            winnerLadderRank.rankPoints + winnerScoreGain;
+          const winnerNewPoints = winnerLadderRank.rankPoints + winnerScoreGain;
           const loserNewPoints = loserLadderRank.rankPoints - loserScoreLoss;
           const winnerNewRank = getRank(winnerNewPoints);
           const loserNewRank = getRank(loserNewPoints);
