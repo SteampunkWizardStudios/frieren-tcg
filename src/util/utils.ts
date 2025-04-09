@@ -3,6 +3,10 @@ export const createCountdownTimestamp = (timeLimit: number): string => {
   return `<t:${timeLimitSeconds}:R>`;
 };
 
+export const capitalizeFirstLetter = (inp: string): string => {
+  return inp.charAt(0).toUpperCase() + inp.slice(1);
+};
+
 export const generateCustomRandomString = (
   maxLength: number,
   options: {
