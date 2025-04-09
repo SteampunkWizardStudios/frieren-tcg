@@ -63,13 +63,6 @@ export const command: Command<ChatInputCommandInteraction> = {
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
-	// TODO: Permission check
-	await interaction.reply({
-	  content: "This command is not available yet.",
-	  flags: MessageFlags.Ephemeral,
-	});
-	return;
-
     const subcommand = interaction.options.getSubcommand();
 
     try {
