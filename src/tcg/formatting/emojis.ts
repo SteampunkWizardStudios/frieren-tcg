@@ -1,3 +1,4 @@
+import { CharacterName } from "../characters/metadata/CharacterName";
 import { StatsEnum } from "../stats";
 
 type StatInfo = {
@@ -36,6 +37,19 @@ export enum CharacterEmoji {
 
   SEIN_SERIE = "🤝",
 }
+
+export const characterNameToEmoji: Record<CharacterName, CharacterEmoji> = {
+  Frieren: CharacterEmoji.FRIEREN,
+  Sense: CharacterEmoji.SENSE,
+  Serie: CharacterEmoji.SERIE,
+  Stille: CharacterEmoji.STILLE,
+  Linie: CharacterEmoji.LINIE,
+  Sein: CharacterEmoji.SEIN,
+  Stark: CharacterEmoji.STARK,
+  Laufen: CharacterEmoji.LAUFEN,
+  Denken: CharacterEmoji.DENKEN,
+  Himmel: CharacterEmoji.HIMMEL,
+};
 
 export enum CardEmoji {
   HEART = "<:heartCard:1347328439627284560>",
