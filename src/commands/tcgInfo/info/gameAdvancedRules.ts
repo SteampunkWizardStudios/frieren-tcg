@@ -34,7 +34,7 @@ const sectionToFields: Record<
     },
     {
       name: "Empowerment Effect",
-      value: `Increases the **effect **of the card by (**empower level**)*10%.`,
+      value: `Increases the **effect** of the card by (**empower level**)*10%.`,
     },
     {
       name: "Damage Calculation",

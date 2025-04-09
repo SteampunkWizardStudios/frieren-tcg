@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, GatewayIntentBits, Events } from "discord.js";
 import "dotenv/config";
 import * as path from "path";
 import { loadCommands } from "./loadCommands";
@@ -24,7 +24,7 @@ async function main() {
     await setupInteractions(client, commands);
 
     // Log in
-    client.on("ready", () => {
+    client.on(Events.ClientReady, () => {
       console.log(`Logged in as ${client.user?.tag}!`);
     });
     await client.login(token);
