@@ -40,16 +40,15 @@ export async function handleGlobalStats(
   const top10 = await getTopNPlayersInGamemode(gamemode, 10);
 
   if (top10) {
-
-	const idsToPoints = top10.map(({player, rankPoints}) => ({
-	  id: player.discordId,
-	  points: rankPoints,
-	}));
+    const idsToPoints = top10.map(({ player, rankPoints }) => ({
+      id: player.discordId,
+      points: rankPoints,
+    }));
 
     await interaction.editReply({
       embeds: [
         await leaderboardEmbed({
-			idsToPoints,
+          idsToPoints,
           leaderboard: capitalizeFirstLetter(gamemode),
           isCharacterLeaderboard: false,
         }),
