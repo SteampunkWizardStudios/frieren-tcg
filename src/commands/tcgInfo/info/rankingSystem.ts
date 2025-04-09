@@ -9,7 +9,7 @@ export async function showRankingSystem(
   const embed = new EmbedBuilder()
     .setTitle("Frieren TCG - Ranking System")
     .setDescription(
-      "Ranking System. Do `/tcg-stat personal` to view your personal stat, and `/tcg-stat global` for serverwide stats!"
+      "Ranking System. Do `/tcg-stat player` to view your personal stat, and `/tcg-stat global` for serverwide stats!"
     )
     .setColor(0xc5c3cc)
     .setTimestamp()

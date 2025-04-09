@@ -20,11 +20,14 @@ export default async function playerStatsEmbed(
         ladderRank.rankPoints
       );
       const totalPlayers = await getTotalPlayers(ladderRank.ladderReset.id);
-      const rank = getRank(ladderRank.rankPoints).rankTitle;
-      const capitalizedRank = rank.charAt(0).toUpperCase() + rank.slice(1);
+
+      const ladderName = ladderRank.ladderReset.ladder.name;
+      const capitalizedLadderName =
+        ladderName.charAt(0).toUpperCase() + ladderName.slice(1);
+      const rankName = getRank(ladderRank.rankPoints).rankTitle;
 
       return {
-        name: `${ladderRank.ladderReset.ladder.name}: ${capitalizedRank}`,
+        name: `${capitalizedLadderName}: ${rankName}`,
         value: `**Points:** ${ladderRank.rankPoints} (#**${relativeRank}**/${totalPlayers})`,
       };
     })
@@ -50,7 +53,7 @@ export default async function playerStatsEmbed(
 
   const embed = new EmbedBuilder()
     .setColor("Blurple")
-    .setTitle(`${user.username}'s ranked stats`)
+    .setTitle(`${user.displayName}'s ranked stats`)
     .addFields({
       name: "Ladder Ranks:",
       value: ladderRankFields

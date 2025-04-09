@@ -94,18 +94,19 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             loserRank.rankLevel >= 3 ? winnerScoreGain / 2 : 0;
 
           // update embed
-          const winnerNewPoints = winnerLadderRank.rankPoints + winnerScoreGain;
+          const winnerNewPoints =
+            winnerLadderRank.rankPoints + winnerScoreGain;
           const loserNewPoints = loserLadderRank.rankPoints - loserScoreLoss;
           const winnerNewRank = getRank(winnerNewPoints);
           const loserNewRank = getRank(loserNewPoints);
           resultEmbed.addFields(
             {
-              name: `Winner: ${winner.username}`,
-              value: `Rank Points: ${winnerNewPoints} (+**${winnerScoreGain}**) ${winnerNewRank.rankLevel > winnerRank.rankLevel ? `(Rank Up! New Rank: **${winnerNewRank.rankTitle}**)` : ""}`,
+              name: `Winner: ${winner.displayName}`,
+              value: `Rank Points: ${winnerNewPoints} (${winnerScoreGain > 0 ? `+**${winnerScoreGain}**` : "Unchanged"}) ${winnerNewRank.rankLevel > winnerRank.rankLevel ? `(Rank Up! New Rank: **${winnerNewRank.rankTitle}**)` : ""}`,
             },
             {
-              name: `Loser: ${loser.username}`,
-              value: `Rank Points: ${loserNewPoints} (-**${loserScoreLoss}**) ${loserNewRank.rankLevel < loserRank.rankLevel ? `(Rank Down... New Rank: **${loserNewRank.rankTitle}**)` : ""}`,
+              name: `Loser: ${loser.displayName}`,
+              value: `Rank Points: ${loserNewPoints} (${loserScoreLoss > 0 ? `-**${loserScoreLoss}**` : "Unchanged"}) ${loserNewRank.rankLevel < loserRank.rankLevel ? `(Rank Down... New Rank: **${loserNewRank.rankTitle}**)` : ""}`,
             }
           );
 
