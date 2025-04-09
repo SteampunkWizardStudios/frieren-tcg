@@ -13,11 +13,12 @@ import { initiateGame } from "../initiateGame";
 
 const ACCEPT_BUTTON_ID = "tcg-accept";
 const DECLINE_BUTTON_ID = "tcg-decline";
+const CANCEL_OPEN_INVITE_BUTTON_ID = "tcg-open-invite-cancel";
 
 export const buildChallengeButtonRespond = async (
   interaction: ChatInputCommandInteraction,
   challenger: User,
-  opponent: User,
+  opponent: User | null,
   gameSettings: GameSettings,
   ranked: boolean,
   gameMode?: GameMode
@@ -27,21 +28,25 @@ export const buildChallengeButtonRespond = async (
     .setLabel("Accept")
     .setStyle(ButtonStyle.Success);
 
-  const declineButton = new ButtonBuilder()
-    .setCustomId(DECLINE_BUTTON_ID)
-    .setLabel("Decline")
-    .setStyle(ButtonStyle.Danger);
+  const declineButton = opponent
+    ? new ButtonBuilder()
+        .setCustomId(DECLINE_BUTTON_ID)
+        .setLabel("Decline")
+        .setStyle(ButtonStyle.Danger)
+    : new ButtonBuilder()
+        .setCustomId(CANCEL_OPEN_INVITE_BUTTON_ID)
+        .setLabel("Cancel")
+        .setStyle(ButtonStyle.Secondary);
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     acceptButton,
     declineButton
   );
 
+  const inviteType = opponent ? "Challenge Request" : "Open Invite";
+
   const embed = new EmbedBuilder()
-    .setTitle(`Frieren TCG - ${ranked ? "Ranked " : ""}Challenge Request`)
-    .setDescription(
-      `${opponent}, ${challenger} has challenged you to a ${ranked ? "**Ranked** " : ""}TCG duel`
-    )
+    .setTitle(`Frieren TCG - ${ranked ? "Ranked" : ""} ${inviteType}`)
     .addFields(
       {
         name: "Turn Duration",
@@ -62,6 +67,12 @@ export const buildChallengeButtonRespond = async (
     .setColor(0xc5c3cc)
     .setTimestamp();
 
+  const description = opponent
+    ? `${opponent}, ${challenger} has challenged you to a ${ranked ? "**Ranked**" : ""} TCG duel`
+    : `${challenger} has sent an open invite for a ${ranked ? "**Ranked**" : ""} TCG duel`;
+
+  embed.setDescription(description);
+
   await interaction.editReply({
     embeds: [embed],
     components: [row],
@@ -73,10 +84,23 @@ export const buildChallengeButtonRespond = async (
     const collector = response.createMessageComponentCollector({
       time: 120_000, // 2 minutes timeout
       filter: (i) => {
-        if (i.user.id !== opponent.id) {
+        if (opponent && i.user.id !== opponent.id) {
           const invalidUserEmbed = EmbedBuilder.from(embed).setDescription(
             "You are not the opponent of this challenge request."
           );
+          i.reply({
+            embeds: [invalidUserEmbed],
+            flags: MessageFlags.Ephemeral,
+          });
+          return false;
+        } else if (
+          i.customId === CANCEL_OPEN_INVITE_BUTTON_ID &&
+          i.user.id !== challenger.id
+        ) {
+          const invalidUserEmbed = EmbedBuilder.from(embed).setDescription(
+            "You are not the initiator of this open invite."
+          );
+
           i.reply({
             embeds: [invalidUserEmbed],
             flags: MessageFlags.Ephemeral,
@@ -90,9 +114,13 @@ export const buildChallengeButtonRespond = async (
     // handle button clicks
     collector.on("collect", async (buttonInteraction: ButtonInteraction) => {
       if (buttonInteraction.customId === ACCEPT_BUTTON_ID) {
-        const challengeAcceptedEmbed = EmbedBuilder.from(embed).setDescription(
-          `Challenge accepted by ${opponent}! Setting up game...`
-        );
+        const acceptMessage = opponent
+          ? `Challenge accepted by ${opponent}! Setting up the game...`
+          : `Open invite accepted by ${buttonInteraction.user}! Setting up the game...`;
+
+        const challengeAcceptedEmbed =
+          EmbedBuilder.from(embed).setDescription(acceptMessage);
+
         await buttonInteraction.update({
           embeds: [challengeAcceptedEmbed],
           components: [],
@@ -103,7 +131,7 @@ export const buildChallengeButtonRespond = async (
           interaction,
           response.id,
           challenger,
-          opponent,
+          opponent ?? buttonInteraction.user,
           gameSettings,
           ranked,
           gameMode
@@ -117,15 +145,28 @@ export const buildChallengeButtonRespond = async (
           embeds: [challengeDeclinedEmbed],
           components: [],
         });
+      } else if (buttonInteraction.customId === CANCEL_OPEN_INVITE_BUTTON_ID) {
+        const cancelMessage = `${challenger} has cancelled their open invite.`;
+
+        const cancelEmbed =
+          EmbedBuilder.from(embed).setDescription(cancelMessage);
+
+        return await buttonInteraction.update({
+          embeds: [cancelEmbed],
+          components: [],
+        });
       }
     });
 
     // Handle collector end (timeout)
     collector.on("end", async (collected) => {
       if (collected.size === 0) {
-        const timeoutEmbed = EmbedBuilder.from(embed).setDescription(
-          `Challenge request expired. ${opponent} did not respond in time.`
-        );
+        const timeoutMessage = opponent
+          ? `Challenge request expired. ${opponent} did not respond in time.`
+          : `Open invite expired. Nobody accepted the invite in time.`;
+
+        const timeoutEmbed =
+          EmbedBuilder.from(embed).setDescription(timeoutMessage);
 
         await interaction.editReply({
           embeds: [timeoutEmbed],
