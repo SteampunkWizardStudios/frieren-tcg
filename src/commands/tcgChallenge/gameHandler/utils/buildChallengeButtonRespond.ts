@@ -68,8 +68,8 @@ export const buildChallengeButtonRespond = async (
     .setTimestamp();
 
   const description = opponent
-    ? `${opponent}, ${challenger} has challenged you to a ${ranked ? "**Ranked**" : ""} TCG duel`
-    : `${challenger} has sent an open invite for a ${ranked ? "**Ranked**" : ""} TCG duel`;
+    ? `${opponent}, ${challenger} has challenged you to a${ranked ? "** Ranked **" : " "}TCG duel`
+    : `${challenger} has sent an open invite for a${ranked ? "** Ranked **" : " "}TCG duel`;
 
   embed.setDescription(description);
 
