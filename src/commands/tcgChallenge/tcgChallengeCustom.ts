@@ -12,12 +12,6 @@ export const command: Command<ChatInputCommandInteraction> = {
     .setName("tcg-custom-challenge")
     .setDescription("Challenge another user to a custom duel!")
     .setContexts([InteractionContextType.Guild])
-    .addUserOption((option) =>
-      option
-        .setName("opponent")
-        .setDescription("The user you want to challenge")
-        .setRequired(true)
-    )
     .addIntegerOption((option) =>
       option
         .setName("turn-duration-seconds")
@@ -35,6 +29,11 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setName("reveal-active-card")
         .setDescription("Whether the player's active cards are revealed.")
         .setRequired(true)
+    )
+    .addUserOption((option) =>
+      option
+        .setName("opponent")
+        .setDescription("The user you want to challenge")
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {

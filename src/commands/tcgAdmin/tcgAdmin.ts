@@ -82,7 +82,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       switch (subcommand) {
         case "grant-achievement":
           await interaction.deferReply({
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
 
           try {
@@ -98,7 +98,7 @@ export const command: Command<ChatInputCommandInteraction> = {
           }
         case "debug-progress-bar":
           await interaction.deferReply({
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
 
           const maxValue = interaction.options.getInteger("max_value");

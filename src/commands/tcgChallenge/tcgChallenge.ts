@@ -17,7 +17,6 @@ export const command: Command<ChatInputCommandInteraction> = {
       option
         .setName("opponent")
         .setDescription("The user you want to challenge")
-        .setRequired(true)
     )
     .addStringOption((option) =>
       option

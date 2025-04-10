@@ -21,7 +21,7 @@ export const printCharacter = (
     hpInfo = `${charStat.HP}/${character.initialStats.stats.HP} ${healthbar.barString}`;
   }
   const lines = [
-    `# ${character.name} (${character.characterUser.username}) [⠀](${character.cosmetic.imageUrl})`,
+    `# ${character.name} (${character.characterUser.displayName}) [⠀](${character.cosmetic.imageUrl})`,
     `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
     `- ${statDetails[StatsEnum.ATK].emoji} **ATK**: ${charStat.ATK}`,
     `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${charStat.DEF}`,

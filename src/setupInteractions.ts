@@ -1,12 +1,12 @@
-import { Client, CommandInteraction, MessageFlags } from "discord.js";
+import { Client, CommandInteraction, MessageFlags, Events } from "discord.js";
 import { Command } from "./types/command";
-import { Interaction } from "discord.js";
+
 export const setupInteractions = async (
   client: Client,
   commands: Record<string, Command<CommandInteraction>>
 ) => {
   // Set up command handling
-  client.on("interactionCreate", async (interaction) => {
+  client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.isChatInputCommand()) {
       const command = commands[interaction.commandName];
       if (!command) {

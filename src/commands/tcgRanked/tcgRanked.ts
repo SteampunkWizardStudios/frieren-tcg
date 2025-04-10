@@ -12,10 +12,8 @@ import {
   GameMode,
 } from "../tcgChallenge/gameHandler/gameSettings";
 import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
-import {
-  getTop5PlayersInGamemode,
-  getTop5PlayersPerCharacter,
-} from "./rankedHandlers/globalStats";
+import { handleGlobalStats } from "./rankedHandlers/globalStats";
+import { handleCharacterGlobalStats } from "./rankedHandlers/characterStats";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -38,8 +36,10 @@ export const command: Command<ChatInputCommandInteraction> = {
     )
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("global")
-        .setDescription("Get global ranked stats")
+        .setName("global-leaderboard")
+        .setDescription(
+          "Get the global Top 10 leaderboard for a certain gamemode."
+        )
         .addStringOption((option) =>
           option
             .setName("gamemode")
@@ -56,15 +56,22 @@ export const command: Command<ChatInputCommandInteraction> = {
                 }))
             )
         )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("character-leaderboard")
+        .setDescription(
+          "Get the character Top 10 leaderboard for a certain character."
+        )
         .addStringOption((option) =>
           option
             .setName("character")
-            .setDescription("Select the character to get stats for")
-            .setRequired(false)
+            .setDescription("Select the character to get stats for.")
+            .setRequired(true)
             .addChoices(
-              Object.entries(CHARACTER_LIST).map(([key, character]) => ({
+              Object.entries(CHARACTER_LIST).map(([_key, character]) => ({
                 name: character.name,
-                value: character.name.toLowerCase(),
+                value: character.name,
               }))
             )
         )
@@ -81,48 +88,21 @@ export const command: Command<ChatInputCommandInteraction> = {
       switch (subcommand) {
         case "player": {
           await handlePlayerStats(interaction);
+          break;
         }
-        case "global":
-          const gamemode: GameMode =
-            (interaction.options.getString("gamemode") as GameMode) ??
-            GameMode.CLASSIC;
-
-          const character = interaction.options.getString("character");
-          if (character) {
-            const top = await getTop5PlayersPerCharacter(gamemode);
-            const topForCharacter = top[character];
-
-            const embed = new EmbedBuilder()
-              .setColor("Blurple")
-              .setTitle(`${gamemode} Ranked Top 5 Players for ${character}`)
-              .setDescription(
-                topForCharacter
-                  .map((player) => `${player.discordId}: ${player.rankPoints}`)
-                  .join("\n")
-              );
-
-            await interaction.editReply({
-              embeds: [embed],
-            });
-          } else {
-            const top = await getTop5PlayersInGamemode(gamemode);
-
-            const embed = new EmbedBuilder()
-              .setColor("Blurple")
-              .setTitle(`${gamemode} Ranked Top 5 Players`)
-              .setDescription(
-                top
-                  .map(
-                    (player) =>
-                      `${player.player.discordId}: ${player.rankPoints}`
-                  )
-                  .join("\n")
-              );
-
-            await interaction.editReply({
-              embeds: [embed],
-            });
-          }
+        case "global-leaderboard": {
+          await handleGlobalStats(interaction);
+          break;
+        }
+        case "character-leaderboard": {
+          await handleCharacterGlobalStats(interaction);
+          break;
+        }
+        default:
+          await interaction.editReply({
+            content: "Invalid subcommand",
+          });
+          break;
       }
     } catch (error) {
       console.log(error);
