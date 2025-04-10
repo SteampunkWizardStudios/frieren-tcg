@@ -1,8 +1,8 @@
 import {
-  a_catastravia,
+  a_catastraviaBase,
   a_concentratedOffensiveMagicZoltraak,
-  a_daosdorg,
-  a_waldgose,
+  a_daosdorgBase,
+  a_waldgoseBase,
 } from "../DenkenDeck";
 import {
   a_judradjim,
@@ -53,10 +53,10 @@ export const serie_offensiveMagic = [
   a_hairWhip,
   a_pierce,
   a_piercingDrill,
-  a_waldgose,
-  a_daosdorg,
+  a_waldgoseBase,
+  a_daosdorgBase,
   a_concentratedOffensiveMagicZoltraak,
-  a_catastravia,
+  a_catastraviaBase,
 
   a_killingMagic,
 ];

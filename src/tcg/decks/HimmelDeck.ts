@@ -6,6 +6,7 @@ import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import Game from "../game";
+import { CharacterName } from "../characters/metadata/CharacterName";
 
 const a_FrierenStrikeTheirWeakpoint = new Card({
   title: "Frieren! Strike Their Weakpoint!",
@@ -15,10 +16,19 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
   effects: [7],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} called on help from Frieren!`,
-      TCGThread.Gameroom
-    );
+    const isHimmel = character.name === CharacterName.Himmel;
+    if (isHimmel) {
+      messageCache.push(
+        `${character.name} called on help from Frieren!`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(
+        `${character.name} targetted the opponent's weakpoint.`,
+        TCGThread.Gameroom
+      );
+    }
+
     const damage = this.calculateEffectValue(this.effects[0]);
 
     CommonCardAction.replaceOrAddNewTimedEffect(
@@ -26,13 +36,14 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
       characterIndex,
       "Frieren",
       new TimedEffect({
-        name: "Frieren: Weakpoint Analysis",
+        name: `${isHimmel ? "Frieren: " : "Mage: "}Weakpoint Analysis`,
         description: `Deal ${damage} at each turn's end.`,
         turnDuration: 2,
         tags: { Frieren: 1 },
         endOfTimedEffectAction: function (this, game, characterIndex) {
+          const otherCharacter = game.characters[characterIndex];
           messageCache.push(
-            "Frieren strikes the weakpoint!",
+            `${isHimmel ? "Frieren" : `${otherCharacter.name}`} strikes the weakpoint!`,
             TCGThread.Gameroom
           );
           CommonCardAction.commonAttack(game, characterIndex, {
@@ -56,10 +67,18 @@ const a_FrierenBackMeUp = new Card({
   effects: [3],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} called on help from Frieren!`,
-      TCGThread.Gameroom
-    );
+    const isHimmel = character.name === CharacterName.Himmel;
+    if (isHimmel) {
+      messageCache.push(
+        `${character.name} called on help from Frieren!`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(
+        `${character.name} unleashed a barrage of Zoltraak.`,
+        TCGThread.Gameroom
+      );
+    }
     const damage = this.calculateEffectValue(this.effects[0]);
 
     CommonCardAction.replaceOrAddNewTimedEffect(
@@ -67,13 +86,14 @@ const a_FrierenBackMeUp = new Card({
       characterIndex,
       "Frieren",
       new TimedEffect({
-        name: "Frieren: Backing Fire",
+        name: `${isHimmel ? "Frieren: " : "Mage: "}Backing Fire`,
         description: `Deal ${damage} at each turn's end.`,
         turnDuration: 3,
         tags: { Frieren: 1 },
         endOfTurnAction: function (this, game, characterIndex) {
+          const otherCharacter = game.characters[characterIndex];
           messageCache.push(
-            "Frieren provides supporting fire!",
+            `${isHimmel ? "Frieren" : `${otherCharacter.name}`} sends supporting fire!`,
             TCGThread.Gameroom
           );
           CommonCardAction.commonAttack(game, characterIndex, {
@@ -97,10 +117,15 @@ const a_EisenTheEnemysOpen = new Card({
   effects: [2, 10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} called on help from Eisen!`,
-      TCGThread.Gameroom
-    );
+    const isHimmel = character.name === CharacterName.Himmel;
+    if (isHimmel) {
+      messageCache.push(
+        `${character.name} called on help from Eisen!`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(`${character.name} winds up.`, TCGThread.Gameroom);
+    }
     const def = this.calculateEffectValue(this.effects[0]);
     const damage = this.calculateEffectValue(this.effects[1]);
     character.adjustStat(def, StatsEnum.DEF);
@@ -110,12 +135,16 @@ const a_EisenTheEnemysOpen = new Card({
       characterIndex,
       "Eisen",
       new TimedEffect({
-        name: "Eisen: Winding Up",
+        name: `${isHimmel ? "Eisen: " : "Warrior: "}Winding Up`,
         description: `DEF+${def}. Deal ${damage} at end of timed effect.`,
         turnDuration: 2,
         tags: { Eisen: 1 },
         endOfTimedEffectAction: function (this, game, characterIndex) {
-          messageCache.push("Eisen lands his attack!", TCGThread.Gameroom);
+          const otherCharacter = game.characters[characterIndex];
+          messageCache.push(
+            `${isHimmel ? "Eisen lands his attack!" : `${otherCharacter.name} lands ${otherCharacter.cosmetic.pronouns.possessive} attack!`}`,
+            TCGThread.Gameroom
+          );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage,
             hpCost: 0,
@@ -123,8 +152,12 @@ const a_EisenTheEnemysOpen = new Card({
           });
           character.adjustStat(-def, StatsEnum.DEF);
         },
-        replacedAction: function (this, _game, _characterIndex) {
-          messageCache.push("Eisen shifted his stance.", TCGThread.Gameroom);
+        replacedAction: function (this, _game, characterIndex) {
+          const otherCharacter = game.characters[characterIndex];
+          messageCache.push(
+            `${isHimmel ? "Eisen shifted his stance." : `${otherCharacter.name} shifted ${otherCharacter.cosmetic.pronouns.possessive} stance.`}`,
+            TCGThread.Gameroom
+          );
           character.adjustStat(-def, StatsEnum.DEF);
         },
       })
@@ -140,10 +173,18 @@ const a_EisenCoverMyBack = new Card({
   effects: [3, 5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} called on help from Eisen!`,
-      TCGThread.Gameroom
-    );
+    const isHimmel = character.name === CharacterName.Himmel;
+    if (isHimmel) {
+      messageCache.push(
+        `${character.name} called on help from Eisen!`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(
+        `${character.name} readies to counter.`,
+        TCGThread.Gameroom
+      );
+    }
     const def = this.calculateEffectValue(this.effects[0]);
     const counterDmg = this.calculateEffectValue(this.effects[1]);
     character.adjustStat(def, StatsEnum.DEF);
@@ -154,7 +195,11 @@ const a_EisenCoverMyBack = new Card({
       messageCache: MessageCache,
       _attackDamage
     ) => {
-      messageCache.push("Eisen counters the attack!", TCGThread.Gameroom);
+      const otherCharacter = game.characters[characterIndex];
+      messageCache.push(
+        `${isHimmel ? "Eisen" : `${otherCharacter.name}`} counters the attack!`,
+        TCGThread.Gameroom
+      );
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: counterDmg,
         hpCost: 0,
@@ -166,7 +211,11 @@ const a_EisenCoverMyBack = new Card({
       _characterIndex: number,
       messageCache: MessageCache
     ) {
-      messageCache.push("Eisen shifted his stance.", TCGThread.Gameroom);
+      const otherCharacter = game.characters[characterIndex];
+      messageCache.push(
+        `${isHimmel ? "Eisen shifted his stance." : `${otherCharacter.name} shifted ${otherCharacter.cosmetic.pronouns.possessive} stance.`}`,
+        TCGThread.Gameroom
+      );
       character.adjustStat(-def, StatsEnum.DEF);
       character.ability.abilityCounterEffect = undefined;
     };
@@ -176,7 +225,7 @@ const a_EisenCoverMyBack = new Card({
       characterIndex,
       "Eisen",
       new TimedEffect({
-        name: "Eisen: On the Lookout",
+        name: `${isHimmel ? "Eisen: " : "Warrior: "}On the Lookout`,
         description: `DEF+${def}. When an opponent attacks, counter for ${counterDmg} DMG`,
         turnDuration: 3,
         tags: { Eisen: 1 },
@@ -194,10 +243,18 @@ const eisenHoldTheLine = new Card({
   effects: [4],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} called on help from Eisen!`,
-      TCGThread.Gameroom
-    );
+    const isHimmel = character.name === CharacterName.Himmel;
+    if (isHimmel) {
+      messageCache.push(
+        `${character.name} called on help from Eisen!`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(
+        `${character.name} prepares to defend.`,
+        TCGThread.Gameroom
+      );
+    }
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
 
@@ -206,7 +263,11 @@ const eisenHoldTheLine = new Card({
       _characterIndex: number,
       messageCache: MessageCache
     ) {
-      messageCache.push("Eisen backed down.", TCGThread.Gameroom);
+      const otherCharacter = game.characters[characterIndex];
+      messageCache.push(
+        `${isHimmel ? "Eisen" : `${otherCharacter.name}`} backed down.`,
+        TCGThread.Gameroom
+      );
       character.adjustStat(-def, StatsEnum.DEF);
     };
 
@@ -215,7 +276,7 @@ const eisenHoldTheLine = new Card({
       characterIndex,
       "Eisen",
       new TimedEffect({
-        name: "Eisen: Hold the Line",
+        name: `${isHimmel ? "Eisen: " : "Warrior: "}Hold the Line`,
         description: `DEF+${def}.`,
         turnDuration: 5,
         tags: { Eisen: 1 },
@@ -234,10 +295,18 @@ const heiterEmergency = new Card({
   effects: [6],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} called on help from Heiter!`,
-      TCGThread.Gameroom
-    );
+    const isHimmel = character.name === CharacterName.Himmel;
+    if (isHimmel) {
+      messageCache.push(
+        `${character.name} called on help from Heiter!`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(
+        `${character.name} applies first-aid.`,
+        TCGThread.Gameroom
+      );
+    }
     const heal = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(heal, StatsEnum.HP);
 
@@ -246,12 +315,16 @@ const heiterEmergency = new Card({
       characterIndex,
       "Heiter",
       new TimedEffect({
-        name: "Heiter: First-Aid",
+        name: `${isHimmel ? "Heiter" : "Priest"}: First-Aid`,
         description: `Heal ${heal} at end of timed effect.`,
         turnDuration: 2,
         tags: { Heiter: 1 },
-        endOfTimedEffectAction: function (this, _game, _characterIndex) {
-          messageCache.push("Heiter provides first-aid!", TCGThread.Gameroom);
+        endOfTimedEffectAction: function (this, game, characterIndex) {
+          const otherCharacter = game.characters[characterIndex];
+          messageCache.push(
+            `${isHimmel ? "Heiter provides" : `${otherCharacter.name} applies`} first-aid!`,
+            TCGThread.Gameroom
+          );
           character.adjustStat(heal, StatsEnum.HP);
         },
       })
@@ -267,17 +340,25 @@ const a_heiterThreeSpears = new Card({
   effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} called on help from Heiter!`,
-      TCGThread.Gameroom
-    );
+    const isHimmel = character.name === CharacterName.Himmel;
+    if (isHimmel) {
+      messageCache.push(
+        `${character.name} called on help from Heiter!`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(
+        `${character.name} summons Three Spears of the Goddess!`,
+        TCGThread.Gameroom
+      );
+    }
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
       "Heiter",
       new TimedEffect({
-        name: "Heiter: Three Spears of the Goddess",
+        name: `${isHimmel ? "Heiter" : "Priest"}: Three Spears of the Goddess`,
         description: `Deal ${damage} at each turn's end.`,
         turnDuration: 3,
         tags: { Heiter: 1 },
@@ -305,10 +386,18 @@ const heiterTrustYou = new Card({
   effects: [4],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} called on help from Heiter!`,
-      TCGThread.Gameroom
-    );
+    const isHimmel = character.name === CharacterName.Himmel;
+    if (isHimmel) {
+      messageCache.push(
+        `${character.name} called on help from Heiter!`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(
+        `${character.name} used Awakening.`,
+        TCGThread.Gameroom
+      );
+    }
     const atkSpd = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(atkSpd, StatsEnum.ATK);
     character.adjustStat(atkSpd, StatsEnum.SPD);
@@ -318,20 +407,23 @@ const heiterTrustYou = new Card({
       characterIndex,
       "Heiter",
       new TimedEffect({
-        name: "Heiter: Awakening",
+        name: `${isHimmel ? "Heiter" : "Priest"}: Awakening`,
         description: `ATK+${atkSpd}. SPD+${atkSpd}.`,
         turnDuration: 5,
         tags: { Heiter: 1 },
         endOfTimedEffectAction: function (this, _game, _characterIndex) {
           messageCache.push(
-            "Heiter needs to take a breather.",
+            `${isHimmel ? "Heiter needs to take a breather." : "The goddess' aura fades."}`,
             TCGThread.Gameroom
           );
           character.adjustStat(-atkSpd, StatsEnum.ATK);
           character.adjustStat(-atkSpd, StatsEnum.SPD);
         },
         replacedAction: function (this, _game, _characterIndex) {
-          messageCache.push("Heiter halted his support.", TCGThread.Gameroom);
+          messageCache.push(
+            `${isHimmel ? "Heiter halted his support." : "The goddess' aura fades."}`,
+            TCGThread.Gameroom
+          );
           character.adjustStat(-atkSpd, StatsEnum.ATK);
           character.adjustStat(-atkSpd, StatsEnum.SPD);
         },
@@ -378,10 +470,18 @@ const rally = new Card({
   effects: [2, 1],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} rallied ${character.cosmetic.pronouns.possessive} allies!`,
-      TCGThread.Gameroom
-    );
+    const isHimmel = character.name === CharacterName.Himmel;
+    if (isHimmel) {
+      messageCache.push(
+        `${character.name} rallied ${character.cosmetic.pronouns.possessive} allies!`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(
+        `${character.name} rallied ${character.cosmetic.pronouns.reflexive}.`,
+        TCGThread.Gameroom
+      );
+    }
 
     const activeAllies = 1 + character.timedEffects.length;
     const hp = activeAllies * this.calculateEffectValue(this.effects[0]);
@@ -419,8 +519,9 @@ export const a_realHeroSwing = new Card({
   effects: [20],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
+    const isHimmel = character.name === CharacterName.Himmel;
     messageCache.push(
-      `The Hero ${character.name} heaved his sword!`,
+      `${isHimmel ? "The Hero " : ""}${character.name} heaved ${character.cosmetic.pronouns.possessive} sword!`,
       TCGThread.Gameroom
     );
 

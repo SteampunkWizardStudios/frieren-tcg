@@ -131,7 +131,7 @@ const bareHandedBlock = new Card({
   },
 });
 
-const a_waldgoseBase = new Card({
+export const a_waldgoseBase = new Card({
   title: "Tornado Winds: Waldgose",
   description: ([dmg]) =>
     `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${dmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
@@ -177,7 +177,7 @@ const a_waldgoseBase = new Card({
   },
 });
 
-export const a_waldgose = new Card({
+const a_waldgose = new Card({
   title: "Tornado Winds: Waldgose",
   description: ([dmg]) =>
     `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${dmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
@@ -202,7 +202,7 @@ export const a_waldgose = new Card({
   },
 });
 
-const a_daosdorgBase = new Card({
+export const a_daosdorgBase = new Card({
   title: "Hellfire: Daosdorg",
   description: ([dmg, waldgoseDmgBonus]) =>
     `HP-9. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus}. Treat this card as "Hook" if the user's HP is <= 0.`,
@@ -240,7 +240,7 @@ const a_daosdorgBase = new Card({
   },
 });
 
-export const a_daosdorg = new Card({
+const a_daosdorg = new Card({
   title: "Hellfire: Daosdorg",
   description: ([dmg, waldgoseDmgBonus]) =>
     `HP-9. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus}. Treat this card as "Hook" if the user's HP is <= 0.`,
@@ -265,7 +265,7 @@ export const a_daosdorg = new Card({
   },
 });
 
-const a_catastraviaBase = new Card({
+export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
   description: ([dmg]) =>
     `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${dmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
@@ -305,7 +305,7 @@ const a_catastraviaBase = new Card({
   },
 });
 
-export const a_catastravia = new Card({
+const a_catastravia = new Card({
   title: "Lights of Judgment: Catastravia",
   description: ([dmg]) =>
     `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${dmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
