@@ -25,7 +25,12 @@ export default async function leaderboardEmbed(props: {
 }): Promise<EmbedBuilder> {
   const { idsToPoints, leaderboard, isCharacterLeaderboard } = props;
 
-  const leaderboardTitle = `${isCharacterLeaderboard ? `${characterNameToEmoji[leaderboard as CharacterName]} ` : ""}${leaderboard} Global Leaderboard`;
+  // when isCharacterLeaderboard is true, leaderboard is a character name, otherwise it's the name of a ladder (classic, blitz, etc.)
+  const charEmoji = isCharacterLeaderboard
+    ? characterNameToEmoji[leaderboard as CharacterName] + " "
+    : "";
+  const leaderboardTitle = `${charEmoji}${leaderboard} Ranked Global Leaderboard`;
+
   const userLines = idsToPoints.map((idtoPoint, index) => {
     const { id, points } = idtoPoint;
     const rank = index + 1;
