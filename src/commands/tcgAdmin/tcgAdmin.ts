@@ -138,8 +138,6 @@ export const command: Command<ChatInputCommandInteraction> = {
                 maintenance ? "enabled" : "disabled"
               }.`,
             });
-
-            console.log(config.maintainance);
           } catch (error) {
             console.error("Error in maintenance mode:", error);
             await interaction.editReply({
