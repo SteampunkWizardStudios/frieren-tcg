@@ -127,9 +127,12 @@ export const command: Command<ChatInputCommandInteraction> = {
             ephemeral: true,
           });
 
-          const maintenance = interaction.options.getBoolean("maintenance");
+          const maintenance = interaction.options.getBoolean(
+            "maintenance",
+            true
+          );
           try {
-            config.maintainance = true;
+            config.maintainance = maintenance;
             await interaction.editReply({
               content: `Maintenance mode is now ${
                 maintenance ? "enabled" : "disabled"
