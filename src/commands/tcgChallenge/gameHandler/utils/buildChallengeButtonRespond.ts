@@ -30,13 +30,13 @@ export const buildChallengeButtonRespond = async (
 
   const declineButton = opponent
     ? new ButtonBuilder()
-      .setCustomId(DECLINE_BUTTON_ID)
-      .setLabel("Decline")
-      .setStyle(ButtonStyle.Danger)
+        .setCustomId(DECLINE_BUTTON_ID)
+        .setLabel("Decline")
+        .setStyle(ButtonStyle.Danger)
     : new ButtonBuilder()
-      .setCustomId(CANCEL_OPEN_INVITE_BUTTON_ID)
-      .setLabel("Cancel")
-      .setStyle(ButtonStyle.Secondary);
+        .setCustomId(CANCEL_OPEN_INVITE_BUTTON_ID)
+        .setLabel("Cancel")
+        .setStyle(ButtonStyle.Secondary);
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     acceptButton,
@@ -108,12 +108,13 @@ export const buildChallengeButtonRespond = async (
           return false;
         } else if (
           i.customId === ACCEPT_BUTTON_ID &&
-          i.user.id === challenger.id
+          i.user.id === challenger.id &&
+          ranked
         ) {
           const invalidUserEmbed = EmbedBuilder.from(embed).setDescription(
-            "You cannot accept your own open invite."
+            "You cannot accept your own open invite for ranked matches."
           );
-          
+
           i.reply({
             embeds: [invalidUserEmbed],
             flags: MessageFlags.Ephemeral,
