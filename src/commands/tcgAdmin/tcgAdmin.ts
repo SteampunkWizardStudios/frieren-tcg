@@ -8,6 +8,7 @@ import type { Command } from "../../types/command";
 import handleAchievementAutocomplete from "./achievementHandler/handleAchievementAutocomplete";
 import handleGrantAchievement from "./achievementHandler/handleGrantAchievement";
 import { ProgressBarBuilder } from "@src/tcg/formatting/percentBar";
+import config from "@src/config";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -60,6 +61,18 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setRequired(true)
             .setAutocomplete(true)
         )
+    )
+
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("maintenance")
+        .setDescription("Manage maintenance mode")
+        .addBooleanOption((option) =>
+          option
+            .setName("maintenance")
+            .setDescription("Enable or disable maintenance mode")
+            .setRequired(true)
+        )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -109,6 +122,38 @@ export const command: Command<ChatInputCommandInteraction> = {
               content: "Failed to build progress bar.",
             });
           }
+        case "maintenance":
+          await interaction.deferReply({
+            ephemeral: true,
+          });
+
+          const maintenance = interaction.options.getBoolean(
+            "maintenance",
+            true
+          );
+          try {
+            config.maintainance = maintenance;
+            await interaction.editReply({
+              content: `Maintenance mode is now ${
+                maintenance ? "enabled" : "disabled"
+              }.`,
+            });
+
+            console.log(config.maintainance);
+          } catch (error) {
+            console.error("Error in maintenance mode:", error);
+            await interaction.editReply({
+              content: "Failed to set maintenance mode.",
+            });
+          }
+          break;
+        default:
+          await interaction.deferReply({
+            ephemeral: true,
+          });
+          await interaction.editReply({
+            content: "Invalid subcommand.",
+          });
       }
     } catch (error) {
       console.error(error);
