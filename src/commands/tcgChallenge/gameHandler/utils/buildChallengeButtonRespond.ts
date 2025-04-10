@@ -152,7 +152,7 @@ export const buildChallengeButtonRespond = async (
         );
       } else if (buttonInteraction.customId === DECLINE_BUTTON_ID) {
         const challengeDeclinedEmbed = EmbedBuilder.from(embed).setDescription(
-          `Challenge declined by ${interaction.user}!`
+          `Challenge declined by ${opponent}!`
         );
 
         return await buttonInteraction.update({
