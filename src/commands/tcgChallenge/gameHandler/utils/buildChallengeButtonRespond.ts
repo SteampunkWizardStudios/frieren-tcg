@@ -4,7 +4,6 @@ import {
   ButtonInteraction,
   ButtonStyle,
   ChatInputCommandInteraction,
-  Embed,
   EmbedBuilder,
   MessageFlags,
   User,
