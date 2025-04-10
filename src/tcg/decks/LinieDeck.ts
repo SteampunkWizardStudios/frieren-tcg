@@ -5,6 +5,7 @@ import TimedEffect from "../timedEffect";
 import CommonCardAction from "../util/commonCardActions";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 
 const imitate = new Card({
   title: "Imitate",
@@ -12,33 +13,30 @@ const imitate = new Card({
     `Use the card the opponent used last turn at this card's empower level -2.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1 - characterIndex);
-
-    messageCache.push(
-      `${character.name} imitates ${opponent.name}'s last move.`,
-      TCGThread.Gameroom
-    );
-
+  cardAction: () => {},
+  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
     const lastCard =
       game.additionalMetadata.lastUsedCards?.[1 - characterIndex];
     if (lastCard) {
-      const newCard = new Card({
+      return new Card({
         ...lastCard,
         empowerLevel: this.empowerLevel - 2,
+        imitated: true,
       });
-
-      messageCache.push(
-        `${character.name} uses ${newCard.getTitle()}`,
-        TCGThread.Gameroom
-      );
-      newCard.cardAction(game, characterIndex, messageCache);
     } else {
-      messageCache.push(
-        "There was no move to imitate. The move failed!",
-        TCGThread.Gameroom
-      );
+      return new Card({
+        title: "Empty Imitation",
+        description: () => "No card to imitate. This move will fail.",
+        effects: [],
+        emoji: CardEmoji.LINIE_CARD,
+        cardAction: (_game, _characterIndex, messageCache: MessageCache) => {
+          messageCache.push(
+            `No card to imitate. The move failed!`,
+            TCGThread.Gameroom
+          );
+        },
+        imitated: true,
+      });
     }
   },
 });

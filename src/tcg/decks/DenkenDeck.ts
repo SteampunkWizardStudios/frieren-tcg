@@ -131,7 +131,7 @@ const bareHandedBlock = new Card({
   },
 });
 
-export const a_waldgose = new Card({
+const a_waldgoseBase = new Card({
   title: "Tornado Winds: Waldgose",
   description: ([dmg]) =>
     `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${dmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
@@ -140,46 +140,101 @@ export const a_waldgose = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
 
+    messageCache.push(
+      `${character.name} whipped up a tornado!`,
+      TCGThread.Gameroom
+    );
+    const damage = this.calculateEffectValue(this.effects[0]);
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: 7,
+    });
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Tornado Winds: Waldgose",
+        description: `Deal ${this.tags?.WaldgoseDamage ?? damage} at each turn's end.`,
+        turnDuration: 3,
+        tags: { WaldgoseDamage: damage },
+        endOfTurnAction: function (this, game, characterIndex) {
+          messageCache.push("The wind rages on!", TCGThread.Gameroom);
+
+          let waldgoseDmg: number;
+          if (this.tags?.WaldgoseDamage) {
+            waldgoseDmg = this.tags.WaldgoseDamage;
+          } else {
+            waldgoseDmg = damage;
+          }
+
+          CommonCardAction.commonAttack(game, characterIndex, {
+            damage: waldgoseDmg,
+            hpCost: 0,
+            isTimedEffectAttack: true,
+          });
+        },
+      })
+    );
+  },
+});
+
+export const a_waldgose = new Card({
+  title: "Tornado Winds: Waldgose",
+  description: ([dmg]) =>
+    `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${dmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
+  emoji: CardEmoji.DENKEN_CARD,
+  effects: [3],
+  cardAction: () => {},
+  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
+    const character = game.characters[characterIndex];
+
     if (character.stats.stats.HP <= 0) {
-      const jab = new Card({
+      return new Card({
         ...a_jab,
+        title: "Jab (Tornado Winds: Waldgose)",
         empowerLevel: this.empowerLevel,
       });
-      jab.cardAction(game, characterIndex, messageCache);
     } else {
-      messageCache.push(
-        `${character.name} whipped up a tornado!`,
-        TCGThread.Gameroom
-      );
-      const damage = this.calculateEffectValue(this.effects[0]);
-      CommonCardAction.commonAttack(game, characterIndex, {
-        damage,
-        hpCost: 7,
+      return new Card({
+        ...a_waldgoseBase,
+        empowerLevel: this.empowerLevel,
       });
+    }
+  },
+});
 
-      character.timedEffects.push(
-        new TimedEffect({
-          name: "Tornado Winds: Waldgose",
-          description: `Deal ${this.tags?.WaldgoseDamage ?? damage} at each turn's end.`,
-          turnDuration: 3,
-          tags: { WaldgoseDamage: damage },
-          endOfTurnAction: function (this, game, characterIndex) {
-            messageCache.push("The wind rages on!", TCGThread.Gameroom);
+const a_daosdorgBase = new Card({
+  title: "Hellfire: Daosdorg",
+  description: ([dmg, waldgoseDmgBonus]) =>
+    `HP-9. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus}. Treat this card as "Hook" if the user's HP is <= 0.`,
+  emoji: CardEmoji.DENKEN_CARD,
+  effects: [12, 3],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.characters[characterIndex];
+    messageCache.push(
+      `${character.name} set the sky aflame.`,
+      TCGThread.Gameroom
+    );
 
-            let waldgoseDmg: number;
-            if (this.tags?.WaldgoseDamage) {
-              waldgoseDmg = this.tags.WaldgoseDamage;
-            } else {
-              waldgoseDmg = damage;
-            }
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage: this.calculateEffectValue(this.effects[0]),
+      hpCost: 9,
+    });
 
-            CommonCardAction.commonAttack(game, characterIndex, {
-              damage: waldgoseDmg,
-              hpCost: 0,
-              isTimedEffectAttack: true,
-            });
-          },
-        })
+    let hasWaldgose: boolean = false;
+
+    for (const timedEffect of character.timedEffects) {
+      if ("WaldgoseDamage" in timedEffect.tags) {
+        timedEffect.tags.WaldgoseDamage += this.calculateEffectValue(
+          this.effects[1]
+        );
+        hasWaldgose = true;
+      }
+    }
+
+    if (hasWaldgose) {
+      messageCache.push(
+        `The hellfire infused itself into the raging winds!`,
+        TCGThread.Gameroom
       );
     }
   },
@@ -191,43 +246,62 @@ export const a_daosdorg = new Card({
     `HP-9. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus}. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [12, 3],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: () => {},
+  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
     const character = game.characters[characterIndex];
+
     if (character.stats.stats.HP <= 0) {
-      const hook = new Card({
+      return new Card({
         ...a_hook,
+        title: "Hook (Hellfire: Daosdorg)",
         empowerLevel: this.empowerLevel,
       });
-      hook.cardAction(game, characterIndex, messageCache);
     } else {
-      messageCache.push(
-        `${character.name} set the sky aflame.`,
-        TCGThread.Gameroom
-      );
-
-      CommonCardAction.commonAttack(game, characterIndex, {
-        damage: this.calculateEffectValue(this.effects[0]),
-        hpCost: 9,
+      return new Card({
+        ...a_daosdorgBase,
+        empowerLevel: this.empowerLevel,
       });
-
-      let hasWaldgose: boolean = false;
-
-      for (const timedEffect of character.timedEffects) {
-        if ("WaldgoseDamage" in timedEffect.tags) {
-          timedEffect.tags.WaldgoseDamage += this.calculateEffectValue(
-            this.effects[1]
-          );
-          hasWaldgose = true;
-        }
-      }
-
-      if (hasWaldgose) {
-        messageCache.push(
-          `The hellfire infused itself into the raging winds!`,
-          TCGThread.Gameroom
-        );
-      }
     }
+  },
+});
+
+const a_catastraviaBase = new Card({
+  title: "Lights of Judgment: Catastravia",
+  description: ([dmg]) =>
+    `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${dmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
+  emoji: CardEmoji.DENKEN_CARD,
+  effects: [4],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.characters[characterIndex];
+    messageCache.push(
+      `${character.name} covered the sky in stars.`,
+      TCGThread.Gameroom
+    );
+
+    const damage = this.calculateEffectValue(this.effects[0]);
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: 15,
+    });
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Lights of Judgment: Catastravia",
+        description: `Deal ${damage} at each turn's end.`,
+        turnDuration: 5,
+        endOfTurnAction: (game, characterIndex) => {
+          messageCache.push(
+            "The lights of judgment lit up the sky.",
+            TCGThread.Gameroom
+          );
+          CommonCardAction.commonAttack(game, characterIndex, {
+            damage,
+            hpCost: 0,
+            isTimedEffectAttack: true,
+          });
+        },
+      })
+    );
   },
 });
 
@@ -237,45 +311,53 @@ export const a_catastravia = new Card({
     `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${dmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [4],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: () => {},
+  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
     const character = game.characters[characterIndex];
+
     if (character.stats.stats.HP <= 0) {
-      const uppercut = new Card({
+      return new Card({
         ...a_uppercut,
+        title: "Uppercut (Lights of Judgment: Catastravia)",
         empowerLevel: this.empowerLevel,
       });
-      uppercut.cardAction(game, characterIndex, messageCache);
     } else {
-      messageCache.push(
-        `${character.name} covered the sky in stars.`,
-        TCGThread.Gameroom
-      );
-
-      const damage = this.calculateEffectValue(this.effects[0]);
-      CommonCardAction.commonAttack(game, characterIndex, {
-        damage,
-        hpCost: 15,
+      return new Card({
+        ...a_catastraviaBase,
+        empowerLevel: this.empowerLevel,
       });
-
-      character.timedEffects.push(
-        new TimedEffect({
-          name: "Lights of Judgment: Catastravia",
-          description: `Deal ${damage} at each turn's end.`,
-          turnDuration: 5,
-          endOfTurnAction: (game, characterIndex) => {
-            messageCache.push(
-              "The lights of judgment lit up the sky.",
-              TCGThread.Gameroom
-            );
-            CommonCardAction.commonAttack(game, characterIndex, {
-              damage,
-              hpCost: 0,
-              isTimedEffectAttack: true,
-            });
-          },
-        })
-      );
     }
+  },
+});
+
+const elementaryDefensiveMagicBase = new Card({
+  title: "Elementary Defensive Magic",
+  description: ([def]) =>
+    `Priority+2. Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
+  emoji: CardEmoji.DENKEN_CARD,
+  priority: 2,
+  effects: [20],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.characters[characterIndex];
+
+    messageCache.push(
+      `${character.name} casted an elementary defensive spell!`,
+      TCGThread.Gameroom
+    );
+
+    const def = this.calculateEffectValue(this.effects[0]);
+    character.adjustStat(def, StatsEnum.DEF);
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Elementary Defensive Magic",
+        description: `Increases DEF by ${def} until the end of the turn.`,
+        priority: -1,
+        turnDuration: 1,
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+          character.adjustStat(-def, StatsEnum.DEF);
+        },
+      })
+    );
   },
 });
 
@@ -286,33 +368,21 @@ const elementaryDefensiveMagic = new Card({
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [20],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: () => {},
+  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
     const character = game.characters[characterIndex];
+
     if (character.stats.stats.HP <= 0) {
-      const block = new Card({
+      return new Card({
         ...bareHandedBlock,
+        title: "Bare-handed Block (Elementary Defensive Magic)",
         empowerLevel: this.empowerLevel,
       });
-      block.cardAction(game, characterIndex, messageCache);
     } else {
-      messageCache.push(
-        `${character.name} casted an elementary defensive spell!`,
-        TCGThread.Gameroom
-      );
-
-      const def = this.calculateEffectValue(this.effects[0]);
-      character.adjustStat(def, StatsEnum.DEF);
-      character.timedEffects.push(
-        new TimedEffect({
-          name: "Elementary Defensive Magic",
-          description: `Increases DEF by ${def} until the end of the turn.`,
-          priority: -1,
-          turnDuration: 1,
-          endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-            character.adjustStat(-def, StatsEnum.DEF);
-          },
-        })
-      );
+      return new Card({
+        ...elementaryDefensiveMagicBase,
+        empowerLevel: this.empowerLevel,
+      });
     }
   },
 });
