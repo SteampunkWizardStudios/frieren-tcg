@@ -4,6 +4,7 @@ import {
   ButtonInteraction,
   ButtonStyle,
   ChatInputCommandInteraction,
+  Embed,
   EmbedBuilder,
   MessageFlags,
   User,
@@ -30,13 +31,13 @@ export const buildChallengeButtonRespond = async (
 
   const declineButton = opponent
     ? new ButtonBuilder()
-        .setCustomId(DECLINE_BUTTON_ID)
-        .setLabel("Decline")
-        .setStyle(ButtonStyle.Danger)
+      .setCustomId(DECLINE_BUTTON_ID)
+      .setLabel("Decline")
+      .setStyle(ButtonStyle.Danger)
     : new ButtonBuilder()
-        .setCustomId(CANCEL_OPEN_INVITE_BUTTON_ID)
-        .setLabel("Cancel")
-        .setStyle(ButtonStyle.Secondary);
+      .setCustomId(CANCEL_OPEN_INVITE_BUTTON_ID)
+      .setLabel("Cancel")
+      .setStyle(ButtonStyle.Secondary);
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     acceptButton,
@@ -101,6 +102,19 @@ export const buildChallengeButtonRespond = async (
             "You are not the initiator of this open invite."
           );
 
+          i.reply({
+            embeds: [invalidUserEmbed],
+            flags: MessageFlags.Ephemeral,
+          });
+          return false;
+        } else if (
+          i.customId === ACCEPT_BUTTON_ID &&
+          i.user.id === challenger.id
+        ) {
+          const invalidUserEmbed = EmbedBuilder.from(embed).setDescription(
+            "You cannot accept your own open invite."
+          );
+          
           i.reply({
             embeds: [invalidUserEmbed],
             flags: MessageFlags.Ephemeral,
