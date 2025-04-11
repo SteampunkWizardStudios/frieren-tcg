@@ -1,7 +1,7 @@
 import prismaClient from "@prismaClient";
 import { GameMode } from "@src/commands/tcgChallenge/gameHandler/gameSettings";
 import { getLatestLadderReset } from "@src/util/db/getLatestLadderReset";
-import { ChatInputCommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { Prisma } from "@prisma/client";
 import { capitalizeFirstLetter } from "@src/util/utils";
 import leaderboardEmbed from "./leaderboardEmbed";
@@ -9,6 +9,7 @@ import {
   LazyPaginatedMessage,
   type PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
+import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
 
 export type LadderRankWithPlayer = Prisma.LadderRankGetPayload<{
   include: { player: true };
@@ -74,6 +75,21 @@ export async function handleGlobalStats(
 
     return page;
   });
+
+  if (pages.length === 0) {
+    const leaderboardTitle = `${capitalizeFirstLetter(gamemode)} Ranked Global Leaderboard`;
+    const noPlayersFoundEmbed = new EmbedBuilder()
+      .setColor("Blurple")
+      .setTitle(leaderboardTitle)
+      .setDescription(
+        "No players found in this leaderboard. Maybe you could be the first one?"
+      );
+
+    await interaction.editReply({
+      embeds: [noPlayersFoundEmbed],
+    });
+    return;
+  }
 
   const paginated = new LazyPaginatedMessage({ pages });
   // you can change the message settings here
