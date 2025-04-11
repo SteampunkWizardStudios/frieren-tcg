@@ -16,6 +16,8 @@ const playerRankedStats = (discordId?: string) => {
         select: {
           character: { select: { id: true, name: true } },
           masteryPoints: true,
+		  wins: true,
+		  losses: true,
         },
       },
       ladderRanks: {
