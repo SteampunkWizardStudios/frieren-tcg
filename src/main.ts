@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Events } from "discord.js";
+import { Client, GatewayIntentBits, Events, Partials } from "discord.js";
 import "dotenv/config";
 import * as path from "path";
 import { loadCommands } from "./loadCommands";
@@ -14,6 +14,7 @@ const commandsDir = path.join(__dirname, "commands");
 
 const client = new Client({
   intents: [GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages],
+  partials: [Partials.Channel, Partials.Message],
 });
 
 async function main() {
