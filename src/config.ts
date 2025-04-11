@@ -1,13 +1,13 @@
 type Config = {
   debugMode?: boolean;
   logPrismaReqs?: boolean;
-  maintainance?: boolean;
+  maintenance?: boolean;
 };
 
 const config: Config = {
   debugMode: false,
   logPrismaReqs: false,
-  maintainance: false,
+  maintenance: false,
 } satisfies Config;
 
 export default config;

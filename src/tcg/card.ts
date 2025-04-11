@@ -18,8 +18,10 @@ export type CardProps = {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
-  priority?: number;
+  conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
   empowerLevel?: number;
+  priority?: number;
+  imitated?: boolean;
   tags?: Record<string, number>;
   printEmpower?: boolean;
 };
@@ -37,8 +39,10 @@ export default class Card implements CardProps {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
   empowerLevel: number;
   priority: number;
+  imitated: boolean;
   tags: Record<string, number>;
   printEmpower: boolean;
 
@@ -47,8 +51,10 @@ export default class Card implements CardProps {
     this.description = cardProps.description;
     this.effects = cardProps.effects;
     this.cardAction = cardProps.cardAction;
-    this.priority = cardProps.priority ?? 0;
+    this.conditionalTreatAsEffect = cardProps.conditionalTreatAsEffect;
     this.empowerLevel = cardProps.empowerLevel ?? 0;
+    this.priority = cardProps.priority ?? 0;
+    this.imitated = cardProps.imitated ?? false;
     this.tags = cardProps.tags ?? {};
     this.emoji = cardProps.emoji ?? CardEmoji.GENERIC;
     this.cosmetic = cardProps.cosmetic;
@@ -64,7 +70,9 @@ export default class Card implements CardProps {
 
   getTitle(): string {
     return (
-      `${this.title}` + `${this.printEmpower ? ` + ${this.empowerLevel}` : ""}`
+      `${this.imitated ? "(Imitated) " : ""}` +
+      `${this.title}` +
+      `${this.printEmpower ? ` + ${this.empowerLevel}` : ""}`
     );
   }
 
@@ -75,9 +83,8 @@ export default class Card implements CardProps {
   }
 
   printCard(startingString: string = "") {
-    const empowerString = this.printEmpower ? ` + ${this.empowerLevel}` : "";
     return (
-      `${startingString}${this.emoji} **${this.title}${empowerString}**\n` +
+      `${startingString}${this.emoji} **${this.getTitle()}**\n` +
       `  - ${this.getDescription()}`
     );
   }

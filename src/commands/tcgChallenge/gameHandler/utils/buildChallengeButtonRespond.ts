@@ -5,15 +5,15 @@ import {
   ButtonStyle,
   ChatInputCommandInteraction,
   EmbedBuilder,
-  MessageFlags,
   User,
 } from "discord.js";
 import { GameMode, GameSettings } from "../gameSettings";
 import { initiateGame } from "../initiateGame";
+import validateMatchButtonInteractions from "./validateMatchButtonInteractions";
 
-const ACCEPT_BUTTON_ID = "tcg-accept";
-const DECLINE_BUTTON_ID = "tcg-decline";
-const CANCEL_OPEN_INVITE_BUTTON_ID = "tcg-open-invite-cancel";
+export const ACCEPT_BUTTON_ID = "tcg-accept";
+export const DECLINE_BUTTON_ID = "tcg-decline";
+export const CANCEL_OPEN_INVITE_BUTTON_ID = "tcg-open-invite-cancel";
 
 export const buildChallengeButtonRespond = async (
   interaction: ChatInputCommandInteraction,
@@ -68,8 +68,8 @@ export const buildChallengeButtonRespond = async (
     .setTimestamp();
 
   const description = opponent
-    ? `${opponent}, ${challenger} has challenged you to a ${ranked ? "**Ranked**" : ""} TCG duel`
-    : `${challenger} has sent an open invite for a ${ranked ? "**Ranked**" : ""} TCG duel`;
+    ? `${opponent}, ${challenger} has challenged you to a${ranked ? "** Ranked **" : " "}TCG duel`
+    : `${challenger} has sent an open invite for a${ranked ? "** Ranked **" : " "}TCG duel`;
 
   embed.setDescription(description);
 
@@ -83,32 +83,8 @@ export const buildChallengeButtonRespond = async (
   if (response) {
     const collector = response.createMessageComponentCollector({
       time: 120_000, // 2 minutes timeout
-      filter: (i) => {
-        if (opponent && i.user.id !== opponent.id) {
-          const invalidUserEmbed = EmbedBuilder.from(embed).setDescription(
-            "You are not the opponent of this challenge request."
-          );
-          i.reply({
-            embeds: [invalidUserEmbed],
-            flags: MessageFlags.Ephemeral,
-          });
-          return false;
-        } else if (
-          i.customId === CANCEL_OPEN_INVITE_BUTTON_ID &&
-          i.user.id !== challenger.id
-        ) {
-          const invalidUserEmbed = EmbedBuilder.from(embed).setDescription(
-            "You are not the initiator of this open invite."
-          );
-
-          i.reply({
-            embeds: [invalidUserEmbed],
-            flags: MessageFlags.Ephemeral,
-          });
-          return false;
-        }
-        return true;
-      },
+      filter: (i) =>
+        validateMatchButtonInteractions(i, challenger, opponent, ranked, embed),
     });
 
     // handle button clicks
@@ -138,7 +114,7 @@ export const buildChallengeButtonRespond = async (
         );
       } else if (buttonInteraction.customId === DECLINE_BUTTON_ID) {
         const challengeDeclinedEmbed = EmbedBuilder.from(embed).setDescription(
-          `Challenge declined by ${interaction.user}!`
+          `Challenge declined by ${opponent}!`
         );
 
         return await buttonInteraction.update({

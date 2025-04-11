@@ -8,6 +8,7 @@ import {
 } from "./getRelativeRank";
 import { getRank } from "@src/commands/tcgChallenge/gameHandler/rankScoresToRankTitleMapping";
 import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import { capitalizeFirstLetter } from "@src/util/utils";
 
 export default async function playerStatsEmbed(
   stats: PlayerRankedStats,
@@ -22,8 +23,7 @@ export default async function playerStatsEmbed(
       const totalPlayers = await getTotalPlayers(ladderRank.ladderReset.id);
 
       const ladderName = ladderRank.ladderReset.ladder.name;
-      const capitalizedLadderName =
-        ladderName.charAt(0).toUpperCase() + ladderName.slice(1);
+      const capitalizedLadderName = capitalizeFirstLetter(ladderName);
       const rankName = getRank(ladderRank.rankPoints).rankTitle;
 
       return {

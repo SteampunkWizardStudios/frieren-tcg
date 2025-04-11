@@ -3,7 +3,8 @@ import { ChatInputCommandInteraction, User } from "discord.js";
 export const handleOpponent = async (
   interaction: ChatInputCommandInteraction,
   challenger: User,
-  opponent: User | null
+  opponent: User | null,
+  ranked: boolean
 ): Promise<boolean> => {
   if (!opponent) {
     return true;
@@ -16,9 +17,9 @@ export const handleOpponent = async (
     return false;
   }
 
-  if (opponent.id === challenger.id) {
+  if (ranked && opponent.id === challenger.id) {
     await interaction.editReply({
-      content: "You cannot challenge yourself.",
+      content: "You cannot challenge yourself to a ranked match.",
     });
     return false;
   }

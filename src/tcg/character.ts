@@ -3,7 +3,7 @@ import Deck from "./deck";
 import Card from "./card";
 import TimedEffect from "./timedEffect";
 import { Ability } from "./ability";
-import { statDetails } from "./formatting/emojis";
+import { CardEmoji, statDetails } from "./formatting/emojis";
 import Rolls from "./util/rolls";
 import { CharacterAdditionalMetadata } from "./additionalMetadata/characterAdditionalMetadata";
 import DefaultCards from "./decks/utilDecks/defaultCard";
@@ -14,6 +14,7 @@ import {
 import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
 import { User } from "discord.js";
+import Game from "./game";
 
 export interface CharacterProps {
   characterData: CharacterData;
@@ -102,7 +103,11 @@ export default class Character {
     return discardedCard;
   }
 
-  getUsableCardsForRound(channel: TCGThread): Record<string, Card> {
+  getUsableCardsForRound(
+    channel: TCGThread,
+    game: Game,
+    characterIndex: number
+  ): Record<string, Card> {
     const indexToUsableCardMap: Record<string, Card> = {};
     // roll 4d6
     const rolls = [];
@@ -117,7 +122,16 @@ export default class Character {
           indexToUsableCardMap[roll].empowerLevel += 1;
         } else {
           const card = this.hand[roll];
-          indexToUsableCardMap[roll] = card;
+
+          // special conditional card handling
+          if (card.conditionalTreatAsEffect) {
+            indexToUsableCardMap[roll] = card.conditionalTreatAsEffect(
+              game,
+              characterIndex
+            );
+          } else {
+            indexToUsableCardMap[roll] = card;
+          }
         }
       }
     }

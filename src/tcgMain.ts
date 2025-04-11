@@ -180,7 +180,11 @@ export const tcgMain = async (
               messageCache.messages[useChannel].join("\n");
           }
 
-          const currUsableCards = character.getUsableCardsForRound(useChannel);
+          const currUsableCards = character.getUsableCardsForRound(
+            useChannel,
+            game,
+            index
+          );
           characterToPlayableMoveMap[index] = currUsableCards;
           await sendToThread(
             messageCache.flush(useChannel),

@@ -5,6 +5,10 @@ import { Prisma } from "@prisma/client";
 import { capitalizeFirstLetter } from "@src/util/utils";
 import leaderboardEmbed from "./leaderboardEmbed";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import {
+  LazyPaginatedMessage,
+  PaginatedMessageMessageOptionsUnion,
+} from "@sapphire/discord.js-utilities";
 
 export type CharacterMasteryWithPlayer = Prisma.CharacterMasteryGetPayload<{
   include: { player: true };
@@ -37,26 +41,39 @@ export async function handleCharacterGlobalStats(
   const character: CharacterName =
     (interaction.options.getString("character") as CharacterName) ??
     CharacterName.Frieren;
-  const top10 = await getTopNPlayersPerCharacter(character, 10);
+  const top100 = await getTopNPlayersPerCharacter(character, 100);
 
-  if (top10) {
-    const idsToPoints = top10.map(({ player, masteryPoints }) => ({
-      id: player.discordId,
-      points: masteryPoints,
-    }));
-
+  if (!top100) {
     await interaction.editReply({
-      embeds: [
-        await leaderboardEmbed({
-          idsToPoints,
-          leaderboard: capitalizeFirstLetter(character),
-          isCharacterLeaderboard: true,
-        }),
-      ],
+      content: "Failed to fetch Global Leaderboard.",
     });
-  } else {
-    await interaction.editReply({
-      content: `Failed to fetch Global Character Leaderboard for Character ${capitalizeFirstLetter(character)}`,
-    });
+    return;
   }
+  const idsToPoints = top100.map(({ player, masteryPoints }) => ({
+    id: player.discordId,
+    points: masteryPoints,
+  }));
+
+  const PAGE_SIZE = 10;
+  const totalPages = Math.ceil(idsToPoints.length / PAGE_SIZE);
+
+  const pages = Array.from({ length: totalPages }, (_, i) => async () => {
+    const pageData = idsToPoints.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE);
+    const embed = await leaderboardEmbed({
+      idsToPoints: pageData,
+      leaderboard: character,
+      isCharacterLeaderboard: false,
+      page: i + 1,
+      pageSize: PAGE_SIZE,
+    });
+
+    const page: PaginatedMessageMessageOptionsUnion = {
+      embeds: [embed],
+    };
+
+    return page;
+  });
+
+  const paginated = new LazyPaginatedMessage({ pages });
+  await paginated.run(interaction);
 }
