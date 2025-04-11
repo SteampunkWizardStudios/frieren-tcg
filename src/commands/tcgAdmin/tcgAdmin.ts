@@ -1,14 +1,18 @@
 import {
+  ChannelType,
   SlashCommandBuilder,
   ChatInputCommandInteraction,
   MessageFlags,
   InteractionContextType,
+  EmbedBuilder,
+  TextChannel,
 } from "discord.js";
 import type { Command } from "../../types/command";
 import handleAchievementAutocomplete from "./achievementHandler/handleAchievementAutocomplete";
 import handleGrantAchievement from "./achievementHandler/handleGrantAchievement";
 import { ProgressBarBuilder } from "@src/tcg/formatting/percentBar";
 import config from "@src/config";
+import { isTextChannel } from "@sapphire/discord.js-utilities";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -73,6 +77,23 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setDescription("Enable or disable maintenance mode")
             .setRequired(true)
         )
+        .addChannelOption((option) =>
+          option
+            .setName("channel")
+            .addChannelTypes(ChannelType.GuildText)
+            .setDescription(
+              "Channel to send maintenance message to (Default: current channel)"
+            )
+            .setRequired(false)
+        )
+        .addBooleanOption((option) =>
+          option
+            .setName("send_message")
+            .setDescription(
+              "Send a maintenance message to the channel (Default: true)"
+            )
+            .setRequired(false)
+        )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -123,27 +144,7 @@ export const command: Command<ChatInputCommandInteraction> = {
             });
           }
         case "maintenance":
-          await interaction.deferReply({
-            ephemeral: true,
-          });
-
-          const maintenance = interaction.options.getBoolean(
-            "maintenance",
-            true
-          );
-          try {
-            config.maintenance = maintenance;
-            await interaction.editReply({
-              content: `Maintenance mode is now ${
-                maintenance ? "enabled" : "disabled"
-              }.`,
-            });
-          } catch (error) {
-            console.error("Error in maintenance mode:", error);
-            await interaction.editReply({
-              content: "Failed to set maintenance mode.",
-            });
-          }
+          handleMaintenance(interaction);
           break;
         default:
           await interaction.deferReply({
@@ -171,3 +172,44 @@ export const command: Command<ChatInputCommandInteraction> = {
     }
   },
 };
+
+async function handleMaintenance(interaction: ChatInputCommandInteraction) {
+  const sendMessage = interaction.options.getBoolean("send_message") ?? true;
+  const channel =
+    interaction.options.getChannel<ChannelType.GuildText>("channel") ??
+    interaction.channel;
+
+  await interaction.deferReply({
+    ephemeral: true,
+  });
+
+  const maintenance = interaction.options.getBoolean("maintenance", true);
+  try {
+    config.maintenance = maintenance;
+    await interaction.editReply({
+      content: `Maintenance mode is now ${
+        maintenance ? "enabled" : "disabled"
+      }.`,
+    });
+
+    if (sendMessage && isTextChannel(channel)) {
+      const message = maintenance
+        ? `The game has entered maintenance mode. New challenges will not be accepted. Thank you for your patience.`
+        : `The game has exited maintenance mode. New challenges are now accepted.`;
+
+      const maintenanceEmbed = new EmbedBuilder()
+        .setColor("Blurple")
+        .setTitle("Maintenance Mode")
+        .setDescription(message);
+
+      await channel.send({
+        embeds: [maintenanceEmbed],
+      });
+    }
+  } catch (error) {
+    console.error("Error in maintenance mode:", error);
+    await interaction.editReply({
+      content: "Failed to set maintenance mode.",
+    });
+  }
+}
