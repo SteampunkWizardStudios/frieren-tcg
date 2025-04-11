@@ -5,6 +5,10 @@ import { ChatInputCommandInteraction } from "discord.js";
 import { Prisma } from "@prisma/client";
 import { capitalizeFirstLetter } from "@src/util/utils";
 import leaderboardEmbed from "./leaderboardEmbed";
+import {
+  LazyPaginatedMessage,
+  type PaginatedMessageMessageOptionsUnion,
+} from "@sapphire/discord.js-utilities";
 
 export type LadderRankWithPlayer = Prisma.LadderRankGetPayload<{
   include: { player: true };
@@ -37,26 +41,42 @@ export async function handleGlobalStats(
 ) {
   const gamemode: GameMode =
     (interaction.options.getString("gamemode") as GameMode) ?? GameMode.CLASSIC;
-  const top10 = await getTopNPlayersInGamemode(gamemode, 10);
 
-  if (top10) {
-    const idsToPoints = top10.map(({ player, rankPoints }) => ({
-      id: player.discordId,
-      points: rankPoints,
-    }));
-
-    await interaction.editReply({
-      embeds: [
-        await leaderboardEmbed({
-          idsToPoints,
-          leaderboard: capitalizeFirstLetter(gamemode),
-          isCharacterLeaderboard: false,
-        }),
-      ],
-    });
-  } else {
+  const top100 = await getTopNPlayersInGamemode(gamemode, 100);
+  if (!top100) {
     await interaction.editReply({
       content: "Failed to fetch Global Leaderboard.",
     });
+    return;
   }
+
+  const idsToPoints = top100.map(({ player, rankPoints }) => ({
+    id: player.discordId,
+    points: rankPoints,
+  }));
+
+  const PAGE_SIZE = 10;
+  const totalPages = Math.ceil(idsToPoints.length / PAGE_SIZE);
+
+  const pages = Array.from({ length: totalPages }, (_, i) => async () => {
+    const pageData = idsToPoints.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE);
+    const embed = await leaderboardEmbed({
+      idsToPoints: pageData,
+      leaderboard: capitalizeFirstLetter(gamemode),
+      isCharacterLeaderboard: false,
+      page: i + 1,
+      pageSize: PAGE_SIZE,
+    });
+
+    const page: PaginatedMessageMessageOptionsUnion = {
+      embeds: [embed],
+    };
+
+    return page;
+  });
+
+  const paginated = new LazyPaginatedMessage({ pages });
+  // you can change the message settings here
+
+  await paginated.run(interaction);
 }
