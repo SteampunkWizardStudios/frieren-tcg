@@ -1,4 +1,3 @@
-import { LazyPaginatedMessage } from "@sapphire/discord.js-utilities";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
 import { EmbedBuilder } from "discord.js";

@@ -17,12 +17,12 @@ export default function validateMatchButtonInteractions(
   ranked: boolean,
   embed: EmbedBuilder
 ): boolean {
-  if (config.maintainance) {
-    const maintainancMessage = EmbedBuilder.from(embed).setDescription(
+  if (config.maintenance) {
+    const maintenanceMessage = EmbedBuilder.from(embed).setDescription(
       "The game is currently under maintenance. New games are not allowed."
     );
     i.reply({
-      embeds: [maintainancMessage],
+      embeds: [maintenanceMessage],
       flags: MessageFlags.Ephemeral,
     });
     return false;

@@ -11,7 +11,7 @@ export async function initiateChallengeRequest(prop: {
   gamemode?: GameMode;
 }): Promise<void> {
   const { interaction, gameSettings, ranked, gamemode } = prop;
-  if (config.maintainance) {
+  if (config.maintenance) {
     await interaction.reply({
       content:
         "The game is currently under maintenance. New challenges are not allowed.",

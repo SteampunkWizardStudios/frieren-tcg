@@ -132,7 +132,7 @@ export const command: Command<ChatInputCommandInteraction> = {
             true
           );
           try {
-            config.maintainance = maintenance;
+            config.maintenance = maintenance;
             await interaction.editReply({
               content: `Maintenance mode is now ${
                 maintenance ? "enabled" : "disabled"
