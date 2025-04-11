@@ -10,8 +10,6 @@ import { getRank } from "@src/commands/tcgChallenge/gameHandler/rankScoresToRank
 import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 import { capitalizeFirstLetter } from "@src/util/utils";
 import prismaClient from "@prismaClient";
-import { get } from "http";
-import { count } from "console";
 
 export default async function playerStatsEmbed(
   stats: PlayerRankedStats,
