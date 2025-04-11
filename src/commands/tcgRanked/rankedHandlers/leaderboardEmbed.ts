@@ -1,3 +1,4 @@
+import { LazyPaginatedMessage } from "@sapphire/discord.js-utilities";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
 import { EmbedBuilder } from "discord.js";
@@ -22,8 +23,16 @@ export default async function leaderboardEmbed(props: {
   idsToPoints: { id: string; points: number }[];
   leaderboard: string;
   isCharacterLeaderboard: boolean;
+  page?: number;
+  pageSize?: number;
 }): Promise<EmbedBuilder> {
-  const { idsToPoints, leaderboard, isCharacterLeaderboard } = props;
+  const {
+    idsToPoints,
+    leaderboard,
+    isCharacterLeaderboard,
+    page = 1,
+    pageSize = 10,
+  } = props;
 
   // when isCharacterLeaderboard is true, leaderboard is a character name, otherwise it's the name of a ladder (classic, blitz, etc.)
   const charEmoji = isCharacterLeaderboard
@@ -33,7 +42,7 @@ export default async function leaderboardEmbed(props: {
 
   const userLines = idsToPoints.map((idtoPoint, index) => {
     const { id, points } = idtoPoint;
-    const rank = index + 1;
+    const rank = index + 1 + (page - 1) * pageSize;
     return `${getRankString(rank, id)}: ${points} pts`;
   });
 
