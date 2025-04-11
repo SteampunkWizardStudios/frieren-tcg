@@ -117,6 +117,8 @@ export const command: Command<ChatInputCommandInteraction> = {
               content: "Failed to grant achievement.",
             });
           }
+
+          break;
         case "debug-progress-bar":
           await interaction.deferReply({
             flags: MessageFlags.Ephemeral,
@@ -143,6 +145,8 @@ export const command: Command<ChatInputCommandInteraction> = {
               content: "Failed to build progress bar.",
             });
           }
+
+          break;
         case "maintenance":
           handleMaintenance(interaction);
           break;

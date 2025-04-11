@@ -140,40 +140,48 @@ export const a_waldgoseBase = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
 
-    messageCache.push(
-      `${character.name} whipped up a tornado!`,
-      TCGThread.Gameroom
-    );
-    const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-      hpCost: 7,
-    });
+    if (character.stats.stats.HP <= 0) {
+      const jab = new Card({
+        ...a_jab,
+        empowerLevel: this.empowerLevel,
+      });
+      jab.cardAction(game, characterIndex, messageCache);
+    } else {
+      messageCache.push(
+        `${character.name} whipped up a tornado!`,
+        TCGThread.Gameroom
+      );
+      const damage = this.calculateEffectValue(this.effects[0]);
+      CommonCardAction.commonAttack(game, characterIndex, {
+        damage,
+        hpCost: 7,
+      });
 
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Tornado Winds: Waldgose",
-        description: `Deal ${this.tags?.WaldgoseDamage ?? damage} at each turn's end.`,
-        turnDuration: 3,
-        tags: { WaldgoseDamage: damage },
-        endOfTurnAction: function (this, game, characterIndex) {
-          messageCache.push("The wind rages on!", TCGThread.Gameroom);
+      character.timedEffects.push(
+        new TimedEffect({
+          name: "Tornado Winds: Waldgose",
+          description: `Deal ${this.tags?.WaldgoseDamage ?? damage} at each turn's end.`,
+          turnDuration: 3,
+          tags: { WaldgoseDamage: damage },
+          endOfTurnAction: function (this, game, characterIndex) {
+            messageCache.push("The wind rages on!", TCGThread.Gameroom);
 
-          let waldgoseDmg: number;
-          if (this.tags?.WaldgoseDamage) {
-            waldgoseDmg = this.tags.WaldgoseDamage;
-          } else {
-            waldgoseDmg = damage;
-          }
+            let waldgoseDmg: number;
+            if (this.tags?.WaldgoseDamage) {
+              waldgoseDmg = this.tags.WaldgoseDamage;
+            } else {
+              waldgoseDmg = damage;
+            }
 
-          CommonCardAction.commonAttack(game, characterIndex, {
-            damage: waldgoseDmg,
-            hpCost: 0,
-            isTimedEffectAttack: true,
-          });
-        },
-      })
-    );
+            CommonCardAction.commonAttack(game, characterIndex, {
+              damage: waldgoseDmg,
+              hpCost: 0,
+              isTimedEffectAttack: true,
+            });
+          },
+        })
+      );
+    }
   },
 });
 
@@ -210,32 +218,40 @@ export const a_daosdorgBase = new Card({
   effects: [12, 3],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} set the sky aflame.`,
-      TCGThread.Gameroom
-    );
-
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 9,
-    });
-
-    let hasWaldgose: boolean = false;
-
-    for (const timedEffect of character.timedEffects) {
-      if ("WaldgoseDamage" in timedEffect.tags) {
-        timedEffect.tags.WaldgoseDamage += this.calculateEffectValue(
-          this.effects[1]
-        );
-        hasWaldgose = true;
-      }
-    }
-
-    if (hasWaldgose) {
+    if (character.stats.stats.HP <= 0) {
+      const hook = new Card({
+        ...a_hook,
+        empowerLevel: this.empowerLevel,
+      });
+      hook.cardAction(game, characterIndex, messageCache);
+    } else {
       messageCache.push(
-        `The hellfire infused itself into the raging winds!`,
+        `${character.name} set the sky aflame.`,
         TCGThread.Gameroom
       );
+
+      CommonCardAction.commonAttack(game, characterIndex, {
+        damage: this.calculateEffectValue(this.effects[0]),
+        hpCost: 9,
+      });
+
+      let hasWaldgose: boolean = false;
+
+      for (const timedEffect of character.timedEffects) {
+        if ("WaldgoseDamage" in timedEffect.tags) {
+          timedEffect.tags.WaldgoseDamage += this.calculateEffectValue(
+            this.effects[1]
+          );
+          hasWaldgose = true;
+        }
+      }
+
+      if (hasWaldgose) {
+        messageCache.push(
+          `The hellfire infused itself into the raging winds!`,
+          TCGThread.Gameroom
+        );
+      }
     }
   },
 });
@@ -273,35 +289,43 @@ export const a_catastraviaBase = new Card({
   effects: [4],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} covered the sky in stars.`,
-      TCGThread.Gameroom
-    );
+    if (character.stats.stats.HP <= 0) {
+      const uppercut = new Card({
+        ...a_uppercut,
+        empowerLevel: this.empowerLevel,
+      });
+      uppercut.cardAction(game, characterIndex, messageCache);
+    } else {
+      messageCache.push(
+        `${character.name} covered the sky in stars.`,
+        TCGThread.Gameroom
+      );
 
-    const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-      hpCost: 15,
-    });
+      const damage = this.calculateEffectValue(this.effects[0]);
+      CommonCardAction.commonAttack(game, characterIndex, {
+        damage,
+        hpCost: 15,
+      });
 
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Lights of Judgment: Catastravia",
-        description: `Deal ${damage} at each turn's end.`,
-        turnDuration: 5,
-        endOfTurnAction: (game, characterIndex) => {
-          messageCache.push(
-            "The lights of judgment lit up the sky.",
-            TCGThread.Gameroom
-          );
-          CommonCardAction.commonAttack(game, characterIndex, {
-            damage,
-            hpCost: 0,
-            isTimedEffectAttack: true,
-          });
-        },
-      })
-    );
+      character.timedEffects.push(
+        new TimedEffect({
+          name: "Lights of Judgment: Catastravia",
+          description: `Deal ${damage} at each turn's end.`,
+          turnDuration: 5,
+          endOfTurnAction: (game, characterIndex) => {
+            messageCache.push(
+              "The lights of judgment lit up the sky.",
+              TCGThread.Gameroom
+            );
+            CommonCardAction.commonAttack(game, characterIndex, {
+              damage,
+              hpCost: 0,
+              isTimedEffectAttack: true,
+            });
+          },
+        })
+      );
+    }
   },
 });
 
