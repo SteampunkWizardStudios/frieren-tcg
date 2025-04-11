@@ -96,6 +96,8 @@ export const command: Command<ChatInputCommandInteraction> = {
               content: "Failed to grant achievement.",
             });
           }
+
+          break;
         case "debug-progress-bar":
           await interaction.deferReply({
             flags: MessageFlags.Ephemeral,
@@ -122,9 +124,11 @@ export const command: Command<ChatInputCommandInteraction> = {
               content: "Failed to build progress bar.",
             });
           }
+
+          break;
         case "maintenance":
           await interaction.deferReply({
-            ephemeral: true,
+            ephemeral: false,
           });
 
           const maintenance = interaction.options.getBoolean(
@@ -144,6 +148,7 @@ export const command: Command<ChatInputCommandInteraction> = {
               content: "Failed to set maintenance mode.",
             });
           }
+
           break;
         default:
           await interaction.deferReply({
