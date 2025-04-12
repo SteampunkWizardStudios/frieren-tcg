@@ -1,5 +1,7 @@
 import { Client, CommandInteraction, MessageFlags, Events } from "discord.js";
 import { Command } from "./types/command";
+import config from "@src/config";
+import logInteraction from "@src/logInteractions";
 
 export const setupInteractions = async (
   client: Client,
@@ -7,6 +9,10 @@ export const setupInteractions = async (
 ) => {
   // Set up command handling
   client.on(Events.InteractionCreate, async (interaction) => {
+    if (config.logInteractions?.logInteractions) {
+      logInteraction(interaction);
+    }
+
     if (interaction.isChatInputCommand()) {
       const command = commands[interaction.commandName];
       if (!command) {
