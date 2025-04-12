@@ -23,11 +23,11 @@ export const initiateGame = async (
   gameMode?: GameMode
 ) => {
   try {
-    const channel = (await interaction.client.channels.fetch(
+    const channel = await interaction.client.channels.fetch(
       interaction.channelId
-    )) as TextChannel;
+    );
 
-    if (channel) {
+    if (channel && channel instanceof TextChannel) {
       const gameThread = (await channel.threads.create({
         name: `${ranked ? "Ranked " : ""}TCG Game Thread: ${challenger.displayName} vs ${opponent.displayName} (ID: ${gameId})`,
         autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
@@ -123,7 +123,7 @@ export const initiateGame = async (
     } else {
       await interaction.editReply({
         content:
-          "The application doesn't have permission to create threads in this channel.",
+          "The application doesn't have permission to create threads in this channel, or the channel doesn't support threads.",
         embeds: [],
         components: [],
       });

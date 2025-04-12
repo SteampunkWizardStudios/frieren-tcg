@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   postgres:
     image: postgres:latest
@@ -6,6 +5,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: frieren_tcg
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -21,6 +22,7 @@ services:
     build: .
     ports:
       - "3000:3000"
+      - "5555:5555"
     depends_on:
       postgres:
         condition: service_healthy
@@ -30,6 +32,8 @@ services:
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
       GUILD_ID_DEV: ${GUILD_ID_DEV}
+      WATCHPACK_POLLING: true
+      CHOKIDAR_USEPOLLING: true
     volumes:
       - .:/app
       - /app/node_modules
