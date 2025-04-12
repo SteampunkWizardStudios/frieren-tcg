@@ -1,7 +1,6 @@
 import {
   ChatInputCommandInteraction,
   EmbedBuilder,
-  MessageFlags,
 } from "discord.js";
 import prismaClient from "@prismaClient";
 import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
