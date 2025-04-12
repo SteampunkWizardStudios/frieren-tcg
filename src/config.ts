@@ -15,11 +15,11 @@ const config: Config = {
   maintenance: false,
 
   logInteractions: {
-    logInteractions: false,
-    logCommandOptions: false,
+    logInteractions: true,
+    logCommandOptions: true,
   },
 
-  logPrismaReqs: false,
+  logPrismaReqs: true,
 } satisfies Config;
 
 export default config;

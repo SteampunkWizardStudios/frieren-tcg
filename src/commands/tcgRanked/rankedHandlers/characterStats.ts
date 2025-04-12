@@ -1,79 +1,88 @@
-import prismaClient from "@prismaClient";
-import { getOrCreateCharacters } from "@src/util/db/getCharacter";
-import { ChatInputCommandInteraction } from "discord.js";
-import { Prisma } from "@prisma/client";
-import { capitalizeFirstLetter } from "@src/util/utils";
-import leaderboardEmbed from "./leaderboardEmbed";
-import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import {
-  LazyPaginatedMessage,
-  PaginatedMessageMessageOptionsUnion,
-} from "@sapphire/discord.js-utilities";
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  MessageFlags,
+} from "discord.js";
+import prismaClient from "@prismaClient";
+import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
 
-export type CharacterMasteryWithPlayer = Prisma.CharacterMasteryGetPayload<{
-  include: { player: true };
-}>;
-
-const getTopNPlayersPerCharacter = async function (
-  character: CharacterName,
-  count: number
-): Promise<CharacterMasteryWithPlayer[] | null> {
-  const characterObject = (await getOrCreateCharacters([character]))[0];
-  if (characterObject) {
-    const topN = await prismaClient.characterMastery.findMany({
-      where: { characterId: characterObject.id },
-      orderBy: { masteryPoints: "desc" },
-      take: count,
-      include: {
-        player: true,
-      },
-    });
-
-    return topN;
-  } else {
-    return null;
-  }
-};
-
-export async function handleCharacterGlobalStats(
+export async function handleCharacterStats(
   interaction: ChatInputCommandInteraction
 ) {
-  const character: CharacterName =
-    (interaction.options.getString("character") as CharacterName) ??
-    CharacterName.Frieren;
-  const top100 = await getTopNPlayersPerCharacter(character, 100);
+  const character = interaction.options.getString("character", true);
 
-  if (!top100) {
+  const data = await prismaClient.character.findUnique({
+    where: { name: character },
+    select: {
+      winnerMatches: {
+        where: {
+          ladderReset: { endDate: null },
+        },
+        include: {
+          loserCharacter: {
+            select: { name: true },
+          },
+        },
+      },
+      loserMatches: {
+        where: {
+          ladderReset: { endDate: null },
+        },
+        include: {
+          winnerCharacter: {
+            select: { name: true },
+          },
+        },
+      },
+    },
+  });
+
+  if (!data) {
     await interaction.editReply({
-      content: "Failed to fetch Global Leaderboard.",
+      content: "Failed to fetch character stats.",
     });
     return;
   }
-  const idsToPoints = top100.map(({ player, masteryPoints }) => ({
-    id: player.discordId,
-    points: masteryPoints,
-  }));
 
-  const PAGE_SIZE = 10;
-  const totalPages = Math.ceil(idsToPoints.length / PAGE_SIZE);
+  // opponent name -> match history against opponent
+  const matchRecord = new Map<string, { wins: number; losses: number }>();
 
-  const pages = Array.from({ length: totalPages }, (_, i) => async () => {
-    const pageData = idsToPoints.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE);
-    const embed = await leaderboardEmbed({
-      idsToPoints: pageData,
-      leaderboard: character,
-      isCharacterLeaderboard: false,
-      page: i + 1,
-      pageSize: PAGE_SIZE,
-    });
+  for (const match of data.winnerMatches) {
+    const loserCharacter = match.loserCharacter.name;
+    const record = matchRecord.get(loserCharacter) ?? { wins: 0, losses: 0 };
+    record.wins++;
+    matchRecord.set(loserCharacter, record);
+  }
 
-    const page: PaginatedMessageMessageOptionsUnion = {
-      embeds: [embed],
-    };
+  for (const match of data.loserMatches) {
+    const winnerCharacter = match.winnerCharacter.name;
+    const record = matchRecord.get(winnerCharacter) ?? { wins: 0, losses: 0 };
+    record.losses++;
+    matchRecord.set(winnerCharacter, record);
+  }
 
-    return page;
+  const description = [
+    "Record against opponents\n",
+    ...Array.from(matchRecord.entries()).map(([opponent, record]) => {
+      const emoji =
+        characterNameToEmoji[opponent as keyof typeof characterNameToEmoji];
+      const formattedEmoji = emoji ? `${emoji} ` : "";
+      const { wins, losses } = record;
+      const totalMatches = wins + losses;
+      const winRate = totalMatches > 0 ? (wins / totalMatches) * 100 : 0;
+
+      return `${formattedEmoji}${opponent}: ${wins} wins, ${losses} losses, Win Rate: ${winRate.toFixed(2)}%`;
+    }),
+  ];
+
+  const embed = new EmbedBuilder()
+    .setTitle(`Match Stats for ${character}`)
+    .setColor("Blurple")
+    .setDescription(
+      description.length > 0 ? description.join("\n") : "No matches found."
+    );
+
+  await interaction.editReply({
+    embeds: [embed],
   });
-
-  const paginated = new LazyPaginatedMessage({ pages });
-  await paginated.run(interaction);
 }
