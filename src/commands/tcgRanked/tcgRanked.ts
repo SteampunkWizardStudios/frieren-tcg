@@ -9,7 +9,13 @@ import handlePlayerStats from "./rankedHandlers/playerStats";
 import { GAME_SETTINGS } from "../tcgChallenge/gameHandler/gameSettings";
 import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 import { handleGlobalStats } from "./rankedHandlers/globalStats";
-import { handleCharacterGlobalStats } from "./rankedHandlers/characterStats";
+import { handleCharacterGlobalStats } from "./rankedHandlers/characterLeaderboard";
+import { handleCharacterStats } from "./rankedHandlers/characterStats";
+
+const charOptions = Object.entries(CHARACTER_LIST).map(([_key, character]) => ({
+  name: character.name,
+  value: character.name,
+}));
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -64,12 +70,19 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setName("character")
             .setDescription("Select the character to get stats for.")
             .setRequired(true)
-            .addChoices(
-              Object.entries(CHARACTER_LIST).map(([_key, character]) => ({
-                name: character.name,
-                value: character.name,
-              }))
-            )
+            .addChoices(charOptions)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("character-stats")
+        .setDescription("Get match stats for a certain character.")
+        .addStringOption((option) =>
+          option
+            .setName("character")
+            .setDescription("Select the character to get stats for.")
+            .setRequired(true)
+            .addChoices(charOptions)
         )
     ),
 
@@ -92,6 +105,10 @@ export const command: Command<ChatInputCommandInteraction> = {
         }
         case "character-leaderboard": {
           await handleCharacterGlobalStats(interaction);
+          break;
+        }
+        case "character-stats": {
+          await handleCharacterStats(interaction)
           break;
         }
         default:

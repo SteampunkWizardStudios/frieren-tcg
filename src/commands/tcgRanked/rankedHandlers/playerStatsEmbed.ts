@@ -36,8 +36,12 @@ export default async function playerStatsEmbed(
     })
   );
 
+  const sortedMasteries = stats.characterMasteries.sort(
+    (a, b) => b.masteryPoints - a.masteryPoints
+  );
+
   const characterLines = await Promise.all(
-    stats.characterMasteries.map(async (mastery) => {
+    sortedMasteries.map(async (mastery) => {
       const [relativeCharacterRank, totalCharacterPlayers] = await Promise.all([
         getRelativeCharacterRank(mastery.masteryPoints, mastery.character.id),
         getTotalCharacterPlayers(mastery.character.id),
@@ -48,9 +52,7 @@ export default async function playerStatsEmbed(
       );
       const emojiLine = character?.cosmetic.emoji + " " || "";
 
-      return (
-        `${emojiLine}**${mastery.character.name}** - ${mastery.masteryPoints} (#**${relativeCharacterRank}**/${totalCharacterPlayers}) ${winRateLine(mastery.wins, mastery.losses)}`
-      );
+      return `${emojiLine}**${mastery.character.name}** - ${mastery.masteryPoints} (#**${relativeCharacterRank}**/${totalCharacterPlayers}) ${winRateLine(mastery.wins, mastery.losses)}`;
     })
   );
 
@@ -69,7 +71,7 @@ export default async function playerStatsEmbed(
 function winRateLine(wins: number, losses: number) {
   const totalGames = wins + losses;
   const winRate = totalGames > 0 ? wins / totalGames : 0;
-  return `(**${wins}**W / **${losses}**L / Winrate: **${(winRate * 100).toFixed(2)}%**)`;
+  return `(**${wins}**W / **${losses}**L / Winrate: **${(winRate * 100).toFixed(1)}%**)`;
 }
 
 async function countPlayerMatches(
