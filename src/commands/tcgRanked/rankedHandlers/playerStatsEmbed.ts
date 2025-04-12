@@ -71,7 +71,7 @@ export default async function playerStatsEmbed(
 function winRateLine(wins: number, losses: number) {
   const totalGames = wins + losses;
   const winRate = totalGames > 0 ? wins / totalGames : 0;
-  return `(**${wins}**W / **${losses}**L / Winrate: **${(winRate * 100).toFixed(1)}%**)`;
+  return `(${wins}W / ${losses}L / WR: ${(winRate * 100).toFixed(1)}%)`;
 }
 
 async function countPlayerMatches(

@@ -108,7 +108,7 @@ export const command: Command<ChatInputCommandInteraction> = {
           break;
         }
         case "character-stats": {
-          await handleCharacterStats(interaction)
+          await handleCharacterStats(interaction);
           break;
         }
         default:

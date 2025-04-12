@@ -65,7 +65,7 @@ export async function handleCharacterStats(
   }
 
   const overallWinrate =
-    overallStats.wins / (overallStats.wins + overallStats.losses);
+    (overallStats.wins / (overallStats.wins + overallStats.losses)) * 100;
 
   const formattedRecord = Array.from(matchRecord.entries())
     .sort(([, recordA], [, recordB]) => {
