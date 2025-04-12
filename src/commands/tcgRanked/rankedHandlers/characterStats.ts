@@ -62,22 +62,23 @@ export async function handleCharacterStats(
   }
 
   const formattedRecord = Array.from(matchRecord.entries())
-  .sort(([, recordA], [, recordB]) => {
-    const totalA = recordA.wins + recordA.losses;
-    const totalB = recordB.wins + recordB.losses;
-    const winRateA = totalA > 0 ? recordA.wins / totalA : 0;
-    const winRateB = totalB > 0 ? recordB.wins / totalB : 0;
-    
-    return winRateB - winRateA;
-  })
-  .map(([opponent, record]) => {
-    const emoji = characterNameToEmoji[opponent as keyof typeof characterNameToEmoji];
-    const formattedEmoji = emoji ? `${emoji} ` : "";
-    const { wins, losses } = record;
-    const totalMatches = wins + losses;
-    const winRate = totalMatches > 0 ? (wins / totalMatches) * 100 : 0;
-    return `${formattedEmoji}${opponent}: ${wins} wins, ${losses} losses, Win Rate: ${winRate.toFixed(2)}%`;
-  }),
+    .sort(([, recordA], [, recordB]) => {
+      const totalA = recordA.wins + recordA.losses;
+      const totalB = recordB.wins + recordB.losses;
+      const winRateA = totalA > 0 ? recordA.wins / totalA : 0;
+      const winRateB = totalB > 0 ? recordB.wins / totalB : 0;
+
+      return winRateB - winRateA;
+    })
+    .map(([opponent, record]) => {
+      const emoji =
+        characterNameToEmoji[opponent as keyof typeof characterNameToEmoji];
+      const formattedEmoji = emoji ? `${emoji} ` : "";
+      const { wins, losses } = record;
+      const totalMatches = wins + losses;
+      const winRate = totalMatches > 0 ? (wins / totalMatches) * 100 : 0;
+      return `${formattedEmoji}${opponent}: ${wins} Wins, ${losses} Losses, Win Rate: ${winRate.toFixed(1)}%`;
+    });
 
   const description = ["Record against opponents\n", ...formattedRecord];
 
