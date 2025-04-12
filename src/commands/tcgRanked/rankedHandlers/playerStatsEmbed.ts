@@ -49,8 +49,7 @@ export default async function playerStatsEmbed(
       const emojiLine = character?.cosmetic.emoji + " " || "";
 
       return (
-        `${emojiLine}**${mastery.character.name}** - ${mastery.masteryPoints} (#**${relativeCharacterRank}**/${totalCharacterPlayers})` +
-        `\n${winRateLine(mastery.wins, mastery.losses)}\n`
+        `${emojiLine}**${mastery.character.name}** - ${mastery.masteryPoints} (#**${relativeCharacterRank}**/${totalCharacterPlayers}) ${winRateLine(mastery.wins, mastery.losses)}`
       );
     })
   );
@@ -70,7 +69,7 @@ export default async function playerStatsEmbed(
 function winRateLine(wins: number, losses: number) {
   const totalGames = wins + losses;
   const winRate = totalGames > 0 ? wins / totalGames : 0;
-  return `${wins} Wins, ${losses} Losses, Winrate: ${(winRate * 100).toFixed(2)}%`;
+  return `(**${wins}**W / **${losses}**L / Winrate: **${(winRate * 100).toFixed(2)}%**)`;
 }
 
 async function countPlayerMatches(
