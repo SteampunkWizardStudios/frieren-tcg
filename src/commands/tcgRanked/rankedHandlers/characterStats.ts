@@ -17,6 +17,7 @@ export async function handleCharacterStats(
       winnerMatches: {
         where: {
           ladderReset: { endDate: null },
+          loserCharacter: { name: { not: character } },
         },
         include: {
           loserCharacter: {
@@ -27,6 +28,7 @@ export async function handleCharacterStats(
       loserMatches: {
         where: {
           ladderReset: { endDate: null },
+          winnerCharacter: { name: { not: character } },
         },
         include: {
           winnerCharacter: {
