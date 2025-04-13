@@ -13,6 +13,10 @@ import handleGrantAchievement from "./achievementHandler/handleGrantAchievement"
 import { ProgressBarBuilder } from "@src/tcg/formatting/percentBar";
 import config from "@src/config";
 import { isTextChannel } from "@sapphire/discord.js-utilities";
+import {
+  createAchievement,
+  deleteAchievement,
+} from "./achievementHandler/handleManageAchievement";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -69,6 +73,37 @@ export const command: Command<ChatInputCommandInteraction> = {
 
     .addSubcommand((subcommand) =>
       subcommand
+        .setName("create-achievement")
+        .setDescription("Create an achievement")
+        .addStringOption((option) =>
+          option
+            .setName("name")
+            .setDescription("Name of the achievement")
+            .setRequired(true)
+        )
+        .addStringOption((option) =>
+          option
+            .setName("description")
+            .setDescription("Description of the achievement")
+            .setRequired(true)
+        )
+    )
+
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("delete-achievement")
+        .setDescription("Delete an achievement")
+        .addStringOption((option) =>
+          option
+            .setName("achievement")
+            .setDescription("Achievement to delete")
+            .setAutocomplete(true)
+            .setRequired(true)
+        )
+    )
+
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("maintenance")
         .setDescription("Manage maintenance mode")
         .addBooleanOption((option) =>
@@ -101,6 +136,52 @@ export const command: Command<ChatInputCommandInteraction> = {
 
     try {
       switch (subcommand) {
+        case "create-achievement":
+          const name = interaction.options.getString("name", true);
+          const description = interaction.options.getString(
+            "description",
+            true
+          );
+
+          try {
+            await interaction.deferReply({
+              flags: MessageFlags.Ephemeral,
+            });
+
+            const achievement = await createAchievement(name, description);
+            await interaction.editReply({
+              content: `Achievement created successfully. ID: ${achievement.id}, \`${achievement.name}: ${achievement.description}\``,
+            });
+          } catch (error) {
+            console.error("Error creating achievement:", error);
+            await interaction.editReply({
+              content: "Failed to create achievement.",
+            });
+          }
+          break;
+        case "delete-achievement":
+          const achievementIdString = interaction.options.getString(
+            "achievement",
+            true
+          );
+          const achievementId = parseInt(achievementIdString);
+
+          try {
+            await interaction.deferReply({
+              flags: MessageFlags.Ephemeral,
+            });
+
+            await deleteAchievement(achievementId);
+            await interaction.editReply({
+              content: `Achievement deleted successfully. ID: ${achievementId}`,
+            });
+          } catch (error) {
+            console.error("Error deleting achievement:", error);
+            await interaction.editReply({
+              content: "Failed to delete achievement.",
+            });
+          }
+          break;
         case "grant-achievement":
           await interaction.deferReply({
             flags: MessageFlags.Ephemeral,
