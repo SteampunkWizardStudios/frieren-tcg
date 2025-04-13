@@ -84,7 +84,6 @@ const sectionToFields: Record<
 export async function showGameAdvancedRules(
   interaction: ChatInputCommandInteraction
 ) {
-  const dm = interaction.options.getBoolean("dm") ? true : false;
   const section =
     (interaction.options.getString("section") as AdvancedRulesSection) ??
     AdvancedRulesSection.EmpowermentAndEffectCalculation;
@@ -97,5 +96,5 @@ export async function showGameAdvancedRules(
     .setColor(0xc5c3cc)
     .setTimestamp()
     .addFields(...sectionToFields[section]);
-  sendInfoMessage(interaction, embed, [], dm);
+  sendInfoMessage(interaction, embed, []);
 }
