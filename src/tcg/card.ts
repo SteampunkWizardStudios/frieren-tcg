@@ -63,7 +63,7 @@ export default class Card implements CardProps {
 
   getDescription(): string {
     const empoweredEffects: string[] = this.effects.map((effect) =>
-      this.calculateEffectValue(effect).toFixed(2)
+      `**`+this.calculateEffectValue(effect).toFixed(2)+`**`
     );
     return this.description(empoweredEffects);
   }
