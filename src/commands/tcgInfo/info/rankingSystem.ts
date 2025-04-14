@@ -4,7 +4,6 @@ import { sendInfoMessage } from "./util/sendInfoMessage";
 export async function showRankingSystem(
   interaction: ChatInputCommandInteraction
 ) {
-  const dm = interaction.options.getBoolean("dm") ? true : false;
 
   const embed = new EmbedBuilder()
     .setTitle("Frieren TCG - Ranking System")
@@ -49,5 +48,5 @@ export async function showRankingSystem(
       }
     );
 
-  sendInfoMessage(interaction, embed, [], dm);
+  sendInfoMessage(interaction, embed, []);
 }
