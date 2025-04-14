@@ -11,9 +11,8 @@ export const sendInfoMessage = async (
   interaction: ChatInputCommandInteraction,
   embed: EmbedBuilder,
   components?: ActionRowBuilder<StringSelectMenuBuilder>[],
-  dm?: boolean
 ) => {
-  if (interaction.channel?.type === ChannelType.DM || dm) {
+  if (interaction.channel?.type === ChannelType.DM) {
     await interaction.reply({
       content: `Sending DM...`,
       flags: MessageFlags.Ephemeral,

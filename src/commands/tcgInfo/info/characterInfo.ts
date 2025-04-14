@@ -16,7 +16,6 @@ import Card from "../../../tcg/card";
 export async function showCharacterInfo(
   interaction: ChatInputCommandInteraction
 ) {
-  const dm = interaction.options.getBoolean("dm") ? true : false;
 
   try {
     const customCharacterInfoId = `character-info-${interaction.user.id}-${Date.now()}`;
@@ -29,8 +28,7 @@ export async function showCharacterInfo(
     const response = await sendInfoMessage(
       interaction,
       characterDropdown.embed,
-      [characterDropdown.dropdown],
-      dm
+      [characterDropdown.dropdown]
     );
 
     // Create a collector for the dropdown menu

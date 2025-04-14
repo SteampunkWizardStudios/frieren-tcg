@@ -32,12 +32,6 @@ export const command: Command<ChatInputCommandInteraction> = {
             )
             .setRequired(false)
         )
-        .addBooleanOption((option) =>
-          option
-            .setName("dm")
-            .setDescription("DM this information instead. Default: False")
-            .setRequired(false)
-        )
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -69,34 +63,17 @@ export const command: Command<ChatInputCommandInteraction> = {
               }
             )
         )
-        .addBooleanOption((option) =>
-          option
-            .setName("dm")
-            .setDescription("DM this information instead. Default: False")
-            .setRequired(false)
-        )
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("ranking-system")
         .setDescription("Get information about the game's ranking system")
-        .addBooleanOption((option) =>
-          option
-            .setName("dm")
-            .setDescription("DM this information instead. Default: False")
-            .setRequired(false)
-        )
+        
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("character")
         .setDescription("Get information about the character")
-        .addBooleanOption((option) =>
-          option
-            .setName("dm")
-            .setDescription("DM this information instead. Default: False")
-            .setRequired(false)
-        )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
