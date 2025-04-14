@@ -11,7 +11,6 @@ export async function showGameHowToPlay(
   interaction: ChatInputCommandInteraction
 ) {
   const isDetailed = interaction.options.getBoolean("detailed");
-  const dm = interaction.options.getBoolean("dm") ? true : false;
 
   const embed = new EmbedBuilder()
     .setColor(0xc5c3cc)
@@ -58,5 +57,5 @@ export async function showGameHowToPlay(
     );
   }
 
-  sendInfoMessage(interaction, embed, [], dm);
+  sendInfoMessage(interaction, embed, []);
 }

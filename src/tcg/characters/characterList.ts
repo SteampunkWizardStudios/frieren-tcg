@@ -10,12 +10,6 @@ import { CharacterData } from "./characterData/characterData";
 import { Denken } from "./characterData/characters/Denken";
 import { Himmel } from "./characterData/characters/Himmel";
 
-const ALLOWLISTED_USER_IDS = new Set([
-  "139757382375833600", // Hexa
-  "391002488737628161", // Dodo
-  "1206295979918106705", // Steam
-]);
-
 export const CHARACTER_LIST: CharacterData[] = [
   Frieren,
   Sense,
@@ -28,13 +22,3 @@ export const CHARACTER_LIST: CharacterData[] = [
   Denken,
   Himmel,
 ];
-
-//   if (ALLOWLISTED_USER_IDS.has(user.id)) {
-//     return fullCharacterList;
-//   } else {
-//     if (characterSelectState.isSeinSerieEnabled) {
-//       return fullCharacterList.slice(0, 3);
-//     } else {
-//       return fullCharacterList.slice(0, 2); // only Serie/Sein
-//     }
-//   }
