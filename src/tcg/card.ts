@@ -1,4 +1,5 @@
 import { MessageCache } from "../tcgChatInteractions/messageCache";
+import { CharacterName } from "./characters/metadata/CharacterName";
 import { CardEmoji } from "./formatting/emojis";
 import Game from "./game";
 
@@ -15,6 +16,7 @@ type CardMetadata = {
   himmelPartyMember?: "Heiter" | "Eisen" | "Frieren";
   teaTime?: number;
   resolve?: number;
+  signatureMoveOf?: CharacterName;
 };
 
 export type CardProps = {
