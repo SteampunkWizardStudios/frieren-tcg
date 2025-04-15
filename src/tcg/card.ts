@@ -70,7 +70,7 @@ export default class Card implements CardProps {
     this.priority = cardProps.priority ?? 0;
     this.imitated = cardProps.imitated ?? false;
     this.tags = cardProps.tags ?? {};
-	this.cardMetadata = cardProps.cardMetadata ?? {};
+    this.cardMetadata = cardProps.cardMetadata ?? {};
     this.emoji = cardProps.emoji ?? CardEmoji.GENERIC;
     this.cosmetic = cardProps.cosmetic;
     this.printEmpower = cardProps.printEmpower ?? true;

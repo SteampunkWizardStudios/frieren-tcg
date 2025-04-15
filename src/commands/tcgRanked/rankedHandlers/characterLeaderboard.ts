@@ -42,9 +42,8 @@ export async function handleCharacterGlobalStats(
     (interaction.options.getString("character") as CharacterName) ??
     CharacterName.Frieren;
 
-	const color = CHARACTER_LIST.find(
-		(char) => char.name === character
-	)?.cosmetic.color;
+  const color = CHARACTER_LIST.find((char) => char.name === character)?.cosmetic
+    .color;
 
   const top100 = await getTopNPlayersPerCharacter(character, 100);
 
@@ -70,7 +69,7 @@ export async function handleCharacterGlobalStats(
       isCharacterLeaderboard: false,
       page: i + 1,
       pageSize: PAGE_SIZE,
-	  color,
+      color,
     });
 
     const page: PaginatedMessageMessageOptionsUnion = {

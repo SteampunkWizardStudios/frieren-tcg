@@ -93,9 +93,8 @@ export async function handleCharacterStats(
     ...formattedRecord,
   ];
 
-  const color = CHARACTER_LIST.find(
-		(char) => char.name === character
-	)?.cosmetic.color;
+  const color = CHARACTER_LIST.find((char) => char.name === character)?.cosmetic
+    .color;
 
   const embed = new EmbedBuilder()
     .setTitle(`Match Stats for ${character}`)
