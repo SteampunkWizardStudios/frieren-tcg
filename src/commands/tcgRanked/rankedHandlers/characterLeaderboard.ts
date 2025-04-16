@@ -8,7 +8,7 @@ import {
   LazyPaginatedMessage,
   PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
-import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
 
 export type CharacterMasteryWithPlayer = Prisma.CharacterMasteryGetPayload<{
   include: { player: true };
@@ -42,8 +42,7 @@ export async function handleCharacterGlobalStats(
     (interaction.options.getString("character") as CharacterName) ??
     CharacterName.Frieren;
 
-  const color = CHARACTER_LIST.find((char) => char.name === character)?.cosmetic
-    .color;
+  const color = CHARACTER_MAP[character].cosmetic.color;
 
   const top100 = await getTopNPlayersPerCharacter(character, 100);
 
