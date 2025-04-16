@@ -24,6 +24,7 @@ export enum CharacterEmoji {
   LAUFEN = "<:LaufenNom:1198338042449113190>",
   DENKEN = "<:DenkenOld:1198339325436371074>",
   HIMMEL = "<:HimmelCharming:1185700266452992010>",
+  UBEL = "<:UbelSnipsnip:1140592823243112468>",
 
   STONE_GEISEL = "🐦‍⬛",
   FIRE_GOLEM = "❤️‍🔥",
@@ -36,7 +37,7 @@ export enum CharacterEmoji {
   COSMIC_TON = "👁️",
 
   SEIN_SERIE = "🤝",
-}
+};
 
 export const characterNameToEmoji: Record<CharacterName, CharacterEmoji> = {
   Frieren: CharacterEmoji.FRIEREN,
@@ -49,6 +50,7 @@ export const characterNameToEmoji: Record<CharacterName, CharacterEmoji> = {
   Laufen: CharacterEmoji.LAUFEN,
   Denken: CharacterEmoji.DENKEN,
   Himmel: CharacterEmoji.HIMMEL,
+  Übel: CharacterEmoji.UBEL,
 };
 
 export enum CardEmoji {
@@ -72,9 +74,10 @@ export enum CardEmoji {
   LAUFEN_CARD = "<:LaufenCard:1347723068943892490>",
   DENKEN_CARD = "<:DenkenCard:1358052686418673725>",
   HIMMEL_CARD = "<:HimmelCard:1358052672787185845>",
+  UBEL_CARD = "<:UbelCard:1361844627430183163>",
 
   FLOWER_FIELD = "<:FlowerFieldCard:1347719503290695803>",
-}
+};
 
 export enum ProgressBarEmoji {
   START_EMPTY = "<:PB1E:1164479248271159306>",
@@ -87,4 +90,4 @@ export enum ProgressBarEmoji {
   END_EMPTY = "<:PB3E:1164479719316652076>",
   END_HALF = "<:PB3HF:1164479711573983272>",
   END_FULL = "<:PB3F:1164479723225763892>",
-}
+};

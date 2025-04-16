@@ -385,7 +385,7 @@ const elementaryDefensiveMagicBase = new Card({
   },
 });
 
-const elementaryDefensiveMagic = new Card({
+export const elementaryDefensiveMagic = new Card({
   title: "Elementary Defensive Magic",
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,

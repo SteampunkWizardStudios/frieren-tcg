@@ -91,7 +91,7 @@ export const a_pierce = new Card({
   },
 });
 
-const hairBarrier = new Card({
+export const hairBarrier = new Card({
   title: "Hair Barrier",
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,

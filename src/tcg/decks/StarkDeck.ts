@@ -114,7 +114,7 @@ const jumboBerrySpecialBreak = new Card({
   },
 });
 
-const block = new Card({
+export const block = new Card({
   title: "Block",
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
@@ -229,7 +229,7 @@ const a_eisensAxeCleave = new Card({
   },
 });
 
-const a_lightningStrike = new Card({
+export const a_lightningStrike = new Card({
   title: "Lightning Strike",
   description: ([dmg]) =>
     `Priority+1. HP-15. DEF-5 for this turn. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack.`,

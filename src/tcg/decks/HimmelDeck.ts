@@ -432,7 +432,7 @@ const heiterTrustYou = new Card({
   },
 });
 
-const quickBlock = new Card({
+export const quickBlock = new Card({
   title: "Quick Block",
   description: ([def]) =>
     `Priority+3. Increases DEF by ${def} until the end of the turn.`,

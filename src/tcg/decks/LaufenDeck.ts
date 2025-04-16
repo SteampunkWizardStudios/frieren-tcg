@@ -161,7 +161,7 @@ const quickDodge = new Card({
   },
 });
 
-const parry = new Card({
+export const parry = new Card({
   title: "Parry",
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,

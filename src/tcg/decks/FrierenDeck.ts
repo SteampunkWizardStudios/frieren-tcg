@@ -180,7 +180,7 @@ export const demonMagicAnalysis = new Card({
   },
 });
 
-const ordinaryDefensiveMagic = new Card({
+export const ordinaryDefensiveMagic = new Card({
   title: "Ordinary Defensive Magic",
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
