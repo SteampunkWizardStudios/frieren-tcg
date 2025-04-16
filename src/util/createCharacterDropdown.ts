@@ -7,6 +7,7 @@ import {
 import { createCountdownTimestamp } from "./utils";
 import { CharacterData } from "../tcg/characters/characterData/characterData";
 import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import characterSelect from "./messageComponents/characterSelect";
 
 export const createCharacterDropdown = async (
   user: User,
@@ -59,9 +60,14 @@ export const createCharacterDropdown = async (
   const dropdown =
     new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(selectMenu);
 
+  const { charSelect, charSelectActionRow } = characterSelect({
+    includeRandom: true,
+    customId,
+  });
+
   return {
     embed,
-    selectMenu,
-    dropdown,
+    selectMenu: charSelect,
+    dropdown: charSelectActionRow,
   };
 };
