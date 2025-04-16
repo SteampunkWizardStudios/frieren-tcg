@@ -11,10 +11,10 @@ export default function logInteraction(interaction: Interaction) {
   const interactionType = InteractionType[interaction.type];
   const context = interaction.context
     ? InteractionContextType[interaction.context]
-    : "unknown";
+    : interaction.context;
   const channelType = interaction.channel?.type
     ? ChannelType[interaction.channel.type]
-    : "unknown";
+    : interaction.channel?.type;
 
   console.log(
     `${displayName} - Type: ${interactionType} Context: ${context} Channel Type: ${channelType}`
@@ -27,9 +27,10 @@ export default function logInteraction(interaction: Interaction) {
       `Ran Command: ${interaction.commandName} Subcommand: ${subcommand}`
     );
 
-    if (config.logInteractions?.logCommandOptions) {
+    const options = interaction.options.data;
+    if (config.logInteractions?.logCommandOptions && options.length > 0) {
       console.log(
-        `Command Options: ${interaction.options.data
+        `Command Options: ${options
           .map((option) => {
             return `${option.name}: ${option.value}`;
           })

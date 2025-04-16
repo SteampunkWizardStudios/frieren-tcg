@@ -1,4 +1,5 @@
 import { MessageCache } from "../tcgChatInteractions/messageCache";
+import { CharacterName } from "./characters/metadata/CharacterName";
 import { CardEmoji } from "./formatting/emojis";
 import Game from "./game";
 
@@ -6,6 +7,17 @@ export interface CardCosmetic {
   cardImageUrl?: string;
   cardGif?: string;
 }
+
+type CardMetadata = {
+  seriePool?: "Common" | "Rare" | "Ultra-rare";
+  analysis?: boolean;
+  postAnalysis?: boolean;
+  waldgoseDamage?: number;
+  himmelPartyMember?: "Heiter" | "Eisen" | "Frieren";
+  teaTime?: number;
+  resolve?: number;
+  signatureMoveOf?: CharacterName;
+};
 
 export type CardProps = {
   title: string;
@@ -23,6 +35,7 @@ export type CardProps = {
   priority?: number;
   imitated?: boolean;
   tags?: Record<string, number>;
+  cardMetadata?: CardMetadata;
   printEmpower?: boolean;
 };
 
@@ -44,6 +57,7 @@ export default class Card implements CardProps {
   priority: number;
   imitated: boolean;
   tags: Record<string, number>;
+  cardMetadata: CardMetadata;
   printEmpower: boolean;
 
   constructor(cardProps: CardProps) {
@@ -56,14 +70,15 @@ export default class Card implements CardProps {
     this.priority = cardProps.priority ?? 0;
     this.imitated = cardProps.imitated ?? false;
     this.tags = cardProps.tags ?? {};
+    this.cardMetadata = cardProps.cardMetadata ?? {};
     this.emoji = cardProps.emoji ?? CardEmoji.GENERIC;
     this.cosmetic = cardProps.cosmetic;
     this.printEmpower = cardProps.printEmpower ?? true;
   }
 
   getDescription(): string {
-    const empoweredEffects: string[] = this.effects.map((effect) =>
-      `**${this.calculateEffectValue(effect).toFixed(2)}**`
+    const empoweredEffects: string[] = this.effects.map(
+      (effect) => `**${this.calculateEffectValue(effect).toFixed(2)}**`
     );
     return this.description(empoweredEffects);
   }

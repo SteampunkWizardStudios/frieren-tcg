@@ -1,6 +1,8 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import prismaClient from "@prismaClient";
 import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
+import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
+import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 
 export async function handleCharacterStats(
   interaction: ChatInputCommandInteraction
@@ -92,9 +94,11 @@ export async function handleCharacterStats(
     ...formattedRecord,
   ];
 
+  const color = CHARACTER_MAP[character as CharacterName].cosmetic.color;
+
   const embed = new EmbedBuilder()
     .setTitle(`Match Stats for ${character}`)
-    .setColor("Blurple")
+    .setColor(color ?? "Blurple")
     .setDescription(
       description.length > 0 ? description.join("\n") : "No matches found."
     );
