@@ -1,6 +1,6 @@
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
-import { EmbedBuilder } from "discord.js";
+import { ColorResolvable, EmbedBuilder } from "discord.js";
 
 const rankEmotes: Record<number, String> = {
   1: "🥇",
@@ -24,6 +24,7 @@ export default async function leaderboardEmbed(props: {
   isCharacterLeaderboard: boolean;
   page?: number;
   pageSize?: number;
+  color?: ColorResolvable;
 }): Promise<EmbedBuilder> {
   const {
     idsToPoints,
@@ -31,6 +32,7 @@ export default async function leaderboardEmbed(props: {
     isCharacterLeaderboard,
     page = 1,
     pageSize = 10,
+	color = "Blurple",
   } = props;
 
   // when isCharacterLeaderboard is true, leaderboard is a character name, otherwise it's the name of a ladder (classic, blitz, etc.)
@@ -46,7 +48,7 @@ export default async function leaderboardEmbed(props: {
   });
 
   return new EmbedBuilder()
-    .setColor("Blurple")
+    .setColor(color)
     .setTitle(leaderboardTitle)
     .addFields({
       name: "Top Players",
