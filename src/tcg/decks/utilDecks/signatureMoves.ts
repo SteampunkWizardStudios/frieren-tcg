@@ -6,7 +6,7 @@ import {
 } from "../DenkenDeck";
 
 import {
-    a_vollzanbel
+    a_theHeightOfMagic
 } from "../FrierenDeck";
 
 import {
@@ -41,16 +41,20 @@ import {
     a_geisel
 } from "../StilleDeck";
 
+import {
+    a_malevolentShrine
+} from "../UbelDeck";
+
 export const signatureMoves: Record<CharacterName, Card> = {
-    Denken: a_catastraviaBase,
-    Frieren: a_vollzanbel,
-    Himmel: a_realHeroSwing,
-    Laufen: a_supersonicStrike,
-    Linie: a_erfassenAxe,
-    Sein: a_threeSpearsOfTheGoddess,
-    Sense: a_piercingDrill,
-    Serie: ancientBarrierMagic,
-    Stark: a_lightningStrike,
-    Stille: a_geisel,
-    Übel: a_geisel, //CHANGE THIS LATER
+    [CharacterName.Denken]: a_catastraviaBase,
+    [CharacterName.Frieren]: a_theHeightOfMagic,
+    [CharacterName.Himmel]: a_realHeroSwing,
+    [CharacterName.Laufen]: a_supersonicStrike,
+    [CharacterName.Linie]: a_erfassenAxe,
+    [CharacterName.Sein]: a_threeSpearsOfTheGoddess,
+    [CharacterName.Sense]: a_piercingDrill,
+    [CharacterName.Serie]: ancientBarrierMagic,
+    [CharacterName.Stark]: a_lightningStrike,
+    [CharacterName.Stille]: a_geisel,
+    [CharacterName.Ubel]: a_malevolentShrine,
 } as const

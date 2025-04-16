@@ -40,17 +40,17 @@ export enum CharacterEmoji {
 };
 
 export const characterNameToEmoji: Record<CharacterName, CharacterEmoji> = {
-  Frieren: CharacterEmoji.FRIEREN,
-  Sense: CharacterEmoji.SENSE,
-  Serie: CharacterEmoji.SERIE,
-  Stille: CharacterEmoji.STILLE,
-  Linie: CharacterEmoji.LINIE,
-  Sein: CharacterEmoji.SEIN,
-  Stark: CharacterEmoji.STARK,
-  Laufen: CharacterEmoji.LAUFEN,
-  Denken: CharacterEmoji.DENKEN,
-  Himmel: CharacterEmoji.HIMMEL,
-  Übel: CharacterEmoji.UBEL,
+  [CharacterName.Frieren]: CharacterEmoji.FRIEREN,
+  [CharacterName.Sense]: CharacterEmoji.SENSE,
+  [CharacterName.Serie]: CharacterEmoji.SERIE,
+  [CharacterName.Stille]: CharacterEmoji.STILLE,
+  [CharacterName.Linie]: CharacterEmoji.LINIE,
+  [CharacterName.Sein]: CharacterEmoji.SEIN,
+  [CharacterName.Stark]: CharacterEmoji.STARK,
+  [CharacterName.Laufen]: CharacterEmoji.LAUFEN,
+  [CharacterName.Denken]: CharacterEmoji.DENKEN,
+  [CharacterName.Himmel]: CharacterEmoji.HIMMEL,
+  [CharacterName.Ubel]: CharacterEmoji.UBEL,
 };
 
 export enum CardEmoji {

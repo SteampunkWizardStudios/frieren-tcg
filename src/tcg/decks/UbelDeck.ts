@@ -7,6 +7,8 @@ import Rolls from "../util/rolls";
 import { CardEmoji } from "../formatting/emojis";
 import { MessageCache } from "../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import { signatureMoves } from "./utilDecks/signatureMoves"
+import { CharacterName} from "../characters/metadata/CharacterName"
 
 const a_reelseiden = new Card({
   title: "Reelseiden",
@@ -83,7 +85,7 @@ const a_dismantle = new Card({
   },
 });
 
-const a_malevolentShrine = new Card({
+export const a_malevolentShrine = new Card({
   title: "Malevolent Shrine",
   description: ([dmg]) =>
     `HP-15. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
@@ -265,34 +267,39 @@ export const sorganeil = new Card({
 export const empathy = new Card({
   title: `Empathy`,
   description: ([dmg]) =>
-    `Will fail if used before turn 5. Use the opponents signature move at empowerement -2.`,
+    `Use the opponent signature spell. Will fail if used before turn 5.`,
   emoji: CardEmoji.UBEL_CARD,
-  effects: [30],
+  effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
+    const opponent = game.getCharacter(1-characterIndex);
+    // console.log(signatureMoves["Übel" as CharacterName]);
     messageCache.push(
-      `${character.name} learns a new spell!`,
+      `${character.name} tries to empathize with ${opponent.name}...`,
       TCGThread.Gameroom
     );
 
-    if (game.turnCount < 5) {
+    if (game.turnCount < 2) {
       messageCache.push(
-        `${character.name} hasn't got enough time to empathise with ${game.characters[1 - characterIndex]}`,
+        `but ${character.name} didn't get the time to know ${opponent.name} well enough!`,
         TCGThread.Gameroom
       );
     } else {
       messageCache.push(
-        "The Height of Magic is on display.",
+        `${character.name} learned some new magic`,
         TCGThread.Gameroom
       );
-      const damage = this.calculateEffectValue(this.effects[0]);
-      CommonCardAction.commonAttack(game, characterIndex, {
-        damage,
-        hpCost: 0,
-      });
-      character.adjustStat(-20, StatsEnum.DEF);
-      character.adjustStat(-20, StatsEnum.SPD);
-      character.setStat(1, StatsEnum.HP);
+      const learnedMagic = signatureMoves[opponent.name];
+      const usedMagic = new Card({
+            ...learnedMagic,
+            empowerLevel: this.empowerLevel - 2,
+          });
+
+      messageCache.push(
+        `${character.name} used **${usedMagic.getTitle()}**!`,
+        TCGThread.Gameroom
+      );
+      usedMagic.cardAction(game, characterIndex, messageCache);
     }
   },
 });
@@ -300,13 +307,13 @@ export const empathy = new Card({
 
 
 export const ubelDeck = [
-  { card: a_reelseiden, count: 3 },
-  { card: a_cleave, count: 2 },
-  { card: a_dismantle, count: 2},
-  { card: a_malevolentShrine, count: 1},
-  { card: rushdown, count: 2 },
-  { card: defend, count: 1 },
-  { card: recompose, count: 2},
-  { card: sorganeil, count: 1},
-  { card: empathy, count: 1}
+  { card: a_reelseiden, count: 0 },
+  { card: a_cleave, count: 0 },
+  { card: a_dismantle, count: 0},
+  { card: a_malevolentShrine, count: 5},
+  { card: rushdown, count: 0 },
+  { card: defend, count: 0},
+  { card: recompose, count: 0},
+  { card: sorganeil, count: 0},
+  { card: empathy, count: 10}
 ];
