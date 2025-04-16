@@ -8,12 +8,12 @@ import { CardEmoji } from "../formatting/emojis";
 import { MessageCache } from "../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
-const a_peck = new Card({
-  title: "Peck",
+const a_reelseiden = new Card({
+  title: "Reelseiden",
   description: ([dmg]) =>
-    `SPD-2. Discard a random card in hand and draw 1 card. DMG ${dmg}.`,
+    `HP-6. Has a 30% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
-  effects: [5],
+  effects: [8],
   cardAction: function (
     this: Card,
     game,
@@ -22,118 +22,134 @@ const a_peck = new Card({
   ) {
     const character = game.characters[characterIndex];
     messageCache.push(
-      `${character.name} pecked the opposition!`,
+      `${character.name} slashed the opponent!`,
       TCGThread.Gameroom
     );
 
-    character.adjustStat(-2, StatsEnum.SPD);
-    character.discardCard(Rolls.rollDAny(5));
-    character.drawCard();
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 0,
+      hpCost: 6,
     });
   },
 });
 
-const a_ironFeather = new Card({
-  title: "Iron Feather",
-  description: ([def, dmg]) => `SPD-3. DEF+${def}. DMG ${dmg}.`,
+const a_cleave = new Card({
+  title: "Cleave",
+  description: ([dmg]) =>
+    `HP-6. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
-  effects: [1, 3],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  effects: [12],
+  cardAction: function (
+    this: Card,
+    game,
+    characterIndex,
+    messageCache: MessageCache
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
-      `${character.name} sharpened ${character.cosmetic.pronouns.possessive} feathers!`,
+      `${character.name} slashed the opponent!`,
       TCGThread.Gameroom
     );
 
-    character.adjustStat(-3, StatsEnum.SPD);
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF
-    );
     CommonCardAction.commonAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[1]),
-      hpCost: 0,
+      damage: this.calculateEffectValue(this.effects[0]),
+      hpCost: 8,
     });
   },
 });
 
-const hide = new Card({
-  title: "Hide",
-  description: ([def]) => `SPD-3. DEF+${def}.`,
+const a_dismantle = new Card({
+  title: "Dismantle",
+  description: ([dmg]) =>
+    `HP-12. Has a 50% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
-  effects: [2],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  effects: [16],
+  cardAction: function (
+    this: Card,
+    game,
+    characterIndex,
+    messageCache: MessageCache
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
-      `${character.name} hid ${character.cosmetic.pronouns.reflexive} and flew to safety!`,
+      `${character.name} slashed the opponent!`,
       TCGThread.Gameroom
     );
 
-    character.adjustStat(-3, StatsEnum.SPD);
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage: this.calculateEffectValue(this.effects[0]),
+      hpCost: 12,
+    });
+  },
+});
+
+const a_malevolentShrine = new Card({
+  title: "Malevolent Shrine",
+  description: ([dmg]) =>
+    `HP-15. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+  emoji: CardEmoji.UBEL_CARD,
+  effects: [22],
+  cardAction: function (
+    this: Card,
+    game,
+    characterIndex,
+    messageCache: MessageCache
+  ) {
+    const character = game.characters[characterIndex];
+    messageCache.push(
+      `${character.name} slashed the opponent!`,
+      TCGThread.Gameroom
+    );
+
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage: this.calculateEffectValue(this.effects[0]),
+      hpCost: 15,
+    });
+  },
+});
+
+
+
+export const rushdown = new Card({
+  title: "Rushdown",
+  description: ([spd]) =>
+    `Increases SPD by ${spd} for 3 turns. Attacks will not miss during this period. At the end of every turn, HP-5.`,
+  emoji: CardEmoji.UBEL_CARD,
+  effects: [10],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.getCharacter(characterIndex);
+    messageCache.push(`${character.name} rushes towards the ennemy!`, TCGThread.Gameroom);
+
+    const turnCount = 3;
+    const spdIncrease = this.calculateEffectValue(this.effects[0]);
+    character.adjustStat(spdIncrease, StatsEnum.SPD);
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Rushdown",
+        description: `Increases SPD by ${spdIncrease} for ${turnCount} turns. Attacks will not miss`,
+        turnDuration: turnCount,
+        endOfTurnAction: (_game, _characterIndex, _messageCache) => {
+          messageCache.push(
+            `${character.name} is being reckless.`,
+            TCGThread.Gameroom
+          );
+          character.adjustStat(-5, StatsEnum.HP);
+        },
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+          messageCache.push(
+            `${character.name} retreats.`,
+            TCGThread.Gameroom
+          );
+          character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
+        },
+      })
     );
   },
 });
 
-const roost = new Card({
-  title: "Roost",
-  description: ([hp]) => `SPD-5 for 3 turns. DEF-3 for 2 turns. Heal ${hp}HP.`,
-  emoji: CardEmoji.UBEL_CARD,
-  effects: [5],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} landed on the ground.`,
-      TCGThread.Gameroom
-    );
-
-    character.adjustStat(-5, StatsEnum.SPD);
-    character.adjustStat(-3, StatsEnum.DEF);
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP
-    );
-
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Roost",
-        description: `DEF-3 for 2 turns.`,
-        turnDuration: 2,
-        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
-          messageCache.push(
-            `${character.name} opened its wings.`,
-            TCGThread.Gameroom
-          );
-          character.adjustStat(3, StatsEnum.DEF);
-          TCGThread.Gameroom;
-        },
-      })
-    );
-
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Roost",
-        description: `SPD-5 for 3 turns.`,
-        turnDuration: 3,
-        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
-          messageCache.push(
-            `${character.name} took flight again!`,
-            TCGThread.Gameroom
-          );
-          character.adjustStat(5, StatsEnum.SPD);
-        },
-      })
-    );
-  },
-});
-
-const deflect = new Card({
-  title: "Deflect",
+const defend = new Card({
+  title: "Defend",
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -142,7 +158,7 @@ const deflect = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
-      `${character.name} prepares to deflect an attack!`,
+      `${character.name} prepares to defend against an incoming attack!`,
       TCGThread.Gameroom
     );
 
@@ -150,7 +166,7 @@ const deflect = new Card({
     character.adjustStat(def, StatsEnum.DEF);
     character.timedEffects.push(
       new TimedEffect({
-        name: "Deflect",
+        name: "Defend",
         description: `Increases DEF by ${def} until the end of the turn.`,
         turnDuration: 1,
         priority: -1,
@@ -162,72 +178,135 @@ const deflect = new Card({
   },
 });
 
-const flyAway = new Card({
-  title: "Fly Away",
-  description: ([spd]) => `Priority+2. SPD + ${spd} until the end of the turn.`,
+const recompose = new Card({
+  title: "Recompose",
+  description: ([hp]) => `SPD-10 for 3 turns. Heal ${hp}HP.`,
   emoji: CardEmoji.UBEL_CARD,
-  priority: 2,
-  effects: [25],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(`${character.name} flew away!`, TCGThread.Gameroom);
-
-    const spd = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(spd, StatsEnum.SPD);
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Deflect",
-        description: `Increases SPD by ${spd} until the end of the turn.`,
-        priority: -1,
-        turnDuration: 1,
-        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-spd, StatsEnum.SPD);
-        },
-      })
-    );
-  },
-});
-
-export const a_geisel = new Card({
-  title: "Geisel",
-  description: ([dmg]) =>
-    `SPD-20. Lands on a tree and asks its fellow Geisel for help! Geisel (ATK: 15) will show up to attack for ${dmg}DMG between 1 - 3 turns.`,
-  emoji: CardEmoji.UBEL_CARD,
-  effects: [15],
+  effects: [10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
-      `${character.name} called its fellow friends the Geisel for help!`,
+      `${character.name} calms down.`,
       TCGThread.Gameroom
     );
 
-    character.adjustStat(-20, StatsEnum.SPD);
-    const damage = this.calculateEffectValue(this.effects[0]);
-    const turnCount = Rolls.rollDAny(3) + 1;
+    character.adjustStat(-10, StatsEnum.SPD);
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[0]),
+      StatsEnum.HP
+    );
+
     character.timedEffects.push(
       new TimedEffect({
-        name: "Geisel Strike!",
-        description: `Deal ${damage} at each turn's end.`,
-        turnDuration: turnCount,
-        endOfTurnAction: (game, characterIndex) => {
-          messageCache.push("The Geisel doesn't stop!", TCGThread.Gameroom);
-          CommonCardAction.commonAttack(game, characterIndex, {
-            damage: damage + 15,
-            hpCost: 0,
-            isTimedEffectAttack: true,
-          });
+        name: "Recompose",
+        description: `SPD-10 for 2 turns, can't land attacks.`,
+        turnDuration: 2,
+        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
+          messageCache.push(
+            `${character.name} is ready to throw down again!`,
+            TCGThread.Gameroom
+          );
+          character.adjustStat(10, StatsEnum.SPD);
+          TCGThread.Gameroom;
         },
       })
     );
+
   },
 });
 
+export const sorganeil = new Card({
+  title: "Sorganeil",
+  description: ([dmg]) =>
+    `Priority-1. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
+  emoji: CardEmoji.UBEL_CARD,
+  priority: -1,
+  effects: [22],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.getCharacter(characterIndex);
+
+    if (character.adjustStat(-15, StatsEnum.HP)) {
+      messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
+      const damage = this.calculateEffectValue(this.effects[0]);
+
+      character.adjustStat(-5, StatsEnum.DEF);
+      game.characters[characterIndex].timedEffects.push(
+        new TimedEffect({
+          name: "Opening",
+          description: `DEF-5 for this turn.`,
+          turnDuration: 1,
+          endOfTimedEffectAction: (game, characterIndex) => {
+            game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
+          },
+        })
+      );
+      game.characters[characterIndex].timedEffects.push(
+        new TimedEffect({
+          name: "Impending Lightning",
+          description: `Strike for ${damage} damage.`,
+          turnDuration: 1,
+          endOfTimedEffectAction: (game, characterIndex) => {
+            messageCache.push(
+              `${character.name} performs Lightning Strike!`,
+              TCGThread.Gameroom
+            );
+            CommonCardAction.commonAttack(game, characterIndex, {
+              damage,
+              hpCost: 0,
+              isTimedEffectAttack: true,
+            });
+          },
+        })
+      );
+    }
+  },
+});
+
+export const empathy = new Card({
+  title: `Empathy`,
+  description: ([dmg]) =>
+    `Will fail if used before turn 5. Use the opponents signature move at empowerement -2.`,
+  emoji: CardEmoji.UBEL_CARD,
+  effects: [30],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.getCharacter(characterIndex);
+    messageCache.push(
+      `${character.name} learns a new spell!`,
+      TCGThread.Gameroom
+    );
+
+    if (game.turnCount < 5) {
+      messageCache.push(
+        `${character.name} hasn't got enough time to empathise with ${game.characters[1 - characterIndex]}`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(
+        "The Height of Magic is on display.",
+        TCGThread.Gameroom
+      );
+      const damage = this.calculateEffectValue(this.effects[0]);
+      CommonCardAction.commonAttack(game, characterIndex, {
+        damage,
+        hpCost: 0,
+      });
+      character.adjustStat(-20, StatsEnum.DEF);
+      character.adjustStat(-20, StatsEnum.SPD);
+      character.setStat(1, StatsEnum.HP);
+    }
+  },
+});
+
+
+
 export const ubelDeck = [
-  { card: a_peck, count: 2 },
-  { card: a_ironFeather, count: 3 },
-  { card: hide, count: 2 },
-  { card: roost, count: 2 },
-  { card: deflect, count: 1 },
-  { card: flyAway, count: 3 },
-  { card: a_geisel, count: 2 },
+  { card: a_reelseiden, count: 3 },
+  { card: a_cleave, count: 2 },
+  { card: a_dismantle, count: 2},
+  { card: a_malevolentShrine, count: 1},
+  { card: rushdown, count: 2 },
+  { card: defend, count: 1 },
+  { card: recompose, count: 2},
+  { card: sorganeil, count: 1},
+  { card: empathy, count: 1}
 ];
