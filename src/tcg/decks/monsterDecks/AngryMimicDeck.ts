@@ -2,7 +2,6 @@ import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
 import Card from "../../card";
 import { CardEmoji } from "../../formatting/emojis";
 import { StatsEnum } from "../../stats";
-import TimedEffect from "../../timedEffect";
 import CommonCardAction from "../../util/commonCardActions";
 import { serie_offensiveMagic } from "../utilDecks/serieMagic";
 
