@@ -1,4 +1,3 @@
-import Deck from "../deck";
 import Card from "../card";
 import TimedEffect from "../timedEffect";
 import { StatsEnum } from "../stats";

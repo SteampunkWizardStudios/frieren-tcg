@@ -1,10 +1,11 @@
 import { ThreadChannel } from "discord.js";
 
-export enum TCGThread {
-  Gameroom = "gameroom",
-  ChallengerThread = "challengerThread",
-  OpponentThread = "opponentThread",
-}
+export const TCGThread = {
+  Gameroom: "gameroom",
+  ChallengerThread: "challengerThread",
+  OpponentThread: "opponentThread",
+} as const;
+export type TCGThread = typeof TCGThread[keyof typeof TCGThread];
 
 export type TCGThreads = {
   [key in TCGThread]: ThreadChannel;

@@ -1,8 +1,9 @@
-export enum GameMode {
-  CLASSIC = "classic",
-  BLITZ = "blitz",
-  SLOW = "slow",
-}
+export const GameMode = {
+  CLASSIC: "classic",
+  BLITZ: "blitz",
+  SLOW: "slow",
+} as const;
+export type GameMode = typeof GameMode[keyof typeof GameMode];
 
 export interface GameSettings {
   turnDurationSeconds: number;

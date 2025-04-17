@@ -168,7 +168,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
               ]);
             });
           } else {
-            let errors = [];
+            const errors = [];
             if (!winnerCharacterMastery) {
               errors.push(
                 `Failed to find or create winner character mastery for player ${winner.id} and character ${winnerCharacter}`
@@ -182,7 +182,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             throw new Error(errors.join(";"));
           }
         } else {
-          let errors = [];
+          const errors = [];
           if (!winnerLadderRank) {
             errors.push(
               `Failed to find or create winner ladder rank for player ${winner.id} and ladderReset ${currLadderReset.id}`
@@ -197,7 +197,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
         }
       }
     } else {
-      let errors = [];
+      const errors = [];
       if (!winnerDbObject) {
         errors.push(
           `Failed to find or create winning player ${winner.id} in database`

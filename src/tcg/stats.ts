@@ -6,13 +6,14 @@ export interface StatsProp {
   ability: number;
 }
 
-export enum StatsEnum {
-  HP = "HP",
-  ATK = "ATK",
-  DEF = "DEF",
-  SPD = "SPD",
-  Ability = "Ability",
-}
+export const StatsEnum  ={
+  HP: "HP",
+  ATK: "ATK",
+  DEF: "DEF",
+  SPD: "SPD",
+  Ability: "Ability",
+} as const;
+export type StatsEnum = typeof StatsEnum[keyof typeof StatsEnum];
 
 export default class Stats {
   stats: Record<StatsEnum, number>;

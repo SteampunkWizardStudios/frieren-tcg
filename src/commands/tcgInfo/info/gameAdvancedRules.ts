@@ -7,12 +7,14 @@ import {
 } from "../../../tcg/decks/utilDecks/serieMagic";
 import Card from "../../../tcg/card";
 
-export enum AdvancedRulesSection {
-  EmpowermentAndEffectCalculation = "Empowerment and Effect Calculation",
-  InteractionsAndEdgeCases = "Interactions and Edge Cases",
-  SeriesPoolOffense = "Serie's Living Grimoire: Offense Chapter's Card Pool",
-  SeriesPoolUtility = "Serie's Living Grimoire: Utility Chapter's Card Pool",
-}
+export const AdvancedRulesSection = {
+  EmpowermentAndEffectCalculation: "Empowerment and Effect Calculation",
+  InteractionsAndEdgeCases: "Interactions and Edge Cases",
+  SeriesPoolOffense: "Serie's Living Grimoire: Offense Chapter's Card Pool",
+  SeriesPoolUtility: "Serie's Living Grimoire: Utility Chapter's Card Pool",
+} as const;
+export type AdvancedRulesSection =
+  typeof AdvancedRulesSection[keyof typeof AdvancedRulesSection];
 
 const sectionToFields: Record<
   AdvancedRulesSection,

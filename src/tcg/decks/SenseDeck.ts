@@ -1,9 +1,7 @@
-import Deck from "../deck";
 import Card from "../card";
 import TimedEffect from "../timedEffect";
 import { StatsEnum } from "../stats";
 import CommonCardAction from "../util/commonCardActions";
-import Rolls from "../util/rolls";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
