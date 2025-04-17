@@ -50,7 +50,7 @@ export const getWinrate = (
 ): { winrate: number; total: number } => {
   const total = wins + losses;
   return {
-    winrate: total === 0 ? 0 : Math.round((wins / total) * 100),
+    winrate: total === 0 ? 0 : Number(((wins / total) * 100).toFixed(2)),
     total,
   };
 };
