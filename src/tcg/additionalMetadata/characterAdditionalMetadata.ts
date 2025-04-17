@@ -15,5 +15,5 @@ export type CharacterAdditionalMetadata = {
   overheal?: boolean;
   serieToyingNextTurn?: boolean;
   serieToyingTurn?: boolean;
-  PierceFactor?: number;
+  pierceFactor?: number;
 };

@@ -19,15 +19,18 @@ const a_reelseiden = new Card({
     characterIndex,
     messageCache: MessageCache
   ) {
-    const character = game.characters[characterIndex];
+    const character = game.getCharacter(characterIndex);
+    const opponent = game.getCharacter(1-characterIndex);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ||=0);
     messageCache.push(
-      `${character.name} slashed the opponent!`,
+      `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, {
+    CommonCardAction.pierceAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: 6,
+      pierceFactor: pierceFactor,
     });
   },
 });
@@ -44,15 +47,18 @@ const a_cleave = new Card({
     characterIndex,
     messageCache: MessageCache
   ) {
-    const character = game.characters[characterIndex];
+    const character = game.getCharacter(characterIndex);
+    const opponent = game.getCharacter(1-characterIndex);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ||=0);
     messageCache.push(
-      `${character.name} slashed the opponent!`,
+      `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[0]),
+    CommonCardAction.pierceAttack(game, characterIndex, {
+      damage: this.calculateEffectValue(this.effects[0]), //+ character.additionalMetadata.PierceFactor * opponent.stats.stats.DEF
       hpCost: 8,
+      pierceFactor: pierceFactor,
     });
   },
 });
@@ -69,15 +75,18 @@ const a_dismantle = new Card({
     characterIndex,
     messageCache: MessageCache
   ) {
-    const character = game.characters[characterIndex];
+    const character = game.getCharacter(characterIndex);
+    const opponent = game.getCharacter(1-characterIndex);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ||=0);
     messageCache.push(
-      `${character.name} slashed the opponent!`,
+      `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, {
+    CommonCardAction.pierceAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: 12,
+      pierceFactor: pierceFactor,
     });
   },
 });
@@ -95,15 +104,18 @@ export const a_malevolentShrine = new Card({
     characterIndex,
     messageCache: MessageCache
   ) {
-    const character = game.characters[characterIndex];
+    const character = game.getCharacter(characterIndex);
+    const opponent = game.getCharacter(1-characterIndex);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ||=0);
     messageCache.push(
-      `${character.name} slashed the opponent!`,
+      `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, {
+    CommonCardAction.pierceAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: 15,
+      pierceFactor: pierceFactor
     });
   },
 });

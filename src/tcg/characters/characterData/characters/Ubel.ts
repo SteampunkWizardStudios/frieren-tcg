@@ -43,6 +43,6 @@ export const Ubel = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
-    PierceFactor: 0.5,
+    pierceFactor: 0.5,
   },
 });
