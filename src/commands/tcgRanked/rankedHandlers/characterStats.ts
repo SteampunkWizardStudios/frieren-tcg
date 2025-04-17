@@ -9,42 +9,59 @@ export async function handleCharacterStats(
   interaction: ChatInputCommandInteraction
 ) {
   const character = interaction.options.getString("character");
-  if (!character) {
-    const characters = await prismaClient.character.findMany({
-      select: {
-        name: true,
-        _count: {
-          select: {
-            winnerMatches: true,
-            loserMatches: true,
-          },
-        },
-      },
-    });
+  let embed: EmbedBuilder | null;
+  if (character) {
+    embed = await breakdownCase(character);
+  } else {
+    embed = await overviewCase();
+  }
 
-    const description = characters.map((char) => {
-      const { name, _count } = char;
-      const { winnerMatches, loserMatches } = _count;
-      const { winrate } = getWinrate(
-        winnerMatches,
-        loserMatches
-      );
-      const emoji = characterNameToEmoji[name as keyof typeof characterNameToEmoji];
-      const formattedEmoji = emoji ? `${emoji} ` : "";
-
-      return `${formattedEmoji}${name}: ${winnerMatches} Wins, ${loserMatches} Losses, Winrate: ${winrate.toFixed(1)}%`;
-    });
-
-    const embed = new EmbedBuilder().setTitle("Character Stats").setColor("Blurple").setDescription(
-      description.length > 0 ? description.join("\n") : "No characters found."
-    );
-
+  if (!embed) {
     await interaction.editReply({
-      embeds: [embed],
+      content: "No data found for the specified character.",
     });
     return;
   }
 
+  await interaction.editReply({
+    embeds: [embed],
+  });
+}
+
+async function overviewCase(): Promise<EmbedBuilder> {
+  const characters = await prismaClient.character.findMany({
+    select: {
+      name: true,
+      _count: {
+        select: {
+          winnerMatches: true,
+          loserMatches: true,
+        },
+      },
+    },
+  });
+
+  const description = characters.map((char) => {
+    const { name, _count } = char;
+    const { winnerMatches, loserMatches } = _count;
+    const { winrate } = getWinrate(
+      winnerMatches,
+      loserMatches
+    );
+    const emoji = characterNameToEmoji[name as keyof typeof characterNameToEmoji];
+    const formattedEmoji = emoji ? `${emoji} ` : "";
+
+    return `${formattedEmoji}${name}: ${winnerMatches} Wins, ${loserMatches} Losses, Winrate: ${winrate.toFixed(1)}%`;
+  });
+
+  const embed = new EmbedBuilder().setTitle("Character Stats").setColor("Blurple").setDescription(
+    description.length > 0 ? description.join("\n") : "No characters found."
+  );
+
+  return embed;
+}
+
+async function breakdownCase(character: string): Promise<EmbedBuilder | null> {
   const data = await prismaClient.character.findUnique({
     where: { name: character },
     select: {
@@ -74,10 +91,7 @@ export async function handleCharacterStats(
   });
 
   if (!data) {
-    await interaction.editReply({
-      content: "Failed to fetch character stats.",
-    });
-    return;
+    return null;
   }
 
   // opponent name -> match history against opponent
@@ -137,7 +151,5 @@ export async function handleCharacterStats(
       description.length > 0 ? description.join("\n") : "No matches found."
     );
 
-  await interaction.editReply({
-    embeds: [embed],
-  });
+  return embed;
 }
