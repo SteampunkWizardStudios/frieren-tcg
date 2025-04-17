@@ -41,7 +41,8 @@ export const Ubel = new CharacterData({
   additionalMetadata: {
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
-    accessToDefaultCardOptions: false,
+    accessToDefaultCardOptions: true,
     manaSuppressed: false,
+    PierceFactor: 0.5,
   },
 });

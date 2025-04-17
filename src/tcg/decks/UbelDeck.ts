@@ -161,6 +161,50 @@ export const rushdown = new Card({
   },
 });
 
+const recompose = new Card({
+  title: "Recompose",
+  description: ([hp]) => `SPD-10 for 3 turns. Heal ${hp}HP.`,
+  emoji: CardEmoji.UBEL_CARD,
+  effects: [10],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.characters[characterIndex];
+    messageCache.push(
+      `${character.name} calms down.`,
+      TCGThread.Gameroom
+    );
+
+    character.adjustStat(-10, StatsEnum.SPD);
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[0]),
+      StatsEnum.HP
+    );
+    const turnCount = 2;
+
+    CommonCardAction.replaceOrAddNewTimedEffect(
+      game,
+      characterIndex,
+      "ubelSpeedModifiers",
+      new TimedEffect({
+        name: "Recompose",
+        description: `Decreases SPD by 10 for ${turnCount} turns. Attacks will not hit`,
+        turnDuration: turnCount,
+        tags: {"ubelSpeedModifiers": 1},
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+          messageCache.push(
+            `${character.name} has recomposed ${character.cosmetic.pronouns.reflexive}.`,
+            TCGThread.Gameroom
+          );
+          character.adjustStat(10, StatsEnum.SPD);
+        },
+        replacedAction: function (this, _game, characterIndex) {
+          character.adjustStat(10, StatsEnum.SPD);
+        },
+      })
+    )
+  },
+});
+
+
 const defend = new Card({
   title: "Defend",
   description: ([def]) =>
@@ -191,87 +235,21 @@ const defend = new Card({
   },
 });
 
-const recompose = new Card({
-  title: "Recompose",
-  description: ([hp]) => `SPD-10 for 3 turns. Heal ${hp}HP.`,
-  emoji: CardEmoji.UBEL_CARD,
-  effects: [10],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} calms down.`,
-      TCGThread.Gameroom
-    );
-
-    character.adjustStat(-10, StatsEnum.SPD);
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP
-    );
-
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Recompose",
-        description: `SPD-10 for 2 turns, can't land attacks.`,
-        turnDuration: 2,
-        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
-          messageCache.push(
-            `${character.name} is ready to throw down again!`,
-            TCGThread.Gameroom
-          );
-          character.adjustStat(10, StatsEnum.SPD);
-          TCGThread.Gameroom;
-        },
-      })
-    );
-
-  },
-});
-
 export const sorganeil = new Card({
   title: "Sorganeil",
   description: ([dmg]) =>
     `Priority-1. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
   emoji: CardEmoji.UBEL_CARD,
-  priority: -1,
-  effects: [22],
+  priority: -2,
+  effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-
-    if (character.adjustStat(-15, StatsEnum.HP)) {
-      messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
-      const damage = this.calculateEffectValue(this.effects[0]);
-
-      character.adjustStat(-5, StatsEnum.DEF);
-      game.characters[characterIndex].timedEffects.push(
-        new TimedEffect({
-          name: "Opening",
-          description: `DEF-5 for this turn.`,
-          turnDuration: 1,
-          endOfTimedEffectAction: (game, characterIndex) => {
-            game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
-          },
-        })
-      );
-      game.characters[characterIndex].timedEffects.push(
-        new TimedEffect({
-          name: "Impending Lightning",
-          description: `Strike for ${damage} damage.`,
-          turnDuration: 1,
-          endOfTimedEffectAction: (game, characterIndex) => {
-            messageCache.push(
-              `${character.name} performs Lightning Strike!`,
-              TCGThread.Gameroom
-            );
-            CommonCardAction.commonAttack(game, characterIndex, {
-              damage,
-              hpCost: 0,
-              isTimedEffectAttack: true,
-            });
-          },
-        })
-      );
-    }
+    const opponent = game.getCharacter(1-characterIndex);
+    game.characters[1-characterIndex].skipTurn = true;
+    messageCache.push(
+      `${opponent.name} got trapped in ${character.name}'s gaze!`,
+      TCGThread.Gameroom
+    )
   },
 });
 
@@ -322,13 +300,13 @@ export const empathy = new Card({
 
 
 export const ubelDeck = [
-  { card: a_reelseiden, count: 0 },
-  { card: a_cleave, count: 0 },
-  { card: a_dismantle, count: 0},
-  { card: a_malevolentShrine, count: 5},
-  { card: rushdown, count: 0 },
-  { card: defend, count: 0},
-  { card: recompose, count: 0},
+  { card: a_reelseiden, count: 3 },
+  { card: a_cleave, count: 2 },
+  { card: a_dismantle, count: 2},
+  { card: a_malevolentShrine, count: 1},
+  { card: rushdown, count: 2},
+  { card: defend, count: 1},
+  { card: recompose, count: 2},
   { card: sorganeil, count: 0},
-  { card: empathy, count: 10}
+  { card: empathy, count: 1}
 ];
