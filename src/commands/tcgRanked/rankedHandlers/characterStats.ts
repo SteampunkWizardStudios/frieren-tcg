@@ -105,7 +105,7 @@ async function overviewCase(): Promise<EmbedBuilder> {
       characterNameToEmoji[name as keyof typeof characterNameToEmoji];
     const formattedEmoji = emoji ? `${emoji} ` : "";
 
-    return `${formattedEmoji}${name}: ${winnerMatches} Wins, ${loserMatches} Losses, Winrate: ${winrate.toFixed(1)}%`;
+    return `${formattedEmoji}${name}: ${winnerMatches} Wins, ${loserMatches} Losses, Winrate: ${winrate}%`;
   });
 
   const embed = new EmbedBuilder()
