@@ -16,7 +16,6 @@ import Card from "../../../tcg/card";
 export async function showCharacterInfo(
   interaction: ChatInputCommandInteraction
 ) {
-
   try {
     const customCharacterInfoId = `character-info-${interaction.user.id}-${Date.now()}`;
     const characterDropdown = await createCharacterDropdown(

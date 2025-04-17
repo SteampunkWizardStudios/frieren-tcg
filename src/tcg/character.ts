@@ -108,7 +108,21 @@ export default class Character {
     game: Game,
     characterIndex: number
   ): Record<string, Card> {
+    const defaultCardOptions: Record<string, Card> = {};
+    if (this.additionalMetadata.accessToDefaultCardOptions) {
+      if (!this.skipTurn) {
+        defaultCardOptions["8"] = DefaultCards.discardCard.clone();
+      }
+      defaultCardOptions["9"] = DefaultCards.waitCard.clone();
+    }
+    defaultCardOptions["10"] = DefaultCards.forfeitCard.clone();
+
+    if (this.skipTurn) {
+      return defaultCardOptions;
+    }
+
     const indexToUsableCardMap: Record<string, Card> = {};
+
     // roll 4d6
     const rolls = [];
     for (let i = 0; i < 4; i++) {
@@ -136,13 +150,7 @@ export default class Character {
       }
     }
 
-    if (this.additionalMetadata.accessToDefaultCardOptions) {
-      indexToUsableCardMap["8"] = DefaultCards.discardCard.clone();
-      indexToUsableCardMap["9"] = DefaultCards.waitCard.clone();
-    }
-    indexToUsableCardMap["10"] = DefaultCards.forfeitCard.clone();
-
-    return indexToUsableCardMap;
+    return { ...indexToUsableCardMap, ...defaultCardOptions };
   }
 
   printHand(channel: TCGThread) {

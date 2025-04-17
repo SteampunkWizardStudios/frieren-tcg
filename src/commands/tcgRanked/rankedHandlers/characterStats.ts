@@ -25,19 +25,20 @@ export async function handleCharacterStats(
     const description = characters.map((char) => {
       const { name, _count } = char;
       const { winnerMatches, loserMatches } = _count;
-      const { winrate } = getWinrate(
-        winnerMatches,
-        loserMatches
-      );
-      const emoji = characterNameToEmoji[name as keyof typeof characterNameToEmoji];
+      const { winrate } = getWinrate(winnerMatches, loserMatches);
+      const emoji =
+        characterNameToEmoji[name as keyof typeof characterNameToEmoji];
       const formattedEmoji = emoji ? `${emoji} ` : "";
 
       return `${formattedEmoji}${name}: ${winnerMatches} Wins, ${loserMatches} Losses, Winrate: ${winrate.toFixed(1)}%`;
     });
 
-    const embed = new EmbedBuilder().setTitle("Character Stats").setColor("Blurple").setDescription(
-      description.length > 0 ? description.join("\n") : "No characters found."
-    );
+    const embed = new EmbedBuilder()
+      .setTitle("Character Stats")
+      .setColor("Blurple")
+      .setDescription(
+        description.length > 0 ? description.join("\n") : "No characters found."
+      );
 
     await interaction.editReply({
       embeds: [embed],

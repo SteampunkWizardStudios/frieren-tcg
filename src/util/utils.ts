@@ -44,10 +44,13 @@ export const generateCustomRandomString = (
   return result;
 };
 
-export const getWinrate = (wins: number, losses: number): { winrate: number; total: number } => {
+export const getWinrate = (
+  wins: number,
+  losses: number
+): { winrate: number; total: number } => {
   const total = wins + losses;
   return {
-    winrate: total === 0 ? 0 : Math.round((wins / (total)) * 100),
+    winrate: total === 0 ? 0 : Math.round((wins / total) * 100),
     total,
   };
 };

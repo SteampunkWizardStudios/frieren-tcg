@@ -80,7 +80,9 @@ export const command: Command<ChatInputCommandInteraction> = {
         .addStringOption((option) =>
           option
             .setName("character")
-            .setDescription("Select the character to get stats for, defaults to an overview.")
+            .setDescription(
+              "Select the character to get stats for, defaults to an overview."
+            )
             .setRequired(false)
             .addChoices(charOptions)
         )
