@@ -1,28 +1,43 @@
 import { StringSelectMenuBuilder, ActionRowBuilder } from "discord.js";
 import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 
-export default function characterSelect({ includeRandom = false, customId = "character-select" }) {
-    const charSelect = new StringSelectMenuBuilder()
-        .setCustomId(customId)
-        .setPlaceholder("Select a Character")
-        .addOptions(
-            CHARACTER_LIST.map((char, i) => ({
-                label: char.name,
-                value: `${i}`,
-                emoji: char.cosmetic.emoji,
-            })
-            ));
+export default function characterSelect({
+  includeRandom = false,
+  includeOverview = false,
+  customId = "character-select",
+  nameValues = false,
+}) {
+  const charSelect = new StringSelectMenuBuilder();
 
-    if (includeRandom) {
-        charSelect.addOptions({
-            label: "Random Character",
-            value: "random",
-            emoji: "🎲",
-        });
-    }
+  if (includeOverview) {
+    charSelect.addOptions({
+      label: "Overview",
+      value: "overview",
+      emoji: "📊",
+    });
+  }
 
-    const charSelectActionRow =
-        new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(charSelect);
+  charSelect
+    .setCustomId(customId)
+    .setPlaceholder("Select a Character")
+    .addOptions(
+      CHARACTER_LIST.map((char, i) => ({
+        label: char.name,
+        value: nameValues ? char.name : `${i}`,
+        emoji: char.cosmetic.emoji,
+      }))
+    );
 
-    return { charSelect, charSelectActionRow };
+  if (includeRandom) {
+    charSelect.addOptions({
+      label: "Random Character",
+      value: "random",
+      emoji: "🎲",
+    });
+  }
+
+  const charSelectActionRow =
+    new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(charSelect);
+
+  return { charSelect, charSelectActionRow };
 }

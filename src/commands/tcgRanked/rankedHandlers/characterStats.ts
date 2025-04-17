@@ -1,4 +1,8 @@
-import { ComponentType, EmbedBuilder, RepliableInteraction, MessageFlags } from "discord.js";
+import {
+  ComponentType,
+  EmbedBuilder,
+  RepliableInteraction,
+} from "discord.js";
 import prismaClient from "@prismaClient";
 import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
 import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
@@ -28,12 +32,8 @@ export async function handleCharacterStats(
 
   const { charSelectActionRow } = characterSelect({
     customId: charStatSelectMenuCustomId,
-  });
-
-  charSelectActionRow.components[0].addOptions({
-    label: "Overview",
-    value: "overview",
-    emoji: "📊"
+    nameValues: true,
+    includeOverview: true,
   });
 
   const response = await interaction.editReply({
@@ -50,24 +50,27 @@ export async function handleCharacterStats(
   collector.on("collect", async (i) => {
     try {
       const selectedCharacter = i.values[0];
-      const embed = selectedCharacter === "overview" ? await overviewCase() : await breakdownCase(selectedCharacter);
+      const embed =
+        selectedCharacter === "overview"
+          ? await overviewCase()
+          : await breakdownCase(selectedCharacter);
       if (!embed) {
-        await i.reply({
+        await i.update({
           content: "No data found for the specified character.",
-          flags: MessageFlags.Ephemeral,
+          embeds: [],
+          components: [],
         });
         return;
-      } else {
-        i.editReply({
-          embeds: [embed],
-          components: [charSelectActionRow],
-        });
       }
+      await i.update({
+        embeds: [embed],
+        components: [charSelectActionRow],
+      });
     } catch (error) {
       console.error(error);
-      await i.reply({
+      await i.update({
         content: "There was an error fetching character stats.",
-        flags: MessageFlags.Ephemeral,
+        components: [charSelectActionRow],
       });
       collector.stop("An error occurred");
     }
@@ -97,19 +100,20 @@ async function overviewCase(): Promise<EmbedBuilder> {
   const description = characters.map((char) => {
     const { name, _count } = char;
     const { winnerMatches, loserMatches } = _count;
-    const { winrate } = getWinrate(
-      winnerMatches,
-      loserMatches
-    );
-    const emoji = characterNameToEmoji[name as keyof typeof characterNameToEmoji];
+    const { winrate } = getWinrate(winnerMatches, loserMatches);
+    const emoji =
+      characterNameToEmoji[name as keyof typeof characterNameToEmoji];
     const formattedEmoji = emoji ? `${emoji} ` : "";
 
     return `${formattedEmoji}${name}: ${winnerMatches} Wins, ${loserMatches} Losses, Winrate: ${winrate.toFixed(1)}%`;
   });
 
-  const embed = new EmbedBuilder().setTitle("Character Stats").setColor("Blurple").setDescription(
-    description.length > 0 ? description.join("\n") : "No characters found."
-  );
+  const embed = new EmbedBuilder()
+    .setTitle("Character Stats")
+    .setColor("Blurple")
+    .setDescription(
+      description.length > 0 ? description.join("\n") : "No characters found."
+    );
 
   return embed;
 }
