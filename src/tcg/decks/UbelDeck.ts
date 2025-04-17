@@ -319,6 +319,6 @@ export const ubelDeck = [
   { card: rushdown, count: 2},
   { card: defend, count: 1},
   { card: recompose, count: 2},
-  { card: sorganeil, count: 0},
+  { card: sorganeil, count: 1},
   { card: empathy, count: 1}
 ];
