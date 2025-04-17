@@ -20,7 +20,7 @@ export const generateCustomRandomString = (
 ): string => {
   let chars = "";
   let length = maxLength;
-  let minLength = options.minimumLength ?? Math.floor(maxLength / 2);
+  const minLength = options.minimumLength ?? Math.floor(maxLength / 2);
 
   if (options.useUppercase) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   if (options.useLowercase) chars += "abcdefghijklmnopqrstuvwxyz";
@@ -42,4 +42,12 @@ export const generateCustomRandomString = (
   }
 
   return result;
+};
+
+export const getWinrate = (wins: number, losses: number): { winrate: number; total: number } => {
+  const total = wins + losses;
+  return {
+    winrate: total === 0 ? 0 : Math.round((wins / (total)) * 100),
+    total,
+  };
 };

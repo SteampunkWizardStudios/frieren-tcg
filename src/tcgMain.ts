@@ -201,7 +201,7 @@ export const tcgMain = async (
             1000
           );
 
-          let draws: string[] = [];
+          const draws: string[] = [];
           // let vpollOptionsList = "";
           // const optionsCount = Object.keys(currUsableCards).length;
 
@@ -366,7 +366,7 @@ export const tcgMain = async (
       `## ================================`,
       TCGThread.Gameroom
     );
-    let priorityToTimedEffect: Record<
+    const priorityToTimedEffect: Record<
       number,
       Record<number, TimedEffect[]>
     > = {};

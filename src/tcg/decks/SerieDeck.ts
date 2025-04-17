@@ -1,4 +1,3 @@
-import Deck from "../deck";
 import Card from "../card";
 import {
   serie_offensiveMagic,

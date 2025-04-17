@@ -2,7 +2,7 @@ import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
 import { ColorResolvable, EmbedBuilder } from "discord.js";
 
-const rankEmotes: Record<number, String> = {
+const rankEmotes: Record<number, string> = {
   1: "🥇",
   2: "🥈",
   3: "🥉",
@@ -10,7 +10,7 @@ const rankEmotes: Record<number, String> = {
 
 function getRankString(rank: number, id: string): string {
   const hasRankEmotes = rank in rankEmotes;
-  let rankString = `${hasRankEmotes ? `${rankEmotes[rank]} ` : ""}${rank}. <@${id}>`;
+  const rankString = `${hasRankEmotes ? `${rankEmotes[rank]} ` : ""}${rank}. <@${id}>`;
   if (hasRankEmotes) {
     return "**" + rankString + "**";
   } else {

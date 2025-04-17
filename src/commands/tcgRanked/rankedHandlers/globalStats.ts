@@ -9,7 +9,6 @@ import {
   LazyPaginatedMessage,
   type PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
-import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
 
 export type LadderRankWithPlayer = Prisma.LadderRankGetPayload<{
   include: { player: true };

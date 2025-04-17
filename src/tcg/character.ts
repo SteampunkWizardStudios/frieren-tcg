@@ -3,7 +3,7 @@ import Deck from "./deck";
 import Card from "./card";
 import TimedEffect from "./timedEffect";
 import { Ability } from "./ability";
-import { CardEmoji, statDetails } from "./formatting/emojis";
+import { statDetails } from "./formatting/emojis";
 import Rolls from "./util/rolls";
 import { CharacterAdditionalMetadata } from "./additionalMetadata/characterAdditionalMetadata";
 import DefaultCards from "./decks/utilDecks/defaultCard";
@@ -24,7 +24,7 @@ export interface CharacterProps {
 }
 
 export default class Character {
-  name: String;
+  name: string; // change to CharacterName if possible
   cosmetic: CharacterCosmetic;
 
   stats: Stats;
@@ -146,7 +146,7 @@ export default class Character {
   }
 
   printHand(channel: TCGThread) {
-    let cardsInHand: string[] = [];
+    const cardsInHand: string[] = [];
     this.messageCache.push(
       `# ${this.cosmetic.emoji} ${this.name}'s Hand: `,
       channel
@@ -168,7 +168,7 @@ export default class Character {
     if (this.setStatValue(roundedStatValue, stat)) {
       const statDescription =
         stat === StatsEnum.Ability ? "Ability Counter" : stat;
-      let statUpdateLines: string[] = [];
+      const statUpdateLines: string[] = [];
       if (adjustValue < 0) {
         statUpdateLines.push(
           `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`
