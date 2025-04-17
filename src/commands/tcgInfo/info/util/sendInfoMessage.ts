@@ -10,7 +10,7 @@ import {
 export const sendInfoMessage = async (
   interaction: ChatInputCommandInteraction,
   embed: EmbedBuilder,
-  components?: ActionRowBuilder<StringSelectMenuBuilder>[],
+  components?: ActionRowBuilder<StringSelectMenuBuilder>[]
 ) => {
   if (interaction.channel?.type === ChannelType.DM) {
     await interaction.reply({

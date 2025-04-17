@@ -1,4 +1,4 @@
-import { TextChannel, ThreadChannel } from "discord.js";
+import { ThreadChannel } from "discord.js";
 
 export enum TCGThread {
   Gameroom = "gameroom",

@@ -109,7 +109,6 @@ const roost = new Card({
             TCGThread.Gameroom
           );
           character.adjustStat(3, StatsEnum.DEF);
-          TCGThread.Gameroom;
         },
       })
     );

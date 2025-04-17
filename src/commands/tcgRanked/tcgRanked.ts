@@ -12,7 +12,7 @@ import { handleGlobalStats } from "./rankedHandlers/globalStats";
 import { handleCharacterGlobalStats } from "./rankedHandlers/characterLeaderboard";
 import { handleCharacterStats } from "./rankedHandlers/characterStats";
 
-const charOptions = Object.entries(CHARACTER_LIST).map(([_key, character]) => ({
+const charOptions = Object.entries(CHARACTER_LIST).map(([, character]) => ({
   name: character.name,
   value: character.name,
 }));
@@ -80,8 +80,10 @@ export const command: Command<ChatInputCommandInteraction> = {
         .addStringOption((option) =>
           option
             .setName("character")
-            .setDescription("Select the character to get stats for.")
-            .setRequired(true)
+            .setDescription(
+              "Select the character to get stats for, defaults to an overview."
+            )
+            .setRequired(false)
             .addChoices(charOptions)
         )
     ),

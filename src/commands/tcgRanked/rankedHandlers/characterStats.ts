@@ -3,11 +3,48 @@ import prismaClient from "@prismaClient";
 import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
 import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { getWinrate } from "@src/util/utils";
 
 export async function handleCharacterStats(
   interaction: ChatInputCommandInteraction
 ) {
-  const character = interaction.options.getString("character", true);
+  const character = interaction.options.getString("character");
+  if (!character) {
+    const characters = await prismaClient.character.findMany({
+      select: {
+        name: true,
+        _count: {
+          select: {
+            winnerMatches: true,
+            loserMatches: true,
+          },
+        },
+      },
+    });
+
+    const description = characters.map((char) => {
+      const { name, _count } = char;
+      const { winnerMatches, loserMatches } = _count;
+      const { winrate } = getWinrate(winnerMatches, loserMatches);
+      const emoji =
+        characterNameToEmoji[name as keyof typeof characterNameToEmoji];
+      const formattedEmoji = emoji ? `${emoji} ` : "";
+
+      return `${formattedEmoji}${name}: ${winnerMatches} Wins, ${loserMatches} Losses, Winrate: ${winrate.toFixed(1)}%`;
+    });
+
+    const embed = new EmbedBuilder()
+      .setTitle("Character Stats")
+      .setColor("Blurple")
+      .setDescription(
+        description.length > 0 ? description.join("\n") : "No characters found."
+      );
+
+    await interaction.editReply({
+      embeds: [embed],
+    });
+    return;
+  }
 
   const data = await prismaClient.character.findUnique({
     where: { name: character },
@@ -71,10 +108,8 @@ export async function handleCharacterStats(
 
   const formattedRecord = Array.from(matchRecord.entries())
     .sort(([, recordA], [, recordB]) => {
-      const totalA = recordA.wins + recordA.losses;
-      const totalB = recordB.wins + recordB.losses;
-      const winRateA = totalA > 0 ? recordA.wins / totalA : 0;
-      const winRateB = totalB > 0 ? recordB.wins / totalB : 0;
+      const winRateA = getWinrate(recordA.wins, recordA.losses).winrate;
+      const winRateB = getWinrate(recordB.wins, recordB.losses).winrate;
 
       return winRateB - winRateA;
     })
@@ -83,9 +118,9 @@ export async function handleCharacterStats(
         characterNameToEmoji[opponent as keyof typeof characterNameToEmoji];
       const formattedEmoji = emoji ? `${emoji} ` : "";
       const { wins, losses } = record;
-      const totalMatches = wins + losses;
-      const winRate = totalMatches > 0 ? (wins / totalMatches) * 100 : 0;
-      return `${formattedEmoji}${opponent}: ${wins} Wins, ${losses} Losses, Winrate: ${winRate.toFixed(1)}%`;
+      const { winrate } = getWinrate(wins, losses);
+
+      return `${formattedEmoji}${opponent}: ${wins} Wins, ${losses} Losses, Winrate: ${winrate.toFixed(1)}%`;
     });
 
   const description = [

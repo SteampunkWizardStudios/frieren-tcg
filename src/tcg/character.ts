@@ -3,7 +3,7 @@ import Deck from "./deck";
 import Card from "./card";
 import TimedEffect from "./timedEffect";
 import { Ability } from "./ability";
-import { CardEmoji, statDetails } from "./formatting/emojis";
+import { statDetails } from "./formatting/emojis";
 import Rolls from "./util/rolls";
 import { CharacterAdditionalMetadata } from "./additionalMetadata/characterAdditionalMetadata";
 import DefaultCards from "./decks/utilDecks/defaultCard";
@@ -109,7 +109,21 @@ export default class Character {
     game: Game,
     characterIndex: number
   ): Record<string, Card> {
+    const defaultCardOptions: Record<string, Card> = {};
+    if (this.additionalMetadata.accessToDefaultCardOptions) {
+      if (!this.skipTurn) {
+        defaultCardOptions["8"] = DefaultCards.discardCard.clone();
+      }
+      defaultCardOptions["9"] = DefaultCards.waitCard.clone();
+    }
+    defaultCardOptions["10"] = DefaultCards.forfeitCard.clone();
+
+    if (this.skipTurn) {
+      return defaultCardOptions;
+    }
+
     const indexToUsableCardMap: Record<string, Card> = {};
+
     // roll 4d6
     const rolls = [];
     for (let i = 0; i < 4; i++) {
@@ -137,17 +151,11 @@ export default class Character {
       }
     }
 
-    if (this.additionalMetadata.accessToDefaultCardOptions) {
-      indexToUsableCardMap["8"] = DefaultCards.discardCard.clone();
-      indexToUsableCardMap["9"] = DefaultCards.waitCard.clone();
-    }
-    indexToUsableCardMap["10"] = DefaultCards.forfeitCard.clone();
-
-    return indexToUsableCardMap;
+    return { ...indexToUsableCardMap, ...defaultCardOptions };
   }
 
   printHand(channel: TCGThread) {
-    let cardsInHand: string[] = [];
+    const cardsInHand: string[] = [];
     this.messageCache.push(
       `# ${this.cosmetic.emoji} ${this.name}'s Hand: `,
       channel
@@ -169,7 +177,7 @@ export default class Character {
     if (this.setStatValue(roundedStatValue, stat)) {
       const statDescription =
         stat === StatsEnum.Ability ? "Ability Counter" : stat;
-      let statUpdateLines: string[] = [];
+      const statUpdateLines: string[] = [];
       if (adjustValue < 0) {
         statUpdateLines.push(
           `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`

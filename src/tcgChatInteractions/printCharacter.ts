@@ -1,13 +1,13 @@
 import Character from "../tcg/character";
 import { statDetails } from "../tcg/formatting/emojis";
-import percentBar, { ProgressBarBuilder } from "../tcg/formatting/percentBar";
+import { ProgressBarBuilder } from "../tcg/formatting/percentBar";
 import { StatsEnum } from "../tcg/stats";
 
 export const printCharacter = (
   character: Character,
   obfuscateInformation: boolean
 ): string => {
-  const printStack: String[] = [];
+  const printStack: string[] = [];
   const charStat = character.stats.stats;
   let hpInfo: string;
   if (character.additionalMetadata.manaSuppressed && obfuscateInformation) {

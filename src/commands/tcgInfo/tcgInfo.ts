@@ -68,7 +68,6 @@ export const command: Command<ChatInputCommandInteraction> = {
       subcommand
         .setName("ranking-system")
         .setDescription("Get information about the game's ranking system")
-        
     )
     .addSubcommand((subcommand) =>
       subcommand

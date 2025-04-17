@@ -5,7 +5,6 @@ import {
   MessageFlags,
   InteractionContextType,
   EmbedBuilder,
-  TextChannel,
 } from "discord.js";
 import type { Command } from "../../types/command";
 import handleAchievementAutocomplete from "./achievementHandler/handleAchievementAutocomplete";
@@ -136,7 +135,7 @@ export const command: Command<ChatInputCommandInteraction> = {
 
     try {
       switch (subcommand) {
-        case "create-achievement":
+        case "create-achievement": {
           const name = interaction.options.getString("name", true);
           const description = interaction.options.getString(
             "description",
@@ -159,7 +158,8 @@ export const command: Command<ChatInputCommandInteraction> = {
             });
           }
           break;
-        case "delete-achievement":
+        }
+        case "delete-achievement": {
           const achievementIdString = interaction.options.getString(
             "achievement",
             true
@@ -182,7 +182,8 @@ export const command: Command<ChatInputCommandInteraction> = {
             });
           }
           break;
-        case "grant-achievement":
+        }
+        case "grant-achievement": {
           await interaction.deferReply({
             flags: MessageFlags.Ephemeral,
           });
@@ -200,7 +201,8 @@ export const command: Command<ChatInputCommandInteraction> = {
           }
 
           break;
-        case "debug-progress-bar":
+        }
+        case "debug-progress-bar": {
           await interaction.deferReply({
             flags: MessageFlags.Ephemeral,
           });
@@ -228,16 +230,19 @@ export const command: Command<ChatInputCommandInteraction> = {
           }
 
           break;
-        case "maintenance":
+        }
+        case "maintenance": {
           handleMaintenance(interaction);
           break;
-        default:
+        }
+        default: {
           await interaction.deferReply({
             flags: MessageFlags.Ephemeral,
           });
           await interaction.editReply({
             content: "Invalid subcommand.",
           });
+        }
       }
     } catch (error) {
       console.error(error);
