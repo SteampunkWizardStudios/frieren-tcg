@@ -34,6 +34,9 @@ export type CardProps = {
   empowerLevel?: number;
   priority?: number;
   imitated?: boolean;
+  /**
+  * @deprecated Use {@link cardMetadata} instead
+  */
   tags?: Record<string, number>;
   cardMetadata?: CardMetadata;
   printEmpower?: boolean;
