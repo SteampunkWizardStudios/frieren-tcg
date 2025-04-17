@@ -32,7 +32,7 @@ export default async function leaderboardEmbed(props: {
     isCharacterLeaderboard,
     page = 1,
     pageSize = 10,
-	color = "Blurple",
+    color = "Blurple",
   } = props;
 
   // when isCharacterLeaderboard is true, leaderboard is a character name, otherwise it's the name of a ladder (classic, blitz, etc.)

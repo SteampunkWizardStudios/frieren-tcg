@@ -22,7 +22,6 @@ export const playSelectedMove = async (
 ): Promise<Card | null> => {
   if (character.skipTurn) {
     character.skipTurn = false;
-    return null;
   }
 
   const timeLimit = turnDurationSeconds * 1000;

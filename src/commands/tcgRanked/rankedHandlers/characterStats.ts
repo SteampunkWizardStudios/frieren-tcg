@@ -29,7 +29,7 @@ export async function handleCharacterStats(
     });
     return;
   }
-
+  
   const { charSelectActionRow } = characterSelect({
     customId: charStatSelectMenuCustomId,
     nameValues: true,

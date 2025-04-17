@@ -164,66 +164,57 @@ export const tcgMain = async (
             `## ${character.name} skips this turn!`,
             useChannel
           );
-          character.empowerHand();
-          messageCache.push(
-            `All cards in ${character.name}'s hand are empowered!`,
-            TCGThread.Gameroom
-          );
-          messageCache.push(
-            `All cards in ${character.name}'s hand are empowered!`,
-            useChannel
-          );
-        } else {
-          character.printHand(useChannel);
-          if (gameSettings.revealHand) {
-            characterToDetailsString[index].hand =
-              messageCache.messages[useChannel].join("\n");
-          }
+        }
 
-          const currUsableCards = character.getUsableCardsForRound(
-            useChannel,
-            game,
-            index
-          );
-          characterToPlayableMoveMap[index] = currUsableCards;
-          await sendToThread(
-            messageCache.flush(useChannel),
-            useChannel,
-            threadsMapping,
-            1000
-          );
+        character.printHand(useChannel);
+        if (gameSettings.revealHand) {
+          characterToDetailsString[index].hand =
+            messageCache.messages[useChannel].join("\n");
+        }
 
-          messageCache.push(`## ${character.name}'s Active Cards:`, useChannel);
-          await sendToThread(
-            messageCache.flush(useChannel),
-            useChannel,
-            threadsMapping,
-            1000
-          );
+        const currUsableCards = character.getUsableCardsForRound(
+          useChannel,
+          game,
+          index
+        );
+        characterToPlayableMoveMap[index] = currUsableCards;
+        await sendToThread(
+          messageCache.flush(useChannel),
+          useChannel,
+          threadsMapping,
+          1000
+        );
 
-          const draws: string[] = [];
-          // let vpollOptionsList = "";
-          // const optionsCount = Object.keys(currUsableCards).length;
+        messageCache.push(`## ${character.name}'s Active Cards:`, useChannel);
+        await sendToThread(
+          messageCache.flush(useChannel),
+          useChannel,
+          threadsMapping,
+          1000
+        );
 
-          Object.keys(currUsableCards).forEach((key: string) => {
-            const currCard = currUsableCards[key];
-            draws.push(currCard.printCard(`- ${key}: `));
-            // vpollOptionsList += `${key}: ${currCard.getTitle()}`;
-            // if (index < optionsCount - 1) {
-            //   vpollOptionsList += ", ";
-            // }
-          });
+        const draws: string[] = [];
+        // let vpollOptionsList = "";
+        // const optionsCount = Object.keys(currUsableCards).length;
 
-          const draw = draws.join("\n");
-          messageCache.push(draw, useChannel);
-          // messageCache.push(
-          //   `Vpoll command - /vpoll name:Which Move To Use? options:${vpollOptionsList} end-time:2m multiselect:True`,
-          //   useChannel,
-          // );
+        Object.keys(currUsableCards).forEach((key: string) => {
+          const currCard = currUsableCards[key];
+          draws.push(currCard.printCard(`- ${key}: `));
+          // vpollOptionsList += `${key}: ${currCard.getTitle()}`;
+          // if (index < optionsCount - 1) {
+          //   vpollOptionsList += ", ";
+          // }
+        });
 
-          if (gameSettings.revealDraw) {
-            characterToDetailsString[index].draw = draw;
-          }
+        const draw = draws.join("\n");
+        messageCache.push(draw, useChannel);
+        // messageCache.push(
+        //   `Vpoll command - /vpoll name:Which Move To Use? options:${vpollOptionsList} end-time:2m multiselect:True`,
+        //   useChannel,
+        // );
+
+        if (gameSettings.revealDraw) {
+          characterToDetailsString[index].draw = draw;
         }
 
         await sendToThread(
