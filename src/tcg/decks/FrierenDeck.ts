@@ -1,4 +1,3 @@
-import Deck from "../deck";
 import Card from "../card";
 import TimedEffect from "../timedEffect";
 import { StatsEnum } from "../stats";
@@ -223,6 +222,7 @@ export const a_theHeightOfMagic = new Card({
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1355588254866473161/The_Height_of_Magic.png?ex=67e97971&is=67e827f1&hm=0bddcf6c49f763947308ba3e63c58a8727730a9af0ff9c0175e948af704e29b3&",
   },
+  cardMetadata : {signature : true},
   priority: 1,
   effects: [30],
   cardAction: function (this: Card, game, characterIndex, messageCache) {

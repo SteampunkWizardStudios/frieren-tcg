@@ -1,4 +1,3 @@
-import Deck from "../deck";
 import Card from "../card";
 import TimedEffect from "../timedEffect";
 import { StatsEnum } from "../stats";
@@ -175,6 +174,7 @@ export const a_piercingDrill = new Card({
     `HP-12. DMG ${dmg} + DEF/3. Pierces through 1/3 of the opponent's defense.`,
   effects: [14],
   emoji: CardEmoji.PUNCH,
+  cardMetadata : {signature : true},
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);

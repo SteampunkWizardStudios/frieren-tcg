@@ -10,6 +10,7 @@ export interface CardCosmetic {
 
 type CardMetadata = {
   seriePool?: "Common" | "Rare" | "Ultra-rare";
+  signature?: boolean;
   analysis?: boolean;
   postAnalysis?: boolean;
   waldgoseDamage?: number;

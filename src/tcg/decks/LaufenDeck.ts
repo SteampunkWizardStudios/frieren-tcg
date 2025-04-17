@@ -1,4 +1,3 @@
-import Deck from "../deck";
 import Card from "../card";
 import CommonCardAction from "../util/commonCardActions";
 import { StatsEnum } from "../stats";
@@ -113,6 +112,7 @@ export const a_supersonicStrike = new Card({
   title: "Supersonic Strike",
   description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-7, DMG ${dmg}+SPD/3`,
   emoji: CardEmoji.LAUFEN_CARD,
+  cardMetadata : {signature : true},
   effects: [3, 10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

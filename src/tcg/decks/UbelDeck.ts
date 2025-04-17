@@ -1,4 +1,3 @@
-import Deck from "../deck";
 import Card from "../card";
 import CommonCardAction from "../util/commonCardActions";
 import { StatsEnum } from "../stats";
@@ -7,8 +6,6 @@ import Rolls from "../util/rolls";
 import { CardEmoji } from "../formatting/emojis";
 import { MessageCache } from "../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
-import { signatureMoves } from "./utilDecks/signatureMoves"
-import { CharacterName} from "../characters/metadata/CharacterName"
 
 const a_reelseiden = new Card({
   title: "Reelseiden",
@@ -90,6 +87,7 @@ export const a_malevolentShrine = new Card({
   description: ([dmg]) =>
     `HP-15. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
+  cardMetadata : {signature : true},
   effects: [22],
   cardAction: function (
     this: Card,
@@ -111,7 +109,6 @@ export const a_malevolentShrine = new Card({
 });
 
 
-
 export const rushdown = new Card({
   title: "Rushdown",
   description: ([spd]) =>
@@ -126,11 +123,15 @@ export const rushdown = new Card({
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(spdIncrease, StatsEnum.SPD);
 
-    character.timedEffects.push(
+    CommonCardAction.replaceOrAddNewTimedEffect(
+      game,
+      characterIndex,
+      "ubelSpeedModifiers",
       new TimedEffect({
         name: "Rushdown",
         description: `Increases SPD by ${spdIncrease} for ${turnCount} turns. Attacks will not miss`,
         turnDuration: turnCount,
+        tags: {"ubelSpeedModifiers": 1},
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} is being reckless.`,
@@ -145,8 +146,18 @@ export const rushdown = new Card({
           );
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
         },
+        replacedAction: function (this, _game, characterIndex) {
+          messageCache.push(
+            `${character.name} retreats.`,
+            TCGThread.Gameroom
+          )
+          character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
+        },
       })
-    );
+    )
+
+      
+    character.timedEffects.push();
   },
 });
 
@@ -273,7 +284,6 @@ export const empathy = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1-characterIndex);
-    // console.log(signatureMoves["Übel" as CharacterName]);
     messageCache.push(
       `${character.name} tries to empathize with ${opponent.name}...`,
       TCGThread.Gameroom
@@ -289,9 +299,14 @@ export const empathy = new Card({
         `${character.name} learned some new magic`,
         TCGThread.Gameroom
       );
-      const learnedMagic = signatureMoves[opponent.name];
+
+      const opponentDeck = opponent.cards;
+      const cardlist = opponentDeck.map(x => x.card);
+      const signatureMove = cardlist.filter(Card => Card.cardMetadata.signature)[0]
+
+      //const learnedMagic = signatureMoves[opponent.name];
       const usedMagic = new Card({
-            ...learnedMagic,
+            ...signatureMove,
             empowerLevel: this.empowerLevel - 2,
           });
 
