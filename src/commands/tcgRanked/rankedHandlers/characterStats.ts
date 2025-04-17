@@ -1,14 +1,17 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import { ComponentType, EmbedBuilder, RepliableInteraction, MessageFlags } from "discord.js";
 import prismaClient from "@prismaClient";
 import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
 import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { getWinrate } from "@src/util/utils";
+import characterSelect from "@src/util/messageComponents/characterSelect";
+
+const charStatSelectMenuCustomId = "character-stat-select";
 
 export async function handleCharacterStats(
-  interaction: ChatInputCommandInteraction
+  interaction: RepliableInteraction,
+  character: string | null
 ) {
-  const character = interaction.options.getString("character");
   let embed: EmbedBuilder | null;
   if (character) {
     embed = await breakdownCase(character);
@@ -23,8 +26,58 @@ export async function handleCharacterStats(
     return;
   }
 
-  await interaction.editReply({
+  const { charSelectActionRow } = characterSelect({
+    customId: charStatSelectMenuCustomId,
+  });
+
+  charSelectActionRow.components[0].addOptions({
+    label: "Overview",
+    value: "overview",
+    emoji: "📊"
+  });
+
+  const response = await interaction.editReply({
     embeds: [embed],
+    components: [charSelectActionRow],
+  });
+
+  const collector = response.createMessageComponentCollector({
+    componentType: ComponentType.StringSelect,
+    time: 450_000,
+    filter: (i) => i.customId === charStatSelectMenuCustomId,
+  });
+
+  collector.on("collect", async (i) => {
+    try {
+      const selectedCharacter = i.values[0];
+      const embed = selectedCharacter === "overview" ? await overviewCase() : await breakdownCase(selectedCharacter);
+      if (!embed) {
+        await i.reply({
+          content: "No data found for the specified character.",
+          flags: MessageFlags.Ephemeral,
+        });
+        return;
+      } else {
+        i.editReply({
+          embeds: [embed],
+          components: [charSelectActionRow],
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      await i.reply({
+        content: "There was an error fetching character stats.",
+        flags: MessageFlags.Ephemeral,
+      });
+      collector.stop("An error occurred");
+    }
+  });
+
+  collector.on("end", async () => {
+    charSelectActionRow.components[0].setDisabled(true);
+    await interaction.editReply({
+      components: [charSelectActionRow],
+    });
   });
 }
 
