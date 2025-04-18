@@ -37,7 +37,7 @@ export enum CharacterEmoji {
   COSMIC_TON = "👁️",
 
   SEIN_SERIE = "🤝",
-};
+}
 
 export const characterNameToEmoji: Record<CharacterName, CharacterEmoji> = {
   [CharacterName.Frieren]: CharacterEmoji.FRIEREN,
@@ -77,7 +77,7 @@ export enum CardEmoji {
   UBEL_CARD = "<:UbelCard:1361844627430183163>",
 
   FLOWER_FIELD = "<:FlowerFieldCard:1347719503290695803>",
-};
+}
 
 export enum ProgressBarEmoji {
   START_EMPTY = "<:PB1E:1164479248271159306>",
@@ -90,4 +90,4 @@ export enum ProgressBarEmoji {
   END_EMPTY = "<:PB3E:1164479719316652076>",
   END_HALF = "<:PB3HF:1164479711573983272>",
   END_FULL = "<:PB3F:1164479723225763892>",
-};
+}

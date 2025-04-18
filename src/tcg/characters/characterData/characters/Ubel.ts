@@ -29,7 +29,7 @@ export const Ubel = new CharacterData({
       reflexive: "herself",
     },
     emoji: CharacterEmoji.UBEL,
-    color: 0x3C5502,
+    color: 0x3c5502,
     imageUrl:
       "https://cdn.discordapp.com/attachments/1147147425878921240/1361843328596840558/Xdt0V0dFkFFUIynaHzeRl4CDSpdXIIyx.png?ex=68003aef&is=67fee96f&hm=272a9e1a94f2bae706b259a9cf6e7b19eb135bab69b8bfff26c343be7744c318&",
   },
@@ -76,57 +76,55 @@ export const Ubel = new CharacterData({
         
       }
     }  */
-   abilityCardWrapper: function(
-    game: Game,
-    characterIndex: number,
-    messageCache: MessageCache,
-    card: Card,
-  ) {
-    function missAttack(
-      character: Character,
+    abilityCardWrapper: function (
+      game: Game,
+      characterIndex: number,
       messageCache: MessageCache,
-      card: Card,){
+      card: Card
+    ) {
+      function missAttack(
+        character: Character,
+        messageCache: MessageCache,
+        card: Card
+      ) {
         const hpCost = card.hpCost;
-          character.adjustStat(-hpCost, StatsEnum.HP);
-          messageCache.push(
-            "The attack misses!",
-            TCGThread.Gameroom
-          );
-      };
-      
-    const character = game.getCharacter(characterIndex);
-    const failureRate = card.cardMetadata.ubelFailureRate;
+        character.adjustStat(-hpCost, StatsEnum.HP);
+        messageCache.push("The attack misses!", TCGThread.Gameroom);
+      }
 
-    switch (character.additionalMetadata.sureHit) {
-      case "sureHit":
-        card.cardAction?.(game, characterIndex, messageCache);
-        break;
-      case "sureMiss":
-        if (!failureRate) {
+      const character = game.getCharacter(characterIndex);
+      const failureRate = card.cardMetadata.ubelFailureRate;
+
+      switch (character.additionalMetadata.sureHit) {
+        case "sureHit":
           card.cardAction?.(game, characterIndex, messageCache);
-        } else {
-            missAttack(character, messageCache, card);
-        }
-        break;
-      case "regular":
-        if (!failureRate) {
-          card.cardAction?.(game, characterIndex, messageCache);
-        } else {
-          const luckRoll = Rolls.rollD100();
-          messageCache.push(`## **Missing chances:** ${failureRate}%`, TCGThread.Gameroom);
-          messageCache.push(`# Luck roll: ${luckRoll}`, TCGThread.Gameroom);
-          if (luckRoll < failureRate){
-            missAttack(character, messageCache, card);
+          break;
+        case "sureMiss":
+          if (!failureRate) {
+            card.cardAction?.(game, characterIndex, messageCache);
           } else {
+            missAttack(character, messageCache, card);
+          }
+          break;
+        case "regular":
+          if (!failureRate) {
+            card.cardAction?.(game, characterIndex, messageCache);
+          } else {
+            const luckRoll = Rolls.rollD100();
             messageCache.push(
-              "The attack connects!",
+              `## **Missing chances:** ${failureRate}%`,
               TCGThread.Gameroom
             );
-            card.cardAction?.(game, characterIndex, messageCache);
+            messageCache.push(`# Luck roll: ${luckRoll}`, TCGThread.Gameroom);
+            if (luckRoll < failureRate) {
+              missAttack(character, messageCache, card);
+            } else {
+              messageCache.push("The attack connects!", TCGThread.Gameroom);
+              card.cardAction?.(game, characterIndex, messageCache);
+            }
           }
-        }
-    }
-   }
+      }
+    },
   },
   additionalMetadata: {
     attackedThisTurn: false,

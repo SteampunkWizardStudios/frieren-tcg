@@ -85,7 +85,11 @@ export const a_pierce = new Card({
     const damage =
       this.calculateEffectValue(this.effects[1]) +
       character.stats.stats.DEF / 4;
-    CommonCardAction.pierceAttack(game, characterIndex, { damage, hpCost: 7, pierceFactor: 0.25 });
+    CommonCardAction.pierceAttack(game, characterIndex, {
+      damage,
+      hpCost: 7,
+      pierceFactor: 0.25,
+    });
   },
 });
 
@@ -173,7 +177,7 @@ export const a_piercingDrill = new Card({
     `HP-12. DMG ${dmg} + DEF/3. Pierces through 1/3 of the opponent's defense.`,
   effects: [14],
   emoji: CardEmoji.PUNCH,
-  cardMetadata : {signature : true},
+  cardMetadata: { signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
@@ -184,7 +188,11 @@ export const a_piercingDrill = new Card({
     const damage =
       this.calculateEffectValue(this.effects[0]) +
       character.stats.stats.DEF / 3;
-    CommonCardAction.pierceAttack(game, characterIndex, { damage, hpCost: 12, pierceFactor: 1/3 });
+    CommonCardAction.pierceAttack(game, characterIndex, {
+      damage,
+      hpCost: 12,
+      pierceFactor: 1 / 3,
+    });
   },
 });
 

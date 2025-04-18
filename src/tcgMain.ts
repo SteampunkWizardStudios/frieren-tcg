@@ -302,7 +302,7 @@ export const tcgMain = async (
               TCGThread.Gameroom
             );
           }
-          if (character.ability.abilityCardWrapper){
+          if (character.ability.abilityCardWrapper) {
             character.ability.abilityCardWrapper(
               game,
               characterIndex,
@@ -311,7 +311,7 @@ export const tcgMain = async (
             );
           } else {
             card.cardAction?.(game, characterIndex, messageCache);
-          };
+          }
           if (character.ability.abilityOnCardUse) {
             character.ability.abilityOnCardUse(
               game,

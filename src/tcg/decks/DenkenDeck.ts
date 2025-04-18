@@ -334,7 +334,7 @@ const a_catastravia = new Card({
   description: ([dmg]) =>
     `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${dmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  cardMetadata : {signature : true},
+  cardMetadata: { signature: true },
   effects: [4],
   cardAction: () => {},
   conditionalTreatAsEffect: function (this: Card, game, characterIndex) {

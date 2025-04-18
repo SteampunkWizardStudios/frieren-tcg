@@ -212,7 +212,7 @@ export const ancientBarrierMagic = new Card({
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014080966718/Ancient_Barrier_Magic_1.png?ex=67df98ad&is=67de472d&hm=c0b00575790207a93d00398d3351e5cd914f371b0c2118855f8f2dc259634420&",
   },
-  cardMetadata : {signature : true},
+  cardMetadata: { signature: true },
   effects: [7, 7, 7],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

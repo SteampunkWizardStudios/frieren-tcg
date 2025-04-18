@@ -15,7 +15,7 @@ import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
 import { User } from "discord.js";
 import Game from "./game";
-import { CharacterName } from "./characters/metadata/CharacterName"
+import { CharacterName } from "./characters/metadata/CharacterName";
 
 export interface CharacterProps {
   characterData: CharacterData;

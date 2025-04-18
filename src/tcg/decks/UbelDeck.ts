@@ -13,7 +13,7 @@ const a_reelseiden = new Card({
     `HP-6. Has a 20% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [8],
-  cardMetadata : {ubelFailureRate : 20},
+  cardMetadata: { ubelFailureRate: 20 },
   hpCost: 6,
   cardAction: function (
     this: Card,
@@ -22,8 +22,8 @@ const a_reelseiden = new Card({
     messageCache: MessageCache
   ) {
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1-characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??=0);
+    const opponent = game.getCharacter(1 - characterIndex);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
       `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
@@ -43,7 +43,7 @@ const a_cleave = new Card({
     `HP-8. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [12],
-  cardMetadata : {ubelFailureRate : 40},
+  cardMetadata: { ubelFailureRate: 40 },
   hpCost: 8,
   cardAction: function (
     this: Card,
@@ -52,8 +52,8 @@ const a_cleave = new Card({
     messageCache: MessageCache
   ) {
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1-characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??=0);
+    const opponent = game.getCharacter(1 - characterIndex);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
       `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
@@ -73,7 +73,7 @@ const a_dismantle = new Card({
     `HP-12. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [16],
-  cardMetadata : {ubelFailureRate : 60},
+  cardMetadata: { ubelFailureRate: 60 },
   hpCost: 12,
   cardAction: function (
     this: Card,
@@ -82,8 +82,8 @@ const a_dismantle = new Card({
     messageCache: MessageCache
   ) {
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1-characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??=0);
+    const opponent = game.getCharacter(1 - characterIndex);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
       `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
@@ -102,7 +102,7 @@ export const a_malevolentShrine = new Card({
   description: ([dmg]) =>
     `HP-15. Has a 80% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
-  cardMetadata : {signature : true, ubelFailureRate : 80},
+  cardMetadata: { signature: true, ubelFailureRate: 80 },
   effects: [22],
   hpCost: 15,
   cardAction: function (
@@ -112,8 +112,8 @@ export const a_malevolentShrine = new Card({
     messageCache: MessageCache
   ) {
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1-characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??=0);
+    const opponent = game.getCharacter(1 - characterIndex);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
       `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
@@ -122,11 +122,10 @@ export const a_malevolentShrine = new Card({
     CommonCardAction.pierceAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: 15,
-      pierceFactor: pierceFactor
+      pierceFactor: pierceFactor,
     });
   },
 });
-
 
 export const rushdown = new Card({
   title: "Rushdown",
@@ -136,7 +135,10 @@ export const rushdown = new Card({
   effects: [10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    messageCache.push(`${character.name} rushes towards the ennemy!`, TCGThread.Gameroom);
+    messageCache.push(
+      `${character.name} rushes towards the ennemy!`,
+      TCGThread.Gameroom
+    );
     character.additionalMetadata.sureHit = "sureHit";
 
     const turnCount = 3;
@@ -151,7 +153,7 @@ export const rushdown = new Card({
         name: "Rushdown",
         description: `Increases SPD by ${spdIncrease} for ${turnCount} turns. Attacks will not miss`,
         turnDuration: turnCount,
-        tags: {"ubelSpeedModifiers": 1},
+        tags: { ubelSpeedModifiers: 1 },
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} is being reckless.`,
@@ -160,25 +162,18 @@ export const rushdown = new Card({
           character.adjustStat(-5, StatsEnum.HP);
         },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          messageCache.push(
-            `${character.name} retreats.`,
-            TCGThread.Gameroom
-          );
+          messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
           character.additionalMetadata.sureHit = "regular";
         },
         replacedAction: function (this, _game, characterIndex) {
-          messageCache.push(
-            `${character.name} retreats.`,
-            TCGThread.Gameroom
-          )
+          messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
           character.additionalMetadata.sureHit = "regular";
         },
       })
-    )
+    );
 
-      
     character.timedEffects.push();
   },
 });
@@ -190,10 +185,7 @@ const recompose = new Card({
   effects: [10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} calms down.`,
-      TCGThread.Gameroom
-    );
+    messageCache.push(`${character.name} calms down.`, TCGThread.Gameroom);
     character.additionalMetadata.sureHit = "sureMiss";
 
     character.adjustStat(-10, StatsEnum.SPD);
@@ -211,7 +203,7 @@ const recompose = new Card({
         name: "Recompose",
         description: `Decreases SPD by 10 for ${turnCount} turns. Attacks will not hit`,
         turnDuration: turnCount,
-        tags: {"ubelSpeedModifiers": 1},
+        tags: { ubelSpeedModifiers: 1 },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} has recomposed ${character.cosmetic.pronouns.reflexive}.`,
@@ -225,10 +217,9 @@ const recompose = new Card({
           character.additionalMetadata.sureHit = "regular";
         },
       })
-    )
+    );
   },
 });
-
 
 const defend = new Card({
   title: "Defend",
@@ -269,7 +260,7 @@ export const sorganeil = new Card({
   effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1-characterIndex);
+    const opponent = game.getCharacter(1 - characterIndex);
     const currentPierceFactor = character.additionalMetadata.pierceFactor;
     opponent.skipTurn = true;
     character.additionalMetadata.sureHit = "sureHit";
@@ -277,7 +268,7 @@ export const sorganeil = new Card({
     messageCache.push(
       `${opponent.name} got trapped in ${character.name}'s gaze!`,
       TCGThread.Gameroom
-    )
+    );
     character.timedEffects.push(
       new TimedEffect({
         name: "Sorganeil",
@@ -290,7 +281,7 @@ export const sorganeil = new Card({
           messageCache.push(
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze.`,
             TCGThread.Gameroom
-          )
+          );
         },
       })
     );
@@ -305,7 +296,7 @@ export const empathy = new Card({
   effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1-characterIndex);
+    const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
       `${character.name} tries to empathize with ${opponent.name}...`,
       TCGThread.Gameroom
@@ -323,14 +314,16 @@ export const empathy = new Card({
       );
 
       const opponentDeck = opponent.cards;
-      const cardlist = opponentDeck.map(x => x.card);
-      const signatureMove = cardlist.filter(Card => Card.cardMetadata.signature)[0]
+      const cardlist = opponentDeck.map((x) => x.card);
+      const signatureMove = cardlist.filter(
+        (Card) => Card.cardMetadata.signature
+      )[0];
 
       //const learnedMagic = signatureMoves[opponent.name];
       const usedMagic = new Card({
-            ...signatureMove,
-            empowerLevel: this.empowerLevel - 2,
-          });
+        ...signatureMove,
+        empowerLevel: this.empowerLevel - 2,
+      });
 
       messageCache.push(
         `${character.name} used **${usedMagic.getTitle()}**!`,
@@ -341,16 +334,14 @@ export const empathy = new Card({
   },
 });
 
-
-
 export const ubelDeck = [
   { card: a_reelseiden, count: 3 },
   { card: a_cleave, count: 2 },
-  { card: a_dismantle, count: 2},
-  { card: a_malevolentShrine, count: 1},
-  { card: rushdown, count: 2},
-  { card: defend, count: 1},
-  { card: recompose, count: 2},
-  { card: sorganeil, count: 1},
-  { card: empathy, count: 1}
+  { card: a_dismantle, count: 2 },
+  { card: a_malevolentShrine, count: 1 },
+  { card: rushdown, count: 2 },
+  { card: defend, count: 1 },
+  { card: recompose, count: 2 },
+  { card: sorganeil, count: 1 },
+  { card: empathy, count: 1 },
 ];

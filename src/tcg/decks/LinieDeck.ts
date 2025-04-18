@@ -137,7 +137,7 @@ export const a_erfassenAxe = new Card({
   title: "Erfassen: Axe",
   description: ([dmg]) => `HP-3. DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
-  cardMetadata : {signature : true},
+  cardMetadata: { signature: true },
   effects: [11],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

@@ -42,7 +42,7 @@ export default class CommonCardAction {
   ): number {
     const isTimedEffectAttack = option.isTimedEffectAttack ?? false;
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1-characterIndex)
+    const opponent = game.getCharacter(1 - characterIndex);
     if (
       option.hpCost === 0 ||
       character.adjustStat(-option.hpCost, StatsEnum.HP)

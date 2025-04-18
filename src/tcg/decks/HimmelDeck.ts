@@ -516,7 +516,7 @@ export const a_realHeroSwing = new Card({
   title: "A Real Hero's Swing",
   description: ([dmg]) => `HP-12. DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
-  cardMetadata : {signature : true},
+  cardMetadata: { signature: true },
   effects: [20],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

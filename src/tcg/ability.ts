@@ -55,5 +55,5 @@ export type Ability = {
     characterIndex: number,
     messageCache: MessageCache,
     card: Card
-  ) => void
+  ) => void;
 };

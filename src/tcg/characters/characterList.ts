@@ -9,7 +9,7 @@ import { Laufen } from "./characterData/characters/Laufen";
 import { CharacterData } from "./characterData/characterData";
 import { Denken } from "./characterData/characters/Denken";
 import { Himmel } from "./characterData/characters/Himmel";
-import { Ubel } from "./characterData/characters/Ubel"
+import { Ubel } from "./characterData/characters/Ubel";
 import { CharacterName } from "./metadata/CharacterName";
 
 /* export const CHARACTER_LIST: CharacterData[] = [

@@ -233,7 +233,7 @@ export const a_lightningStrike = new Card({
   description: ([dmg]) =>
     `Priority+1. HP-15. DEF-5 for this turn. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack.`,
   emoji: CardEmoji.STARK_CARD,
-  cardMetadata : {signature : true},
+  cardMetadata: { signature: true },
   tags: { Resolve: -2 },
   priority: 1,
   effects: [22],

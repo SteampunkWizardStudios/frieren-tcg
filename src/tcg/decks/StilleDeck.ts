@@ -191,7 +191,7 @@ export const a_geisel = new Card({
   description: ([dmg]) =>
     `SPD-20. Lands on a tree and asks its fellow Geisel for help! Geisel (ATK: 15) will show up to attack for ${dmg}DMG between 1 - 3 turns.`,
   emoji: CardEmoji.STILLE_CARD,
-  cardMetadata : {signature : true},
+  cardMetadata: { signature: true },
   effects: [15],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
