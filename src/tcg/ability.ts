@@ -50,4 +50,10 @@ export type Ability = {
     messageCache: MessageCache,
     additionalParam?: Record<any, any>
   ) => void;
+  abilityCardWrapper?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+    card: Card
+  ) => void
 };

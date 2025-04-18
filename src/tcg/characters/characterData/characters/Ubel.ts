@@ -5,6 +5,7 @@ import { StatsEnum } from "../../../stats";
 import Game from "../../../game";
 import Card from "../../../card";
 import Rolls from "../../../util/rolls";
+import Character from "../../../character";
 import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
@@ -37,7 +38,7 @@ export const Ubel = new CharacterData({
   ability: {
     abilityName: "Battle-crazed weirdo",
     abilityEffectString: `Übel's attack ignore ${PIERCE_FACTOR * 100}% the opponent's defense stats, but are blocked by defensive moves.`,
-    abilityOnCardUse: function(
+    /* abilityOnCardUse: function(
       game: Game,
       characterIndex: number,
       messageCache: MessageCache,
@@ -74,7 +75,58 @@ export const Ubel = new CharacterData({
             
         
       }
+    }  */
+   abilityCardWrapper: function(
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+    card: Card,
+  ) {
+    function missAttack(
+      character: Character,
+      messageCache: MessageCache,
+      card: Card,){
+        const hpCost = card.hpCost;
+          character.adjustStat(-hpCost, StatsEnum.HP);
+          messageCache.push(
+            "The attack misses!",
+            TCGThread.Gameroom
+          );
+      };
+      
+    const character = game.getCharacter(characterIndex);
+    const failureRate = card.cardMetadata.ubelFailureRate;
+
+    switch (character.additionalMetadata.sureHit) {
+      case "sureHit":
+        card.cardAction?.(game, characterIndex, messageCache);
+        break;
+      case "sureMiss":
+        if (!failureRate) {
+          card.cardAction?.(game, characterIndex, messageCache);
+        } else {
+            missAttack(character, messageCache, card);
+        }
+        break;
+      case "regular":
+        if (!failureRate) {
+          card.cardAction?.(game, characterIndex, messageCache);
+        } else {
+          const luckRoll = Rolls.rollD100();
+          messageCache.push(`## **Missing chances:** ${failureRate}%`, TCGThread.Gameroom);
+          messageCache.push(`# Luck roll: ${luckRoll}`, TCGThread.Gameroom);
+          if (luckRoll < failureRate){
+            missAttack(character, messageCache, card);
+          } else {
+            messageCache.push(
+              "The attack connects!",
+              TCGThread.Gameroom
+            );
+            card.cardAction?.(game, characterIndex, messageCache);
+          }
+        }
     }
+   }
   },
   additionalMetadata: {
     attackedThisTurn: false,

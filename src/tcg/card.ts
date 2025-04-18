@@ -42,6 +42,7 @@ export type CardProps = {
   tags?: Record<string, number>;
   cardMetadata?: CardMetadata;
   printEmpower?: boolean;
+  hpCost?: number;
 };
 
 export default class Card implements CardProps {
@@ -64,6 +65,7 @@ export default class Card implements CardProps {
   tags: Record<string, number>;
   cardMetadata: CardMetadata;
   printEmpower: boolean;
+  hpCost: number;
 
   constructor(cardProps: CardProps) {
     this.title = cardProps.title;
@@ -79,6 +81,7 @@ export default class Card implements CardProps {
     this.emoji = cardProps.emoji ?? CardEmoji.GENERIC;
     this.cosmetic = cardProps.cosmetic;
     this.printEmpower = cardProps.printEmpower ?? true;
+    this.hpCost = cardProps.hpCost ?? 0;
   }
 
   getDescription(): string {

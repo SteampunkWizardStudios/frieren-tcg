@@ -14,6 +14,7 @@ const a_reelseiden = new Card({
   emoji: CardEmoji.UBEL_CARD,
   effects: [8],
   cardMetadata : {ubelFailureRate : 20},
+  hpCost: 6,
   cardAction: function (
     this: Card,
     game,
@@ -39,10 +40,11 @@ const a_reelseiden = new Card({
 const a_cleave = new Card({
   title: "Cleave",
   description: ([dmg]) =>
-    `HP-6. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-8. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [12],
   cardMetadata : {ubelFailureRate : 40},
+  hpCost: 8,
   cardAction: function (
     this: Card,
     game,
@@ -58,7 +60,7 @@ const a_cleave = new Card({
     );
 
     CommonCardAction.pierceAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[0]), //+ character.additionalMetadata.PierceFactor * opponent.stats.stats.DEF
+      damage: this.calculateEffectValue(this.effects[0]),
       hpCost: 8,
       pierceFactor: pierceFactor,
     });
@@ -72,6 +74,7 @@ const a_dismantle = new Card({
   emoji: CardEmoji.UBEL_CARD,
   effects: [16],
   cardMetadata : {ubelFailureRate : 60},
+  hpCost: 12,
   cardAction: function (
     this: Card,
     game,
@@ -101,6 +104,7 @@ export const a_malevolentShrine = new Card({
   emoji: CardEmoji.UBEL_CARD,
   cardMetadata : {signature : true, ubelFailureRate : 80},
   effects: [22],
+  hpCost: 15,
   cardAction: function (
     this: Card,
     game,
