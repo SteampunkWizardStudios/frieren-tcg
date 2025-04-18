@@ -195,7 +195,7 @@ const recompose = new Card({
       this.calculateEffectValue(this.effects[0]),
       StatsEnum.HP
     );
-    const turnCount = 3;
+    const turnCount = 2;
 
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
