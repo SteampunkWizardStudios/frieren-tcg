@@ -86,7 +86,7 @@ const a_inferno = new Card({
   description: ([dmg]) => `DMG ${dmg}. Reduces the user's HP to 1.`,
   emoji: CardEmoji.ENERGY,
   effects: [30],
-  cardMetadata: { signature : true},
+  cardMetadata: { signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

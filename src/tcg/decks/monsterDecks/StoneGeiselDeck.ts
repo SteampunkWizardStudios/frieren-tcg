@@ -80,7 +80,7 @@ export const a_roomCollapse = new Card({
     `DMG ${dmg}. Reduces the user's HP to 1. Does not factor in ATK in Damage calculation.`,
   emoji: CardEmoji.PUNCH,
   effects: [40],
-  cardMetadata: { signature : true},
+  cardMetadata: { signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

@@ -66,7 +66,7 @@ export const a_dragonfire = new Card({
   description: ([dmg]) => `HP-10. DMG ${dmg}. Reduces the opponent's DEF to 1.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
-  cardMetadata: { signature : true},
+  cardMetadata: { signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

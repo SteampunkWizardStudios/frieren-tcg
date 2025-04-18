@@ -165,7 +165,7 @@ export const a_solitaryPractice = new Card({
     `HP-40. At this turn's resolution, strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20. `,
   emoji: CardEmoji.ENERGY,
   effects: [30],
-  cardMetadata: { signature : true},
+  cardMetadata: { signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`solitary practice`, TCGThread.Gameroom);

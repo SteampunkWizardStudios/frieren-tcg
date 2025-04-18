@@ -52,7 +52,7 @@ export default class Card implements CardProps {
   readonly EMPOWER_BOOST = 0.1;
 
   title: string;
-  nature: Nature
+  nature: Nature;
   description: (formattedEffects: string[]) => string;
   effects: number[];
   emoji: CardEmoji;

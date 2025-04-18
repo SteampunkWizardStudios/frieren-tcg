@@ -128,7 +128,7 @@ const a_callOfCthulhu = new Card({
   description: ([dmg]) => `HP set to 1. DMG ${dmg}.`,
   emoji: CardEmoji.ENERGY,
   effects: [30],
-  cardMetadata: { signature : true},
+  cardMetadata: { signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
