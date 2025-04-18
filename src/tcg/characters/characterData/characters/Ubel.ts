@@ -2,6 +2,8 @@ import { CharacterData } from "../characterData";
 import { ubelDeck } from "../../../decks/UbelDeck";
 import Stats from "../../../stats";
 import { StatsEnum } from "../../../stats";
+import Game from "../../../game";
+import Card from "../../../card";
 import Rolls from "../../../util/rolls";
 import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
@@ -34,7 +36,45 @@ export const Ubel = new CharacterData({
   cards: ubelDeck,
   ability: {
     abilityName: "Battle-crazed weirdo",
-    abilityEffectString: `Übel's attack ignore ${PIERCE_FACTOR * 100}% the opponent's defense stats, but are blocked by defensive moves.`,  
+    abilityEffectString: `Übel's attack ignore ${PIERCE_FACTOR * 100}% the opponent's defense stats, but are blocked by defensive moves.`,
+    abilityOnCardUse: function(
+      game: Game,
+      characterIndex: number,
+      messageCache: MessageCache,
+      card: Card,
+    )  {
+      const character = game.getCharacter(characterIndex);
+      switch (character.additionalMetadata.sureHit) {
+        case "sureHit":
+          messageCache.push(
+            "The attack connects!",
+            TCGThread.Gameroom
+          );
+        case "sureMiss":
+          messageCache.push(
+            "The attack misses.",
+            TCGThread.Gameroom
+          );
+        case "regular":
+          const failureOdds = card.cardMetadata.ubelFailureRate ?? 0;
+          const luckRoll = Rolls.rollD100();
+          messageCache.push(`## **Missing chances:** ${failureOdds}%`, TCGThread.Gameroom);
+          messageCache.push(`# Luck roll: ${luckRoll}`, TCGThread.Gameroom);
+          if (luckRoll < failureOdds){
+            messageCache.push(
+              "The attack misses.",
+              TCGThread.Gameroom
+            );
+          } else {
+            messageCache.push(
+              "The attack connects!",
+              TCGThread.Gameroom
+            );
+          }
+            
+        
+      }
+    }
   },
   additionalMetadata: {
     attackedThisTurn: false,

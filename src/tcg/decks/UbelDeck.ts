@@ -22,7 +22,7 @@ const a_reelseiden = new Card({
   ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1-characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ||=0);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ??=0);
     messageCache.push(
       `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
@@ -51,7 +51,7 @@ const a_cleave = new Card({
   ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1-characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ||=0);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ??=0);
     messageCache.push(
       `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
@@ -80,7 +80,7 @@ const a_dismantle = new Card({
   ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1-characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ||=0);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ??=0);
     messageCache.push(
       `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
@@ -109,7 +109,7 @@ export const a_malevolentShrine = new Card({
   ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1-characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ||=0);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ??=0);
     messageCache.push(
       `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
@@ -283,6 +283,10 @@ export const sorganeil = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.additionalMetadata.sureHit = "regular";
           character.additionalMetadata.pierceFactor = currentPierceFactor;
+          messageCache.push(
+            `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze.`,
+            TCGThread.Gameroom
+          )
         },
       })
     );
