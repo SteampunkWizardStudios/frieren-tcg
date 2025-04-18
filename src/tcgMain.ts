@@ -20,6 +20,7 @@ import { printCharacter } from "./tcgChatInteractions/printCharacter";
 import TimedEffect from "./tcg/timedEffect";
 import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
 import { CharacterName } from "./tcg/characters/metadata/CharacterName";
+import { EmpoweredMode } from "./tcg/plugins/chaosMode";
 
 const TURN_LIMIT = 50;
 
