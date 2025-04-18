@@ -32,8 +32,8 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setDescription("Get ranked stats for a player, defaults to yourself")
         .addUserOption((option) =>
           option
-            .setName("user")
-            .setDescription("The user to get ranked stats for")
+            .setName("player")
+            .setDescription("The player to get ranked stats for")
         )
     )
     .addSubcommand((subcommand) =>
