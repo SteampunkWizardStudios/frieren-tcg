@@ -28,6 +28,12 @@ export type Ability = {
     messageCache: MessageCache,
     attackDamage: number
   ) => void;
+  abilityAfterOpponentsMoveEffect?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+    card: Card,
+  ) => void;
   abilityAfterDirectAttackEffect?: (
     game: Game,
     characterIndex: number,

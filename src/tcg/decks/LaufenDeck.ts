@@ -7,7 +7,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_staffStrike = new Card({
   title: "Staff Strike",
-  nature: "Attack",
+  cardMetadata: {nature: "Attack"},
   description: ([spd, dmg]) =>
     `SPD+${spd}. Afterwards, HP-4, attack for DMG ${dmg}+SPD/6`,
   emoji: CardEmoji.LAUFEN_CARD,
@@ -31,7 +31,7 @@ const a_staffStrike = new Card({
 
 const a_staffBash = new Card({
   title: "Staff Bash",
-  nature: "Attack",
+  cardMetadata: {nature: "Attack"},
   description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-4, DMG ${dmg}+SPD/5`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [2, 8],
@@ -54,7 +54,7 @@ const a_staffBash = new Card({
 
 export const a_whip = new Card({
   title: "Whip",
-  nature: "Attack",
+  cardMetadata: {nature: "Attack"},
   description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-5, DMG ${dmg}+SPD/4`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [1, 6],
@@ -76,7 +76,7 @@ export const a_whip = new Card({
 
 export const hide = new Card({
   title: "Hide",
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: ([spd, spdBuff, hp]) =>
     `SPD+${spd}. Increases SPD by an additional ${spdBuff} until the end of the turn. Heal ${hp} HP.`,
   emoji: CardEmoji.LAUFEN_CARD,
@@ -114,10 +114,9 @@ export const hide = new Card({
 
 export const a_supersonicStrike = new Card({
   title: "Supersonic Strike",
-  nature: "Attack",
   description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-7, DMG ${dmg}+SPD/3`,
   emoji: CardEmoji.LAUFEN_CARD,
-  cardMetadata: { signature: true },
+  cardMetadata: { nature: "Attack", signature: true },
   effects: [3, 10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -138,7 +137,7 @@ export const a_supersonicStrike = new Card({
 
 const quickDodge = new Card({
   title: "Quick Dodge",
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: ([spd, spdBuff]) =>
     `Priority+2. SPD+${spd}. Increases SPD by an additional ${spdBuff} until the end of the turn.`,
   emoji: CardEmoji.LAUFEN_CARD,
@@ -169,7 +168,7 @@ const quickDodge = new Card({
 
 export const parry = new Card({
   title: "Parry",
-  nature: "Defense",
+  cardMetadata: {nature: "Defense"},
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.LAUFEN_CARD,
@@ -201,7 +200,7 @@ export const parry = new Card({
 
 export const jilwer = new Card({
   title: "Jilwer",
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: ([spd]) =>
     `Increases SPD by ${spd} for 2 turns. At the end of every turn, HP-10.`,
   emoji: CardEmoji.LAUFEN_CARD,

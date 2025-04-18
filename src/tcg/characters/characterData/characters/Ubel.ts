@@ -38,44 +38,67 @@ export const Ubel = new CharacterData({
   ability: {
     abilityName: "Battle-crazed weirdo",
     abilityEffectString: `Übel's attack ignore ${PIERCE_FACTOR * 100}% the opponent's defense stats, but are blocked by defensive moves.`,
-    /* abilityOnCardUse: function(
+    
+    // same turn surehit effect changes
+    abilityAfterOpponentsMoveEffect: function(
       game: Game,
       characterIndex: number,
       messageCache: MessageCache,
-      card: Card,
-    )  {
+      card: Card
+    ) {
       const character = game.getCharacter(characterIndex);
-      switch (character.additionalMetadata.sureHit) {
-        case "sureHit":
-          messageCache.push(
-            "The attack connects!",
-            TCGThread.Gameroom
-          );
-        case "sureMiss":
-          messageCache.push(
-            "The attack misses.",
-            TCGThread.Gameroom
-          );
-        case "regular":
-          const failureOdds = card.cardMetadata.ubelFailureRate ?? 0;
-          const luckRoll = Rolls.rollD100();
-          messageCache.push(`## **Missing chances:** ${failureOdds}%`, TCGThread.Gameroom);
-          messageCache.push(`# Luck roll: ${luckRoll}`, TCGThread.Gameroom);
-          if (luckRoll < failureOdds){
-            messageCache.push(
-              "The attack misses.",
-              TCGThread.Gameroom
-            );
-          } else {
-            messageCache.push(
-              "The attack connects!",
-              TCGThread.Gameroom
-            );
+      const opponent = game.getCharacter(1-characterIndex);
+      const effects = character.timedEffects.map(effect => effect.name);
+      console.log(`ongoing effects: ${effects}`);
+      switch (card.cardMetadata.nature) {
+        case "Attack":
+          if (!effects.find(effectName => effectName === "Recompose")){
+            character.additionalMetadata.sureHit = "sureHit";
+            messageCache.push(`${opponent.name} is wide-open!`, TCGThread.Gameroom);
           }
-            
-        
+          break;
+        case "Defense":
+          character.additionalMetadata.sureHit = "sureMiss";
+          messageCache.push(`${character.name} can't cut through this!`, TCGThread.Gameroom);
+          break;
+        case "Default":
+          if (!effects.find(effectName => effectName === "Recompose") && !effects.find(effectName => effectName === "Rushdown")){
+            character.additionalMetadata.sureHit = "regular";
+          };
       }
-    }  */
+    },
+
+    // new turn surehit effect changes
+    abilityStartOfTurnEffect: function(
+      game,
+      characterIndex,
+      messageCache,
+    ) {
+      const character = game.getCharacter(characterIndex);
+      const effects = character.timedEffects.map(effect => effect.name);
+      
+      if (effects.find(effectName => effectName === "Sorganeil")||effects.find(effectName => effectName === "Rushdown")){
+        character.additionalMetadata.sureHit = "sureHit";
+      } else if (effects.find(effectName => effectName === "Recompose")){
+        character.additionalMetadata.sureHit = "sureMiss";
+      } else {
+        switch (character.additionalMetadata.sureHit) {
+          case "sureHit":
+            if (game.additionalMetadata.lastUsedCards[1-characterIndex].cardMetadata.nature != "Attack") {
+              character.additionalMetadata.sureHit = "regular"
+            };
+            break;
+          case "sureMiss":
+            character.additionalMetadata.sureHit = "regular";
+            break;
+          default:
+            // do nothing
+        }
+      }
+      console.log(`Current sure hit status ${character.additionalMetadata.sureHit}`);
+    },
+
+    // attacks should potentially fail
     abilityCardWrapper: function (
       game: Game,
       characterIndex: number,

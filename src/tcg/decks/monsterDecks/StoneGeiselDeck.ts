@@ -7,7 +7,7 @@ import CommonCardAction from "../../util/commonCardActions";
 
 export const a_charge = new Card({
   title: "Charge",
-  nature: "Attack",
+  cardMetadata: {nature: "Attack"},
   description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
@@ -22,7 +22,7 @@ export const a_charge = new Card({
 
 const earPiercingScream = new Card({
   title: "Ear Piercing Scream",
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: ([def]) => `HP-2. Opponent's DEF-${def}.`,
   emoji: CardEmoji.ENERGY,
   effects: [5],
@@ -44,7 +44,7 @@ const earPiercingScream = new Card({
 
 const hide = new Card({
   title: "Hide",
-  nature: "Defense",
+  cardMetadata: {nature: "Defense"},
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SHIELD,
@@ -75,12 +75,11 @@ const hide = new Card({
 
 export const a_roomCollapse = new Card({
   title: `Room Collapse`,
-  nature: "Attack",
   description: ([dmg]) =>
     `DMG ${dmg}. Reduces the user's HP to 1. Does not factor in ATK in Damage calculation.`,
   emoji: CardEmoji.PUNCH,
   effects: [40],
-  cardMetadata: { signature: true },
+  cardMetadata: { nature: "Attack", signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

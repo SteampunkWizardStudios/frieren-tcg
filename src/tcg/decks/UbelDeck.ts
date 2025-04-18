@@ -9,12 +9,11 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_reelseiden = new Card({
   title: "Reelseiden",
-  nature: "Attack",
   description: ([dmg]) =>
     `HP-6. Has a 20% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [8],
-  cardMetadata: { ubelFailureRate: 20 },
+  cardMetadata: { nature: "Attack", ubelFailureRate: 20 },
   hpCost: 6,
   cardAction: function (
     this: Card,
@@ -40,12 +39,11 @@ const a_reelseiden = new Card({
 
 const a_cleave = new Card({
   title: "Cleave",
-  nature: "Attack",
   description: ([dmg]) =>
     `HP-8. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [12],
-  cardMetadata: { ubelFailureRate: 40 },
+  cardMetadata: { nature: "Attack", ubelFailureRate: 40 },
   hpCost: 8,
   cardAction: function (
     this: Card,
@@ -71,12 +69,11 @@ const a_cleave = new Card({
 
 const a_dismantle = new Card({
   title: "Dismantle",
-  nature: "Attack",
   description: ([dmg]) =>
     `HP-12. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [16],
-  cardMetadata: { ubelFailureRate: 60 },
+  cardMetadata: { nature: "Attack", ubelFailureRate: 60 },
   hpCost: 12,
   cardAction: function (
     this: Card,
@@ -102,11 +99,10 @@ const a_dismantle = new Card({
 
 export const a_malevolentShrine = new Card({
   title: "Malevolent Shrine",
-  nature: "Attack",
   description: ([dmg]) =>
     `HP-15. Has a 80% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
-  cardMetadata: { signature: true, ubelFailureRate: 80 },
+  cardMetadata: { nature: "Attack", signature: true, ubelFailureRate: 80 },
   effects: [22],
   hpCost: 15,
   cardAction: function (
@@ -133,7 +129,7 @@ export const a_malevolentShrine = new Card({
 
 export const rushdown = new Card({
   title: "Rushdown",
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: ([spd]) =>
     `Increases SPD by ${spd} for 3 turns. Attacks will not miss during this period. At the end of every turn, HP-5.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -144,7 +140,7 @@ export const rushdown = new Card({
       `${character.name} rushes towards the ennemy!`,
       TCGThread.Gameroom
     );
-    character.additionalMetadata.sureHit = "sureHit";
+    //character.additionalMetadata.sureHit = "sureHit";
 
     const turnCount = 3;
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
@@ -169,12 +165,12 @@ export const rushdown = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
-          character.additionalMetadata.sureHit = "regular";
+          //character.additionalMetadata.sureHit = "regular";
         },
         replacedAction: function (this, _game, characterIndex) {
           messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
-          character.additionalMetadata.sureHit = "regular";
+          //character.additionalMetadata.sureHit = "regular";
         },
       })
     );
@@ -185,21 +181,21 @@ export const rushdown = new Card({
 
 const recompose = new Card({
   title: "Recompose",
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: ([hp]) => `SPD-10 for 3 turns. Heal ${hp}HP.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(`${character.name} calms down.`, TCGThread.Gameroom);
-    character.additionalMetadata.sureHit = "sureMiss";
+    //character.additionalMetadata.sureHit = "sureMiss";
 
     character.adjustStat(-10, StatsEnum.SPD);
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
       StatsEnum.HP
     );
-    const turnCount = 2;
+    const turnCount = 3;
 
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
@@ -216,11 +212,11 @@ const recompose = new Card({
             TCGThread.Gameroom
           );
           character.adjustStat(10, StatsEnum.SPD);
-          character.additionalMetadata.sureHit = "regular";
+          //character.additionalMetadata.sureHit = "regular";
         },
         replacedAction: function (this, _game, characterIndex) {
           character.adjustStat(10, StatsEnum.SPD);
-          character.additionalMetadata.sureHit = "regular";
+          //character.additionalMetadata.sureHit = "regular";
         },
       })
     );
@@ -229,7 +225,7 @@ const recompose = new Card({
 
 const defend = new Card({
   title: "Defend",
-  nature: "Defense",
+  cardMetadata: {nature: "Defense"},
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -260,7 +256,7 @@ const defend = new Card({
 
 export const sorganeil = new Card({
   title: "Sorganeil",
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: () =>
     `Priority-1. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -271,7 +267,8 @@ export const sorganeil = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     const currentPierceFactor = character.additionalMetadata.pierceFactor;
     opponent.skipTurn = true;
-    character.additionalMetadata.sureHit = "sureHit";
+    const currentHittingStatus = character.additionalMetadata.sureHit; 
+    //character.additionalMetadata.sureHit = "sureHit";
     character.additionalMetadata.pierceFactor = 1;
     messageCache.push(
       `${opponent.name} got trapped in ${character.name}'s gaze!`,
@@ -284,7 +281,7 @@ export const sorganeil = new Card({
         turnDuration: 2,
         priority: -1,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.additionalMetadata.sureHit = "regular";
+          // character.additionalMetadata.sureHit = currentHittingStatus;
           character.additionalMetadata.pierceFactor = currentPierceFactor;
           messageCache.push(
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze.`,
@@ -298,7 +295,7 @@ export const sorganeil = new Card({
 
 export const empathy = new Card({
   title: `Empathy`,
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: () =>
     `Use the opponent signature spell. Will fail if used before turn 5.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -338,6 +335,10 @@ export const empathy = new Card({
         `${character.name} used **${usedMagic.getTitle()}**!`,
         TCGThread.Gameroom
       );
+      const characterEffectsNames = character.timedEffects.map(eff => eff.name);
+      if (usedMagic.cardMetadata.nature === "Attack" && characterEffectsNames.find(effname => effname === "Recompose")) {
+        messageCache.push("The attack misses!", TCGThread.Gameroom);
+      }
       usedMagic.cardAction(game, characterIndex, messageCache);
     }
   },

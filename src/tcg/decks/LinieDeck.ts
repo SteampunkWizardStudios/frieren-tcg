@@ -8,7 +8,7 @@ import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 
 const imitate = new Card({
   title: "Imitate",
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: () =>
     `Use the card the opponent used last turn at this card's empower level -2.`,
   emoji: CardEmoji.LINIE_CARD,
@@ -26,7 +26,7 @@ const imitate = new Card({
     } else {
       return new Card({
         title: "Empty Imitation",
-        nature: "Default",
+        cardMetadata: {nature: "Default"},
         description: () => "No card to imitate. This move will fail.",
         effects: [],
         emoji: CardEmoji.LINIE_CARD,
@@ -44,7 +44,7 @@ const imitate = new Card({
 
 export const adapt = new Card({
   title: "Adapt",
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: ([spd, atkDef, hp]) =>
     `SPD+${spd}. If HP > 50, ATK+${atkDef}, DEF+${atkDef}. If HP <= 50, heal ${hp} HP.`,
   emoji: CardEmoji.LINIE_CARD,
@@ -76,7 +76,7 @@ export const adapt = new Card({
 
 export const manaDetection = new Card({
   title: "Mana Detection",
-  nature: "Util",
+  cardMetadata: {nature: "Util"},
   description: ([spd, bigNumber, smallNumber]) =>
     `SPD+${spd}. If Opp's DEF >= Opp's ATK, ATK+${bigNumber}, DEF+${smallNumber}. Otherwise, ATK+${smallNumber}, DEF+${bigNumber}.`,
   emoji: CardEmoji.LINIE_CARD,
@@ -109,7 +109,7 @@ export const manaDetection = new Card({
 
 const parry = new Card({
   title: "Parry",
-  nature: "Defense",
+  cardMetadata: {nature: "Defense"},
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.LINIE_CARD,
@@ -140,10 +140,9 @@ const parry = new Card({
 
 export const a_erfassenAxe = new Card({
   title: "Erfassen: Axe",
-  nature: "Attack",
   description: ([dmg]) => `HP-3. DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
-  cardMetadata: { signature: true },
+  cardMetadata: { nature: "Attack", signature: true },
   effects: [11],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -159,7 +158,7 @@ export const a_erfassenAxe = new Card({
 
 export const a_erfassenSword = new Card({
   title: "Erfassen: Sword",
-  nature: "Attack",
+  cardMetadata: {nature: "Attack"},
   description: ([dmg]) => `HP-2. DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [9],
@@ -177,7 +176,7 @@ export const a_erfassenSword = new Card({
 
 export const a_erfassenSpear = new Card({
   title: "Erfassen: Spear",
-  nature: "Attack",
+  cardMetadata: {nature: "Attack"},
   description: ([dmg]) => `HP-1. DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [7],
@@ -195,7 +194,7 @@ export const a_erfassenSpear = new Card({
 
 export const a_erfassenKnife = new Card({
   title: "Erfassen: Knife",
-  nature: "Attack",
+  cardMetadata: {nature: "Attack"},
   description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [5],

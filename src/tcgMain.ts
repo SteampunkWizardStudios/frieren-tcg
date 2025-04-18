@@ -292,6 +292,7 @@ export const tcgMain = async (
         const card = characterToSelectedMoveMap[characterIndex];
         if (card) {
           const character = game.getCharacter(characterIndex);
+          const opponentCharacter = game.getCharacter(1-characterIndex);
           messageCache.push(
             `## ${character.cosmetic.emoji} ${character.name} (${characterIndex === 0 ? `${challenger.displayName}` : `${opponent.displayName}`}) used **${card.emoji} ${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[⠀](${card.cosmetic?.cardImageUrl})` : "!"}`,
             TCGThread.Gameroom
@@ -309,8 +310,24 @@ export const tcgMain = async (
               messageCache,
               card
             );
+            if (opponentCharacter.ability.abilityAfterOpponentsMoveEffect) {
+              opponentCharacter.ability.abilityAfterOpponentsMoveEffect(
+                game,
+                1-characterIndex,
+                messageCache,
+                card
+              );
+            };
           } else {
             card.cardAction?.(game, characterIndex, messageCache);
+            if (opponentCharacter.ability.abilityAfterOpponentsMoveEffect) {
+              opponentCharacter.ability.abilityAfterOpponentsMoveEffect(
+                game,
+                1-characterIndex,
+                messageCache,
+                card
+              )
+            };
           }
           if (character.ability.abilityOnCardUse) {
             character.ability.abilityOnCardUse(
