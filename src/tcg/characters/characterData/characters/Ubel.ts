@@ -49,7 +49,6 @@ export const Ubel = new CharacterData({
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1-characterIndex);
       const effects = character.timedEffects.map(effect => effect.name);
-      console.log(`ongoing effects: ${effects}`);
       switch (card.cardMetadata.nature) {
         case "Attack":
           if (!effects.find(effectName => effectName === "Recompose")){
@@ -95,7 +94,6 @@ export const Ubel = new CharacterData({
             // do nothing
         }
       }
-      console.log(`Current sure hit status ${character.additionalMetadata.sureHit}`);
     },
 
     // attacks should potentially fail
