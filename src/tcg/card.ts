@@ -21,8 +21,11 @@ type CardMetadata = {
   ubelFailureRate?: number;
 };
 
+type Nature = "Attack" | "Defense" | "Default" | "Util";
+
 export type CardProps = {
   title: string;
+  nature: Nature;
   description: (formattedEffects: string[]) => string;
   effects: number[];
   emoji?: CardEmoji;
@@ -49,6 +52,7 @@ export default class Card implements CardProps {
   readonly EMPOWER_BOOST = 0.1;
 
   title: string;
+  nature: Nature
   description: (formattedEffects: string[]) => string;
   effects: number[];
   emoji: CardEmoji;
@@ -69,6 +73,7 @@ export default class Card implements CardProps {
 
   constructor(cardProps: CardProps) {
     this.title = cardProps.title;
+    this.nature = cardProps.nature;
     this.description = cardProps.description;
     this.effects = cardProps.effects;
     this.cardAction = cardProps.cardAction;

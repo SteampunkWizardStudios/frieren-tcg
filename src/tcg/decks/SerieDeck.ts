@@ -11,6 +11,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_livingGrimoireOffensive = new Card({
   title: "Living Grimoire: Offense Chapter",
+  nature: "Attack",
   description: () => "Use a random offensive magic.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
@@ -44,6 +45,7 @@ export const a_livingGrimoireOffensive = new Card({
 
 export const a_livingGrimoireUtility = new Card({
   title: "Living Grimoire: Utility Chapter",
+  nature: "Util",
   description: () => "Use a random utility magic.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
@@ -93,6 +95,7 @@ const a_livingGrimoireOffensive2 = new Card({
 
 export const mock = new Card({
   title: "Mock",
+  nature: "Util",
   description: ([hp, def, spd]) =>
     `HP+${hp}. Opponent's DEF-${def}. Opponent's SPD-${spd}`,
   emoji: CardEmoji.SERIE_CARD,
@@ -126,6 +129,7 @@ export const mock = new Card({
 
 export const basicDefensiveMagic = new Card({
   title: "Basic Defensive Magic",
+  nature: "Defense",
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SERIE_CARD,
@@ -160,6 +164,7 @@ export const basicDefensiveMagic = new Card({
 
 export const unbreakableBarrier = new Card({
   title: "Unbreakable Barrier",
+  nature: "Util",
   description: ([atk, def, oppSpd]) =>
     `HP-10. ATK+${atk} for 5 turns. DEF+${def} for 5 turns. Opponent's SPD-${oppSpd} for 5 turns.`,
   emoji: CardEmoji.SERIE_CARD,
@@ -205,6 +210,7 @@ export const unbreakableBarrier = new Card({
 
 export const ancientBarrierMagic = new Card({
   title: "Ancient Barrier Magic",
+  nature: "Util",
   description: ([atk, def, oppSpd]) =>
     `HP-20. ATK+${atk} for 7 turns. Opponent's DEF-${def} for 7 turns. Opponent's SPD -${oppSpd} for 7 turns.`,
   emoji: CardEmoji.SERIE_CARD,

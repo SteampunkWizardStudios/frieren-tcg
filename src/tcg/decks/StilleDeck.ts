@@ -9,6 +9,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_peck = new Card({
   title: "Peck",
+  nature: "Attack",
   description: ([dmg]) =>
     `SPD-2. Discard a random card in hand and draw 1 card. DMG ${dmg}.`,
   emoji: CardEmoji.STILLE_CARD,
@@ -37,6 +38,7 @@ const a_peck = new Card({
 
 const a_ironFeather = new Card({
   title: "Iron Feather",
+  nature: "Attack",
   description: ([def, dmg]) => `SPD-3. DEF+${def}. DMG ${dmg}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [1, 3],
@@ -61,6 +63,7 @@ const a_ironFeather = new Card({
 
 const hide = new Card({
   title: "Hide",
+  nature: "Util",
   description: ([def]) => `SPD-3. DEF+${def}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [2],
@@ -81,6 +84,7 @@ const hide = new Card({
 
 const roost = new Card({
   title: "Roost",
+  nature: "Util",
   description: ([hp]) => `SPD-5 for 3 turns. DEF-3 for 2 turns. Heal ${hp}HP.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [5],
@@ -132,6 +136,7 @@ const roost = new Card({
 
 export const deflect = new Card({
   title: "Deflect",
+  nature: "Defense",
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.STILLE_CARD,
@@ -162,6 +167,7 @@ export const deflect = new Card({
 
 const flyAway = new Card({
   title: "Fly Away",
+  nature: "Util",
   description: ([spd]) => `Priority+2. SPD + ${spd} until the end of the turn.`,
   emoji: CardEmoji.STILLE_CARD,
   priority: 2,
@@ -188,6 +194,7 @@ const flyAway = new Card({
 
 export const a_geisel = new Card({
   title: "Geisel",
+  nature: "Attack",
   description: ([dmg]) =>
     `SPD-20. Lands on a tree and asks its fellow Geisel for help! Geisel (ATK: 15) will show up to attack for ${dmg}DMG between 1 - 3 turns.`,
   emoji: CardEmoji.STILLE_CARD,

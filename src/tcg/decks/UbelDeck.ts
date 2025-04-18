@@ -9,6 +9,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_reelseiden = new Card({
   title: "Reelseiden",
+  nature: "Attack",
   description: ([dmg]) =>
     `HP-6. Has a 20% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -39,6 +40,7 @@ const a_reelseiden = new Card({
 
 const a_cleave = new Card({
   title: "Cleave",
+  nature: "Attack",
   description: ([dmg]) =>
     `HP-8. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -69,6 +71,7 @@ const a_cleave = new Card({
 
 const a_dismantle = new Card({
   title: "Dismantle",
+  nature: "Attack",
   description: ([dmg]) =>
     `HP-12. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -99,6 +102,7 @@ const a_dismantle = new Card({
 
 export const a_malevolentShrine = new Card({
   title: "Malevolent Shrine",
+  nature: "Attack",
   description: ([dmg]) =>
     `HP-15. Has a 80% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -129,6 +133,7 @@ export const a_malevolentShrine = new Card({
 
 export const rushdown = new Card({
   title: "Rushdown",
+  nature: "Util",
   description: ([spd]) =>
     `Increases SPD by ${spd} for 3 turns. Attacks will not miss during this period. At the end of every turn, HP-5.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -180,6 +185,7 @@ export const rushdown = new Card({
 
 const recompose = new Card({
   title: "Recompose",
+  nature: "Util",
   description: ([hp]) => `SPD-10 for 3 turns. Heal ${hp}HP.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10],
@@ -223,6 +229,7 @@ const recompose = new Card({
 
 const defend = new Card({
   title: "Defend",
+  nature: "Defense",
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -253,7 +260,8 @@ const defend = new Card({
 
 export const sorganeil = new Card({
   title: "Sorganeil",
-  description: ([dmg]) =>
+  nature: "Util",
+  description: () =>
     `Priority-1. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
   emoji: CardEmoji.UBEL_CARD,
   priority: -2,
@@ -290,7 +298,8 @@ export const sorganeil = new Card({
 
 export const empathy = new Card({
   title: `Empathy`,
-  description: ([dmg]) =>
+  nature: "Util",
+  description: () =>
     `Use the opponent signature spell. Will fail if used before turn 5.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [],

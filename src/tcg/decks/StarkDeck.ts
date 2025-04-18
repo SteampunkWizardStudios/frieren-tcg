@@ -8,6 +8,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_axeSwipe = new Card({
   title: "Axe Swipe",
+  nature: "Attack",
   description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -1 },
@@ -27,6 +28,7 @@ const a_axeSwipe = new Card({
 
 const offensiveStance = new Card({
   title: "Offensive Stance",
+  nature: "Util",
   description: ([atk, spd]) =>
     `ATK+${atk}. DEF-2. SPD+${spd}. Gain <Resolve> for next 1 Attack.`,
   emoji: CardEmoji.STARK_CARD,
@@ -50,6 +52,7 @@ const offensiveStance = new Card({
 
 const defensiveStance = new Card({
   title: "Defensive Stance",
+  nature: "Util",
   description: ([def, spd]) =>
     `ATK-2. DEF+${def}. SPD+${spd}. Gain <Resolve> for next 1 Attack.`,
   emoji: CardEmoji.STARK_CARD,
@@ -73,6 +76,7 @@ const defensiveStance = new Card({
 
 const jumboBerrySpecialBreak = new Card({
   title: "Jumbo Berry Special Break",
+  nature: "Util",
   description: ([def, hp]) =>
     `SPD-2 for 2 turns. DEF+${def} for 2 turns. Heal ${hp} HP`,
   emoji: CardEmoji.STARK_CARD,
@@ -115,6 +119,7 @@ const jumboBerrySpecialBreak = new Card({
 
 export const block = new Card({
   title: "Block",
+  nature: "Defense",
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.STARK_CARD,
@@ -145,6 +150,7 @@ export const block = new Card({
 
 const concentration = new Card({
   title: "Concentration",
+  nature: "Util",
   description: ([spd]) =>
     `Increases SPD by ${spd}. Gain <Resolve> for next 2 attacks`,
   emoji: CardEmoji.STARK_CARD,
@@ -164,6 +170,7 @@ const concentration = new Card({
 
 const a_ordensSlashTechnique = new Card({
   title: "Orden's Slash Technique",
+  nature: "Attack",
   description: ([dmg]) => `HP-8. DMG ${dmg}`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -1 },
@@ -182,6 +189,7 @@ const a_ordensSlashTechnique = new Card({
 
 const fearBroughtMeThisFar = new Card({
   title: "Fear Brought Me This Far",
+  nature: "Util",
   description: ([atkDef]) =>
     `Increases ATK and DEF by ${atkDef}. Gain <Resolve> for next 2 attacks.`,
   emoji: CardEmoji.STARK_CARD,
@@ -202,6 +210,7 @@ const fearBroughtMeThisFar = new Card({
 
 const a_eisensAxeCleave = new Card({
   title: "Eisen's Axe Cleave",
+  nature: "Attack",
   description: ([dmg]) => `HP-12. DMG ${dmg}. Uses up 2 Resolve stack.`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -2 },
@@ -230,6 +239,7 @@ const a_eisensAxeCleave = new Card({
 
 export const a_lightningStrike = new Card({
   title: "Lightning Strike",
+  nature: "Attack",
   description: ([dmg]) =>
     `Priority+1. HP-15. DEF-5 for this turn. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack.`,
   emoji: CardEmoji.STARK_CARD,
