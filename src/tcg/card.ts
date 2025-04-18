@@ -9,7 +9,7 @@ export interface CardCosmetic {
 }
 
 type CardMetadata = {
-  nature: Nature,
+  nature: Nature;
   seriePool?: "Common" | "Rare" | "Ultra-rare";
   signature?: boolean;
   analysis?: boolean;

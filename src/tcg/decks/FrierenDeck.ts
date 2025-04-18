@@ -7,7 +7,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_zoltraak = new Card({
   title: "Offensive Magic Analysis: Zoltraak",
-  cardMetadata: {nature: "Attack"},
+  cardMetadata: { nature: "Attack" },
   description: ([dmg]) =>
     `HP-5. DMG ${dmg}. 2 Analysis stacks will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
@@ -28,7 +28,7 @@ export const a_zoltraak = new Card({
 
 export const fieldOfFlower = new Card({
   title: "Spell to make a Field of Flowers",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([hp, endHp]) =>
     `Heal ${hp} HP. At the next 3 turn ends, heal ${endHp}.`,
   cosmetic: {
@@ -74,7 +74,7 @@ export const fieldOfFlower = new Card({
 
 export const a_judradjim = new Card({
   title: "Destructive Lightning Analysis: Judradjim",
-  cardMetadata: {nature: "Attack"},
+  cardMetadata: { nature: "Attack" },
   description: ([dmg]) =>
     `HP-7. DMG ${dmg}. 1 Analysis stack will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
@@ -98,7 +98,7 @@ export const a_judradjim = new Card({
 
 export const a_vollzanbel = new Card({
   title: "Hellfire Summoning: Vollzanbel",
-  cardMetadata: {nature: "Attack"},
+  cardMetadata: { nature: "Attack" },
   description: ([dmg]) => `HP-10. DMG ${dmg}`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
@@ -120,7 +120,7 @@ export const a_vollzanbel = new Card({
 
 export const barrierMagicAnalysis = new Card({
   title: "Barrier Magic Analysis",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([atk, spd, def]) =>
     `ATK+${atk}. SPD+${spd}. Opponent's DEF-${def}`,
   emoji: CardEmoji.FRIEREN_CARD,
@@ -154,7 +154,7 @@ export const barrierMagicAnalysis = new Card({
 
 export const demonMagicAnalysis = new Card({
   title: "Demon Magic Analysis",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([atk, spd, def]) => `ATK+${atk}. SPD+${spd}. DEF+${def}.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
@@ -187,7 +187,7 @@ export const demonMagicAnalysis = new Card({
 
 export const ordinaryDefensiveMagic = new Card({
   title: "Ordinary Defensive Magic",
-  cardMetadata: {nature: "Defense"},
+  cardMetadata: { nature: "Defense" },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.FRIEREN_CARD,

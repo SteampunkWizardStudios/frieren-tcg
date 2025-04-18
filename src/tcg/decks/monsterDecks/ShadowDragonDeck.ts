@@ -8,7 +8,7 @@ import { a_curse } from "./CosmicTonDeck";
 
 const a_shadowImpalement = new Card({
   title: "Shadow Impalement",
-  cardMetadata: {nature: "Attack"},
+  cardMetadata: { nature: "Attack" },
   description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
@@ -26,7 +26,7 @@ const a_shadowImpalement = new Card({
 
 const camouflage = new Card({
   title: "Camouflage",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([atk, def]) =>
     `ATK+${atk} for 3 turns. DEF+${def} for 3 turns.`,
   emoji: CardEmoji.HOURGLASS,

@@ -7,7 +7,7 @@ import CommonCardAction from "../../util/commonCardActions";
 
 const a_flame = new Card({
   title: "Flame",
-  cardMetadata: {nature: "Attack"},
+  cardMetadata: { nature: "Attack" },
   description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [12],
@@ -25,7 +25,7 @@ const a_flame = new Card({
 
 const a_burn = new Card({
   title: "Burn",
-  cardMetadata: {nature: "Attack"},
+  cardMetadata: { nature: "Attack" },
   description: ([dmg, def]) => `HP-4. DMG ${dmg}. Opponent's DEF-${def}.`,
   emoji: CardEmoji.ENERGY,
   effects: [10, 3],
@@ -49,7 +49,7 @@ const a_burn = new Card({
 
 const extinguish = new Card({
   title: "Extinguish",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} for 2 turns. ATK-10.`,
   emoji: CardEmoji.SHIELD,

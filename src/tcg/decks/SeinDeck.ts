@@ -8,7 +8,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_trustInYourAllyFrierensZoltraak = new Card({
   title: "Trust in Your Ally: Frieren's Zoltraak",
-  cardMetadata: {nature: "Attack"},
+  cardMetadata: { nature: "Attack" },
   description: ([dmg]) => `HP-5. DMG ${dmg} + HP/10`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -39,7 +39,7 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
 
 export const a_trustInYourAllyFernsBarrage = new Card({
   title: "Trust in Your Ally: Fern's Barrage",
-  cardMetadata: {nature: "Attack"},
+  cardMetadata: { nature: "Attack" },
   description: ([dmg]) =>
     `HP-7. DMG ${dmg}+HP/10 DMG. Next turn, deal ${dmg}+HP/10 DMG at turn end.`,
   emoji: CardEmoji.SEIN_CARD,
@@ -94,7 +94,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
 
 const a_trustInYourAllyStarksLightningStrike = new Card({
   title: "Trust in Your Ally: Stark's Lightning Strike",
-  cardMetadata: {nature: "Attack"},
+  cardMetadata: { nature: "Attack" },
   description: ([dmg]) => `Priority-1. HP-9. DMG ${dmg}+HP/7.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -129,7 +129,7 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
 
 export const mugOfBeer = new Card({
   title: "Mug of Beer",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([hp, atk]) => `HP+${hp}. ATK+${atk}. DEF-2. SPD-1.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -159,7 +159,7 @@ export const mugOfBeer = new Card({
 
 export const smokeBreak = new Card({
   title: "Smoke Break",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([atk, def, spd]) => `HP-5. ATK+${atk}. DEF+${def}. SPD+${spd}.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -192,7 +192,7 @@ export const smokeBreak = new Card({
 
 export const awakening = new Card({
   title: "Awakening",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([atk, def, spd]) => `ATK+${atk}. DEF+${def}. SPD+${spd}.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -221,7 +221,7 @@ export const awakening = new Card({
 
 export const poisonCure = new Card({
   title: "Poison Cure",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([hp]) => `HP+${hp}.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -244,7 +244,7 @@ export const poisonCure = new Card({
 
 export const braceYourself = new Card({
   title: "Brace Yourself",
-  cardMetadata: {nature: "Defense"},
+  cardMetadata: { nature: "Defense" },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SEIN_CARD,

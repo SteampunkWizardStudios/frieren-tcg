@@ -129,7 +129,7 @@ export const a_malevolentShrine = new Card({
 
 export const rushdown = new Card({
   title: "Rushdown",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([spd]) =>
     `Increases SPD by ${spd} for 3 turns. Attacks will not miss during this period. At the end of every turn, HP-5.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -181,7 +181,7 @@ export const rushdown = new Card({
 
 const recompose = new Card({
   title: "Recompose",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: ([hp]) => `SPD-10 for 3 turns. Heal ${hp}HP.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10],
@@ -225,7 +225,7 @@ const recompose = new Card({
 
 const defend = new Card({
   title: "Defend",
-  cardMetadata: {nature: "Defense"},
+  cardMetadata: { nature: "Defense" },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -256,7 +256,7 @@ const defend = new Card({
 
 export const sorganeil = new Card({
   title: "Sorganeil",
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: () =>
     `Priority-1. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -267,7 +267,7 @@ export const sorganeil = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     const currentPierceFactor = character.additionalMetadata.pierceFactor;
     opponent.skipTurn = true;
-    const currentHittingStatus = character.additionalMetadata.sureHit; 
+    const currentHittingStatus = character.additionalMetadata.sureHit;
     //character.additionalMetadata.sureHit = "sureHit";
     character.additionalMetadata.pierceFactor = 1;
     messageCache.push(
@@ -295,7 +295,7 @@ export const sorganeil = new Card({
 
 export const empathy = new Card({
   title: `Empathy`,
-  cardMetadata: {nature: "Util"},
+  cardMetadata: { nature: "Util" },
   description: () =>
     `Use the opponent signature spell. Will fail if used before turn 5.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -335,8 +335,13 @@ export const empathy = new Card({
         `${character.name} used **${usedMagic.getTitle()}**!`,
         TCGThread.Gameroom
       );
-      const characterEffectsNames = character.timedEffects.map(eff => eff.name);
-      if (usedMagic.cardMetadata.nature === "Attack" && characterEffectsNames.find(effname => effname === "Recompose")) {
+      const characterEffectsNames = character.timedEffects.map(
+        (eff) => eff.name
+      );
+      if (
+        usedMagic.cardMetadata.nature === "Attack" &&
+        characterEffectsNames.find((effname) => effname === "Recompose")
+      ) {
         messageCache.push("The attack misses!", TCGThread.Gameroom);
       }
       usedMagic.cardAction(game, characterIndex, messageCache);

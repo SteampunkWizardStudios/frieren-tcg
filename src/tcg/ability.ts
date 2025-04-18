@@ -32,7 +32,7 @@ export type Ability = {
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
-    card: Card,
+    card: Card
   ) => void;
   abilityAfterDirectAttackEffect?: (
     game: Game,

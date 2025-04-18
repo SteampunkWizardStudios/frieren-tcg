@@ -38,60 +38,71 @@ export const Ubel = new CharacterData({
   ability: {
     abilityName: "Battle-crazed weirdo",
     abilityEffectString: `Übel's attack ignore ${PIERCE_FACTOR * 100}% the opponent's defense stats, but are blocked by defensive moves.`,
-    
+
     // same turn surehit effect changes
-    abilityAfterOpponentsMoveEffect: function(
+    abilityAfterOpponentsMoveEffect: function (
       game: Game,
       characterIndex: number,
       messageCache: MessageCache,
       card: Card
     ) {
       const character = game.getCharacter(characterIndex);
-      const opponent = game.getCharacter(1-characterIndex);
-      const effects = character.timedEffects.map(effect => effect.name);
+      const opponent = game.getCharacter(1 - characterIndex);
+      const effects = character.timedEffects.map((effect) => effect.name);
       switch (card.cardMetadata.nature) {
         case "Attack":
-          if (!effects.find(effectName => effectName === "Recompose")){
+          if (!effects.find((effectName) => effectName === "Recompose")) {
             character.additionalMetadata.sureHit = "sureHit";
-            messageCache.push(`${opponent.name} is wide-open!`, TCGThread.Gameroom);
+            messageCache.push(
+              `${opponent.name} is wide-open!`,
+              TCGThread.Gameroom
+            );
           }
           break;
         case "Defense":
           character.additionalMetadata.sureHit = "sureMiss";
-          messageCache.push(`${character.name} can't cut through this!`, TCGThread.Gameroom);
+          messageCache.push(
+            `${character.name} can't cut through this!`,
+            TCGThread.Gameroom
+          );
           break;
         case "Default":
-          if (!effects.find(effectName => effectName === "Recompose") && !effects.find(effectName => effectName === "Rushdown")){
+          if (
+            !effects.find((effectName) => effectName === "Recompose") &&
+            !effects.find((effectName) => effectName === "Rushdown")
+          ) {
             character.additionalMetadata.sureHit = "regular";
-          };
+          }
       }
     },
 
     // new turn surehit effect changes
-    abilityStartOfTurnEffect: function(
-      game,
-      characterIndex,
-      messageCache,
-    ) {
+    abilityStartOfTurnEffect: function (game, characterIndex, messageCache) {
       const character = game.getCharacter(characterIndex);
-      const effects = character.timedEffects.map(effect => effect.name);
-      
-      if (effects.find(effectName => effectName === "Sorganeil")||effects.find(effectName => effectName === "Rushdown")){
+      const effects = character.timedEffects.map((effect) => effect.name);
+
+      if (
+        effects.find((effectName) => effectName === "Sorganeil") ||
+        effects.find((effectName) => effectName === "Rushdown")
+      ) {
         character.additionalMetadata.sureHit = "sureHit";
-      } else if (effects.find(effectName => effectName === "Recompose")){
+      } else if (effects.find((effectName) => effectName === "Recompose")) {
         character.additionalMetadata.sureHit = "sureMiss";
       } else {
         switch (character.additionalMetadata.sureHit) {
           case "sureHit":
-            if (game.additionalMetadata.lastUsedCards[1-characterIndex].cardMetadata.nature != "Attack") {
-              character.additionalMetadata.sureHit = "regular"
-            };
+            if (
+              game.additionalMetadata.lastUsedCards[1 - characterIndex]
+                .cardMetadata.nature != "Attack"
+            ) {
+              character.additionalMetadata.sureHit = "regular";
+            }
             break;
           case "sureMiss":
             character.additionalMetadata.sureHit = "regular";
             break;
           default:
-            // do nothing
+          // do nothing
         }
       }
     },
