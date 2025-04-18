@@ -15,11 +15,5 @@ export interface GamePlugin {
     attackerIndex: number,
     actualDamage: number
   ): void;
-  modifyCardDraw?(
-    game: Game,
-    characterIndex: number,
-    baseDrawCount: number
-  ): number;
-  onCharacterDefeated?(game: Game, defeatedIndex: number): void;
-  onTurnStart?(game: Game, turn: number): void;
+  // more hooks here
 }
