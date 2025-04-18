@@ -66,7 +66,7 @@ export const Ubel = new CharacterData({
             TCGThread.Gameroom
           );
           break;
-        case "Default":
+        default:
           if (
             !effects.find((effectName) => effectName === "Recompose") &&
             !effects.find((effectName) => effectName === "Rushdown")
