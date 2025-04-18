@@ -8,6 +8,8 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
+const PIERCE_FACTOR = 0.5;
+
 const ubelStats = new Stats({
   [StatsEnum.HP]: 90.0,
   [StatsEnum.ATK]: 12.0,
@@ -32,17 +34,14 @@ export const Ubel = new CharacterData({
   cards: ubelDeck,
   ability: {
     abilityName: "Battle-crazed weirdo",
-    abilityEffectString: "Übel's attack ignore the opponent's defense stats, but are blocked by defensive moves.",
-
-    
-    
-    
+    abilityEffectString: `Übel's attack ignore ${PIERCE_FACTOR * 100}% the opponent's defense stats, but are blocked by defensive moves.`,  
   },
   additionalMetadata: {
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
-    pierceFactor: 0.5,
+    pierceFactor: PIERCE_FACTOR,
+    sureHit: "regular",
   },
 });

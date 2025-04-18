@@ -10,9 +10,10 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 const a_reelseiden = new Card({
   title: "Reelseiden",
   description: ([dmg]) =>
-    `HP-6. Has a 30% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-6. Has a 20% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [8],
+  cardMetadata : {ubelFailureRate : 20},
   cardAction: function (
     this: Card,
     game,
@@ -41,6 +42,7 @@ const a_cleave = new Card({
     `HP-6. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [12],
+  cardMetadata : {ubelFailureRate : 40},
   cardAction: function (
     this: Card,
     game,
@@ -66,9 +68,10 @@ const a_cleave = new Card({
 const a_dismantle = new Card({
   title: "Dismantle",
   description: ([dmg]) =>
-    `HP-12. Has a 50% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-12. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [16],
+  cardMetadata : {ubelFailureRate : 60},
   cardAction: function (
     this: Card,
     game,
@@ -94,9 +97,9 @@ const a_dismantle = new Card({
 export const a_malevolentShrine = new Card({
   title: "Malevolent Shrine",
   description: ([dmg]) =>
-    `HP-15. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-15. Has a 80% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
-  cardMetadata : {signature : true},
+  cardMetadata : {signature : true, ubelFailureRate : 80},
   effects: [22],
   cardAction: function (
     this: Card,
@@ -130,6 +133,7 @@ export const rushdown = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} rushes towards the ennemy!`, TCGThread.Gameroom);
+    character.additionalMetadata.sureHit = "sureHit";
 
     const turnCount = 3;
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
@@ -157,6 +161,7 @@ export const rushdown = new Card({
             TCGThread.Gameroom
           );
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
+          character.additionalMetadata.sureHit = "regular";
         },
         replacedAction: function (this, _game, characterIndex) {
           messageCache.push(
@@ -164,6 +169,7 @@ export const rushdown = new Card({
             TCGThread.Gameroom
           )
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
+          character.additionalMetadata.sureHit = "regular";
         },
       })
     )
@@ -184,6 +190,7 @@ const recompose = new Card({
       `${character.name} calms down.`,
       TCGThread.Gameroom
     );
+    character.additionalMetadata.sureHit = "sureMiss";
 
     character.adjustStat(-10, StatsEnum.SPD);
     character.adjustStat(
@@ -207,9 +214,11 @@ const recompose = new Card({
             TCGThread.Gameroom
           );
           character.adjustStat(10, StatsEnum.SPD);
+          character.additionalMetadata.sureHit = "regular";
         },
         replacedAction: function (this, _game, characterIndex) {
           character.adjustStat(10, StatsEnum.SPD);
+          character.additionalMetadata.sureHit = "regular";
         },
       })
     )
@@ -257,11 +266,26 @@ export const sorganeil = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1-characterIndex);
-    game.characters[1-characterIndex].skipTurn = true;
+    const currentPierceFactor = character.additionalMetadata.pierceFactor;
+    opponent.skipTurn = true;
+    character.additionalMetadata.sureHit = "sureHit";
+    character.additionalMetadata.pierceFactor = 1;
     messageCache.push(
       `${opponent.name} got trapped in ${character.name}'s gaze!`,
       TCGThread.Gameroom
     )
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Sorganeil",
+        description: `Cannot miss next turn's attack`,
+        turnDuration: 2,
+        priority: -1,
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+          character.additionalMetadata.sureHit = "regular";
+          character.additionalMetadata.pierceFactor = currentPierceFactor;
+        },
+      })
+    );
   },
 });
 

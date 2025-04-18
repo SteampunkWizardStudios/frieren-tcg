@@ -18,6 +18,7 @@ type CardMetadata = {
   teaTime?: number;
   resolve?: number;
   signatureMoveOf?: CharacterName;
+  ubelFailureRate?: number;
 };
 
 export type CardProps = {

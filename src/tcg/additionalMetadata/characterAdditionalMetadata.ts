@@ -16,4 +16,5 @@ export type CharacterAdditionalMetadata = {
   serieToyingNextTurn?: boolean;
   serieToyingTurn?: boolean;
   pierceFactor?: number;
+  sureHit?: "sureHit" | "sureMiss" | "regular";
 };
