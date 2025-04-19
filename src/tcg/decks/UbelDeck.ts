@@ -179,7 +179,7 @@ export const rushdown = new Card({
 const recompose = new Card({
   title: "Recompose",
   cardMetadata: { nature: "Util" },
-  description: ([hp]) => `SPD-10 for 2 turns. Heal ${hp}HP, then ${0.5*parseInt(hp)}HP at the end of each turn.`,
+  description: ([hp]) => `SPD-10 for 2 turns. Heal ${hp}HP, then ${0.5*Number(hp)}HP at the end of each turn.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -207,7 +207,7 @@ const recompose = new Card({
             `${character.name} took a break and recouped ${this.effects[0]/2} HP.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(-5, StatsEnum.HP);
+          character.adjustStat(5, StatsEnum.HP);
         },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
