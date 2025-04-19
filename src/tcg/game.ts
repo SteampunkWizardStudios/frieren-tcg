@@ -4,6 +4,7 @@ import { GameAdditionalMetadata } from "./additionalMetadata/gameAdditionalMetad
 import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
 import { CharacterName } from "./characters/metadata/CharacterName";
+import type { GamePlugin } from "./gamePlugin";
 
 export default class Game {
   characters: [Character, Character];
@@ -13,7 +14,13 @@ export default class Game {
 
   messageCache: MessageCache;
 
-  constructor(characters: [Character, Character], messageCache: MessageCache) {
+  plugins: GamePlugin[];
+
+  constructor(
+    characters: [Character, Character],
+    messageCache: MessageCache,
+    plugins: GamePlugin[] = []
+  ) {
     this.characters = characters;
     this.gameOver = false;
     this.additionalMetadata = {
@@ -40,10 +47,18 @@ export default class Game {
     this.turnCount = 0;
 
     this.messageCache = messageCache;
+
+    this.plugins = plugins;
   }
 
   gameStart() {
+    this.plugins.forEach((plugin) => {
+      plugin.modifyInitialStats?.(this);
+    });
     this.characters.forEach((character) => character.drawStartingHand());
+    this.plugins.forEach((plugin) => {
+      plugin.onGameStart?.(this);
+    });
   }
 
   // handle character attack. returns attack amount
@@ -83,12 +98,28 @@ export default class Game {
     if (this.additionalMetadata.attackMissed[attackProps.attackerIndex]) {
       this.messageCache.push(`# ${attacker.name} missed!`, TCGThread.Gameroom);
     } else {
-      actualDamage = this.calculateDamage(
+      let baseDamage =
         attackProps.damage *
-          this.additionalMetadata.attackModifier[attackProps.attackerIndex],
+        this.additionalMetadata.attackModifier[attackProps.attackerIndex];
+
+      baseDamage = this.calculateDamage(
+        baseDamage,
         attacker.stats.stats.ATK,
         defender.stats.stats.DEF
       );
+
+      // allow plugins to modify damage before applying
+      this.plugins.forEach((plugin) => {
+        baseDamage =
+          plugin.modifyDamage?.(
+            this,
+            baseDamage,
+            attackProps.attackerIndex,
+            1 - attackProps.attackerIndex
+          ) ?? baseDamage;
+      });
+
+      actualDamage = baseDamage;
 
       const defenderRemainingHp = Number(
         (defender.stats.stats.HP - actualDamage).toFixed(2)
@@ -148,6 +179,11 @@ export default class Game {
         }
       }
     }
+
+    // PLUGIN HOOK HERE   END OF ATTACK METHOD
+    this.plugins.forEach((plugin) => {
+      plugin.onAttackComplete?.(this, attackProps.attackerIndex, actualDamage);
+    });
 
     // reset metadata
     this.additionalMetadata.attackMissed[attackProps.attackerIndex] = false;
