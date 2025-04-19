@@ -68,8 +68,9 @@ export const Ubel = new CharacterData({
           break;
         default:
           if (
-            !effects.find((effectName) => effectName === "Recompose") &&
-            !effects.find((effectName) => effectName === "Rushdown")
+            !effects.find(effectName => effectName === "Recompose") &&
+            !effects.find(effectName => effectName === "Rushdown") &&
+            !effects.find(effectName => effectName === "Sorganeil")
           ) {
             character.additionalMetadata.sureHit = "regular";
           }
