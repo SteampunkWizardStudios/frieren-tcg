@@ -10,11 +10,11 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 const a_reelseiden = new Card({
   title: "Reelseiden",
   description: ([dmg]) =>
-    `HP-6. Has a 20% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-4 Has a 20% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [8],
   cardMetadata: { nature: "Attack", ubelFailureRate: 20 },
-  hpCost: 6,
+  hpCost: 4,
   cardAction: function (
     this: Card,
     game,
@@ -40,11 +40,11 @@ const a_reelseiden = new Card({
 const a_cleave = new Card({
   title: "Cleave",
   description: ([dmg]) =>
-    `HP-8. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-6. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [12],
   cardMetadata: { nature: "Attack", ubelFailureRate: 40 },
-  hpCost: 8,
+  hpCost: 6,
   cardAction: function (
     this: Card,
     game,
@@ -70,11 +70,11 @@ const a_cleave = new Card({
 const a_dismantle = new Card({
   title: "Dismantle",
   description: ([dmg]) =>
-    `HP-12. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-8. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [16],
   cardMetadata: { nature: "Attack", ubelFailureRate: 60 },
-  hpCost: 12,
+  hpCost: 8,
   cardAction: function (
     this: Card,
     game,
@@ -100,11 +100,11 @@ const a_dismantle = new Card({
 export const a_malevolentShrine = new Card({
   title: "Malevolent Shrine",
   description: ([dmg]) =>
-    `HP-15. Has a 80% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-11. Has a 80% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   cardMetadata: { nature: "Attack", signature: true, ubelFailureRate: 80 },
   effects: [22],
-  hpCost: 15,
+  hpCost: 11,
   cardAction: function (
     this: Card,
     game,
@@ -140,7 +140,6 @@ export const rushdown = new Card({
       `${character.name} rushes towards the ennemy!`,
       TCGThread.Gameroom
     );
-    //character.additionalMetadata.sureHit = "sureHit";
 
     const turnCount = 3;
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
@@ -165,12 +164,10 @@ export const rushdown = new Card({
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
-          //character.additionalMetadata.sureHit = "regular";
         },
         replacedAction: function (this, _game, characterIndex) {
           messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
-          //character.additionalMetadata.sureHit = "regular";
         },
       })
     );
@@ -182,13 +179,12 @@ export const rushdown = new Card({
 const recompose = new Card({
   title: "Recompose",
   cardMetadata: { nature: "Util" },
-  description: ([hp]) => `SPD-10 for 3 turns. Heal ${hp}HP.`,
+  description: ([hp]) => `SPD-10 for 2 turns. Heal ${hp}HP, then ${0.5*parseInt(hp)}HP at the end of each turn.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(`${character.name} calms down.`, TCGThread.Gameroom);
-    //character.additionalMetadata.sureHit = "sureMiss";
 
     character.adjustStat(-10, StatsEnum.SPD);
     character.adjustStat(
@@ -206,6 +202,13 @@ const recompose = new Card({
         description: `Decreases SPD by 10 for ${turnCount} turns. Attacks will not hit`,
         turnDuration: turnCount,
         tags: { ubelSpeedModifiers: 1 },
+        endOfTurnAction: (_game, _characterIndex, _messageCache) => {
+          messageCache.push(
+            `${character.name} took a break and recouped ${this.effects[0]/2} HP.`,
+            TCGThread.Gameroom
+          );
+          character.adjustStat(-5, StatsEnum.HP);
+        },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} has recomposed ${character.cosmetic.pronouns.reflexive}.`,
