@@ -31,7 +31,7 @@ const a_reelseiden = new Card({
 
     CommonCardAction.pierceAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 6,
+      hpCost: this.hpCost,
       pierceFactor: pierceFactor,
     });
   },
@@ -61,7 +61,7 @@ const a_cleave = new Card({
 
     CommonCardAction.pierceAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 8,
+      hpCost: this.hpCost,
       pierceFactor: pierceFactor,
     });
   },
@@ -91,7 +91,7 @@ const a_dismantle = new Card({
 
     CommonCardAction.pierceAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 12,
+      hpCost: this.hpCost,
       pierceFactor: pierceFactor,
     });
   },
@@ -121,7 +121,7 @@ export const a_malevolentShrine = new Card({
 
     CommonCardAction.pierceAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 15,
+      hpCost: this.hpCost,
       pierceFactor: pierceFactor,
     });
   },
