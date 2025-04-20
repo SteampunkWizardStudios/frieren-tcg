@@ -303,8 +303,8 @@ export const tcgMain = async (
               TCGThread.Gameroom
             );
           }
-          if (character.ability.abilityCardWrapper) {
-            character.ability.abilityCardWrapper(
+          if (character.ability.abilityOwnCardEffectWrapper) {
+            character.ability.abilityOwnCardEffectWrapper(
               game,
               characterIndex,
               messageCache,
@@ -329,8 +329,8 @@ export const tcgMain = async (
               );
             }
           }
-          if (character.ability.abilityOnCardUse) {
-            character.ability.abilityOnCardUse(
+          if (character.ability.abilityAfterOwnCardUse) {
+            character.ability.abilityAfterOwnCardUse(
               game,
               characterIndex,
               messageCache,

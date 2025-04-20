@@ -267,9 +267,7 @@ export const sorganeil = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
-    const currentPierceFactor = character.additionalMetadata.pierceFactor;
     opponent.skipTurn = true;
-    character.additionalMetadata.pierceFactor = 1;
     messageCache.push(
       `${opponent.name} got trapped in ${character.name}'s gaze!`,
       TCGThread.Gameroom
@@ -281,7 +279,6 @@ export const sorganeil = new Card({
         turnDuration: 2,
         priority: -1,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.additionalMetadata.pierceFactor = currentPierceFactor;
           messageCache.push(
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze.`,
             TCGThread.Gameroom

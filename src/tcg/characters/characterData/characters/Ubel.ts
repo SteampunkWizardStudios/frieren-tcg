@@ -131,7 +131,7 @@ export const Ubel = new CharacterData({
     },
 
     // attacks should potentially fail
-    abilityCardWrapper: function (
+    abilityOwnCardEffectWrapper: function (
       game: Game,
       characterIndex: number,
       messageCache: MessageCache,
@@ -143,16 +143,6 @@ export const Ubel = new CharacterData({
       const failureRate = card.cardMetadata.ubelFailureRate;
 
       switch (character.additionalMetadata.sureHit) {
-        case UbelHit.SureHit:
-          card.cardAction?.(game, characterIndex, messageCache);
-          break;
-        case UbelHit.SureMiss:
-          if (!failureRate) {
-            card.cardAction?.(game, characterIndex, messageCache);
-          } else {
-            missAttack(character, messageCache, card);
-          }
-          break;
         case UbelHit.Regular:
           if (!failureRate) {
             card.cardAction?.(game, characterIndex, messageCache);
@@ -169,7 +159,18 @@ export const Ubel = new CharacterData({
               messageCache.push("The attack connects!", TCGThread.Gameroom);
               card.cardAction?.(game, characterIndex, messageCache);
             }
+            break;
           }
+        case UbelHit.SureHit:
+          card.cardAction?.(game, characterIndex, messageCache);
+          break;
+        case UbelHit.SureMiss:
+          if (!failureRate) {
+            card.cardAction?.(game, characterIndex, messageCache);
+          } else {
+            missAttack(character, messageCache, card);
+          }
+          break;
       }
     },
   },

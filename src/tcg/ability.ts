@@ -5,7 +5,7 @@ import Game from "./game";
 export type Ability = {
   abilityName: string;
   abilityEffectString: string;
-  abilityOnCardUse?: (
+  abilityAfterOwnCardUse?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
@@ -56,7 +56,7 @@ export type Ability = {
     messageCache: MessageCache,
     additionalParam?: Record<any, any>
   ) => void;
-  abilityCardWrapper?: (
+  abilityOwnCardEffectWrapper?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
