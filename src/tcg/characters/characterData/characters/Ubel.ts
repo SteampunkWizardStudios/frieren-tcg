@@ -1,10 +1,10 @@
 import { CharacterData } from "../characterData";
 import { UbelHit } from "../../../additionalMetadata/characterAdditionalMetadata"
-import { ubelDeck } from "../../../decks/UbelDeck";
+import { ubelDeck, empathy } from "../../../decks/UbelDeck";
 import Stats from "../../../stats";
 import { StatsEnum } from "../../../stats";
 import Game from "../../../game";
-import Card from "../../../card";
+import Card, { Nature } from "../../../card";
 import Rolls from "../../../util/rolls";
 import Character from "../../../character";
 import { CharacterName } from "../../metadata/CharacterName";
@@ -41,6 +41,33 @@ function checkForEffects(
   const result : Record<string, boolean> = {Sorganeil: presence[0], Rushdown: presence[1], Recompose: presence[2]};
   return result;
 };
+
+function playUbelCard(
+  game: Game,
+  character: Character,
+  card: Card,
+  messageCache: MessageCache,
+  characterIndex: number
+) : void {
+  if (card.imitated){
+    messageCache.push(`${character.name} tries to empathize with ${character.cosmetic.pronouns.possessive} opponent...`, TCGThread.Gameroom)
+    if (!(card.title === "Empathy failure")){
+      messageCache.push(`${character.name} acquired a new magic!`, TCGThread.Gameroom);
+      const effects = character.timedEffects.map((effect) => effect.name);
+      const activeEffects = checkForEffects(effects);
+      if (activeEffects.Recompose && card.cardMetadata.nature === Nature.Attack){
+        messageCache.push(`${character.name} is recomposing herself and can't attack`, TCGThread.Gameroom);
+      } else {
+        card.cardAction?.(game, characterIndex, messageCache);
+      }
+    } else {
+      card.cardAction?.(game, characterIndex, messageCache);
+    }
+  } else {
+    card.cardAction?.(game, characterIndex, messageCache);
+  }
+}
+
 
 
 export const Ubel = new CharacterData({
@@ -141,11 +168,11 @@ export const Ubel = new CharacterData({
 
       const character = game.getCharacter(characterIndex);
       const failureRate = card.cardMetadata.ubelFailureRate;
-
+      
       switch (character.additionalMetadata.sureHit) {
         case UbelHit.Regular:
           if (!failureRate) {
-            card.cardAction?.(game, characterIndex, messageCache);
+            playUbelCard(game, character, card, messageCache, characterIndex);
           } else {
             const luckRoll = Rolls.rollD100();
             messageCache.push(
@@ -162,11 +189,11 @@ export const Ubel = new CharacterData({
             break;
           }
         case UbelHit.SureHit:
-          card.cardAction?.(game, characterIndex, messageCache);
+          playUbelCard(game, character, card, messageCache, characterIndex);
           break;
         case UbelHit.SureMiss:
           if (!failureRate) {
-            card.cardAction?.(game, characterIndex, messageCache);
+            playUbelCard(game, character, card, messageCache, characterIndex);
           } else {
             missAttack(character, messageCache, card);
           }

@@ -341,6 +341,41 @@ export const empathy = new Card({
   },
 });
 
+export const imitate = new Card({
+  title: "Empathy",
+  cardMetadata: { nature: Nature.Util },
+  description: () =>
+    `Use the opponent's signature move at this card's empower level -2.`,
+  emoji: CardEmoji.UBEL_CARD,
+  effects: [],
+  cardAction: () => {},
+  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
+    if (game.turnCount <5){
+      return new Card({
+            title: "Empathy failure",
+            cardMetadata: { nature: Nature.Default },
+            description: () => "Not enough time to empathize. This move will fail.",
+            effects: [],
+            emoji: CardEmoji.LINIE_CARD,
+            cardAction: (_game, _characterIndex, messageCache: MessageCache) => {
+              messageCache.push(
+                `${game.getCharacter(characterIndex).name} didn't get enough time to know ${game.getCharacter(1-characterIndex).name} well enough!`,
+                TCGThread.Gameroom
+              );
+            },
+            imitated: true,
+          });
+    } else {const opponent = game.getCharacter(1-characterIndex);
+      const signatureCard = signatureMoves[opponent.name];
+      return new Card({
+        ...signatureCard,
+        empowerLevel: this.empowerLevel - 2,
+        imitated: true,
+      });
+    } 
+  },
+});
+
 export const ubelDeck = [
   { card: a_reelseiden, count: 3 },
   { card: a_cleave, count: 2 },
