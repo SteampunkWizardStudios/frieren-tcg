@@ -9,7 +9,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 export const a_trustInYourAllyFrierensZoltraak = new Card({
   title: "Trust in Your Ally: Frieren's Zoltraak",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-5. DMG ${dmg} + HP/10`,
+  description: ([dmg]) => `HP-5. DMG ${dmg} + HP/9`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -30,7 +30,7 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
     const damage = Number(
       (
         this.calculateEffectValue(this.effects[0]) +
-        character.stats.stats.HP / 10
+        character.stats.stats.HP / 9
       ).toFixed(2)
     );
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
@@ -294,7 +294,7 @@ export const a_threeSpearsOfTheGoddess = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1353035307397681172/Three_Spears_of_the_Godess.png?ex=67e02fd3&is=67dede53&hm=671b75347795840779fe6e5007f8a0918b04e3b6a558b561ca9ce4b4c18694a8&",
   },
   cardMetadata: { nature: Nature.Attack, signature: true },
-  effects: [5],
+  effects: [7],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(

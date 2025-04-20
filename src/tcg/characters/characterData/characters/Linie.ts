@@ -70,5 +70,6 @@ export const Linie = new CharacterData({
     attackedThisTurn: false,
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
+    defenseDamageReduction: 0,
   },
 });

@@ -90,6 +90,7 @@ export const Serie = new CharacterData({
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
+    defenseDamageReduction: 0,
     serieToyingNextTurn: false,
     serieToyingTurn: false,
   },

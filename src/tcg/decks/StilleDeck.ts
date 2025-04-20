@@ -195,7 +195,7 @@ const flyAway = new Card({
 export const a_geisel = new Card({
   title: "Geisel",
   description: ([dmg]) =>
-    `SPD-20. Lands on a tree and asks its fellow Geisel for help! Geisel (ATK: 15) will show up to attack for ${dmg}DMG between 1 - 3 turns.`,
+    `SPD-20. Lands on a tree and asks its fellow Geisel for help! Geisel (ATK: 15) will show up to attack for ${dmg}DMG for 2 turns.`,
   emoji: CardEmoji.STILLE_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [15],
@@ -208,12 +208,11 @@ export const a_geisel = new Card({
 
     character.adjustStat(-20, StatsEnum.SPD);
     const damage = this.calculateEffectValue(this.effects[0]);
-    const turnCount = Rolls.rollDAny(3) + 1;
     character.timedEffects.push(
       new TimedEffect({
         name: "Geisel Strike!",
         description: `Deal ${damage} at each turn's end.`,
-        turnDuration: turnCount,
+        turnDuration: 2,
         endOfTurnAction: (game, characterIndex) => {
           messageCache.push("The Geisel doesn't stop!", TCGThread.Gameroom);
           CommonCardAction.commonAttack(game, characterIndex, {

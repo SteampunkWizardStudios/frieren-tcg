@@ -62,7 +62,7 @@ export default class DefaultCards {
     title: "Do Nothing.",
     description: () =>
       "Does nothing. Empower all cards in your hand afterwards.",
-    cardMetadata: { nature: Nature.Default }
+    cardMetadata: { nature: Nature.Default },
     effects: [],
     printEmpower: false,
     emoji: CardEmoji.WAIT,

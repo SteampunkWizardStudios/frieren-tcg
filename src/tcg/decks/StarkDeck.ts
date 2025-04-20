@@ -30,9 +30,9 @@ const offensiveStance = new Card({
   title: "Offensive Stance",
   cardMetadata: { nature: Nature.Util },
   description: ([atk, spd]) =>
-    `ATK+${atk}. DEF-2. SPD+${spd}. Gain <Resolve> for next 1 Attack.`,
+    `ATK+${atk}. DEF-2 for 2 turns. SPD+${spd}. Gain <Resolve> for next 1 Attack.`,
   emoji: CardEmoji.STARK_CARD,
-  effects: [2, 1],
+  effects: [3, 1],
   tags: { Resolve: 1 },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -47,6 +47,21 @@ const offensiveStance = new Card({
     character.adjustStat(atkChange, StatsEnum.ATK);
     character.adjustStat(-2, StatsEnum.DEF);
     character.adjustStat(spdChange, StatsEnum.SPD);
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Offensive Stance",
+        description: `DEF-2 for 2 turns.`,
+        turnDuration: 2,
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+          messageCache.push(
+            `${character.name} shifts ${character.cosmetic.pronouns.possessive} stance.`,
+            TCGThread.Gameroom
+          );
+          character.adjustStat(2, StatsEnum.DEF);
+        },
+      })
+    );
   },
 });
 
@@ -54,9 +69,9 @@ const defensiveStance = new Card({
   title: "Defensive Stance",
   cardMetadata: { nature: Nature.Util },
   description: ([def, spd]) =>
-    `ATK-2. DEF+${def}. SPD+${spd}. Gain <Resolve> for next 1 Attack.`,
+    `DEF+${def}. ATK-2 for 2 turns. SPD+${spd}. Gain <Resolve> for next 1 Attack.`,
   emoji: CardEmoji.STARK_CARD,
-  effects: [2, 1],
+  effects: [3, 1],
   tags: { Resolve: 1 },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -71,6 +86,21 @@ const defensiveStance = new Card({
     character.adjustStat(-2, StatsEnum.ATK);
     character.adjustStat(defChange, StatsEnum.DEF);
     character.adjustStat(spdChange, StatsEnum.SPD);
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Defensive Stance",
+        description: `ATK-2 for 2 turns.`,
+        turnDuration: 2,
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+          messageCache.push(
+            `${character.name} shifts ${character.cosmetic.pronouns.possessive} stance.`,
+            TCGThread.Gameroom
+          );
+          character.adjustStat(2, StatsEnum.ATK);
+        },
+      })
+    );
   },
 });
 
@@ -154,7 +184,7 @@ const concentration = new Card({
   description: ([spd]) =>
     `Increases SPD by ${spd}. Gain <Resolve> for next 2 attacks`,
   emoji: CardEmoji.STARK_CARD,
-  effects: [2],
+  effects: [3],
   tags: { Resolve: 2 },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -288,13 +318,13 @@ export const a_lightningStrike = new Card({
 
 export const starkDeck = [
   { card: a_axeSwipe, count: 2 },
-  { card: offensiveStance, count: 1 },
-  { card: defensiveStance, count: 1 },
+  { card: offensiveStance, count: 2 },
+  { card: defensiveStance, count: 2 },
   { card: jumboBerrySpecialBreak, count: 2 },
   { card: block, count: 2 },
-  { card: concentration, count: 2 },
+  { card: concentration, count: 1 },
   { card: a_ordensSlashTechnique, count: 2 },
   { card: fearBroughtMeThisFar, count: 1 },
-  { card: a_eisensAxeCleave, count: 2 },
+  { card: a_eisensAxeCleave, count: 1 },
   { card: a_lightningStrike, count: 1 },
 ];

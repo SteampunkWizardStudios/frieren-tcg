@@ -1,7 +1,7 @@
 import { CharacterName } from "../../characters/metadata/CharacterName";
 import Card from "../../card";
 import { a_catastraviaBase } from "../DenkenDeck";
-import { a_theHeightOfMagic } from "../FrierenDeck";
+import { a_theHeightOfMagicBase } from "../FrierenDeck";
 import { a_realHeroSwing } from "../HimmelDeck";
 import { jilwer } from "../LaufenDeck";
 import { imitate } from "../LinieDeck";
@@ -14,7 +14,7 @@ import { a_malevolentShrine } from "./ubelSignature";
 
 export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Denken]: a_catastraviaBase,
-  [CharacterName.Frieren]: a_theHeightOfMagic,
+  [CharacterName.Frieren]: a_theHeightOfMagicBase,
   [CharacterName.Himmel]: a_realHeroSwing,
   [CharacterName.Laufen]: jilwer,
   [CharacterName.Linie]: imitate,

@@ -34,7 +34,7 @@ export const Stille = new CharacterData({
     abilityName: "High-speed Escape",
     abilityEffectString: `When the opponent attacks, roll a D100. 
         If the result is less than the character's SPD minus the opponent's SPD, ignore the attack.
-        Afterwards, attack the opponent with DMG equivalent to 1/2 * (opponent's ATK + opponent's move DMG).
+        Afterwards, attack the opponent with DMG equivalent to (opponent's ATK + opponent's move DMG).
         
         **Sub-Ability: Birdwatching** - Both characters don't have access to default card options (Discard/Wait).`,
     abilityStartOfTurnEffect: (
@@ -90,7 +90,7 @@ export const Stille = new CharacterData({
         );
         game.attack({
           attackerIndex: characterIndex,
-          damage: (opponent.stats.stats.ATK + attackDamage) / 2,
+          damage: opponent.stats.stats.ATK + attackDamage,
           isTimedEffectAttack: false,
         });
       }
@@ -101,5 +101,6 @@ export const Stille = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: false,
     manaSuppressed: false,
+    defenseDamageReduction: 0,
   },
 });

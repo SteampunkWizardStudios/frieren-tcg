@@ -6,9 +6,9 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
 const starkStats = new Stats({
-  [StatsEnum.HP]: 110.0,
-  [StatsEnum.ATK]: 11.0,
-  [StatsEnum.DEF]: 10.0,
+  [StatsEnum.HP]: 120.0,
+  [StatsEnum.ATK]: 12.0,
+  [StatsEnum.DEF]: 12.0,
   [StatsEnum.SPD]: 8.0,
   [StatsEnum.Ability]: 0.0,
 });
@@ -56,5 +56,6 @@ export const Stark = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
+    defenseDamageReduction: 0,
   },
 });

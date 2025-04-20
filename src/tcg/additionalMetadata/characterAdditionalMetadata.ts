@@ -17,10 +17,12 @@ export type CharacterAdditionalMetadata = {
   attackedThisTurn: boolean;
   timedEffectAttackedThisTurn: boolean;
   accessToDefaultCardOptions: boolean;
+  defenseDamageReduction: number;
   teaTimeStacks?: number;
   overheal?: boolean;
   serieToyingNextTurn?: boolean;
   serieToyingTurn?: boolean;
   pierceFactor?: number;
   sureHit?: UbelHit;
+  himmelEisenReadyToCounter?: boolean;
 };

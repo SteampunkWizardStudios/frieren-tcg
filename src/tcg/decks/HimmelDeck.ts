@@ -172,7 +172,7 @@ const a_EisenCoverMyBack = new Card({
   title: "Eisen! Cover My Back!",
   cardMetadata: { nature: Nature.Util },
   description: ([def, dmg]) =>
-    `Eisen provides cover. DEF+${def} for 3 turns. When an opponent attacks, counter for ${dmg} DMG.`,
+    `Eisen provides cover. DEF+${def} for 3 turns. Once per turn, when an opponent attacks, counter for ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [3, 5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -193,21 +193,26 @@ const a_EisenCoverMyBack = new Card({
     const counterDmg = this.calculateEffectValue(this.effects[1]);
     character.adjustStat(def, StatsEnum.DEF);
 
+    character.additionalMetadata.himmelEisenReadyToCounter = true;
+
     character.ability.abilityCounterEffect = (
       game,
       characterIndex,
       messageCache: MessageCache,
       _attackDamage
     ) => {
-      const otherCharacter = game.characters[characterIndex];
-      messageCache.push(
-        `${isHimmel ? "Eisen" : `${otherCharacter.name}`} counters the attack!`,
-        TCGThread.Gameroom
-      );
-      CommonCardAction.commonAttack(game, characterIndex, {
-        damage: counterDmg,
-        hpCost: 0,
-      });
+      if (character.additionalMetadata.himmelEisenReadyToCounter) {
+        const otherCharacter = game.characters[characterIndex];
+        messageCache.push(
+          `${isHimmel ? "Eisen" : `${otherCharacter.name}`} counters the attack!`,
+          TCGThread.Gameroom
+        );
+        CommonCardAction.commonAttack(game, characterIndex, {
+          damage: counterDmg,
+          hpCost: 0,
+        });
+        character.additionalMetadata.himmelEisenReadyToCounter = false;
+      }
     };
 
     const endOfTimedEffectAction = function (
@@ -222,6 +227,7 @@ const a_EisenCoverMyBack = new Card({
       );
       character.adjustStat(-def, StatsEnum.DEF);
       character.ability.abilityCounterEffect = undefined;
+      character.additionalMetadata.himmelEisenReadyToCounter = false;
     };
 
     CommonCardAction.replaceOrAddNewTimedEffect(
@@ -232,7 +238,12 @@ const a_EisenCoverMyBack = new Card({
         name: `${isHimmel ? "Eisen: " : "Warrior: "}On the Lookout`,
         description: `DEF+${def}. When an opponent attacks, counter for ${counterDmg} DMG`,
         turnDuration: 3,
+        priority: -99,
         tags: { Eisen: 1 },
+        endOfTurnAction: function (this, _game, _characterIndex) {
+          // priority -99 means it would always go after everything else, to make a pseudo-start-of-turn effect
+          character.additionalMetadata.himmelEisenReadyToCounter = true;
+        },
         endOfTimedEffectAction: endOfTimedEffectAction,
         replacedAction: endOfTimedEffectAction,
       })
@@ -243,9 +254,9 @@ const a_EisenCoverMyBack = new Card({
 const eisenHoldTheLine = new Card({
   title: "Eisen! Hold The Line!",
   cardMetadata: { nature: Nature.Util },
-  description: ([def]) => `Eisen holds the line. DEF+${def} for 5 turns.`,
+  description: ([def]) => `Eisen holds the line. DEF+${def} for 4 turns.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [4],
+  effects: [3],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
@@ -283,7 +294,7 @@ const eisenHoldTheLine = new Card({
       new TimedEffect({
         name: `${isHimmel ? "Eisen: " : "Warrior: "}Hold the Line`,
         description: `DEF+${def}.`,
-        turnDuration: 5,
+        turnDuration: 4,
         tags: { Eisen: 1 },
         endOfTimedEffectAction: endOfTimedEffectAction,
         replacedAction: endOfTimedEffectAction,
@@ -298,7 +309,7 @@ const heiterEmergency = new Card({
   description: ([heal]) =>
     `Heiter heals the party for ${heal}HP. At next turn's end, heal an additional ${heal} HP.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [6],
+  effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
@@ -389,9 +400,9 @@ const heiterTrustYou = new Card({
   title: "I trust you, Heiter.",
   cardMetadata: { nature: Nature.Util },
   description: ([atkSpd]) =>
-    `Heiter supports the party. ATK+${atkSpd}, SPD+${atkSpd} for 5 turns.`,
+    `Heiter supports the party. ATK+${atkSpd}, SPD+${atkSpd} for 4 turns.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [4],
+  effects: [3],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
@@ -417,7 +428,7 @@ const heiterTrustYou = new Card({
       new TimedEffect({
         name: `${isHimmel ? "Heiter" : "Priest"}: Awakening`,
         description: `ATK+${atkSpd}. SPD+${atkSpd}.`,
-        turnDuration: 5,
+        turnDuration: 4,
         tags: { Heiter: 1 },
         endOfTimedEffectAction: function (this, _game, _characterIndex) {
           messageCache.push(
@@ -447,7 +458,7 @@ export const quickBlock = new Card({
     `Priority+3. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 3,
-  effects: [25],
+  effects: [20],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -475,9 +486,9 @@ const rally = new Card({
   title: "Rally",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, stat]) =>
-    `HP+${hp}. ATK+${stat}. DEF+${stat}. SPD+${stat}. An additional HP+${hp}, ATK+${stat}, DEF+${stat}, SPD+${stat} for each one of your active allies.`,
+    `HP+${hp}. ATK+${stat}. DEF+${stat}. SPD+${stat} for each one of your active allies.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [2, 1],
+  effects: [6, 1],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
@@ -493,21 +504,23 @@ const rally = new Card({
       );
     }
 
-    const activeAllies = 1 + character.timedEffects.length;
-    const hp = activeAllies * this.calculateEffectValue(this.effects[0]);
+    const activeAllies = character.timedEffects.length;
+    const hp = this.calculateEffectValue(this.effects[0]);
     const stat = activeAllies * this.calculateEffectValue(this.effects[1]);
 
     character.adjustStat(hp, StatsEnum.HP);
-    character.adjustStat(stat, StatsEnum.ATK);
-    character.adjustStat(stat, StatsEnum.DEF);
-    character.adjustStat(stat, StatsEnum.SPD);
+    if (stat > 0) {
+      character.adjustStat(stat, StatsEnum.ATK);
+      character.adjustStat(stat, StatsEnum.DEF);
+      character.adjustStat(stat, StatsEnum.SPD);
+    }
   },
 });
 
 export const a_extremeSpeed = new Card({
   title: "Extreme Speed",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `Priority+1. HP-8. DMG ${dmg}`,
+  description: ([dmg]) => `Priority+1. HP-12. DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 1,
   effects: [12],
@@ -519,7 +532,7 @@ export const a_extremeSpeed = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 8 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 12 });
   },
 });
 
@@ -528,7 +541,7 @@ export const a_realHeroSwing = new Card({
   description: ([dmg]) => `HP-12. DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
-  effects: [20],
+  effects: [16],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const isHimmel = character.name === CharacterName.Himmel;

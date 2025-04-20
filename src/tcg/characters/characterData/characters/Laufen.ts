@@ -31,9 +31,9 @@ export const Laufen = new CharacterData({
   stats: laufenStats,
   cards: laufenDeck,
   ability: {
-    abilityName: "Evasive",
-    abilityEffectString: `When the opponent attacks, roll a D100.
-        If the result is less than the character's speed minus the opponent's speed, the attack deals 0 damage.`,
+    abilityName: "Graze",
+    abilityEffectString: `DMG to this character is reduced by (this character's SPD - the opponent's SPD)%.
+        The minimum damage reduction is 0%, and the maximum is 100%.`,
     abilityStartOfTurnEffect: function (
       this,
       game,
@@ -44,32 +44,20 @@ export const Laufen = new CharacterData({
       const opponent = game.getCharacter(1 - characterIndex);
       const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
 
-      character.setStat(100 - spdDiff, StatsEnum.Ability, false);
+      character.setStat(spdDiff, StatsEnum.Ability, false);
     },
     abilityDefendEffect: (
       game,
       characterIndex,
-      messageCache: MessageCache,
+      _messageCache,
       _attackDamage
     ) => {
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
 
-      const roll = Rolls.rollD100();
       const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
-      messageCache.push(`## **SPD diff**: ${spdDiff}`, TCGThread.Gameroom);
-      messageCache.push(`# Evasion Roll: ${roll}`, TCGThread.Gameroom);
-
-      if (roll < spdDiff) {
-        messageCache.push("Laufen evaded the attack!", TCGThread.Gameroom);
-        game.additionalMetadata.attackMissed[1 - characterIndex] = true;
-      } else {
-        messageCache.push(
-          "Laufen failed to evade the attack!",
-          TCGThread.Gameroom
-        );
-        game.additionalMetadata.attackMissed[1 - characterIndex] = false;
-      }
+      const damageReduction = Math.min(Math.max(spdDiff / 100, 0), 1);
+      character.additionalMetadata.defenseDamageReduction = damageReduction;
     },
   },
   additionalMetadata: {
@@ -77,5 +65,6 @@ export const Laufen = new CharacterData({
     attackedThisTurn: false,
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
+    defenseDamageReduction: 0,
   },
 });

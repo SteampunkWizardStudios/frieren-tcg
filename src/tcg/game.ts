@@ -105,7 +105,8 @@ export default class Game {
       baseDamage = this.calculateDamage(
         baseDamage,
         attacker.stats.stats.ATK,
-        defender.stats.stats.DEF
+        defender.stats.stats.DEF,
+        defender.additionalMetadata.defenseDamageReduction
       );
 
       // allow plugins to modify damage before applying
@@ -273,8 +274,13 @@ export default class Game {
   private calculateDamage(
     moveDamage: number,
     attackerAttack: number,
-    defenderDefense: number
+    defenderDefense: number,
+    defenderDamageReduction: number
   ) {
-    return Math.max(1, moveDamage + attackerAttack - defenderDefense);
+    return Math.max(
+      1,
+      (moveDamage + attackerAttack - defenderDefense) *
+        (1 - defenderDamageReduction)
+    );
   }
 }

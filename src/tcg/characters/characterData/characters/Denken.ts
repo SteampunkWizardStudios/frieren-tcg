@@ -69,5 +69,6 @@ export const Denken = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
+    defenseDamageReduction: 0,
   },
 });

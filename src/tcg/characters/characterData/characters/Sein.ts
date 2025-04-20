@@ -73,5 +73,6 @@ export const Sein = new CharacterData({
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
     overheal: true,
+    defenseDamageReduction: 0,
   },
 });

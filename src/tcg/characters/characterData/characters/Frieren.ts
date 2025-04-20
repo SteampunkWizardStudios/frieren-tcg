@@ -121,5 +121,6 @@ export const Frieren = new CharacterData({
     attackedThisTurn: false,
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
+    defenseDamageReduction: 0,
   },
 });

@@ -16,7 +16,7 @@ export const a_zoltraak = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1355588256267501888/Offensive_Magic_Analysis_Zoltraak.png?ex=67e97971&is=67e827f1&hm=193fb4668269bd8509f7b4ce4a092c12af7b44ac8fd5264dfac08c5da5a349bf&",
   },
   tags: { PostAnalysis: 2 },
-  effects: [7],
+  effects: [9],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
@@ -83,7 +83,7 @@ export const a_judradjim = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1355588256728748365/Destructive_Lightning_Analysis_Judradjim.png?ex=67e97972&is=67e827f2&hm=15cd0d0ef4df4a3d1559b405c3e8843ecbda4b64b349e2149fb9d22db3c5e817&",
   },
   tags: { PostAnalysis: 1 },
-  effects: [12],
+  effects: [13],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -220,10 +220,10 @@ export const ordinaryDefensiveMagic = new Card({
   },
 });
 
-export const a_theHeightOfMagic = new Card({
+export const a_theHeightOfMagicBase = new Card({
   title: `"The Height of Magic"`,
   description: ([dmg]) =>
-    `Priority+1. Will fail if used while HP > 25. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1.`,
+    `When used with HP <= 25, Priority+1. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1. Treat this card as "Hellfire Summoning: Vollzanbel" when used with HP > 25.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -257,6 +257,36 @@ export const a_theHeightOfMagic = new Card({
       character.adjustStat(-20, StatsEnum.DEF);
       character.adjustStat(-20, StatsEnum.SPD);
       character.setStat(1, StatsEnum.HP);
+    }
+  },
+});
+
+const a_theHeightOfMagic = new Card({
+  title: `"The Height of Magic"`,
+  description: ([dmg]) =>
+    `When used with HP <= 25, Priority+1. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1. Treat this card as "Hellfire Summoning: Vollzanbel" when used with HP > 25.`,
+  emoji: CardEmoji.FRIEREN_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1355588254866473161/The_Height_of_Magic.png?ex=67e97971&is=67e827f1&hm=0bddcf6c49f763947308ba3e63c58a8727730a9af0ff9c0175e948af704e29b3&",
+  },
+  cardMetadata: { nature: Nature.Attack },
+  effects: [30],
+  cardAction: () => {},
+  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
+    const character = game.characters[characterIndex];
+
+    if (character.stats.stats.HP > 25) {
+      return new Card({
+        ...a_vollzanbel,
+        title: 'Hellfire Summoning: Vollzanbel ("The Height of Magic")',
+        empowerLevel: this.empowerLevel,
+      });
+    } else {
+      return new Card({
+        ...a_theHeightOfMagicBase,
+        empowerLevel: this.empowerLevel,
+      });
     }
   },
 });
