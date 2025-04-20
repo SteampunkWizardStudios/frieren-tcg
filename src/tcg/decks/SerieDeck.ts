@@ -256,7 +256,7 @@ export const serieDeck = [
   { card: a_livingGrimoireUtility, count: 2 },
   { card: fieldOfFlower, count: 1 },
   { card: mock, count: 2 },
-  { card: basicDefensiveMagic, count: 1 },
+  { card: basicDefensiveMagic, count: 2 },
   { card: unbreakableBarrier, count: 2 },
   { card: ancientBarrierMagic, count: 1 },
 ];

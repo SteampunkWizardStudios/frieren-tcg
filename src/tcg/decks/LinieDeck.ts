@@ -75,7 +75,7 @@ export const manaDetection = new Card({
   title: "Mana Detection",
   description: ([spd, bigNumber, smallNumber]) =>
     `SPD+${spd}. If Opp's DEF >= Opp's ATK, ATK+${bigNumber}, DEF+${smallNumber}. Otherwise, ATK+${smallNumber}, DEF+${bigNumber}. Reveal the opponent's highest empowered card.`,
-  emoji: CardEmoji.FERN_CARD,
+  emoji: CardEmoji.MANA_CARD,
   effects: [2, 2, 1],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -256,10 +256,10 @@ export const a_erfassenKnife = new Card({
 export const linieDeck = [
   { card: imitate, count: 2 },
   { card: adapt, count: 2 },
-  { card: manaDetection, count: 200 },
-  { card: parry, count: 1 },
+  { card: manaDetection, count: 2 },
+  { card: parry, count: 2 },
   { card: a_erfassenAxe, count: 2 },
   { card: a_erfassenJavelin, count: 2 },
   { card: a_erfassenSword, count: 2 },
-  { card: a_erfassenKnife, count: 200 },
+  { card: a_erfassenKnife, count: 2 },
 ];

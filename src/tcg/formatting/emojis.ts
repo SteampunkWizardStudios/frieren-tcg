@@ -75,6 +75,7 @@ export enum CardEmoji {
   FERN_CARD = "<:FernCard:1363517169585099013>",
 
   FLOWER_FIELD = "<:FlowerFieldCard:1347719503290695803>",
+  MANA_CARD = "<:ManaCard:1363597189229576322>",
 }
 
 export enum ProgressBarEmoji {
