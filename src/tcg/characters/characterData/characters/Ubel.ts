@@ -32,6 +32,17 @@ function missAttack(
   messageCache.push("The attack misses!", TCGThread.Gameroom);
 }
 
+
+function checkForEffects(
+  effects : string[]
+) :  Record<string, boolean>{
+  const effectsListToCheckFor = ["Sorganeil", "Rushdown", "Recompose"];
+  const presence = effectsListToCheckFor.map((effect) => effects.includes(effect));
+  const result : Record<string, boolean> = {Sorganeil: presence[0], Rushdown: presence[1], Recompose: presence[2]};
+  return result;
+};
+
+
 export const Ubel = new CharacterData({
   name: CharacterName.Ubel,
   cosmetic: {
@@ -47,8 +58,8 @@ export const Ubel = new CharacterData({
   stats: ubelStats,
   cards: ubelDeck,
   ability: {
-    abilityName: "Battle-crazed weirdo",
-    abilityEffectString: `Übel's attack ignore ${PIERCE_FACTOR * 100}% the opponent's defense stats, but are blocked by defensive moves.`,
+    abilityName: "A reckless mage",
+    abilityEffectString: `Übel's slashing attacks ignore ${PIERCE_FACTOR * 100}% the opponent's defense stats, but are blocked by defensive moves.`,
 
     // same turn surehit effect changes
     abilityAfterOpponentsMoveEffect: function (
@@ -60,9 +71,11 @@ export const Ubel = new CharacterData({
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
       const effects = character.timedEffects.map((effect) => effect.name);
+      const activeEffects = checkForEffects(effects);
+
       switch (card.cardMetadata.nature) {
         case "Attack":
-          if (!effects.find((effectName) => effectName === "Recompose")) {
+          if (!activeEffects.Recompose) {
             character.additionalMetadata.sureHit = UbelHit.SureHit;
             messageCache.push(
               `${opponent.name} is wide-open!`,
@@ -79,9 +92,9 @@ export const Ubel = new CharacterData({
           break;
         default:
           if (
-            !effects.find(effectName => effectName === "Recompose") &&
-            !effects.find(effectName => effectName === "Rushdown") &&
-            !effects.find(effectName => effectName === "Sorganeil")
+            !activeEffects.Recompose &&
+            !activeEffects.Rushdown &&
+            !activeEffects.Sorganeil
           ) {
             character.additionalMetadata.sureHit = UbelHit.Regular;
           }
@@ -92,13 +105,11 @@ export const Ubel = new CharacterData({
     abilityStartOfTurnEffect: function (game, characterIndex, messageCache) {
       const character = game.getCharacter(characterIndex);
       const effects = character.timedEffects.map((effect) => effect.name);
+      const activeEffects = checkForEffects(effects);
 
-      if (
-        effects.find((effectName) => effectName === "Sorganeil") ||
-        effects.find((effectName) => effectName === "Rushdown")
-      ) {
+      if (activeEffects.Sorganeil || activeEffects.Rushdown) {
         character.additionalMetadata.sureHit = UbelHit.SureHit;
-      } else if (effects.find((effectName) => effectName === "Recompose")) {
+      } else if (activeEffects.Recompose) {
         character.additionalMetadata.sureHit = UbelHit.SureMiss;
       } else {
         switch (character.additionalMetadata.sureHit) {

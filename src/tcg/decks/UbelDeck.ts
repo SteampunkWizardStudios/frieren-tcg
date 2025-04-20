@@ -2,7 +2,6 @@ import Card, {Nature} from "../card";
 import CommonCardAction from "../util/commonCardActions";
 import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
-import Rolls from "../util/rolls";
 import { CardEmoji } from "../formatting/emojis";
 import { MessageCache } from "../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
@@ -165,11 +164,10 @@ export const rushdown = new Card({
           character.adjustStat(-5, StatsEnum.HP);
         },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
+          _messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
         },
         replacedAction: function (this, _game, characterIndex) {
-          messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
         },
       })
@@ -207,7 +205,7 @@ const recompose = new Card({
         tags: { ubelSpeedModifiers: 1 },
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
-            `${character.name} took a break and recoupes.`,
+            `${character.name} took a break and recoups.`,
             TCGThread.Gameroom
           );
           character.adjustStat(this.effects[0]/2, StatsEnum.HP);
