@@ -93,7 +93,7 @@ export default async function profileEmbed(profile: PlayerProfile, user: User) {
   const embed = new EmbedBuilder()
     .setColor("Blurple")
     .setTitle(`${user.displayName}'s profile`)
-    .addFields([...ladderFields, masteryField, achievementField]);
+    .addFields([achievementField, ...ladderFields, masteryField ]);
 
   return embed;
 }
