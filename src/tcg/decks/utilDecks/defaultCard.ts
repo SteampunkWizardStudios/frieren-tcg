@@ -40,7 +40,7 @@ export default class DefaultCards {
 
   static readonly waitCard: Card = new Card({
     title: "Wait",
-    description: () => "Heals 10 HP.",
+    description: () => "Heals 10 HP. Empower all cards in your hand afterwards.",
     effects: [],
     printEmpower: false,
     emoji: CardEmoji.WAIT,
@@ -52,6 +52,22 @@ export default class DefaultCards {
         TCGThread.Gameroom
       );
       character.adjustStat(10, StatsEnum.HP);
+    },
+  });
+
+  static readonly doNothing: Card = new Card({
+    title: "Do Nothing.",
+    description: () => "Does nothing. Empower all cards in your hand afterwards.",
+    effects: [],
+    printEmpower: false,
+    emoji: CardEmoji.WAIT,
+    cardAction: (game, characterIndex, messageCache) => {
+      const character = game.getCharacter(characterIndex);
+      character.empowerHand();
+      messageCache.push(
+        `${character.name} did nothing. All cards in ${character.name}'s hand are empowered.`,
+        TCGThread.Gameroom
+      );
     },
   });
 
