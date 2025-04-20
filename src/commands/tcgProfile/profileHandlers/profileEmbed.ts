@@ -21,15 +21,13 @@ export default async function profileEmbed(profile: PlayerProfile, user: User) {
     return achText;
   });
 
-  const achievementSection =
+  const achievementField =
     achievementMap.length > 0
-      ? achievementMap.join("\n")
-      : "This player has no achievements";
-
-  const achievementField = {
-    name: "Achievements",
-    value: achievementSection,
-  };
+      ? {
+          name: "Achievements",
+          value: achievementMap.join("\n"),
+        }
+      : null;
 
   const ladderRankFields = await Promise.all(
     profile.ladderRanks.map(async (ladderRank) => {
@@ -90,10 +88,14 @@ export default async function profileEmbed(profile: PlayerProfile, user: User) {
         : "This player has no character masteries",
   };
 
+  const fields = [achievementField, ...ladderFields, masteryField].filter(
+    (f) => f !== null
+  );
+
   const embed = new EmbedBuilder()
     .setColor("Blurple")
     .setTitle(`${user.displayName}'s profile`)
-    .addFields([achievementField, ...ladderFields, masteryField]);
+    .addFields(fields);
 
   return embed;
 }

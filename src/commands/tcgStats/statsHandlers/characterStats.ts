@@ -93,7 +93,19 @@ async function overviewCase(): Promise<EmbedBuilder> {
     },
   });
 
-  const description = characters.map((char) => {
+  const sortedCharacters = characters.sort((a, b) => {
+    const winrateA = getWinrate(
+      a._count.winnerMatches,
+      a._count.loserMatches
+    ).winrate;
+    const winrateB = getWinrate(
+      b._count.winnerMatches,
+      b._count.loserMatches
+    ).winrate;
+    return winrateB - winrateA;
+  });
+
+  const description = sortedCharacters.map((char) => {
     const { name, _count } = char;
     const { winnerMatches, loserMatches } = _count;
     const { winrate } = getWinrate(winnerMatches, loserMatches);
