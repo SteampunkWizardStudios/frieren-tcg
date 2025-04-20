@@ -5,7 +5,6 @@ export interface TimedEffectProps {
   name: string;
   description: string;
   turnDuration: number;
-  activateEndOfTurnActionThisTurn?: boolean;
   priority?: number;
   tags?: Record<string, number>;
   endOfTurnAction?: (
@@ -30,7 +29,6 @@ export default class TimedEffect {
   description: string;
   turnDuration: number;
   priority: number;
-  activateEndOfTurnActionThisTurn: boolean;
   tags: Record<string, number>;
   endOfTurnAction?: (
     game: Game,
@@ -53,8 +51,6 @@ export default class TimedEffect {
     this.description = props.description;
     this.turnDuration = props.turnDuration;
     this.priority = props.priority ? props.priority : 0;
-    this.activateEndOfTurnActionThisTurn =
-      props.activateEndOfTurnActionThisTurn ?? true;
     this.tags = props.tags ?? {};
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
@@ -71,13 +67,7 @@ export default class TimedEffect {
     messageCache: MessageCache
   ) {
     this.passTurn();
-
-    if (!this.activateEndOfTurnActionThisTurn) {
-      this.activateEndOfTurnActionThisTurn = true;
-    } else {
-      this.endOfTurnAction?.(game, characterIndex, messageCache);
-    }
-
+    this.endOfTurnAction?.(game, characterIndex, messageCache);
     if (this.turnDuration === 0) {
       this.endOfTimedEffectAction?.(game, characterIndex, messageCache);
     }
