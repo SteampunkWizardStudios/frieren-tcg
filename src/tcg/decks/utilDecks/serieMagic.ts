@@ -16,7 +16,7 @@ import { a_supersonicStrike, a_whip, hide } from "../LaufenDeck";
 import {
   a_erfassenAxe,
   a_erfassenKnife,
-  a_erfassenSpear,
+  a_erfassenJavelin,
   a_erfassenSword,
   adapt,
   manaDetection,
@@ -45,7 +45,7 @@ export const serie_offensiveMagic = [
   a_supersonicStrike,
   a_erfassenAxe,
   a_erfassenKnife,
-  a_erfassenSpear,
+  a_erfassenJavelin,
   a_erfassenSword,
   a_trustInYourAllyFernsBarrage,
   a_trustInYourAllyFrierensZoltraak,
