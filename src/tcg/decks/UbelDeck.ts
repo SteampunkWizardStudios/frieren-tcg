@@ -1,4 +1,4 @@
-import Card from "../card";
+import Card, {Nature} from "../card";
 import CommonCardAction from "../util/commonCardActions";
 import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
@@ -13,7 +13,7 @@ const a_reelseiden = new Card({
     `HP-4 Has a 20% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [8],
-  cardMetadata: { nature: "Attack", ubelFailureRate: 20 },
+  cardMetadata: { nature: Nature.Attack, ubelFailureRate: 20 },
   hpCost: 4,
   cardAction: function (
     this: Card,
@@ -43,7 +43,7 @@ const a_cleave = new Card({
     `HP-6. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [12],
-  cardMetadata: { nature: "Attack", ubelFailureRate: 40 },
+  cardMetadata: { nature: Nature.Attack, ubelFailureRate: 40 },
   hpCost: 6,
   cardAction: function (
     this: Card,
@@ -73,7 +73,7 @@ const a_dismantle = new Card({
     `HP-8. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [16],
-  cardMetadata: { nature: "Attack", ubelFailureRate: 60 },
+  cardMetadata: { nature: Nature.Attack, ubelFailureRate: 60 },
   hpCost: 8,
   cardAction: function (
     this: Card,
@@ -105,7 +105,7 @@ export const a_malevolentShrine = new Card({
     cardGif: "https://media.discordapp.net/attachments/1338831179981262943/1363264315272073406/malevolent-shrine-ubel.gif?ex=68060f14&is=6804bd94&hm=300b3e5578f56a069ea858f0f660ce855be6a3f6f32f246b434066ea770da58e&=&width=400&height=225",
   },
   emoji: CardEmoji.UBEL_CARD,
-  cardMetadata: { nature: "Attack", signature: true, ubelFailureRate: 80 },
+  cardMetadata: { nature: Nature.Attack, signature: true, ubelFailureRate: 80 },
   effects: [22],
   hpCost: 11,
   cardAction: function (
@@ -132,7 +132,7 @@ export const a_malevolentShrine = new Card({
 
 export const rushdown = new Card({
   title: "Rushdown",
-  cardMetadata: { nature: "Util" },
+  cardMetadata: { nature: Nature.Util },
   description: ([spd]) =>
     `Increases SPD by ${spd} for 3 turns. Attacks will not miss during this period. At the end of every turn, HP-5.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -181,7 +181,7 @@ export const rushdown = new Card({
 
 const recompose = new Card({
   title: "Recompose",
-  cardMetadata: { nature: "Util" },
+  cardMetadata: { nature: Nature.Util },
   description: ([hp]) => `SPD-10 for 2 turns. Heal ${hp}HP, then ${0.5*Number(hp)}HP at the end of each turn.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10],
@@ -229,7 +229,7 @@ const recompose = new Card({
 
 const defend = new Card({
   title: "Defend",
-  cardMetadata: { nature: "Defense" },
+  cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -260,7 +260,7 @@ const defend = new Card({
 
 export const sorganeil = new Card({
   title: "Sorganeil",
-  cardMetadata: { nature: "Util" },
+  cardMetadata: { nature: Nature.Util },
   description: () =>
     `Priority-1. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -296,7 +296,7 @@ export const sorganeil = new Card({
 
 export const empathy = new Card({
   title: `Empathy`,
-  cardMetadata: { nature: "Util" },
+  cardMetadata: { nature: Nature.Util },
   description: () =>
     `Use the opponent signature spell. Will fail if used before turn 5.`,
   emoji: CardEmoji.UBEL_CARD,

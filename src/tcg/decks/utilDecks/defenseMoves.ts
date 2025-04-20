@@ -1,5 +1,5 @@
 import { CharacterName } from "../../characters/metadata/CharacterName";
-import Card from "../../card";
+import Card, { Nature } from "../../card";
 import { ordinaryDefensiveMagic } from "../FrierenDeck";
 import { basicDefensiveMagic } from "../SerieDeck";
 import { elementaryDefensiveMagic } from "../DenkenDeck";

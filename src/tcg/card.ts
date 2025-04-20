@@ -8,6 +8,14 @@ export interface CardCosmetic {
   cardGif?: string;
 }
 
+
+export enum Nature {
+  Attack = "Attack",
+  Defense = "Defense",
+  Default = "Default",
+  Util = "Util",
+}
+
 type CardMetadata = {
   nature: Nature;
   seriePool?: "Common" | "Rare" | "Ultra-rare";
@@ -21,8 +29,6 @@ type CardMetadata = {
   signatureMoveOf?: CharacterName;
   ubelFailureRate?: number;
 };
-
-type Nature = "Attack" | "Defense" | "Default" | "Util";
 
 export type CardProps = {
   title: string;

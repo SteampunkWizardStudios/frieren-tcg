@@ -2,7 +2,7 @@ import Pronouns from "../../pronoun";
 import { CharacterName } from "../metadata/CharacterName";
 import { Ability } from "../../ability";
 import Stats from "../../stats";
-import Card from "../../card";
+import Card, { Nature } from "../../card";
 import { CharacterAdditionalMetadata } from "../../additionalMetadata/characterAdditionalMetadata";
 import { CharacterEmoji } from "../../formatting/emojis";
 

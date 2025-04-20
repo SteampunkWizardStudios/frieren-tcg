@@ -1,4 +1,4 @@
-import Card from "../card";
+import Card, {Nature} from "../card";
 import { StatsEnum } from "../stats";
 import CommonCardAction from "../util/commonCardActions";
 import { CharacterName } from "../characters/metadata/CharacterName";
@@ -8,7 +8,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_trustInYourAllyFrierensZoltraak = new Card({
   title: "Trust in Your Ally: Frieren's Zoltraak",
-  cardMetadata: { nature: "Attack" },
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `HP-5. DMG ${dmg} + HP/10`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -39,7 +39,7 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
 
 export const a_trustInYourAllyFernsBarrage = new Card({
   title: "Trust in Your Ally: Fern's Barrage",
-  cardMetadata: { nature: "Attack" },
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
     `HP-7. DMG ${dmg}+HP/10 DMG. Next turn, deal ${dmg}+HP/10 DMG at turn end.`,
   emoji: CardEmoji.SEIN_CARD,
@@ -94,7 +94,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
 
 const a_trustInYourAllyStarksLightningStrike = new Card({
   title: "Trust in Your Ally: Stark's Lightning Strike",
-  cardMetadata: { nature: "Attack" },
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `Priority-1. HP-9. DMG ${dmg}+HP/7.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -129,7 +129,7 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
 
 export const mugOfBeer = new Card({
   title: "Mug of Beer",
-  cardMetadata: { nature: "Util" },
+  cardMetadata: { nature: Nature.Util },
   description: ([hp, atk]) => `HP+${hp}. ATK+${atk}. DEF-2. SPD-1.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -159,7 +159,7 @@ export const mugOfBeer = new Card({
 
 export const smokeBreak = new Card({
   title: "Smoke Break",
-  cardMetadata: { nature: "Util" },
+  cardMetadata: { nature: Nature.Util },
   description: ([atk, def, spd]) => `HP-5. ATK+${atk}. DEF+${def}. SPD+${spd}.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -192,7 +192,7 @@ export const smokeBreak = new Card({
 
 export const awakening = new Card({
   title: "Awakening",
-  cardMetadata: { nature: "Util" },
+  cardMetadata: { nature: Nature.Util },
   description: ([atk, def, spd]) => `ATK+${atk}. DEF+${def}. SPD+${spd}.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -221,7 +221,7 @@ export const awakening = new Card({
 
 export const poisonCure = new Card({
   title: "Poison Cure",
-  cardMetadata: { nature: "Util" },
+  cardMetadata: { nature: Nature.Util },
   description: ([hp]) => `HP+${hp}.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
@@ -244,7 +244,7 @@ export const poisonCure = new Card({
 
 export const braceYourself = new Card({
   title: "Brace Yourself",
-  cardMetadata: { nature: "Defense" },
+  cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SEIN_CARD,
@@ -293,7 +293,7 @@ export const a_threeSpearsOfTheGoddess = new Card({
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1353035307397681172/Three_Spears_of_the_Godess.png?ex=67e02fd3&is=67dede53&hm=671b75347795840779fe6e5007f8a0918b04e3b6a558b561ca9ce4b4c18694a8&",
   },
-  cardMetadata: { nature: "Attack", signature: true },
+  cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
