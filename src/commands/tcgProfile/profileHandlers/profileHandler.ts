@@ -55,7 +55,8 @@ export type PlayerProfile = Prisma.PlayerGetPayload<
 export default async function handlePlayerStats(
   interaction: ChatInputCommandInteraction
 ) {
-  const targetPlayer = interaction.options.getUser("user") ?? interaction.user;
+  const targetPlayer =
+    interaction.options.getUser("player") ?? interaction.user;
 
   interaction.editReply({
     content: `Fetching stats for ${targetPlayer}...`,
