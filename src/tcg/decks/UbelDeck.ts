@@ -5,6 +5,7 @@ import TimedEffect from "../timedEffect";
 import { CardEmoji } from "../formatting/emojis";
 import { MessageCache } from "../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import { signatureMoves } from "./utilDecks/signatureMoves"
 
 const a_reelseiden = new Card({
   title: "Reelseiden",
@@ -315,14 +316,10 @@ export const empathy = new Card({
         TCGThread.Gameroom
       );
 
-      const opponentDeck = opponent.cards;
-      const cardlist = opponentDeck.map((x) => x.card);
-      const signatureMove = cardlist.filter(
-        (Card) => Card.cardMetadata.signature
-      )[0];
+      const opponentSignature = signatureMoves[opponent.name]
 
       const usedMagic = new Card({
-        ...signatureMove,
+        ...opponentSignature,
         empowerLevel: this.empowerLevel - 2,
       });
 

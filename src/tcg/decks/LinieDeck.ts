@@ -6,7 +6,7 @@ import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 
-const imitate = new Card({
+export const imitate = new Card({
   title: "Imitate",
   cardMetadata: { nature: Nature.Util },
   description: () =>
