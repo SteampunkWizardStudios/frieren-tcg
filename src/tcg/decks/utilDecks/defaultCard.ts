@@ -8,12 +8,16 @@ export default class DefaultCards {
   static readonly discardCard: Card = new Card({
     title: "Discard",
     description: () =>
-      "Discards all of your current active cards. Draw the same number of cards you discarded. Empower all cards in your hand afterwards.",
+      "ATK+1. DEF+1. SPD+1. Discards all of your current active cards. Draw the same number of cards you discarded. Empower all cards in your hand afterwards.",
     effects: [],
     emoji: CardEmoji.RECYCLE,
     printEmpower: false,
     cardAction: (game, characterIndex, messageCache) => {
       const character = game.getCharacter(characterIndex);
+
+      character.adjustStat(1, StatsEnum.ATK);
+      character.adjustStat(1, StatsEnum.DEF);
+      character.adjustStat(1, StatsEnum.SPD);
 
       const handsIndicesDescending = Object.keys(
         game.additionalMetadata.currentDraws[characterIndex]
