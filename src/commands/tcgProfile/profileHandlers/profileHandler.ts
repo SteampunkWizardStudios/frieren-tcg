@@ -13,7 +13,7 @@ const playerProfile = (discordId?: string) => {
     select: {
       id: true,
       discordId: true,
-	  achievements: true,
+      achievements: true,
       characterMasteries: {
         select: {
           character: { select: { id: true, name: true } },
@@ -92,7 +92,7 @@ export default async function handlePlayerStats(
   const embed = await profileEmbed(player, targetPlayer);
 
   await interaction.editReply({
-	content: "",
+    content: "",
     embeds: [embed],
   });
 }

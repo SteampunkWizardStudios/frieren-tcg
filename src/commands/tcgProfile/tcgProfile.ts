@@ -40,4 +40,3 @@ export const command: Command<ChatInputCommandInteraction> = {
     }
   },
 };
-

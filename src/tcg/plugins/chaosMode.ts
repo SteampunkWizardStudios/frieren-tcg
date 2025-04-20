@@ -8,7 +8,7 @@ export const EmpoweredMode: GamePlugin = {
     // +20% HP to both players
     game.characters.forEach((char) => {
       char.stats.stats.HP = Number((char.stats.stats.HP * 1.2).toFixed(2));
-      char.stats.startingHp
+      char.stats.startingHp;
     });
   },
 
