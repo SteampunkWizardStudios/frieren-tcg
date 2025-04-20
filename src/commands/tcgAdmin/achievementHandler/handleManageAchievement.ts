@@ -1,6 +1,9 @@
 import prismaClient from "@prismaClient";
 
-export async function createAchievement(name: string, description: string) {
+export async function createAchievement(
+  name: string,
+  description: string | null
+) {
   const achievement = await prismaClient.achievement.create({
     data: {
       name,
