@@ -298,7 +298,7 @@ export const empathy = new Card({
   title: `Empathy`,
   cardMetadata: { nature: Nature.Util },
   description: () =>
-    `Use the opponent signature spell. Will fail if used before turn 5.`,
+    `Use the opponent signature spell at empower rate -2. Will fail if used before turn 5.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
