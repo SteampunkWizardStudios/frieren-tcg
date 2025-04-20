@@ -1,4 +1,5 @@
 import { CharacterData } from "../characterData";
+import { UbelHit } from "../../../additionalMetadata/characterAdditionalMetadata"
 import { ubelDeck } from "../../../decks/UbelDeck";
 import Stats from "../../../stats";
 import { StatsEnum } from "../../../stats";
@@ -62,7 +63,7 @@ export const Ubel = new CharacterData({
       switch (card.cardMetadata.nature) {
         case "Attack":
           if (!effects.find((effectName) => effectName === "Recompose")) {
-            character.additionalMetadata.sureHit = "sureHit";
+            character.additionalMetadata.sureHit = UbelHit.SureHit;
             messageCache.push(
               `${opponent.name} is wide-open!`,
               TCGThread.Gameroom
@@ -70,7 +71,7 @@ export const Ubel = new CharacterData({
           }
           break;
         case "Defense":
-          character.additionalMetadata.sureHit = "sureMiss";
+          character.additionalMetadata.sureHit = UbelHit.SureMiss;
           messageCache.push(
             `${character.name} can't cut through this!`,
             TCGThread.Gameroom
@@ -82,7 +83,7 @@ export const Ubel = new CharacterData({
             !effects.find(effectName => effectName === "Rushdown") &&
             !effects.find(effectName => effectName === "Sorganeil")
           ) {
-            character.additionalMetadata.sureHit = "regular";
+            character.additionalMetadata.sureHit = UbelHit.Regular;
           }
       }
     },
@@ -96,21 +97,21 @@ export const Ubel = new CharacterData({
         effects.find((effectName) => effectName === "Sorganeil") ||
         effects.find((effectName) => effectName === "Rushdown")
       ) {
-        character.additionalMetadata.sureHit = "sureHit";
+        character.additionalMetadata.sureHit = UbelHit.SureHit;
       } else if (effects.find((effectName) => effectName === "Recompose")) {
-        character.additionalMetadata.sureHit = "sureMiss";
+        character.additionalMetadata.sureHit = UbelHit.SureMiss;
       } else {
         switch (character.additionalMetadata.sureHit) {
-          case "sureHit":
+          case UbelHit.SureHit:
             if (
               game.additionalMetadata.lastUsedCards[1 - characterIndex]
                 .cardMetadata.nature != "Attack"
             ) {
-              character.additionalMetadata.sureHit = "regular";
+              character.additionalMetadata.sureHit = UbelHit.Regular;
             }
             break;
-          case "sureMiss":
-            character.additionalMetadata.sureHit = "regular";
+          case UbelHit.SureMiss:
+            character.additionalMetadata.sureHit = UbelHit.Regular;
             break;
           default:
           // do nothing
@@ -131,17 +132,17 @@ export const Ubel = new CharacterData({
       const failureRate = card.cardMetadata.ubelFailureRate;
 
       switch (character.additionalMetadata.sureHit) {
-        case "sureHit":
+        case UbelHit.SureHit:
           card.cardAction?.(game, characterIndex, messageCache);
           break;
-        case "sureMiss":
+        case UbelHit.SureMiss:
           if (!failureRate) {
             card.cardAction?.(game, characterIndex, messageCache);
           } else {
             missAttack(character, messageCache, card);
           }
           break;
-        case "regular":
+        case UbelHit.Regular:
           if (!failureRate) {
             card.cardAction?.(game, characterIndex, messageCache);
           } else {
@@ -167,6 +168,6 @@ export const Ubel = new CharacterData({
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
     pierceFactor: PIERCE_FACTOR,
-    sureHit: "regular",
+    sureHit: UbelHit.Regular,
   },
 });

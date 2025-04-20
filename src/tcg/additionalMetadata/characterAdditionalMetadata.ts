@@ -6,6 +6,12 @@
   overheal?: boolean;
 } */
 
+export enum UbelHit {
+  SureHit = "sureHit",
+  SureMiss = "sureMiss",
+  Regular = "regular",
+};
+
 export type CharacterAdditionalMetadata = {
   manaSuppressed: boolean;
   attackedThisTurn: boolean;
@@ -16,5 +22,5 @@ export type CharacterAdditionalMetadata = {
   serieToyingNextTurn?: boolean;
   serieToyingTurn?: boolean;
   pierceFactor?: number;
-  sureHit?: "sureHit" | "sureMiss" | "regular";
+  sureHit?: UbelHit;
 };
