@@ -55,7 +55,7 @@ const a_cleave = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
-      `${character.name} slashed at ${opponent.name}!`,
+      `A brutal slash!`,
       TCGThread.Gameroom
     );
 
@@ -85,7 +85,7 @@ const a_dismantle = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
-      `${character.name} slashed at ${opponent.name}!`,
+      `${character.name} tries to cut ${opponent.name} into pieces!`,
       TCGThread.Gameroom
     );
 
@@ -101,6 +101,9 @@ export const a_malevolentShrine = new Card({
   title: "Malevolent Shrine",
   description: ([dmg]) =>
     `HP-11. Has a 80% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+  cosmetic: {
+    cardGif: "https://media.discordapp.net/attachments/1338831179981262943/1363264315272073406/malevolent-shrine-ubel.gif?ex=68060f14&is=6804bd94&hm=300b3e5578f56a069ea858f0f660ce855be6a3f6f32f246b434066ea770da58e&=&width=400&height=225",
+  },
   emoji: CardEmoji.UBEL_CARD,
   cardMetadata: { nature: "Attack", signature: true, ubelFailureRate: 80 },
   effects: [22],
@@ -115,7 +118,7 @@ export const a_malevolentShrine = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
-      `${character.name} slashed at ${opponent.name}!`,
+      `# ጠ ል ረ ቿ ሀ ዐ ረ ቿ ክ ፕ    ነ ዘ ዪ ጎ ክ ቿ!`,
       TCGThread.Gameroom
     );
 
@@ -204,10 +207,10 @@ const recompose = new Card({
         tags: { ubelSpeedModifiers: 1 },
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
-            `${character.name} took a break and recouped ${this.effects[0]/2} HP.`,
+            `${character.name} took a break and recoupes.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(5, StatsEnum.HP);
+          character.adjustStat(this.effects[0]/2, StatsEnum.HP);
         },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
@@ -215,11 +218,9 @@ const recompose = new Card({
             TCGThread.Gameroom
           );
           character.adjustStat(10, StatsEnum.SPD);
-          //character.additionalMetadata.sureHit = "regular";
         },
         replacedAction: function (this, _game, characterIndex) {
           character.adjustStat(10, StatsEnum.SPD);
-          //character.additionalMetadata.sureHit = "regular";
         },
       })
     );
@@ -270,8 +271,6 @@ export const sorganeil = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     const currentPierceFactor = character.additionalMetadata.pierceFactor;
     opponent.skipTurn = true;
-    const currentHittingStatus = character.additionalMetadata.sureHit;
-    //character.additionalMetadata.sureHit = "sureHit";
     character.additionalMetadata.pierceFactor = 1;
     messageCache.push(
       `${opponent.name} got trapped in ${character.name}'s gaze!`,
@@ -284,7 +283,6 @@ export const sorganeil = new Card({
         turnDuration: 2,
         priority: -1,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          // character.additionalMetadata.sureHit = currentHittingStatus;
           character.additionalMetadata.pierceFactor = currentPierceFactor;
           messageCache.push(
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze.`,
@@ -328,7 +326,6 @@ export const empathy = new Card({
         (Card) => Card.cardMetadata.signature
       )[0];
 
-      //const learnedMagic = signatureMoves[opponent.name];
       const usedMagic = new Card({
         ...signatureMove,
         empowerLevel: this.empowerLevel - 2,
@@ -363,3 +360,15 @@ export const ubelDeck = [
   { card: sorganeil, count: 1 },
   { card: empathy, count: 1 },
 ];
+
+/* export const ubelDeck = [
+  { card: a_reelseiden, count: 0},
+  { card: a_cleave, count: 0},
+  { card: a_dismantle, count: 0 },
+  { card: a_malevolentShrine, count: 10 },
+  { card: rushdown, count: 0 },
+  { card: defend, count: 0 },
+  { card: recompose, count: 0 },
+  { card: sorganeil, count: 10 },
+  { card: empathy, count: 0 },
+]; */

@@ -21,6 +21,16 @@ const ubelStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
+function missAttack(
+  character: Character,
+  messageCache: MessageCache,
+  card: Card
+) {
+  const hpCost = card.hpCost;
+  character.adjustStat(-hpCost, StatsEnum.HP);
+  messageCache.push("The attack misses!", TCGThread.Gameroom);
+}
+
 export const Ubel = new CharacterData({
   name: CharacterName.Ubel,
   cosmetic: {
@@ -115,15 +125,7 @@ export const Ubel = new CharacterData({
       messageCache: MessageCache,
       card: Card
     ) {
-      function missAttack(
-        character: Character,
-        messageCache: MessageCache,
-        card: Card
-      ) {
-        const hpCost = card.hpCost;
-        character.adjustStat(-hpCost, StatsEnum.HP);
-        messageCache.push("The attack misses!", TCGThread.Gameroom);
-      }
+    
 
       const character = game.getCharacter(characterIndex);
       const failureRate = card.cardMetadata.ubelFailureRate;
