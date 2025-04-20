@@ -279,6 +279,8 @@ export const tcgMain = async (
       characterToSelectedMoveMap[1] = opponentSelectedMove;
     }
 
+    console.log(characterToSelectedMoveMap)
+
     // move resolution step
     const moveFirst = game.getFirstMove(characterToSelectedMoveMap);
     const moveOrder = [moveFirst, 1 - moveFirst];

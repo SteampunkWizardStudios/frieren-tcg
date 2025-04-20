@@ -10,7 +10,7 @@ import { a_piercingDrill } from "../SenseDeck"
 import { ancientBarrierMagic } from "../SerieDeck"
 import { a_lightningStrike } from "../StarkDeck"
 import { a_geisel } from "../StilleDeck"
-import { a_malevolentShrine } from "../UbelDeck"
+import { a_malevolentShrine } from "./ubelSignature"
 
 
 export const signatureMoves : Record<CharacterName, Card> = {
