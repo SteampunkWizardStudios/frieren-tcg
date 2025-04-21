@@ -172,7 +172,7 @@ export const a_erfassenJavelin = new Card({
   description: ([dmg]) =>
     `HP-3. DMG ${dmg}. Deal ${dmg} at the end of next turn.`,
   emoji: CardEmoji.LINIE_CARD,
-  cardMetadata: { nature: Nature.Attack},
+  cardMetadata: { nature: Nature.Attack },
   effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -183,25 +183,25 @@ export const a_erfassenJavelin = new Card({
 
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
- 
-     character.timedEffects.push(
-       new TimedEffect({
-         name: "Erfassen: Javelin",
-         description: `Deal ${damage} at the end of the effect.`,
-         turnDuration: 2,
-         endOfTimedEffectAction: (game, characterIndex, messageCache) => {
-           messageCache.push(
-             `${character.name} launches a javelin!`,
-             TCGThread.Gameroom
-           );
-           CommonCardAction.commonAttack(game, characterIndex, {
-             damage,
-             hpCost: 0,
-             isTimedEffectAttack: true,
-           });
-         },
-       })
-     );
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Erfassen: Javelin",
+        description: `Deal ${damage} at the end of the effect.`,
+        turnDuration: 2,
+        endOfTimedEffectAction: (game, characterIndex, messageCache) => {
+          messageCache.push(
+            `${character.name} launches a javelin!`,
+            TCGThread.Gameroom
+          );
+          CommonCardAction.commonAttack(game, characterIndex, {
+            damage,
+            hpCost: 0,
+            isTimedEffectAttack: true,
+          });
+        },
+      })
+    );
   },
 });
 
@@ -239,26 +239,26 @@ export const a_erfassenKnife = new Card({
 
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 1 });
- 
-     character.timedEffects.push(
-       new TimedEffect({
-         name: "Erfassen: Knife",
-         description: `Deal ${damage} at each turn's end.`,
-         turnDuration: 3,
-         activateEndOfTurnActionThisTurn: false,
-         endOfTurnAction: function (this: TimedEffect, game, characterIndex) {
-           messageCache.push(
-             `${character.name} flings a knife at the opponent!`,
-             TCGThread.Gameroom
-           );
-           CommonCardAction.commonAttack(game, characterIndex, {
-             damage,
-             hpCost: 0,
-             isTimedEffectAttack: true,
-           });
-         },
-       })
-     );
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Erfassen: Knife",
+        description: `Deal ${damage} at each turn's end.`,
+        turnDuration: 3,
+        activateEndOfTurnActionThisTurn: false,
+        endOfTurnAction: function (this: TimedEffect, game, characterIndex) {
+          messageCache.push(
+            `${character.name} flings a knife at the opponent!`,
+            TCGThread.Gameroom
+          );
+          CommonCardAction.commonAttack(game, characterIndex, {
+            damage,
+            hpCost: 0,
+            isTimedEffectAttack: true,
+          });
+        },
+      })
+    );
   },
 });
 

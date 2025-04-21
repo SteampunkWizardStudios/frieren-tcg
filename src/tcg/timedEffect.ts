@@ -54,7 +54,7 @@ export default class TimedEffect {
     this.turnDuration = props.turnDuration;
     this.priority = props.priority ? props.priority : 0;
     this.activateEndOfTurnActionThisTurn =
-       props.activateEndOfTurnActionThisTurn ?? true;
+      props.activateEndOfTurnActionThisTurn ?? true;
     this.tags = props.tags ?? {};
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
@@ -76,7 +76,7 @@ export default class TimedEffect {
     } else {
       this.endOfTurnAction?.(game, characterIndex, messageCache);
     }
-    
+
     if (this.turnDuration === 0) {
       this.endOfTimedEffectAction?.(game, characterIndex, messageCache);
     }
