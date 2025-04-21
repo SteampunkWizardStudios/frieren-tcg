@@ -310,24 +310,16 @@ export const tcgMain = async (
               messageCache,
               card
             );
-            if (opponentCharacter.ability.abilityAfterOpponentsMoveEffect) {
-              opponentCharacter.ability.abilityAfterOpponentsMoveEffect(
-                game,
-                1 - characterIndex,
-                messageCache,
-                card
-              );
-            }
           } else {
             card.cardAction?.(game, characterIndex, messageCache);
-            if (opponentCharacter.ability.abilityAfterOpponentsMoveEffect) {
-              opponentCharacter.ability.abilityAfterOpponentsMoveEffect(
-                game,
-                1 - characterIndex,
-                messageCache,
-                card
-              );
-            }
+          }
+          if (opponentCharacter.ability.abilityAfterOpponentsMoveEffect) {
+            opponentCharacter.ability.abilityAfterOpponentsMoveEffect(
+              game,
+              1 - characterIndex,
+              messageCache,
+              card
+            );
           }
           if (character.ability.abilityAfterOwnCardUse) {
             character.ability.abilityAfterOwnCardUse(

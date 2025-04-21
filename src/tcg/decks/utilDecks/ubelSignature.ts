@@ -29,7 +29,7 @@ export const a_malevolentShrine = new Card({
       TCGThread.Gameroom
     );
 
-    CommonCardAction.pierceAttack(game, characterIndex, {
+    CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
       pierceFactor: pierceFactor,

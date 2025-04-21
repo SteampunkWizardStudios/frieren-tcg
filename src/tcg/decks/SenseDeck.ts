@@ -89,7 +89,7 @@ export const a_pierce = new Card({
     const damage =
       this.calculateEffectValue(this.effects[1]) +
       character.stats.stats.DEF / 4;
-    CommonCardAction.pierceAttack(game, characterIndex, {
+    CommonCardAction.commonAttack(game, characterIndex, {
       damage,
       hpCost: 7,
       pierceFactor: 0.25,
@@ -195,7 +195,7 @@ export const a_piercingDrill = new Card({
     const damage =
       this.calculateEffectValue(this.effects[0]) +
       character.stats.stats.DEF / 3;
-    CommonCardAction.pierceAttack(game, characterIndex, {
+    CommonCardAction.commonAttack(game, characterIndex, {
       damage,
       hpCost: 12,
       pierceFactor: 1 / 3,

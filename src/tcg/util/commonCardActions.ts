@@ -11,17 +11,19 @@ export default class CommonCardAction {
       damage: number;
       hpCost: number;
       isTimedEffectAttack?: boolean;
+      pierceFactor?: number;
     }
   ): number {
     const isTimedEffectAttack = option.isTimedEffectAttack ?? false;
     const character = game.getCharacter(characterIndex);
+    const opponent = game.getCharacter(1 - characterIndex);
     if (
       option.hpCost === 0 ||
       character.adjustStat(-option.hpCost, StatsEnum.HP)
     ) {
       const actualDamage = game.attack({
         attackerIndex: characterIndex,
-        damage: option.damage,
+        damage: option.damage + (option.pierceFactor ?? 0) * opponent.stats.stats.DEF,
         isTimedEffectAttack,
       });
       return actualDamage;
@@ -30,7 +32,8 @@ export default class CommonCardAction {
     }
   }
 
-  static pierceAttack(
+  /*
+  static commonAttack(
     game: Game,
     characterIndex: number,
     option: {
@@ -56,7 +59,7 @@ export default class CommonCardAction {
     } else {
       return 0;
     }
-  }
+  }*/
 
   // function that looks up a character's timed effect and replace a timed effect with certain tag
   // mainly used for Himmel

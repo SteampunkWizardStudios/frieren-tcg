@@ -30,7 +30,7 @@ const a_reelseiden = new Card({
       TCGThread.Gameroom
     );
 
-    CommonCardAction.pierceAttack(game, characterIndex, {
+    CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
       pierceFactor: pierceFactor,
@@ -60,7 +60,7 @@ const a_cleave = new Card({
       TCGThread.Gameroom
     );
 
-    CommonCardAction.pierceAttack(game, characterIndex, {
+    CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
       pierceFactor: pierceFactor,
@@ -90,7 +90,7 @@ const a_dismantle = new Card({
       TCGThread.Gameroom
     );
 
-    CommonCardAction.pierceAttack(game, characterIndex, {
+    CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
       pierceFactor: pierceFactor,
