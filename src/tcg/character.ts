@@ -140,10 +140,14 @@ export default class Character {
 
           // special conditional card handling
           if (card.conditionalTreatAsEffect) {
-            indexToUsableCardMap[roll] = card.conditionalTreatAsEffect(
-              game,
-              characterIndex
-            );
+            const newCard = card.conditionalTreatAsEffect(game, characterIndex);
+            if (newCard.conditionalTreatAsEffect) {  
+               indexToUsableCardMap[roll] = newCard.conditionalTreatAsEffect(
+               game,
+               characterIndex)
+               } else {
+                  indexToUsableCardMap[roll] = newCard;
+               };
           } else {
             indexToUsableCardMap[roll] = card;
           }
