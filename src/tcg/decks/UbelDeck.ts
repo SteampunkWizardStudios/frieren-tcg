@@ -249,6 +249,8 @@ export const sorganeil = new Card({
       `${opponent.name} got trapped in ${character.name}'s gaze!`,
       TCGThread.Gameroom
     );
+    const opponentEffectsList = opponent.timedEffects;
+    opponentEffectsList.splice(0, opponentEffectsList.length);
     character.timedEffects.push(
       new TimedEffect({
         name: "Sorganeil",
@@ -266,59 +268,6 @@ export const sorganeil = new Card({
   },
 });
 
-/*
-export const empathy = new Card({
-  title: `Empathy`,
-  cardMetadata: { nature: Nature.Util },
-  description: () =>
-    `Use the opponent signature spell at empower rate -2. Will fail if used before turn 5.`,
-  emoji: CardEmoji.UBEL_CARD,
-  effects: [],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1 - characterIndex);
-    messageCache.push(
-      `${character.name} tries to empathize with ${opponent.name}...`,
-      TCGThread.Gameroom
-    );
-
-    if (game.turnCount < 2) {
-      messageCache.push(
-        `but ${character.name} didn't get the time to know ${opponent.name} well enough!`,
-        TCGThread.Gameroom
-      );
-    } else {
-      messageCache.push(
-        `${character.name} learned some new magic`,
-        TCGThread.Gameroom
-      );
-
-      const opponentSignature = signatureMoves[opponent.name]
-
-      const usedMagic = new Card({
-        ...opponentSignature,
-        empowerLevel: this.empowerLevel - 2,
-      });
-
-      messageCache.push(
-        `${character.name} used **${usedMagic.getTitle()}**!`,
-        TCGThread.Gameroom
-      );
-      const characterEffectsNames = character.timedEffects.map(
-        (eff) => eff.name
-      );
-      if (
-        usedMagic.cardMetadata.nature === "Attack" &&
-        characterEffectsNames.find((effname) => effname === "Recompose")
-      ) {
-        messageCache.push("The attack misses!", TCGThread.Gameroom);
-      }
-      usedMagic.cardAction(game, characterIndex, messageCache);
-    }
-  },
-});
-*/
-
 export const empathy = new Card({
   title: "Empathy",
   cardMetadata: { nature: Nature.Util },
@@ -328,9 +277,9 @@ export const empathy = new Card({
   effects: [],
   cardAction: () => {},
   conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
-    if (game.turnCount <5){
+    if (game.turnCount <2){
       return new Card({
-            title: "Empathy failure",
+            title: "Hi let me stalk you",
             cardMetadata: { nature: Nature.Default },
             description: () => "Not enough time to empathize. This move will fail.",
             effects: [],
@@ -354,6 +303,7 @@ export const empathy = new Card({
   },
 });
 
+/*
 export const ubelDeck = [
   { card: a_reelseiden, count: 3 },
   { card: a_cleave, count: 2 },
@@ -365,15 +315,16 @@ export const ubelDeck = [
   { card: sorganeil, count: 1 },
   { card: empathy, count: 1 },
 ];
+*/
 
-/* export const ubelDeck = [
-  { card: a_reelseiden, count: 0},
+export const ubelDeck = [
+  { card: a_reelseiden, count: 0 },
   { card: a_cleave, count: 0},
   { card: a_dismantle, count: 0 },
-  { card: a_malevolentShrine, count: 10 },
+  { card: a_malevolentShrine, count: 5 },
   { card: rushdown, count: 0 },
   { card: defend, count: 0 },
   { card: recompose, count: 0 },
-  { card: sorganeil, count: 10 },
-  { card: empathy, count: 0 },
-]; */
+  { card: sorganeil, count: 5 },
+  { card: empathy, count: 5 },
+];
