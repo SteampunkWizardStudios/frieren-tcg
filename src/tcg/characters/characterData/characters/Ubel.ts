@@ -1,6 +1,6 @@
 import { CharacterData } from "../characterData";
 import { UbelHit } from "../../../additionalMetadata/characterAdditionalMetadata";
-import { ubelDeck, empathy } from "../../../decks/UbelDeck";
+import { ubelDeck, empathyFailureName } from "../../../decks/UbelDeck";
 import Stats from "../../../stats";
 import { StatsEnum } from "../../../stats";
 import Game from "../../../game";
@@ -45,6 +45,7 @@ function missAttack(
   // Non Ubel slashing sureHits get treated normally
   if (failureRate === 0) {
     card.cardAction(game, characterIndex, messageCache);
+    return;
   }
 
   const hpCost = card.hpCost;
@@ -100,7 +101,7 @@ function wrapEmpathizedCard(
   );
 
   //empathy before the minimum turn number
-  if (card.title == "Hi let me stalk you") {
+  if (card.title == empathyFailureName) {
     return;
   }
 
@@ -125,7 +126,7 @@ export const Ubel = new CharacterData({
   stats: ubelStats,
   cards: ubelDeck,
   ability: {
-    abilityName: "A reckless mage",
+    abilityName: "Reckless",
     abilityEffectString: `Übel's slashing attacks ignore ${PIERCE_FACTOR * 100}% the opponent's defense stats, but are blocked by defensive moves.`,
 
     // same turn surehit effect changes
@@ -204,14 +205,13 @@ export const Ubel = new CharacterData({
       messageCache: MessageCache,
       card: Card
     ) {
-      console.log(card);
       const character = game.getCharacter(characterIndex);
       const effects = character.timedEffects;
       const effectsNames = effects.map((eff) => eff.name);
       const activeEffects = checkForEffects(effectsNames);
 
       //routine for empathized cards, all cases are treated within the function itself
-      if (card.imitated) {
+      if (card.empathized) {
         wrapEmpathizedCard(character, card, messageCache);
       }
 

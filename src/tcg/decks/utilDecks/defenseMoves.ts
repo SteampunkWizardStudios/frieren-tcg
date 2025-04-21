@@ -11,15 +11,15 @@ import { block } from "../StarkDeck";
 import { deflect } from "../StilleDeck";
 
 export const defenseMoves: Record<CharacterName, Card> = {
-  Frieren: ordinaryDefensiveMagic,
-  Serie: basicDefensiveMagic,
-  Denken: elementaryDefensiveMagic,
-  Laufen: parry,
-  Linie: parry,
-  Stark: block,
-  Himmel: quickBlock,
-  Stille: deflect,
-  Sein: braceYourself,
-  Sense: hairBarrier,
-  Übel: basicDefensiveMagic, //Change this later
+  [CharacterName.Frieren]: ordinaryDefensiveMagic,
+  [CharacterName.Serie]: basicDefensiveMagic,
+  [CharacterName.Denken]: elementaryDefensiveMagic,
+  [CharacterName.Laufen]: parry,
+  [CharacterName.Linie]: parry,
+  [CharacterName.Stark]: block,
+  [CharacterName.Himmel]: quickBlock,
+  [CharacterName.Stille]: deflect,
+  [CharacterName.Sein]: braceYourself,
+  [CharacterName.Sense]: hairBarrier,
+  [CharacterName.Ubel]: basicDefensiveMagic, //Change this later
 } as const;

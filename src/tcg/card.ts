@@ -51,6 +51,7 @@ export type CardProps = {
   tags?: Record<string, number>;
   printEmpower?: boolean;
   hpCost?: number;
+  empathized?: boolean;
 };
 
 export default class Card implements CardProps {
@@ -74,6 +75,7 @@ export default class Card implements CardProps {
   cardMetadata: CardMetadata;
   printEmpower: boolean;
   hpCost: number;
+  empathized: boolean;
 
   constructor(cardProps: CardProps) {
     this.title = cardProps.title;
@@ -90,6 +92,7 @@ export default class Card implements CardProps {
     this.cosmetic = cardProps.cosmetic;
     this.printEmpower = cardProps.printEmpower ?? true;
     this.hpCost = cardProps.hpCost ?? 0;
+    this.empathized = cardProps.empathized ?? false;
   }
 
   getDescription(): string {
@@ -102,6 +105,7 @@ export default class Card implements CardProps {
   getTitle(): string {
     return (
       `${this.imitated ? "(Imitated) " : ""}` +
+      `${this.empathized ? "(Learned) " : ""}` +
       `${this.title}` +
       `${this.printEmpower ? ` + ${this.empowerLevel}` : ""}`
     );

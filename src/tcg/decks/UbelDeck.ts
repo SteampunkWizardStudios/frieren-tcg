@@ -8,6 +8,8 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 import { signatureMoves } from "./utilDecks/signatureMoves";
 import { a_malevolentShrine } from "./utilDecks/ubelSignature";
 
+export const empathyFailureName = "Stalking";
+
 const a_reelseiden = new Card({
   title: "Reelseiden",
   description: ([dmg]) =>
@@ -269,25 +271,25 @@ export const empathy = new Card({
   title: "Empathy",
   cardMetadata: { nature: Nature.Util },
   description: () =>
-    `Use the opponent's signature move at this card's empower level -2.`,
+    `Will fail if used before turn 5. Use the opponent's signature move at this card's empower level -2.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [],
   cardAction: () => {},
   conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
-    if (game.turnCount < 2) {
+    if (game.turnCount < 5) {
       return new Card({
-        title: "Hi let me stalk you",
+        title: empathyFailureName,
         cardMetadata: { nature: Nature.Default },
         description: () => "Not enough time to empathize. This move will fail.",
         effects: [],
-        emoji: CardEmoji.LINIE_CARD,
+        emoji: CardEmoji.UBEL_CARD,
         cardAction: (_game, _characterIndex, messageCache: MessageCache) => {
           messageCache.push(
             `${game.getCharacter(characterIndex).name} didn't get enough time to know ${game.getCharacter(1 - characterIndex).name} well enough!`,
             TCGThread.Gameroom
           );
         },
-        imitated: true,
+        empathized: true,
       });
     } else {
       const opponent = game.getCharacter(1 - characterIndex);
@@ -295,13 +297,12 @@ export const empathy = new Card({
       return new Card({
         ...signatureCard,
         empowerLevel: this.empowerLevel - 2,
-        imitated: true,
+        empathized: true,
       });
     }
   },
 });
 
-/*
 export const ubelDeck = [
   { card: a_reelseiden, count: 3 },
   { card: a_cleave, count: 2 },
@@ -312,17 +313,4 @@ export const ubelDeck = [
   { card: recompose, count: 2 },
   { card: sorganeil, count: 1 },
   { card: empathy, count: 1 },
-];
-*/
-
-export const ubelDeck = [
-  { card: a_reelseiden, count: 0 },
-  { card: a_cleave, count: 0 },
-  { card: a_dismantle, count: 0 },
-  { card: a_malevolentShrine, count: 5 },
-  { card: rushdown, count: 0 },
-  { card: defend, count: 0 },
-  { card: recompose, count: 0 },
-  { card: sorganeil, count: 5 },
-  { card: empathy, count: 5 },
 ];

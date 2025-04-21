@@ -12,20 +12,6 @@ import { Himmel } from "./characterData/characters/Himmel";
 import { Ubel } from "./characterData/characters/Ubel";
 import { CharacterName } from "./metadata/CharacterName";
 
-/* export const CHARACTER_LIST: CharacterData[] = [
-  Frieren,
-  Sense,
-  Stille,
-  Serie,
-  Linie,
-  Sein,
-  Stark,
-  Laufen,
-  Denken,
-  Himmel,
-  Ubel,
-]; */
-
 export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
   [CharacterName.Frieren]: Frieren,
   [CharacterName.Sense]: Sense,
