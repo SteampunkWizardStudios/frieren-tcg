@@ -38,7 +38,7 @@ export const Sense = new CharacterData({
     abilityName: "Pacifist",
     abilityEffectString: `When this character has 2 Tea Time Snacks, skip the turn for both characters.
         This character wins if they don't attack for ${PACIFIST_TURN_COUNT} turns in a row.`,
-    abilityOnCardUse: function (
+    abilityAfterOwnCardUse: function (
       game,
       characterIndex,
       messageCache: MessageCache,

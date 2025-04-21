@@ -15,6 +15,7 @@ import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
 import { User } from "discord.js";
 import Game from "./game";
+import { CharacterName } from "./characters/metadata/CharacterName";
 
 export interface CharacterProps {
   characterData: CharacterData;
@@ -24,7 +25,7 @@ export interface CharacterProps {
 }
 
 export default class Character {
-  name: string; // change to CharacterName if possible
+  name: CharacterName;
   cosmetic: CharacterCosmetic;
 
   stats: Stats;
@@ -139,10 +140,15 @@ export default class Character {
 
           // special conditional card handling
           if (card.conditionalTreatAsEffect) {
-            indexToUsableCardMap[roll] = card.conditionalTreatAsEffect(
-              game,
-              characterIndex
-            );
+            const newCard = card.conditionalTreatAsEffect(game, characterIndex);
+            if (newCard.conditionalTreatAsEffect) {
+              indexToUsableCardMap[roll] = newCard.conditionalTreatAsEffect(
+                game,
+                characterIndex
+              );
+            } else {
+              indexToUsableCardMap[roll] = newCard;
+            }
           } else {
             indexToUsableCardMap[roll] = card;
           }

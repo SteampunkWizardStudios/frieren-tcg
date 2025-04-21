@@ -1,5 +1,5 @@
 import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
-import Card from "../../card";
+import Card, { Nature } from "../../card";
 import { CardEmoji } from "../../formatting/emojis";
 import { StatsEnum } from "../../stats";
 import TimedEffect from "../../timedEffect";
@@ -8,6 +8,7 @@ import { a_roomCollapse } from "./StoneGeiselDeck";
 
 export const a_rockTomb = new Card({
   title: "Rock Tomb",
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg, spd]) => `HP-3. DMG ${dmg}. Opponent's SPD-${spd}`,
   emoji: CardEmoji.PUNCH,
   effects: [10, 5],
@@ -29,6 +30,7 @@ export const a_rockTomb = new Card({
 
 const crystalize = new Card({
   title: "Crystalize",
+  cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} for 2 turns. ATK-15 for 2 turns.`,
   emoji: CardEmoji.SHIELD,
@@ -65,6 +67,7 @@ const crystalize = new Card({
 
 const a_crusher = new Card({
   title: "Crusher",
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg, spd]) => `HP-5. DMG ${dmg}. Opponent's SPD-${spd}.`,
   emoji: CardEmoji.PUNCH,
   effects: [15, 7],

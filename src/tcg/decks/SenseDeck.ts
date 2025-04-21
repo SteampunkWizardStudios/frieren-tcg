@@ -1,5 +1,4 @@
-import Deck from "../deck";
-import Card from "../card";
+import Card, { Nature } from "../card";
 import TimedEffect from "../timedEffect";
 import { StatsEnum } from "../stats";
 import CommonCardAction from "../util/commonCardActions";
@@ -9,6 +8,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_hairWhip = new Card({
   title: "Hair Whip",
+  cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
     `DEF+${def}. Afterwards, HP-4, DMG ${dmg}+DEF/4.`,
   effects: [2, 7],
@@ -31,6 +31,7 @@ export const a_hairWhip = new Card({
 
 export const harden = new Card({
   title: "Harden",
+  cardMetadata: { nature: Nature.Util },
   description: ([def]) => `HP-2. DEF+${def}`,
   effects: [2],
   emoji: CardEmoji.SHIELD,
@@ -52,6 +53,7 @@ export const harden = new Card({
 
 export const rest = new Card({
   title: "Rest",
+  cardMetadata: { nature: Nature.Util },
   description: ([hp]) => `DEF-2. Heal ${hp} HP`,
   effects: [10],
   emoji: CardEmoji.HEART,
@@ -68,6 +70,7 @@ export const rest = new Card({
 
 export const a_pierce = new Card({
   title: "Pierce",
+  cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
     `HP-7. DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
   effects: [1, 10],
@@ -85,14 +88,18 @@ export const a_pierce = new Card({
 
     const damage =
       this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.DEF / 4 +
-      opponent.stats.stats.DEF / 4;
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 7 });
+      character.stats.stats.DEF / 4;
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: 7,
+      pierceFactor: 0.25,
+    });
   },
 });
 
-const hairBarrier = new Card({
+export const hairBarrier = new Card({
   title: "Hair Barrier",
+  cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   effects: [20],
@@ -123,6 +130,7 @@ const hairBarrier = new Card({
 
 export const teaTime = new Card({
   title: "Tea Time",
+  cardMetadata: { nature: Nature.Util },
   description: ([atk, hp]) =>
     `ATK+${atk} for both characters. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
   effects: [2, 5],
@@ -147,6 +155,7 @@ export const teaTime = new Card({
 
 export const teaParty = new Card({
   title: "Tea Party",
+  cardMetadata: { nature: Nature.Util },
   description: ([atk, hp]) =>
     `ATK+${atk} for both characters. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
   effects: [3, 7],
@@ -175,6 +184,7 @@ export const a_piercingDrill = new Card({
     `HP-12. DMG ${dmg} + DEF/3. Pierces through 1/3 of the opponent's defense.`,
   effects: [14],
   emoji: CardEmoji.PUNCH,
+  cardMetadata: { nature: Nature.Attack, signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
@@ -184,9 +194,12 @@ export const a_piercingDrill = new Card({
     );
     const damage =
       this.calculateEffectValue(this.effects[0]) +
-      character.stats.stats.DEF / 3 +
-      opponent.stats.stats.DEF / 3;
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 12 });
+      character.stats.stats.DEF / 3;
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: 12,
+      pierceFactor: 1 / 3,
+    });
   },
 });
 
