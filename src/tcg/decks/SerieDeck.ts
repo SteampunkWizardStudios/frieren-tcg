@@ -1,4 +1,4 @@
-import Card, {Nature} from "../card";
+import Card, { Nature } from "../card";
 import {
   serie_offensiveMagic,
   serie_utilityMagic,

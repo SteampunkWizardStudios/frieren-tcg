@@ -1,4 +1,4 @@
-import Card, {Nature} from "../card";
+import Card, { Nature } from "../card";
 import TimedEffect from "../timedEffect";
 import { StatsEnum } from "../stats";
 import CommonCardAction from "../util/commonCardActions";

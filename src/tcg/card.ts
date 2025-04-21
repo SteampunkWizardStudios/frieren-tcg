@@ -8,7 +8,6 @@ export interface CardCosmetic {
   cardGif?: string;
 }
 
-
 export enum Nature {
   Attack = "Attack",
   Defense = "Defense",

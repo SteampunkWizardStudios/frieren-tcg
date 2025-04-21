@@ -31,7 +31,12 @@ export const Stark = new CharacterData({
     abilityName: "Bravest Coward",
     abilityEffectString: `Using attacks without (Resolve) reduces its DMG by 20%.
         Using attacks with (Resolve) increases its DMG by 20%.`,
-    abilityAfterOwnCardUse: function (game, characterIndex, _messageCache, card) {
+    abilityAfterOwnCardUse: function (
+      game,
+      characterIndex,
+      _messageCache,
+      card
+    ) {
       const character = game.getCharacter(characterIndex);
       if ("Resolve" in card.tags) {
         character.adjustStat(card.tags["Resolve"], StatsEnum.Ability);

@@ -23,7 +23,8 @@ export default class CommonCardAction {
     ) {
       const actualDamage = game.attack({
         attackerIndex: characterIndex,
-        damage: option.damage + (option.pierceFactor ?? 0) * opponent.stats.stats.DEF,
+        damage:
+          option.damage + (option.pierceFactor ?? 0) * opponent.stats.stats.DEF,
         isTimedEffectAttack,
       });
       return actualDamage;

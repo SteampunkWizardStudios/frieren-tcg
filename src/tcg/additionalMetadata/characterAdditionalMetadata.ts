@@ -10,7 +10,7 @@ export enum UbelHit {
   SureHit = "sureHit",
   SureMiss = "sureMiss",
   Regular = "regular",
-};
+}
 
 export type CharacterAdditionalMetadata = {
   manaSuppressed: boolean;

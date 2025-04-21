@@ -1,4 +1,4 @@
-import Card, { Nature } from "../../card"
+import Card, { Nature } from "../../card";
 import CommonCardAction from "../../util/commonCardActions";
 import { CardEmoji } from "../../formatting/emojis";
 import { MessageCache } from "../../../tcgChatInteractions/messageCache";
@@ -9,7 +9,8 @@ export const a_malevolentShrine = new Card({
   description: ([dmg]) =>
     `HP-11. Has a 80% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
   cosmetic: {
-    cardGif: "https://media.discordapp.net/attachments/1338831179981262943/1363264315272073406/malevolent-shrine-ubel.gif?ex=68060f14&is=6804bd94&hm=300b3e5578f56a069ea858f0f660ce855be6a3f6f32f246b434066ea770da58e&=&width=400&height=225",
+    cardGif:
+      "https://media.discordapp.net/attachments/1338831179981262943/1363264315272073406/malevolent-shrine-ubel.gif?ex=68060f14&is=6804bd94&hm=300b3e5578f56a069ea858f0f660ce855be6a3f6f32f246b434066ea770da58e&=&width=400&height=225",
   },
   emoji: CardEmoji.UBEL_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true, ubelFailureRate: 80 },
