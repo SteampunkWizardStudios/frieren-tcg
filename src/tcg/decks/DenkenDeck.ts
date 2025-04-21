@@ -451,6 +451,6 @@ export const denkenDeck = [
   { card: a_waldgose, count: 2 },
   { card: a_daosdorg, count: 2 },
   { card: a_catastravia, count: 1 },
-  { card: elementaryDefensiveMagic, count: 1 },
+  { card: elementaryDefensiveMagic, count: 2 },
   { card: a_concentratedOffensiveMagicZoltraak, count: 2 },
 ];
