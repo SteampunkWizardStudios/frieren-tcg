@@ -7,3 +7,5 @@ LICENSE
 .gitignore
 .env.template
 .prettierrc
+markdown
+eslint.config.mjs

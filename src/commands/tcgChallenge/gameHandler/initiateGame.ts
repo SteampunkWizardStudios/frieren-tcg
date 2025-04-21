@@ -12,6 +12,7 @@ import {
 import { GameMode, GameSettings } from "./gameSettings";
 import { tcgMain } from "../../../tcgMain";
 import { handleDatabaseOperationsWithResultEmbedSideEffect } from "./handleDatabaseOperations";
+import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
 
 export const initiateGame = async (
   interaction: ChatInputCommandInteraction,
@@ -72,11 +73,22 @@ export const initiateGame = async (
         opponentThread.members.remove(opponent.id),
       ]);
 
+      let winnerEmoji = "";
+      let loserEmoji = "";
+      if (winnerCharacter && loserCharacter) {
+        winnerEmoji = `${CHARACTER_MAP[winnerCharacter].cosmetic.emoji} `;
+        loserEmoji = `${CHARACTER_MAP[loserCharacter].cosmetic.emoji} `;
+      }
+
       let resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
         .setTitle(
           `Frieren TCG - Results: ${challenger.displayName} vs ${opponent.displayName}`
         )
+        .setFields({
+          name: "Characters",
+          value: `${winner} as ${winnerEmoji}${winnerCharacter}\n${loser} as ${loserEmoji}${loserCharacter}`,
+        })
         .setFooter({
           text: `Game ID: ${gameId}`,
         });

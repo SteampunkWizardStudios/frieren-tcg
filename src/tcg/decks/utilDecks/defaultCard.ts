@@ -1,5 +1,5 @@
 import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
-import Card from "../../card";
+import Card, { Nature } from "../../card";
 import { CardEmoji } from "../../formatting/emojis";
 import Game from "../../game";
 import { StatsEnum } from "../../stats";
@@ -7,6 +7,7 @@ import { StatsEnum } from "../../stats";
 export default class DefaultCards {
   static readonly discardCard: Card = new Card({
     title: "Discard",
+    cardMetadata: { nature: Nature.Default },
     description: () =>
       "ATK+1. DEF+1. SPD+1. Discards all of your current active cards. Draw the same number of cards you discarded. Empower all cards in your hand afterwards.",
     effects: [],
@@ -40,7 +41,9 @@ export default class DefaultCards {
 
   static readonly waitCard: Card = new Card({
     title: "Wait",
-    description: () => "Heals 10 HP. Empower all cards in your hand afterwards.",
+    cardMetadata: { nature: Nature.Default },
+    description: () =>
+      "Heals 10 HP. Empower all cards in your hand afterwards.",
     effects: [],
     printEmpower: false,
     emoji: CardEmoji.WAIT,
@@ -57,7 +60,9 @@ export default class DefaultCards {
 
   static readonly doNothing: Card = new Card({
     title: "Do Nothing.",
-    description: () => "Does nothing. Empower all cards in your hand afterwards.",
+    description: () =>
+      "Does nothing. Empower all cards in your hand afterwards.",
+    cardMetadata: { nature: Nature.Default }
     effects: [],
     printEmpower: false,
     emoji: CardEmoji.WAIT,
@@ -73,6 +78,7 @@ export default class DefaultCards {
 
   static readonly forfeitCard: Card = new Card({
     title: "Forfeit",
+    cardMetadata: { nature: Nature.Default },
     description: () => "Forfeits the game.",
     effects: [],
     printEmpower: false,

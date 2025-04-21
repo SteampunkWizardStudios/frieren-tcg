@@ -1,5 +1,5 @@
 import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
-import Card from "../../card";
+import Card, { Nature } from "../../card";
 import { CardEmoji } from "../../formatting/emojis";
 import { StatsEnum } from "../../stats";
 import TimedEffect from "../../timedEffect";
@@ -8,6 +8,7 @@ import { a_curse } from "./CosmicTonDeck";
 
 const a_shadowImpalement = new Card({
   title: "Shadow Impalement",
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
@@ -25,6 +26,7 @@ const a_shadowImpalement = new Card({
 
 const camouflage = new Card({
   title: "Camouflage",
+  cardMetadata: { nature: Nature.Util },
   description: ([atk, def]) =>
     `ATK+${atk} for 3 turns. DEF+${def} for 3 turns.`,
   emoji: CardEmoji.HOURGLASS,
@@ -63,6 +65,7 @@ export const a_dragonfire = new Card({
   description: ([dmg]) => `HP-10. DMG ${dmg}. Reduces the opponent's DEF to 1.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
+  cardMetadata: { nature: Nature.Attack, signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

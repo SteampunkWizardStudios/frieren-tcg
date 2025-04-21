@@ -1,5 +1,5 @@
 import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
-import Card from "../../card";
+import Card, { Nature } from "../../card";
 import { CardEmoji } from "../../formatting/emojis";
 import { StatsEnum } from "../../stats";
 import CommonCardAction from "../../util/commonCardActions";
@@ -13,6 +13,7 @@ import { serie_offensiveMagic } from "../utilDecks/serieMagic";
 
 const a_regurgitate = new Card({
   title: "Regurgitate",
+  cardMetadata: { nature: Nature.Util },
   description: () => `Use a random offensive spell at Empower level -2`,
   emoji: CardEmoji.SERIE_CARD,
   effects: [],
@@ -42,6 +43,7 @@ const a_regurgitate = new Card({
 
 const omNomNomNom = new Card({
   title: "Om Nom Nom Nom",
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
     `HP-5. DMG ${dmg}. Restores HP by half of the move's dealt damage.`,
   emoji: CardEmoji.ENERGY,
@@ -65,6 +67,7 @@ const omNomNomNom = new Card({
 
 const mimic = new Card({
   title: "Mimic",
+  cardMetadata: { nature: Nature.Util },
   description: () =>
     `Use the card the opponent used last turn at this card's empower level -3.`,
   emoji: CardEmoji.LINIE_CARD,
@@ -102,6 +105,7 @@ const mimic = new Card({
 
 const camouflage = new Card({
   title: `Camouflage`,
+  cardMetadata: { nature: Nature.Defense },
   description: ([def]) => `DEF + ${def}`,
   emoji: CardEmoji.SHIELD,
   effects: [4],
@@ -123,6 +127,7 @@ const a_callOfCthulhu = new Card({
   description: ([dmg]) => `HP set to 1. DMG ${dmg}.`,
   emoji: CardEmoji.ENERGY,
   effects: [30],
+  cardMetadata: { nature: Nature.Attack, signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

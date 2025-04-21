@@ -71,7 +71,6 @@ export default class TimedEffect {
     messageCache: MessageCache
   ) {
     this.passTurn();
-
     if (!this.activateEndOfTurnActionThisTurn) {
       this.activateEndOfTurnActionThisTurn = true;
     } else {
