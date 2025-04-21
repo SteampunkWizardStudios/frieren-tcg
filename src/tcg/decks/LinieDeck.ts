@@ -79,7 +79,7 @@ export const manaDetection = new Card({
   cardMetadata: { nature: Nature.Util },
   description: ([spd, bigNumber, smallNumber]) =>
     `SPD+${spd}. If Opp's DEF >= Opp's ATK, ATK+${bigNumber}, DEF+${smallNumber}. Otherwise, ATK+${smallNumber}, DEF+${bigNumber}.`,
-  emoji: CardEmoji.LINIE_CARD,
+  emoji: CardEmoji.MANA_CARD,
   effects: [2, 2, 1],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -214,7 +214,7 @@ export const linieDeck = [
   { card: imitate, count: 2 },
   { card: adapt, count: 2 },
   { card: manaDetection, count: 2 },
-  { card: parry, count: 1 },
+  { card: parry, count: 2 },
   { card: a_erfassenAxe, count: 2 },
   { card: a_erfassenSword, count: 2 },
   { card: a_erfassenSpear, count: 2 },

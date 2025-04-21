@@ -338,6 +338,6 @@ export const seinDeck = [
   { card: smokeBreak, count: 1 },
   { card: awakening, count: 2 },
   { card: poisonCure, count: 2 },
-  { card: braceYourself, count: 1 },
+  { card: braceYourself, count: 2 },
   { card: a_threeSpearsOfTheGoddess, count: 1 },
 ];

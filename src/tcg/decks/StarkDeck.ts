@@ -291,7 +291,7 @@ export const starkDeck = [
   { card: offensiveStance, count: 1 },
   { card: defensiveStance, count: 1 },
   { card: jumboBerrySpecialBreak, count: 2 },
-  { card: block, count: 1 },
+  { card: block, count: 2 },
   { card: concentration, count: 2 },
   { card: a_ordensSlashTechnique, count: 2 },
   { card: fearBroughtMeThisFar, count: 1 },

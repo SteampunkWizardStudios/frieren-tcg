@@ -309,7 +309,7 @@ export const ubelDeck = [
   { card: a_dismantle, count: 2 },
   { card: a_malevolentShrine, count: 1 },
   { card: rushdown, count: 2 },
-  { card: defend, count: 1 },
+  { card: defend, count: 2 },
   { card: recompose, count: 2 },
   { card: sorganeil, count: 1 },
   { card: empathy, count: 1 },

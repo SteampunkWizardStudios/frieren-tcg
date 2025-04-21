@@ -78,7 +78,7 @@ export async function showCharacterInfo(
                 value: `${char.ability.abilityEffectString}`,
               },
               {
-                name: `Deck: 15 Cards`,
+                name: `Deck: 16 Cards`,
                 value: "",
               }
             )

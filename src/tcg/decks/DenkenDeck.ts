@@ -447,7 +447,7 @@ export const denkenDeck = [
   { card: a_jab, count: 2 },
   { card: a_hook, count: 2 },
   { card: a_uppercut, count: 2 },
-  { card: bareHandedBlock, count: 1 },
+  { card: bareHandedBlock, count: 2 },
   { card: a_waldgose, count: 2 },
   { card: a_daosdorg, count: 2 },
   { card: a_catastravia, count: 1 },

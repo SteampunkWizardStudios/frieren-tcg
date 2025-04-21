@@ -551,7 +551,7 @@ export const himmelDeck = [
   { card: heiterEmergency, count: 1 },
   { card: a_heiterThreeSpears, count: 1 },
   { card: heiterTrustYou, count: 1 },
-  { card: quickBlock, count: 1 },
+  { card: quickBlock, count: 2 },
   { card: rally, count: 2 },
   { card: a_extremeSpeed, count: 2 },
   { card: a_realHeroSwing, count: 2 },

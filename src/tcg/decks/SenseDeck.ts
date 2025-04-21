@@ -208,7 +208,7 @@ export const senseDeck = [
   { card: harden, count: 2 },
   { card: rest, count: 1 },
   { card: a_pierce, count: 2 },
-  { card: hairBarrier, count: 3 },
+  { card: hairBarrier, count: 4 },
   { card: teaTime, count: 2 },
   { card: teaParty, count: 1 },
   { card: a_piercingDrill, count: 2 },
