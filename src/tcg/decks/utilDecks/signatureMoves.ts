@@ -3,7 +3,7 @@ import Card from "../../card";
 import { a_catastraviaBase } from "../DenkenDeck";
 import { a_theHeightOfMagic } from "../FrierenDeck";
 import { a_realHeroSwing } from "../HimmelDeck";
-import { a_supersonicStrike } from "../LaufenDeck";
+import { jilwer } from "../LaufenDeck";
 import { imitate } from "../LinieDeck";
 import { a_threeSpearsOfTheGoddess } from "../SeinDeck";
 import { a_piercingDrill } from "../SenseDeck";
@@ -16,7 +16,7 @@ export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Denken]: a_catastraviaBase,
   [CharacterName.Frieren]: a_theHeightOfMagic,
   [CharacterName.Himmel]: a_realHeroSwing,
-  [CharacterName.Laufen]: a_supersonicStrike,
+  [CharacterName.Laufen]: jilwer,
   [CharacterName.Linie]: imitate,
   [CharacterName.Sein]: a_threeSpearsOfTheGoddess,
   [CharacterName.Sense]: a_piercingDrill,
