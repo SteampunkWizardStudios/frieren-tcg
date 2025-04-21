@@ -36,12 +36,19 @@ function checkForEffects(effects: string[]): Record<string, boolean> {
 }
 
 function missAttack(
-  character: Character,
+  game: Game,
+  characterIndex: number,
   messageCache: MessageCache,
-  card: Card
+  card: Card,
+  failureRate: number,
 ) {
+  // Non Ubel slashing sureHits get treated normally
+  if (failureRate === 0){
+    card.cardAction(game, characterIndex, messageCache)
+  }
+
   const hpCost = card.hpCost;
-  character.adjustStat(-hpCost, StatsEnum.HP);
+  game.getCharacter(characterIndex).adjustStat(-hpCost, StatsEnum.HP);
   messageCache.push("The attack misses!", TCGThread.Gameroom);
 }
 
@@ -55,14 +62,19 @@ function attackWhileRecomposing(
   );
 }
 
-function playFallableCard(
+function playOffensiveCard(
   game: Game,
-  character: Character,
   characterIndex: number,
   card: Card,
   failureRate: number,
   messageCache: MessageCache
 ): void {
+  // check for always hitting empathy attacks
+  if (failureRate === 0){
+    card.cardAction?.(game, characterIndex, messageCache);
+    return;
+  }
+
   const luckRoll = Rolls.rollD100();
   messageCache.push(
     `## **Missing chances:** ${failureRate}%`,
@@ -70,20 +82,17 @@ function playFallableCard(
   );
   messageCache.push(`# Luck roll: ${luckRoll}`, TCGThread.Gameroom);
   if (luckRoll < failureRate) {
-    missAttack(character, messageCache, card);
+    missAttack(game, characterIndex, messageCache, card, failureRate);
   } else {
     messageCache.push("The attack connects!", TCGThread.Gameroom);
     card.cardAction?.(game, characterIndex, messageCache);
   }
 }
 
-function playEmpathizedCard(
-  game: Game,
+function wrapEmpathizedCard(
   character: Character,
-  characterIndex: number,
   card: Card,
   messageCache: MessageCache,
-  activeEffects: Record<string, boolean>
 ): void {
   messageCache.push(
     `${character.name} tries to empathize with ${character.cosmetic.pronouns.possessive} opponent...`,
@@ -92,7 +101,6 @@ function playEmpathizedCard(
 
   //empathy before the minimum turn number
   if (card.title == "Hi let me stalk you") {
-    card.cardAction?.(game, characterIndex, messageCache);
     return;
   }
 
@@ -100,52 +108,8 @@ function playEmpathizedCard(
     `${character.name} acquired a new magic!`,
     TCGThread.Gameroom
   );
-
-  // Utils don't care about rate
-  if (card.cardMetadata.nature != Nature.Attack) {
-    card.cardAction?.(game, characterIndex, messageCache);
-    return;
-  }
-
-  // Attacks sureHit cases
-  if (
-    activeEffects.Sorganeil ||
-    character.additionalMetadata.sureHit == UbelHit.SureHit
-  ) {
-    card.cardAction?.(game, characterIndex, messageCache);
-    return;
-  }
-
-  // Can't attack during recompose
-  if (activeEffects.Recompose) {
-    attackWhileRecomposing(character, messageCache);
-    return;
-  }
-
-  // If no MS, attacks function norammly.
-  const failureRate = card.cardMetadata.ubelFailureRate;
-  if (!failureRate) {
-    card.cardAction?.(game, characterIndex, messageCache);
-    return;
-  }
-
-  // Shrine behaves as a normal Übel attack
-  switch (character.additionalMetadata.sureHit) {
-    case UbelHit.Regular:
-      playFallableCard(
-        game,
-        character,
-        characterIndex,
-        card,
-        failureRate,
-        messageCache
-      );
-      break;
-    case UbelHit.SureMiss: // shield, as recompose has already been treated
-      missAttack(character, messageCache, card);
-      break;
-  }
 }
+
 
 export const Ubel = new CharacterData({
   name: CharacterName.Ubel,
@@ -249,15 +213,11 @@ export const Ubel = new CharacterData({
 
       //routine for empathized cards, all cases are treated within the function itself
       if (card.imitated) {
-        playEmpathizedCard(
-          game,
+        wrapEmpathizedCard(
           character,
-          characterIndex,
           card,
           messageCache,
-          activeEffects
         );
-        return;
       }
 
       //utils and default cards don't care about hitting status
@@ -267,12 +227,11 @@ export const Ubel = new CharacterData({
       }
 
       //attacks
-      const failureRate = card.cardMetadata.ubelFailureRate!;
+      const failureRate = card.cardMetadata.ubelFailureRate ?? 0;
       switch (character.additionalMetadata.sureHit) {
         case UbelHit.Regular:
-          playFallableCard(
+          playOffensiveCard(
             game,
-            character,
             characterIndex,
             card,
             failureRate,
@@ -285,7 +244,7 @@ export const Ubel = new CharacterData({
         case UbelHit.SureMiss:
           // defensive move
           if (!activeEffects.Recompose) {
-            missAttack(character, messageCache, card);
+            missAttack(game, characterIndex, messageCache, card, failureRate);
             return;
           }
           // Recomposing
