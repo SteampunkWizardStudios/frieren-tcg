@@ -40,11 +40,11 @@ function missAttack(
   characterIndex: number,
   messageCache: MessageCache,
   card: Card,
-  failureRate: number,
+  failureRate: number
 ) {
   // Non Ubel slashing sureHits get treated normally
-  if (failureRate === 0){
-    card.cardAction(game, characterIndex, messageCache)
+  if (failureRate === 0) {
+    card.cardAction(game, characterIndex, messageCache);
   }
 
   const hpCost = card.hpCost;
@@ -70,7 +70,7 @@ function playOffensiveCard(
   messageCache: MessageCache
 ): void {
   // check for always hitting empathy attacks
-  if (failureRate === 0){
+  if (failureRate === 0) {
     card.cardAction?.(game, characterIndex, messageCache);
     return;
   }
@@ -92,7 +92,7 @@ function playOffensiveCard(
 function wrapEmpathizedCard(
   character: Character,
   card: Card,
-  messageCache: MessageCache,
+  messageCache: MessageCache
 ): void {
   messageCache.push(
     `${character.name} tries to empathize with ${character.cosmetic.pronouns.possessive} opponent...`,
@@ -109,7 +109,6 @@ function wrapEmpathizedCard(
     TCGThread.Gameroom
   );
 }
-
 
 export const Ubel = new CharacterData({
   name: CharacterName.Ubel,
@@ -213,11 +212,7 @@ export const Ubel = new CharacterData({
 
       //routine for empathized cards, all cases are treated within the function itself
       if (card.imitated) {
-        wrapEmpathizedCard(
-          character,
-          card,
-          messageCache,
-        );
+        wrapEmpathizedCard(character, card, messageCache);
       }
 
       //utils and default cards don't care about hitting status
