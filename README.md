@@ -6,13 +6,15 @@ Discord bot for the Frieren TCG
 
 - `npx prettier . --write` to write
 
-- `npm server` to open the `/stats` endpoint for external file write. Obviously very insecure - should not be run during actual games.
-
 ## Installation
 
 - `npm install` to install dependencies
 
 - `npx prisma generate` to generate the prisma client
+
+## Config
+
+[Config](./markdown/configOptions.md)
 
 ## Docker
 
