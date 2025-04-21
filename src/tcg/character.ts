@@ -112,9 +112,13 @@ export default class Character {
     const defaultCardOptions: Record<string, Card> = {};
     if (this.additionalMetadata.accessToDefaultCardOptions) {
       if (!this.skipTurn) {
-        defaultCardOptions["8"] = DefaultCards.discardCard.clone();
+        defaultCardOptions["7"] = DefaultCards.discardCard.clone();
+       }
+       defaultCardOptions["8"] = DefaultCards.waitCard.clone();
+     } else {
+       if (this.skipTurn) {
+         defaultCardOptions["9"] = DefaultCards.doNothing.clone();
       }
-      defaultCardOptions["9"] = DefaultCards.waitCard.clone();
     }
     defaultCardOptions["10"] = DefaultCards.forfeitCard.clone();
 
