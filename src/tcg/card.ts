@@ -27,7 +27,6 @@ type CardMetadata = {
   resolve?: number;
   signatureMoveOf?: CharacterName;
   ubelFailureRate?: number;
-  fernBarrage?: number;
 };
 
 export type CardProps = {
