@@ -12,6 +12,10 @@ export const a_fernZoltraak = new Card({
   description: ([dmg]) => `HP-4. DMG ${dmg}. Gain 1 Barrage count.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [7],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364358893563809833/GIF_3693617284.gif?ex=680961bc&is=6808103c&hm=1e4dd4d07aec7555fddb90af77467cc6785456bc57e87dd3933306d1486e8783&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
@@ -108,6 +112,10 @@ const a_fernConcentratedZoltraakSnipe = new Card({
     `HP-12, Barrage count +1. Afterwards, deal ${dmg} DMG x Barrage count. Reset Barrage count to 0.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [7],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364357151111385098/GIF_1619936813.gif?ex=6809601d&is=68080e9d&hm=d315925c27f678c96ed238bcc826abd1c209e5e1dae651b445b7fa4760e0cf09&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -119,7 +127,7 @@ const a_fernConcentratedZoltraakSnipe = new Card({
     const newBarrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 1;
     character.additionalMetadata.fernBarrage = newBarrageCount;
     messageCache.push(
-      `${character.name} gained 1 Barrage count. Current Barrage count: **${barrageCount}**.`,
+      `${character.name} gained 1 Barrage count. Current Barrage count: **${newBarrageCount}**.`,
       TCGThread.Gameroom
     );
 
@@ -256,7 +264,8 @@ export const spellToCreateManaButterflies = new Card({
             StatsEnum.HP
           );
 
-          character.additionalMetadata.fernBarrage = (character.additionalMetadata.fernBarrage ?? 0) + 1;
+          character.additionalMetadata.fernBarrage =
+            (character.additionalMetadata.fernBarrage ?? 0) + 1;
           messageCache.push(
             `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
             TCGThread.Gameroom
