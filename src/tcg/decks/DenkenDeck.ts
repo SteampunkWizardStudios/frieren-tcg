@@ -8,7 +8,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 const a_jab = new Card({
   title: "Jab",
   cardMetadata: { nature: Nature.Attack },
-  description: ([def, spd, dmg]) => `HP-2. DEF+${def}. SPD+${spd}. DMG ${dmg}.`,
+  description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal  ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [1, 1, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -28,7 +28,7 @@ const a_jab = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
-      hpCost: 2,
+      hpCost: 0,
     });
   },
 });
@@ -36,7 +36,7 @@ const a_jab = new Card({
 const a_hook = new Card({
   title: "Hook",
   cardMetadata: { nature: Nature.Attack },
-  description: ([atk, dmg]) => `HP-2. ATK+${atk}. DMG ${dmg}.`,
+  description: ([atk, dmg]) => `ATK+${atk}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -52,7 +52,7 @@ const a_hook = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[1]),
-      hpCost: 2,
+      hpCost: 0,
     });
   },
 });
@@ -60,7 +60,7 @@ const a_hook = new Card({
 const a_uppercut = new Card({
   title: "Uppercut",
   cardMetadata: { nature: Nature.Attack },
-  description: ([atk, spd, dmg]) => `HP-2. ATK+${atk}. SPD+${spd}. DMG ${dmg}.`,
+  description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [1, 1, 3],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -81,7 +81,7 @@ const a_uppercut = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: 2,
+      hpCost: 0,
     });
   },
 });
@@ -129,6 +129,10 @@ export const a_waldgoseBase = new Card({
     `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [6, 2],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364217876323500123/GIF_0112106003.gif?ex=6808de67&is=68078ce7&hm=53339631d41657c84bff7858a0d4ca127e5dd726db694b68d34f5d833a75c8ba&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
 
@@ -206,6 +210,10 @@ export const a_daosdorgBase = new Card({
     `HP-9. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus}. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [12, 3],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364218009102581871/GIF_4214490964.gif?ex=6808de87&is=68078d07&hm=dedf596f960aafe344c5eedec122d4dbd54c3b5c6f8b002b3cae75da891fdedf&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     if (character.stats.stats.HP <= 0) {
@@ -274,6 +282,10 @@ export const a_catastraviaBase = new Card({
     `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [9, 3],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364218121669316608/GIF_1295476803.gif?ex=6808dea2&is=68078d22&hm=bdc2fd9b990ddf12a7cb0d6ad7b24dca2a24203773cd3896f0c53681dad85ed9&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     if (character.stats.stats.HP <= 0) {
@@ -429,12 +441,6 @@ export const thisIsNoPlaceToGiveUp = new Card({
     const character = game.characters[characterIndex];
     const healing = this.calculateEffectValue(this.effects[0]);
 
-    messageCache.push(
-      `${character.name} resolves himself.`,
-      TCGThread.Gameroom
-    );
-    character.adjustStat(healing, StatsEnum.HP);
-
     if (character.stats.stats.HP <= 0) {
       messageCache.push(
         `${character.name} cannot give up!`,
@@ -443,6 +449,12 @@ export const thisIsNoPlaceToGiveUp = new Card({
       character.adjustStat(healing, StatsEnum.HP);
       character.adjustStat(1, StatsEnum.Ability);
     }
+
+    messageCache.push(
+      `${character.name} resolves himself.`,
+      TCGThread.Gameroom
+    );
+    character.adjustStat(healing, StatsEnum.HP);
   },
 });
 

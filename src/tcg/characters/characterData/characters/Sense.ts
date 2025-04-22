@@ -11,6 +11,7 @@ import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 // config module not found for some reason
 // const PACIFIST_STACK_COUNT = config.debugMode ? 1 : 15;
 const PACIFIST_STACK_COUNT = 15;
+const PACIFIST_STACK_ATTACK_DEDUCTION = 1;
 
 const senseStats = new Stats({
   [StatsEnum.HP]: 90.0,
@@ -37,7 +38,7 @@ export const Sense = new CharacterData({
   ability: {
     abilityName: "Pacifist",
     abilityEffectString: `When this character has 2 Tea Time Snacks, skip the turn for both characters.
-      Every turn this character doesn't attack, gain 1 stack. Everytime this character attacks, reduce stack count by 2 (minimum stack count: 0).
+      Every turn this character doesn't attack, gain 1 stack. Everytime this character attacks, reduce stack count by ${PACIFIST_STACK_ATTACK_DEDUCTION} (minimum stack count: 0).
       This character wins if their stack count is ${PACIFIST_STACK_COUNT}.`,
     abilityAfterOwnCardUse: function (
       game,
@@ -69,7 +70,10 @@ export const Sense = new CharacterData({
       const character = game.characters[characterIndex];
       if (character.additionalMetadata.attackedThisTurn) {
         messageCache.push("Sense went on the offensive!", TCGThread.Gameroom);
-        const newAbilityCount = Math.max(0, character.stats.stats.Ability - 2);
+        const newAbilityCount = Math.max(
+          0,
+          character.stats.stats.Ability - PACIFIST_STACK_ATTACK_DEDUCTION
+        );
         character.setStat(newAbilityCount, StatsEnum.Ability);
       } else {
         messageCache.push("Sense was a Pacifist!", TCGThread.Gameroom);

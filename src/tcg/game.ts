@@ -277,10 +277,9 @@ export default class Game {
     defenderDefense: number,
     defenderDamageReduction: number
   ) {
-    return Math.max(
-      1,
-      (moveDamage + attackerAttack - defenderDefense) *
-        (1 - defenderDamageReduction)
+    return (
+      Math.max(1, moveDamage + attackerAttack - defenderDefense) *
+      (1 - defenderDamageReduction)
     );
   }
 }

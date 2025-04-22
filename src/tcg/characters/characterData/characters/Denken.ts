@@ -52,7 +52,7 @@ export const Denken = new CharacterData({
         character.adjustStat(-1, StatsEnum.Ability);
       }
 
-      if (character.stats.stats.Ability > 0) {
+      if (character.stats.stats.Ability > 0 && character.stats.stats.HP <= 0) {
         messageCache.push(`Denken steels himself!`, TCGThread.Gameroom);
       } else {
         messageCache.push(`Denken's strength fades.`, TCGThread.Gameroom);

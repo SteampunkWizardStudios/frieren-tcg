@@ -9,9 +9,9 @@ import { manaDetection, manaDetectionBaseCardAction } from "./LinieDeck";
 export const a_fernZoltraak = new Card({
   title: "Zoltraak",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-3. DMG ${dmg}. Gain 1 Barrage count.`,
+  description: ([dmg]) => `HP-4. DMG ${dmg}. Gain 1 Barrage count.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [4],
+  effects: [7],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
@@ -24,7 +24,7 @@ export const a_fernZoltraak = new Card({
       TCGThread.Gameroom
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
   },
 });
 
@@ -32,9 +32,9 @@ export const a_fernBarrage = new Card({
   title: "Barrage",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-3. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-3, deal ${dmg} DMG, until Barrage count reaches 0.`,
+    `HP-4. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG, until Barrage count reaches 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [4],
+  effects: [7],
   cosmetic: {
     cardGif: "https://c.tenor.com/2RAJbNpiLI4AAAAd/tenor.gif",
   },
@@ -53,7 +53,7 @@ export const a_fernBarrage = new Card({
       TCGThread.Gameroom
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
 
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
@@ -61,7 +61,7 @@ export const a_fernBarrage = new Card({
       "Barrage",
       new TimedEffect({
         name: "Barrage",
-        description: `HP-3. Deal ${damage} DMG.`,
+        description: `HP-4. Deal ${damage} DMG.`,
         turnDuration: newBarrageCount,
         tags: { Barrage: 1 },
         endOfTurnAction: function (
@@ -85,7 +85,7 @@ export const a_fernBarrage = new Card({
             );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
-              hpCost: 3,
+              hpCost: 4,
             });
           } else {
             messageCache.push(
@@ -107,7 +107,7 @@ const a_fernConcentratedZoltraakSnipe = new Card({
   description: ([dmg]) =>
     `HP-12, Barrage count +1. Afterwards, deal ${dmg} DMG x Barrage count. Reset Barrage count to 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [4],
+  effects: [7],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -142,6 +142,9 @@ const disapprovingPout = new Card({
     `SPD+${spd}. Opp's ATK-${oppAtkDecrease}. Gain 1 Barrage count.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [1, 2],
+  cosmetic: {
+    cardGif: "https://c.tenor.com/V1ad9v260E8AAAAd/tenor.gif",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
@@ -241,7 +244,7 @@ export const spellToCreateManaButterflies = new Card({
   title: "Spell to Create Mana Butterflies",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, endHp]) =>
-    `Heal ${hp} HP. At the next 4 turn ends, heal ${endHp}. Reduce Barrage count by 2.`,
+    `Heal ${hp} HP. At the next 4 turn ends, heal ${endHp}. Reduce Barrage count by 2 (minimum Barrage count: 0).`,
   cosmetic: {
     cardGif: "https://c.tenor.com/B93aR7oWJ4IAAAAC/tenor.gif",
   },
@@ -275,7 +278,7 @@ export const spellToCreateManaButterflies = new Card({
         turnDuration: 4,
         endOfTurnAction: (game, characterIndex, messageCache) => {
           messageCache.push(
-            `The Mana Butterflies soothes ${character.name}.`,
+            `The Mana Butterflies soothe ${character.name}.`,
             TCGThread.Gameroom
           );
           game.characters[characterIndex].adjustStat(
@@ -295,10 +298,14 @@ export const commonDefensiveMagic = new Card({
   title: "Common Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn. Reduce Barrage count by 2.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn. Reduce Barrage count by 2 (minimum Barrage count: 0).`,
   emoji: CardEmoji.FERN_CARD,
   effects: [20],
   priority: 2,
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364255159529767005/GIF_2894655091.gif?ex=68090120&is=6807afa0&hm=e81b702e207fea882babeffd4b376e8db66a1afac7b19191892b3e6e29a9772c&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

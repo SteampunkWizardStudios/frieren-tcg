@@ -5,7 +5,7 @@ import { MessageCache } from "../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
 
 export const a_malevolentShrine = new Card({
-  title: "Malevolent Shrine",
+  title: "Reelseiden: Malevolent Shrine",
   description: ([dmg]) =>
     `HP-11. If used by Übel, has a 80% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   cosmetic: {

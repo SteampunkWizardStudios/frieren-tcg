@@ -36,7 +36,7 @@ const offensiveStance = new Card({
   description: ([atk, spd]) =>
     `ATK+${atk}. DEF-2 for 2 turns. SPD+${spd}. Gain <Resolve> for next 1 Attack.`,
   emoji: CardEmoji.STARK_CARD,
-  effects: [3, 1],
+  effects: [2, 1],
   tags: { Resolve: 1 },
   cosmetic: {
     cardGif:
@@ -80,7 +80,7 @@ const defensiveStance = new Card({
   description: ([def, spd]) =>
     `DEF+${def}. ATK-2 for 2 turns. SPD+${spd}. Gain <Resolve> for next 1 Attack.`,
   emoji: CardEmoji.STARK_CARD,
-  effects: [3, 1],
+  effects: [2, 1],
   tags: { Resolve: 1 },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

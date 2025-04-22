@@ -153,7 +153,7 @@ export const teaTime = new Card({
   cardMetadata: { nature: Nature.Util },
   description: ([def, hp]) =>
     `DEF+${def}. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
-  effects: [2, 5],
+  effects: [1, 5],
   tags: { TeaTime: 1 },
   emoji: CardEmoji.HEART,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -177,7 +177,7 @@ export const teaParty = new Card({
   cardMetadata: { nature: Nature.Util },
   description: ([def, hp]) =>
     `DEF+${def}. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
-  effects: [3, 7],
+  effects: [2, 7],
   tags: { TeaTime: 2 },
   emoji: CardEmoji.RANDOM,
   cardAction: function (this: Card, game, characterIndex, messageCache) {

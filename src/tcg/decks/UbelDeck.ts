@@ -11,7 +11,7 @@ import { a_malevolentShrine } from "./utilDecks/ubelSignature";
 export const empathyFailureName = "Stalking";
 
 export const a_reelseiden = new Card({
-  title: "Reelseiden",
+  title: "Reelseiden: Initiate",
   description: ([dmg]) =>
     `HP-4. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -41,7 +41,7 @@ export const a_reelseiden = new Card({
 });
 
 export const a_cleave = new Card({
-  title: "Cleave",
+  title: "Reelseiden: Cleave",
   description: ([dmg]) =>
     `HP-6. If used by Übel,has a 40% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -67,7 +67,7 @@ export const a_cleave = new Card({
 });
 
 export const a_dismantle = new Card({
-  title: "Dismantle",
+  title: "Reelseiden: Dismantle",
   description: ([dmg]) =>
     `HP-8. If used by Übel, has a 60% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -103,6 +103,10 @@ export const rushdown = new Card({
     `Increases SPD by ${spd} for 3 turns. Attacks will not miss during this period. At the end of every turn, HP-5.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10],
+  cosmetic: {
+    cardGif:
+      "https://media.discordapp.net/attachments/1360969158623232300/1364216562600509570/GIF_2060261812.gif?ex=6808dd2e&is=68078bae&hm=120ce38d9abf8a42357d0bd650f0e5c63da9ea2232bd5ceae2716ee67a2fb67f&=&width=1440&height=820",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -150,9 +154,13 @@ const recompose = new Card({
   title: "Recompose",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, endOfTurnHp]) =>
-    `SPD-10 for 2 turns. Heal ${hp}HP, then ${endOfTurnHp} HP at the end of each turn.`,
+    `SPD-10 for 2 turns. Heal ${hp}HP, then ${endOfTurnHp} HP at the end of each turn. Attacks will not hit while Recompose is active.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10, 5],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364216703541837844/GIF_2189012353.gif?ex=6808dd50&is=68078bd0&hm=644b405b52a67b684bda6bfff12ce2ffa99d091de554b967213e07aa87883a8d&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(

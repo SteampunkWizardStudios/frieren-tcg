@@ -9,7 +9,7 @@ const a_staffStrike = new Card({
   title: "Staff Strike",
   cardMetadata: { nature: Nature.Attack },
   description: ([spd, dmg]) =>
-    `SPD+${spd}. Afterwards, HP-7, attack for DMG ${dmg}+SPD/7`,
+    `SPD+${spd}. Afterwards, HP-7, attack for DMG ${dmg}+SPD/6`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [3, 7],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -24,7 +24,7 @@ const a_staffStrike = new Card({
 
     const damage =
       this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.SPD / 7;
+      character.stats.stats.SPD / 6;
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 7 });
   },
 });
@@ -32,7 +32,7 @@ const a_staffStrike = new Card({
 const a_staffBash = new Card({
   title: "Staff Bash",
   cardMetadata: { nature: Nature.Attack },
-  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-7, DMG ${dmg}+SPD/6`,
+  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-7, DMG ${dmg}+SPD/5`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [2, 8],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -47,7 +47,7 @@ const a_staffBash = new Card({
 
     const damage =
       this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.SPD / 6;
+      character.stats.stats.SPD / 5;
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 7 });
   },
 });
@@ -55,7 +55,7 @@ const a_staffBash = new Card({
 export const a_whip = new Card({
   title: "Whip",
   cardMetadata: { nature: Nature.Attack },
-  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-7, DMG ${dmg}+SPD/5`,
+  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-7, DMG ${dmg}+SPD/4`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [1, 9],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
@@ -70,7 +70,7 @@ export const a_whip = new Card({
 
     const damage =
       this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.SPD / 5;
+      character.stats.stats.SPD / 4;
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 7 });
   },
 });
@@ -117,7 +117,7 @@ export const hide = new Card({
 
 export const a_supersonicStrike = new Card({
   title: "Supersonic Strike",
-  description: ([dmg]) => `HP-7, DMG ${dmg}+SPD/4`,
+  description: ([dmg]) => `HP-7, DMG ${dmg}+SPD/3`,
   emoji: CardEmoji.LAUFEN_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [10],
@@ -130,7 +130,7 @@ export const a_supersonicStrike = new Card({
 
     const damage =
       this.calculateEffectValue(this.effects[0]) +
-      character.stats.stats.SPD / 4;
+      character.stats.stats.SPD / 3;
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 7 });
   },
 });
