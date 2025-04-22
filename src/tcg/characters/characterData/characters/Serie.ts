@@ -52,7 +52,7 @@ export const Serie = new CharacterData({
     abilityName: "Toying Around",
     abilityEffectString: `Any attack used by this character has its DMG+${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%. 
       The turn after this character performs any attack, DMG-${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%.
-      
+
       **Sub-Ability: Mana Suppression** - Hide the amount of HP this character has.
       **Sub-Ability: Keen Eye** - See past the opponent's Mana Suppression.`,
     abilityStartOfTurnEffect(game, characterIndex, messageCache) {
