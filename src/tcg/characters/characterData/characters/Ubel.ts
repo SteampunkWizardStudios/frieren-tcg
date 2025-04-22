@@ -12,7 +12,7 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
-const PIERCE_FACTOR = 0.5;
+const PIERCE_FACTOR = 1.0;
 
 const ubelStats = new Stats({
   [StatsEnum.HP]: 90.0,
