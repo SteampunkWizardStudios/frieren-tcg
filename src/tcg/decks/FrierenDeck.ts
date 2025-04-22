@@ -261,7 +261,7 @@ export const a_theHeightOfMagicBase = new Card({
   },
 });
 
-const a_theHeightOfMagic = new Card({
+export const a_theHeightOfMagic = new Card({
   title: `"The Height of Magic"`,
   description: ([dmg]) =>
     `When used with HP <= 25, Priority+1. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1. Treat this card as "Hellfire Summoning: Vollzanbel" when used with HP > 25.`,
@@ -270,7 +270,7 @@ const a_theHeightOfMagic = new Card({
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1355588254866473161/The_Height_of_Magic.png?ex=67e97971&is=67e827f1&hm=0bddcf6c49f763947308ba3e63c58a8727730a9af0ff9c0175e948af704e29b3&",
   },
-  cardMetadata: { nature: Nature.Attack },
+  cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [30],
   cardAction: () => {},
   conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
