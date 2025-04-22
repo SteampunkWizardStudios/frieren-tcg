@@ -8,10 +8,9 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 const a_jab = new Card({
   title: "Jab",
   cardMetadata: { nature: Nature.Attack },
-  description: ([hp, def, spd, dmg]) =>
-    `HP+${hp}. DEF+${def}. SPD+${spd}. DMG ${dmg}.`,
+  description: ([def, spd, dmg]) => `HP-2. DEF+${def}. SPD+${spd}. DMG ${dmg}.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 1, 1, 2],
+  effects: [1, 1, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -21,19 +20,15 @@ const a_jab = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP
-    );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[1]),
       StatsEnum.DEF
     );
     character.adjustStat(
-      this.calculateEffectValue(this.effects[2]),
+      this.calculateEffectValue(this.effects[1]),
       StatsEnum.SPD
     );
     CommonCardAction.commonAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[3]),
-      hpCost: 0,
+      damage: this.calculateEffectValue(this.effects[2]),
+      hpCost: 2,
     });
   },
 });
@@ -41,9 +36,9 @@ const a_jab = new Card({
 const a_hook = new Card({
   title: "Hook",
   cardMetadata: { nature: Nature.Attack },
-  description: ([hp, atk, dmg]) => `HP+${hp}. ATK+${atk}. DMG ${dmg}.`,
+  description: ([atk, dmg]) => `HP-2. ATK+${atk}. DMG ${dmg}.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 2, 2],
+  effects: [2, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -53,15 +48,11 @@ const a_hook = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP
-    );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[1]),
       StatsEnum.ATK
     );
     CommonCardAction.commonAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[2]),
-      hpCost: 0,
+      damage: this.calculateEffectValue(this.effects[1]),
+      hpCost: 2,
     });
   },
 });
@@ -69,13 +60,12 @@ const a_hook = new Card({
 const a_uppercut = new Card({
   title: "Uppercut",
   cardMetadata: { nature: Nature.Attack },
-  description: ([hp, atk, spd, dmg]) =>
-    `HP+${hp}. ATK+${atk}. SPD+${spd}. DMG ${dmg}.`,
+  description: ([atk, spd, dmg]) => `HP-2. ATK+${atk}. SPD+${spd}. DMG ${dmg}.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 1, 1, 3],
+  effects: [1, 1, 3],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    const damage = this.calculateEffectValue(this.effects[3]);
+    const damage = this.calculateEffectValue(this.effects[2]);
     messageCache.push(
       `${character.name} threw out ${damage > 10 ? "a sharp" : "an"} uppercut from below!`,
       TCGThread.Gameroom
@@ -83,19 +73,15 @@ const a_uppercut = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP
-    );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[1]),
       StatsEnum.ATK
     );
     character.adjustStat(
-      this.calculateEffectValue(this.effects[2]),
+      this.calculateEffectValue(this.effects[1]),
       StatsEnum.SPD
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: 0,
+      hpCost: 2,
     });
   },
 });
@@ -138,10 +124,10 @@ const bareHandedBlock = new Card({
 export const a_waldgoseBase = new Card({
   title: "Tornado Winds: Waldgose",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) =>
-    `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${dmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
+  description: ([dmg, multiDmg]) =>
+    `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [3],
+  effects: [6, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
 
@@ -156,18 +142,19 @@ export const a_waldgoseBase = new Card({
         `${character.name} whipped up a tornado!`,
         TCGThread.Gameroom
       );
-      const damage = this.calculateEffectValue(this.effects[0]);
+      const initialDamage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {
-        damage,
+        damage: initialDamage,
         hpCost: 7,
       });
 
+      const multiDamage = this.calculateEffectValue(this.effects[1]);
       character.timedEffects.push(
         new TimedEffect({
           name: "Tornado Winds: Waldgose",
-          description: `Deal ${this.tags?.WaldgoseDamage ?? damage} at each turn's end.`,
+          description: `Deal ${this.tags?.WaldgoseDamage ?? multiDamage} at each turn's end.`,
           turnDuration: 3,
-          tags: { WaldgoseDamage: damage },
+          tags: { WaldgoseDamage: multiDamage },
           endOfTurnAction: function (this, game, characterIndex) {
             messageCache.push("The wind rages on!", TCGThread.Gameroom);
 
@@ -175,7 +162,7 @@ export const a_waldgoseBase = new Card({
             if (this.tags?.WaldgoseDamage) {
               waldgoseDmg = this.tags.WaldgoseDamage;
             } else {
-              waldgoseDmg = damage;
+              waldgoseDmg = multiDamage;
             }
 
             CommonCardAction.commonAttack(game, characterIndex, {
@@ -191,12 +178,7 @@ export const a_waldgoseBase = new Card({
 });
 
 const a_waldgose = new Card({
-  title: "Tornado Winds: Waldgose",
-  cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) =>
-    `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${dmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
-  emoji: CardEmoji.DENKEN_CARD,
-  effects: [3],
+  ...a_waldgoseBase,
   cardAction: () => {},
   conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
     const character = game.characters[characterIndex];
@@ -264,12 +246,7 @@ export const a_daosdorgBase = new Card({
 });
 
 const a_daosdorg = new Card({
-  title: "Hellfire: Daosdorg",
-  cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, waldgoseDmgBonus]) =>
-    `HP-9. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus}. Treat this card as "Hook" if the user's HP is <= 0.`,
-  emoji: CardEmoji.DENKEN_CARD,
-  effects: [12, 3],
+  ...a_daosdorgBase,
   cardAction: () => {},
   conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
     const character = game.characters[characterIndex];
@@ -292,10 +269,10 @@ const a_daosdorg = new Card({
 export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) =>
-    `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${dmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
+  description: ([dmg, multiDmg]) =>
+    `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [4],
+  effects: [9, 3],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     if (character.stats.stats.HP <= 0) {
@@ -310,16 +287,17 @@ export const a_catastraviaBase = new Card({
         TCGThread.Gameroom
       );
 
-      const damage = this.calculateEffectValue(this.effects[0]);
+      const initialDamage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {
-        damage,
+        damage: initialDamage,
         hpCost: 15,
       });
 
+      const multiDamage = this.calculateEffectValue(this.effects[1]);
       character.timedEffects.push(
         new TimedEffect({
           name: "Lights of Judgment: Catastravia",
-          description: `Deal ${damage} at each turn's end.`,
+          description: `Deal ${multiDamage} at each turn's end.`,
           turnDuration: 5,
           endOfTurnAction: (game, characterIndex) => {
             messageCache.push(
@@ -327,7 +305,7 @@ export const a_catastraviaBase = new Card({
               TCGThread.Gameroom
             );
             CommonCardAction.commonAttack(game, characterIndex, {
-              damage,
+              damage: multiDamage,
               hpCost: 0,
               isTimedEffectAttack: true,
             });
@@ -339,12 +317,7 @@ export const a_catastraviaBase = new Card({
 });
 
 const a_catastravia = new Card({
-  title: "Lights of Judgment: Catastravia",
-  description: ([dmg]) =>
-    `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${dmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
-  emoji: CardEmoji.DENKEN_CARD,
-  cardMetadata: { nature: Nature.Attack, signature: true },
-  effects: [4],
+  ...a_catastraviaBase,
   cardAction: () => {},
   conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
     const character = game.characters[characterIndex];
@@ -443,14 +416,43 @@ export const a_concentratedOffensiveMagicZoltraak = new Card({
   },
 });
 
+export const thisIsNoPlaceToGiveUp = new Card({
+  title: "This Is No Place To Give Up",
+  cardMetadata: { nature: Nature.Util },
+  description: ([hp]) =>
+    `Heal ${hp}HP. Heal an additional ${hp}HP and gain 1 Preserverance stack if HP <= 0.`,
+  emoji: CardEmoji.DENKEN_CARD,
+  effects: [7],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.characters[characterIndex];
+    const healing = this.calculateEffectValue(this.effects[0]);
+
+    messageCache.push(
+      `${character.name} resolves himself.`,
+      TCGThread.Gameroom
+    );
+    character.adjustStat(healing, StatsEnum.HP);
+
+    if (character.stats.stats.HP <= 0) {
+      messageCache.push(
+        `${character.name} cannot give up!`,
+        TCGThread.Gameroom
+      );
+      character.adjustStat(healing, StatsEnum.HP);
+      character.adjustStat(1, StatsEnum.Ability);
+    }
+  },
+});
+
 export const denkenDeck = [
   { card: a_jab, count: 2 },
   { card: a_hook, count: 2 },
-  { card: a_uppercut, count: 2 },
-  { card: bareHandedBlock, count: 2 },
+  { card: a_uppercut, count: 1 },
+  { card: bareHandedBlock, count: 1 },
   { card: a_waldgose, count: 2 },
   { card: a_daosdorg, count: 2 },
   { card: a_catastravia, count: 1 },
   { card: elementaryDefensiveMagic, count: 2 },
   { card: a_concentratedOffensiveMagicZoltraak, count: 2 },
+  { card: thisIsNoPlaceToGiveUp, count: 1 },
 ];

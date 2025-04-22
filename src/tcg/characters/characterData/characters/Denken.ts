@@ -6,14 +6,14 @@ import { CharacterEmoji } from "../../../formatting/emojis";
 import { denkenDeck } from "@src/tcg/decks/DenkenDeck";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
-const DENKEN_STEEL_YOURSELF_TURN_COUNT = 3;
+const DENKEN_PRESERVERANCE_COUNT = 3;
 
 const denkenStats = new Stats({
   [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 11.0,
   [StatsEnum.DEF]: 11.0,
   [StatsEnum.SPD]: 10.0,
-  [StatsEnum.Ability]: 0.0,
+  [StatsEnum.Ability]: DENKEN_PRESERVERANCE_COUNT,
 });
 
 export const Denken = new CharacterData({
@@ -31,20 +31,11 @@ export const Denken = new CharacterData({
   stats: denkenStats,
   cards: denkenDeck,
   ability: {
-    abilityName: "Steel Yourself",
-    abilityEffectString: `This character only loses after their HP is <= 0 for ${DENKEN_STEEL_YOURSELF_TURN_COUNT} turns in a row.`,
-    abilityStartOfTurnEffect: function (
-      this,
-      game,
-      characterIndex,
-      _messageCache
-    ) {
-      const character = game.characters[characterIndex];
-
-      if (character.stats.stats.HP > 0) {
-        character.setStat(3, StatsEnum.Ability, false);
-      }
-    },
+    abilityName: "Preserverance",
+    abilityEffectString: `This character starts with ${DENKEN_PRESERVERANCE_COUNT} Preserverance stacks.
+    1 Stack is taken away when the character's HP is <= 0 at the end of the turn. 
+    An additional stack is taken away when the character's HP is <= -50. 
+    The character only loses when the number of Preserverance stack is 0.`,
     abilityEndOfTurnEffect: function (
       this,
       game,
@@ -55,12 +46,17 @@ export const Denken = new CharacterData({
 
       if (character.stats.stats.HP <= 0) {
         character.adjustStat(-1, StatsEnum.Ability);
-        if (character.stats.stats.Ability > 0) {
-          messageCache.push(`Denken steels himself!`, TCGThread.Gameroom);
-        } else {
-          messageCache.push(`Denken's strength fades.`, TCGThread.Gameroom);
-          game.additionalMetadata.forfeited[characterIndex] = true;
-        }
+      }
+
+      if (character.stats.stats.HP <= -50) {
+        character.adjustStat(-1, StatsEnum.Ability);
+      }
+
+      if (character.stats.stats.Ability > 0) {
+        messageCache.push(`Denken steels himself!`, TCGThread.Gameroom);
+      } else {
+        messageCache.push(`Denken's strength fades.`, TCGThread.Gameroom);
+        game.additionalMetadata.forfeited[characterIndex] = true;
       }
     },
   },
