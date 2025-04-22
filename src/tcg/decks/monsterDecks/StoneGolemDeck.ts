@@ -52,6 +52,7 @@ const crystalize = new Card({
         description: `Increases DEF by ${def} for 2 turns. ATK-15 for 2 turns.`,
         priority: -1,
         turnDuration: 2,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} breaks out of ${character.cosmetic.pronouns.possessive} crystalization.`,

@@ -64,7 +64,7 @@ const sectionToFields: Record<
       value: "",
     },
     {
-      name: "Common Magic Section",
+      name: "3rd Class Magic Section",
       value: serie_offensiveMagic_common
         .slice(0, 7)
         .map(
@@ -84,7 +84,7 @@ const sectionToFields: Record<
         .join("\n"),
     },
     {
-      name: "Rare Magic Section",
+      name: "1st Class Magic Section",
       value: serie_offensiveMagic_rare
         .slice(0, 7)
         .map(
@@ -104,7 +104,7 @@ const sectionToFields: Record<
         .join("\n"),
     },
     {
-      name: "Unusual Magic Section",
+      name: "Great Mage's Magic Section",
       value: serie_offensiveMagic_unusual
         .map(
           (card: Card) =>

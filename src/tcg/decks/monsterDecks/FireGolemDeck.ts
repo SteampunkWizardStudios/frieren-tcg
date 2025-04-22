@@ -72,6 +72,7 @@ const extinguish = new Card({
         description: `Increases DEF by ${def} for 2 turns.`,
         priority: -1,
         turnDuration: 2,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },

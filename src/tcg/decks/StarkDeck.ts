@@ -61,6 +61,7 @@ const offensiveStance = new Card({
         name: "Offensive Stance",
         description: `DEF-2 for 2 turns.`,
         turnDuration: 2,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} shifts ${character.cosmetic.pronouns.possessive} stance.`,
@@ -100,6 +101,7 @@ const defensiveStance = new Card({
         name: "Defensive Stance",
         description: `ATK-2 for 2 turns.`,
         turnDuration: 2,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} shifts ${character.cosmetic.pronouns.possessive} stance.`,
@@ -143,6 +145,7 @@ const jumboBerrySpecialBreak = new Card({
         name: "Jumbo Berry Special Break",
         description: `SPD-2 for 2 turns. DEF+${defChange} for 2 turns.`,
         turnDuration: 2,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (game, characterIndex, messageCache) => {
           messageCache.push(
             `The break is over. ${character.name} recomposes ${character.cosmetic.pronouns.reflexive}.`,
@@ -186,6 +189,7 @@ export const block = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -324,6 +328,7 @@ export const a_lightningStrike = new Card({
           name: "Opening",
           description: `DEF-5 for this turn.`,
           turnDuration: 1,
+          removableBySorganeil: false,
           endOfTimedEffectAction: (game, characterIndex) => {
             game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
           },

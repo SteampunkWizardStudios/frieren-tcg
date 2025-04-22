@@ -224,6 +224,7 @@ export const defend = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         turnDuration: 1,
         priority: -1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -236,20 +237,31 @@ export const sorganeil = new Card({
   title: "Sorganeil",
   cardMetadata: { nature: Nature.Util },
   description: () =>
-    `Priority-2. Clear opponent's timed effects. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
+    `Priority-2. Will fail if the opponent's SPD is >=50. Clear opponent's timed effects. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
   emoji: CardEmoji.UBEL_CARD,
   priority: -2,
   effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
+
+    if (opponent.stats.stats.SPD >= 50) {
+      messageCache.push(
+        `${character.name}'s gaze cannot keep up with ${opponent.name}'s speed!`,
+        TCGThread.Gameroom
+      );
+      return;
+    }
+
     opponent.skipTurn = true;
     messageCache.push(
       `${character.name} traps ${opponent.name} in ${character.name}'s gaze!`,
       TCGThread.Gameroom
     );
-    const opponentEffectsList = opponent.timedEffects;
-    opponentEffectsList.splice(0, opponentEffectsList.length);
+
+    opponent.timedEffects = opponent.timedEffects.filter(
+      (timedEffect) => !timedEffect.removableBySorganeil
+    );
     character.timedEffects.push(
       new TimedEffect({
         name: "Sorganeil",

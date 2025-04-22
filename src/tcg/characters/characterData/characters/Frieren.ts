@@ -76,9 +76,10 @@ export const Frieren = new CharacterData({
       if ("PostAnalysis" in card.tags) {
         character.timedEffects.push(
           new TimedEffect({
-            name: "Offensive Magic Analysis: Zoltraak",
+            name: "Post Analysis",
             description: `At this turn's resolution, gain ${card.tags["PostAnalysis"]} Analysis stack.`,
             turnDuration: 1,
+            removableBySorganeil: false,
             endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
               messageCache.push(
                 "Frieren performed her analysis.",

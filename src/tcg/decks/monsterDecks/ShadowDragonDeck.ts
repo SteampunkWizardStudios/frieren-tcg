@@ -47,6 +47,7 @@ const camouflage = new Card({
         name: "Camouflage",
         description: `ATK+${atk} for 3 turns. DEF+${def} for 3 turns.`,
         turnDuration: 3,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} came out of ${character.cosmetic.pronouns.possessive} camouflage!`,

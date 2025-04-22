@@ -97,6 +97,7 @@ export const hide = new Card({
         description: `Increases DEF by ${defIncrease} for 2 turns.`,
         priority: -1,
         turnDuration: 2,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} came out of hiding.`,
@@ -157,6 +158,7 @@ const quickDodge = new Card({
         description: `Increases SPD by ${spdIncreaseTemp} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-1 * spdIncreaseTemp, StatsEnum.SPD);
         },
@@ -189,6 +191,7 @@ export const parry = new Card({
         description: `Increases DEF by ${defIncrease} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-1 * defIncrease, StatsEnum.DEF);
         },

@@ -107,6 +107,7 @@ const roost = new Card({
         name: "Roost",
         description: `DEF-3 for 2 turns.`,
         turnDuration: 2,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} opened its wings.`,
@@ -122,6 +123,7 @@ const roost = new Card({
         name: "Roost",
         description: `SPD-5 for 3 turns.`,
         turnDuration: 3,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} took flight again!`,
@@ -157,6 +159,7 @@ export const deflect = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         turnDuration: 1,
         priority: -1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -184,10 +187,11 @@ const flyAway = new Card({
     character.adjustStat(spd, StatsEnum.SPD);
     character.timedEffects.push(
       new TimedEffect({
-        name: "Deflect",
+        name: "Fly Away",
         description: `Increases SPD by ${spd} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-spd, StatsEnum.SPD);
         },
