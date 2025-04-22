@@ -299,8 +299,8 @@ export const a_theHeightOfMagic = new Card({
 
 export const frierenDeck = [
   { card: a_zoltraak, count: 2 },
-  { card: a_judradjim, count: 2 },
-  { card: a_vollzanbel, count: 2 },
+  { card: a_judradjim, count: 3 },
+  { card: a_vollzanbel, count: 1 },
   { card: barrierMagicAnalysis, count: 3 },
   { card: demonMagicAnalysis, count: 2 },
   { card: ordinaryDefensiveMagic, count: 2 },
