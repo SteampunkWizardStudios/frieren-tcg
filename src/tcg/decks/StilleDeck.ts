@@ -172,6 +172,10 @@ const flyAway = new Card({
   emoji: CardEmoji.STILLE_CARD,
   priority: 2,
   effects: [25],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1361940199583780864/IMG_3171.gif?ex=6807d567&is=680683e7&hm=55cb8759a21dc4e1d852861c8856dd068b299cb289a109cd4be8cdd27cca4e2f&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} flew away!`, TCGThread.Gameroom);

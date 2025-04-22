@@ -14,6 +14,10 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
   description: ([dmg]) =>
     `Frieren attacks for ${dmg} DMG. At next turn's end, Frieren attacks for an additional ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1362092606695145482/GIF_1369578971.gif?ex=68086357&is=680711d7&hm=07c26c17a9a859865c2f107f8358b50df98cc49d49ed0daa2f659c6acb494f1e&",
+  },
   effects: [7],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
@@ -524,6 +528,10 @@ export const a_extremeSpeed = new Card({
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 1,
   effects: [12],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1361210956872421497/IMG_3122.gif?ex=6807d13e&is=68067fbe&hm=3ac9b147ffc7c93d02121986546428f4b36f0bb08a2c8bc526d5ba51df5a4bd6&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -542,6 +550,10 @@ export const a_realHeroSwing = new Card({
   emoji: CardEmoji.HIMMEL_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [16],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1361777461620248576/GIF_1092034222.gif?ex=6807e697&is=68069517&hm=853f7d8910a4ab79010685a4399cd55c0af1f343295e0b2e04c49f829b54eee7&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const isHimmel = character.name === CharacterName.Himmel;

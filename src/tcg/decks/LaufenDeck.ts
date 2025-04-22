@@ -204,6 +204,10 @@ export const jilwer = new Card({
     `Increases SPD by ${spd} for 2 turns. At the end of every turn, HP-10.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [50],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1363008456306725004/Jilwer.gif?ex=6807c3cb&is=6806724b&hm=21c109a6e16515d4ee652bb3d730625a7dda49bacb56ad286a0b303d39c26d72&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} used Jilwer!`, TCGThread.Gameroom);

@@ -9,9 +9,9 @@ import { manaDetection, manaDetectionBaseCardAction } from "./LinieDeck";
 const a_fernZoltraakBase = new Card({
   title: "Zoltraak",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-4. DMG ${dmg}. Gain 1 Barrage count.`,
+  description: ([dmg]) => `HP-3. DMG ${dmg}. Gain 1 Barrage count.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [5],
+  effects: [6],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
@@ -20,7 +20,7 @@ const a_fernZoltraakBase = new Card({
     character.additionalMetadata.fernBarrage =
       (character.additionalMetadata.fernBarrage ?? 0) + 1;
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
   },
 });
 
@@ -35,7 +35,7 @@ const a_fernZoltraak = new Card({
         ...a_fernZoltraakBase,
         priority: 1,
         description: ([dmg]) =>
-          `Priority+1. HP-4. DMG ${dmg}. Gain 1 Barrage count.`,
+          `Priority+1. HP-3. DMG ${dmg}. Gain 1 Barrage count.`,
       });
     } else {
       return a_fernZoltraakBase;
@@ -47,11 +47,11 @@ const a_fernBarrageBase = new Card({
   title: "Barrage",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-4. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG, until Barrage count reaches 0.`,
+    `HP-3. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-3, deal ${dmg} DMG, until Barrage count reaches 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [5],
+  effects: [6],
   cosmetic: {
-    cardGif: "https://c.tenor.com/vwJ7GPJqozkAAAAC/tenor.gif",
+    cardGif: "https://c.tenor.com/2RAJbNpiLI4AAAAd/tenor.gif",
   },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -64,12 +64,12 @@ const a_fernBarrageBase = new Card({
     const newBarrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 1;
     character.additionalMetadata.fernBarrage = newBarrageCount;
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
 
     character.timedEffects.push(
       new TimedEffect({
         name: "Barrage",
-        description: `HP-4. Deal ${damage} DMG.`,
+        description: `HP-3. Deal ${damage} DMG.`,
         turnDuration: newBarrageCount,
         endOfTurnAction: function (
           this: TimedEffect,
@@ -88,7 +88,7 @@ const a_fernBarrageBase = new Card({
             character.additionalMetadata.fernBarrage -= 1;
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
-              hpCost: 4,
+              hpCost: 3,
             });
           } else {
             messageCache.push(
@@ -115,7 +115,7 @@ const a_fernBarrage = new Card({
         ...a_fernBarrageBase,
         priority: 1,
         description: ([dmg]) =>
-          `Priority+1. HP-4. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG, until Barrage count reaches 0.`,
+          `Priority+1. HP-3. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-3, deal ${dmg} DMG, until Barrage count reaches 0.`,
       });
     } else {
       return a_fernBarrageBase;
@@ -129,7 +129,7 @@ const a_fernConcentratedZoltraakSnipeBase = new Card({
   description: ([dmg]) =>
     `HP-12, Barrage count +1. Afterwards, deal ${dmg} DMG x Barrage count. Reset Barrage count to 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [5],
+  effects: [4],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
