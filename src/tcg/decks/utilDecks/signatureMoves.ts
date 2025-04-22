@@ -7,7 +7,7 @@ import { jilwer } from "../LaufenDeck";
 import { imitate } from "../LinieDeck";
 import { a_threeSpearsOfTheGoddess } from "../SeinDeck";
 import { a_piercingDrill } from "../SenseDeck";
-import { ancientBarrierMagic } from "../SerieDeck";
+import { ancientBarrierMagic } from "./serieSignature";
 import { a_lightningStrike } from "../StarkDeck";
 import { a_geisel } from "../StilleDeck";
 import { a_malevolentShrine } from "./ubelSignature";
