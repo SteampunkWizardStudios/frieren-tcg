@@ -4,7 +4,7 @@ import { StatsEnum } from "../stats";
 import CommonCardAction from "../util/commonCardActions";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
-import { manaDetection, manaDetectionBaseCardAction } from "./LinieDeck";
+import { manaDetection } from "./LinieDeck";
 
 export const a_fernZoltraak = new Card({
   title: "Zoltraak",
@@ -119,7 +119,7 @@ const a_fernConcentratedZoltraakSnipe = new Card({
     const newBarrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 1;
     character.additionalMetadata.fernBarrage = newBarrageCount;
     messageCache.push(
-      `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+      `${character.name} gained 1 Barrage count. Current Barrage count: **${barrageCount}**.`,
       TCGThread.Gameroom
     );
 
@@ -139,10 +139,10 @@ const a_fernConcentratedZoltraakSnipe = new Card({
 const disapprovingPout = new Card({
   title: "Disapproving Pout",
   cardMetadata: { nature: Nature.Util },
-  description: ([spd, oppAtkDecrease]) =>
-    `SPD+${spd}. Opp's ATK-${oppAtkDecrease}. Gain 1 Barrage count.`,
+  description: ([hp, spd, oppAtkDecrease]) =>
+    `HP+${hp}. SPD+${spd}. Opp's ATK-${oppAtkDecrease}.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [1, 2],
+  effects: [3, 2, 2],
   cosmetic: {
     cardGif: "https://c.tenor.com/V1ad9v260E8AAAAd/tenor.gif",
   },
@@ -156,18 +156,15 @@ const disapprovingPout = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
+      StatsEnum.HP
+    );
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[1]),
       StatsEnum.SPD
     );
     opponent.adjustStat(
-      -1 * this.calculateEffectValue(this.effects[1]),
+      -1 * this.calculateEffectValue(this.effects[2]),
       StatsEnum.ATK
-    );
-
-    character.additionalMetadata.fernBarrage =
-      (character.additionalMetadata.fernBarrage ?? 0) + 1;
-    messageCache.push(
-      `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
-      TCGThread.Gameroom
     );
   },
 });
@@ -175,10 +172,10 @@ const disapprovingPout = new Card({
 export const manaConcealment = new Card({
   title: "Mana Concealment",
   cardMetadata: { nature: Nature.Util },
-  description: ([atk]) =>
-    `ATK+${atk}. Barrage count + 1. Receive Priority+1 on attacks for next turn.`,
+  description: ([atk, def]) =>
+    `ATK+${atk}. DEF+${def}. Receive Priority+1 on attacks for next turn.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [2],
+  effects: [2, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -190,12 +187,11 @@ export const manaConcealment = new Card({
       this.calculateEffectValue(this.effects[0]),
       StatsEnum.ATK
     );
-    character.additionalMetadata.fernBarrage =
-      (character.additionalMetadata.fernBarrage ?? 0) + 1;
-    messageCache.push(
-      `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
-      TCGThread.Gameroom
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[1]),
+      StatsEnum.DEF
     );
+
     character.ability.abilitySelectedMoveModifierEffect = function (
       _game,
       _characterIndex,
@@ -224,28 +220,11 @@ export const manaConcealment = new Card({
   },
 });
 
-export const fernManaDetection = new Card({
-  ...manaDetection,
-  description: ([spd, bigNumber, smallNumber]) =>
-    `SPD+${spd}. If Opp's DEF >= Opp's ATK, ATK+${bigNumber}, DEF+${smallNumber}. Otherwise, ATK+${smallNumber}, DEF+${bigNumber}. Reveal the opponent's highest empowered card. Gain 1 Barrage count.`,
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    manaDetectionBaseCardAction.call(this, game, characterIndex, messageCache);
-
-    const character = game.getCharacter(characterIndex);
-    character.additionalMetadata.fernBarrage =
-      (character.additionalMetadata.fernBarrage ?? 0) + 1;
-    messageCache.push(
-      `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
-      TCGThread.Gameroom
-    );
-  },
-});
-
 export const spellToCreateManaButterflies = new Card({
   title: "Spell to Create Mana Butterflies",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, endHp]) =>
-    `Heal ${hp} HP. At the next 4 turn ends, heal ${endHp}. Reduce Barrage count by 2 (minimum Barrage count: 0).`,
+    `Heal ${hp} HP. At the next 4 turn ends, heal ${endHp} and gain 1 Barrage count.`,
   cosmetic: {
     cardGif: "https://c.tenor.com/B93aR7oWJ4IAAAAC/tenor.gif",
   },
@@ -262,16 +241,6 @@ export const spellToCreateManaButterflies = new Card({
     const endOfTurnHealing = this.calculateEffectValue(this.effects[1]);
     character.adjustStat(initialHealing, StatsEnum.HP);
 
-    character.additionalMetadata.fernBarrage ??= 0;
-    character.additionalMetadata.fernBarrage = Math.max(
-      0,
-      character.additionalMetadata.fernBarrage - 2
-    );
-    messageCache.push(
-      `${character.name} lost 2 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
-      TCGThread.Gameroom
-    );
-
     character.timedEffects.push(
       new TimedEffect({
         name: "Field of Butterflies",
@@ -286,6 +255,12 @@ export const spellToCreateManaButterflies = new Card({
             endOfTurnHealing,
             StatsEnum.HP
           );
+
+          character.additionalMetadata.fernBarrage = (character.additionalMetadata.fernBarrage ?? 0) + 1;
+          messageCache.push(
+            `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+            TCGThread.Gameroom
+          );
         },
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push("The Mana Butterflies fade.", TCGThread.Gameroom);
@@ -299,7 +274,7 @@ export const commonDefensiveMagic = new Card({
   title: "Common Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn. Reduce Barrage count by 2 (minimum Barrage count: 0).`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [20],
   priority: 2,
@@ -316,16 +291,6 @@ export const commonDefensiveMagic = new Card({
 
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
-
-    character.additionalMetadata.fernBarrage ??= 0;
-    character.additionalMetadata.fernBarrage = Math.max(
-      0,
-      character.additionalMetadata.fernBarrage - 2
-    );
-    messageCache.push(
-      `${character.name} lost 2 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
-      TCGThread.Gameroom
-    );
 
     character.timedEffects.push(
       new TimedEffect({
@@ -348,7 +313,7 @@ export const fernDeck = [
   { card: a_fernConcentratedZoltraakSnipe, count: 2 },
   { card: disapprovingPout, count: 2 },
   { card: manaConcealment, count: 2 },
-  { card: fernManaDetection, count: 1 },
+  { card: manaDetection, count: 1 },
   { card: commonDefensiveMagic, count: 2 },
   { card: spellToCreateManaButterflies, count: 2 },
 ];
