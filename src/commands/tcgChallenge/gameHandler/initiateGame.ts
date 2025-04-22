@@ -75,6 +75,13 @@ export const initiateGame = async (
 
       let winnerEmoji = "";
       let loserEmoji = "";
+<<<<<<< HEAD
+=======
+      if (winnerCharacter && loserCharacter) {
+        winnerEmoji = `${CHARACTER_MAP[winnerCharacter].cosmetic.emoji} `;
+        loserEmoji = `${CHARACTER_MAP[loserCharacter].cosmetic.emoji} `;
+      }
+>>>>>>> 101355f (print selections and if it was random to the gameroom)
 
       let resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
