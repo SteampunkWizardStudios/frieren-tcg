@@ -77,7 +77,7 @@ export default class TimedEffect {
       this.endOfTurnAction?.(game, characterIndex, messageCache);
     }
 
-    if (this.turnDuration === 0) {
+    if (this.turnDuration <= 0) {
       this.endOfTimedEffectAction?.(game, characterIndex, messageCache);
     }
   }

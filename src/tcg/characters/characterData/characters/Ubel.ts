@@ -144,7 +144,7 @@ export const Ubel = new CharacterData({
       switch (card.cardMetadata.nature) {
         case "Attack":
           if (!activeEffects.Recompose) {
-            character.additionalMetadata.sureHit = UbelHit.SureHit;
+            character.additionalMetadata.ubelSureHit = UbelHit.SureHit;
             messageCache.push(
               `${opponent.name} is wide-open!`,
               TCGThread.Gameroom
@@ -152,7 +152,7 @@ export const Ubel = new CharacterData({
           }
           break;
         case "Defense":
-          character.additionalMetadata.sureHit = UbelHit.SureMiss;
+          character.additionalMetadata.ubelSureHit = UbelHit.SureMiss;
           messageCache.push(
             `${character.name} can't cut through this!`,
             TCGThread.Gameroom
@@ -164,7 +164,7 @@ export const Ubel = new CharacterData({
             !activeEffects.Rushdown &&
             !activeEffects.Sorganeil
           ) {
-            character.additionalMetadata.sureHit = UbelHit.Regular;
+            character.additionalMetadata.ubelSureHit = UbelHit.Regular;
           }
       }
     },
@@ -176,21 +176,21 @@ export const Ubel = new CharacterData({
       const activeEffects = checkForEffects(effects);
 
       if (activeEffects.Sorganeil || activeEffects.Rushdown) {
-        character.additionalMetadata.sureHit = UbelHit.SureHit;
+        character.additionalMetadata.ubelSureHit = UbelHit.SureHit;
       } else if (activeEffects.Recompose) {
-        character.additionalMetadata.sureHit = UbelHit.SureMiss;
+        character.additionalMetadata.ubelSureHit = UbelHit.SureMiss;
       } else {
-        switch (character.additionalMetadata.sureHit) {
+        switch (character.additionalMetadata.ubelSureHit) {
           case UbelHit.SureHit:
             if (
               game.additionalMetadata.lastUsedCards[1 - characterIndex]
                 .cardMetadata.nature != "Attack"
             ) {
-              character.additionalMetadata.sureHit = UbelHit.Regular;
+              character.additionalMetadata.ubelSureHit = UbelHit.Regular;
             }
             break;
           case UbelHit.SureMiss:
-            character.additionalMetadata.sureHit = UbelHit.Regular;
+            character.additionalMetadata.ubelSureHit = UbelHit.Regular;
             break;
           default:
           // do nothing
@@ -223,7 +223,7 @@ export const Ubel = new CharacterData({
 
       //attacks
       const failureRate = card.cardMetadata.ubelFailureRate ?? 0;
-      switch (character.additionalMetadata.sureHit) {
+      switch (character.additionalMetadata.ubelSureHit) {
         case UbelHit.Regular:
           playOffensiveCard(
             game,
@@ -260,6 +260,6 @@ export const Ubel = new CharacterData({
     ignoreManaSuppressed: false,
     defenseDamageReduction: 0,
     pierceFactor: PIERCE_FACTOR,
-    sureHit: UbelHit.Regular,
+    ubelSureHit: UbelHit.Regular,
   },
 });

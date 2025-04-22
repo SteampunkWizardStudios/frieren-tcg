@@ -5,6 +5,7 @@ import CommonCardAction from "../util/commonCardActions";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import Game from "../game";
 
 export const imitate = new Card({
   title: "Imitate",
@@ -74,6 +75,47 @@ export const adapt = new Card({
   },
 });
 
+export const manaDetectionBaseCardAction = function (
+  this: Card,
+  game: Game,
+  characterIndex: number,
+  messageCache: MessageCache
+) {
+  const character = game.getCharacter(characterIndex);
+  messageCache.push(
+    `${character.name} detects the opponent's mana flow.`,
+    TCGThread.Gameroom
+  );
+
+  const opponent = game.getCharacter(1 - characterIndex);
+  character.adjustStat(
+    this.calculateEffectValue(this.effects[0]),
+    StatsEnum.SPD
+  );
+
+  const bigNumber = this.calculateEffectValue(this.effects[1]);
+  const smallNumber = this.calculateEffectValue(this.effects[2]);
+
+  if (opponent.stats.stats.DEF >= opponent.stats.stats.ATK) {
+    character.adjustStat(bigNumber, StatsEnum.ATK);
+    character.adjustStat(smallNumber, StatsEnum.DEF);
+  } else {
+    character.adjustStat(smallNumber, StatsEnum.ATK);
+    character.adjustStat(bigNumber, StatsEnum.DEF);
+  }
+
+  // reveal empower
+  const currentHighestEmpoweredCard = opponent.hand.reduce(
+    (highest, card) =>
+      card.empowerLevel > highest.empowerLevel ? card : highest,
+    opponent.hand[0]
+  );
+  messageCache.push(
+    `### ${opponent.name} is concentrating ${opponent.cosmetic.pronouns.possessive} power on the move **${currentHighestEmpoweredCard.getTitle()}**!`,
+    TCGThread.Gameroom
+  );
+};
+
 export const manaDetection = new Card({
   title: "Mana Detection",
   cardMetadata: { nature: Nature.Util },
@@ -81,41 +123,7 @@ export const manaDetection = new Card({
     `SPD+${spd}. If Opp's DEF >= Opp's ATK, ATK+${bigNumber}, DEF+${smallNumber}. Otherwise, ATK+${smallNumber}, DEF+${bigNumber}. Reveal the opponent's highest empowered card.`,
   emoji: CardEmoji.MANA_CARD,
   effects: [2, 2, 1],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} detects the opponent's mana flow.`,
-      TCGThread.Gameroom
-    );
-
-    const opponent = game.getCharacter(1 - characterIndex);
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.SPD
-    );
-
-    const bigNumber = this.calculateEffectValue(this.effects[1]);
-    const smallNumber = this.calculateEffectValue(this.effects[2]);
-
-    if (opponent.stats.stats.DEF >= opponent.stats.stats.ATK) {
-      character.adjustStat(bigNumber, StatsEnum.ATK);
-      character.adjustStat(smallNumber, StatsEnum.DEF);
-    } else {
-      character.adjustStat(smallNumber, StatsEnum.ATK);
-      character.adjustStat(bigNumber, StatsEnum.DEF);
-    }
-
-    // reveal empower
-    const currentHighestEmpoweredCard = opponent.hand.reduce(
-      (highest, card) =>
-        card.empowerLevel > highest.empowerLevel ? card : highest,
-      opponent.hand[0]
-    );
-    messageCache.push(
-      `### ${opponent.name} is concentrating ${opponent.cosmetic.pronouns.possessive} power on the move **${currentHighestEmpoweredCard.getTitle()}**!`,
-      TCGThread.Gameroom
-    );
-  },
+  cardAction: manaDetectionBaseCardAction,
 });
 
 const parry = new Card({

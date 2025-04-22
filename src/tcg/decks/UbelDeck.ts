@@ -201,7 +201,7 @@ const recompose = new Card({
   },
 });
 
-const defend = new Card({
+export const defend = new Card({
   title: "Defend",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>

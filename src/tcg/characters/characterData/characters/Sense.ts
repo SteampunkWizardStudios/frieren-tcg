@@ -47,13 +47,14 @@ export const Sense = new CharacterData({
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
       if ("TeaTime" in card.tags) {
-        character.additionalMetadata.teaTimeStacks! += card.tags["TeaTime"];
-        if (character.additionalMetadata.teaTimeStacks! >= 2) {
+        character.additionalMetadata.senseTeaTimeStacks! +=
+          card.tags["TeaTime"];
+        if (character.additionalMetadata.senseTeaTimeStacks! >= 2) {
           messageCache.push(
             "Sense holds a tea party! Both characters take a turn to enjoy the tea.",
             TCGThread.Gameroom
           );
-          character.additionalMetadata.teaTimeStacks! -= 2;
+          character.additionalMetadata.senseTeaTimeStacks! -= 2;
           character.skipTurn = true;
           opponent.skipTurn = true;
         }
@@ -85,7 +86,7 @@ export const Sense = new CharacterData({
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
     ignoreManaSuppressed: false,
-    teaTimeStacks: 0,
+    senseTeaTimeStacks: 0,
     defenseDamageReduction: 0,
   },
 });

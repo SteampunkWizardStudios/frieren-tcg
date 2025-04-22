@@ -1,14 +1,9 @@
 import { CharacterData } from "../characterData";
 import Stats from "../../../stats";
 import { StatsEnum } from "../../../stats";
-import { frierenDeck } from "../../../decks/FrierenDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import TimedEffect from "../../../timedEffect";
-import Game from "../../../game";
-import Card from "../../../card";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import { fernDeck } from "@src/tcg/decks/FernDeck";
 
 const imageUrl: Record<string, string> = {
   icon: "https://static.wikia.nocookie.net/frieren/images/6/65/Fern_anime_portrait.png/revision/latest?cb=20231017083448",
@@ -34,7 +29,7 @@ export const Fern = new CharacterData({
     imageUrl: imageUrl.icon,
   },
   stats: fernStats,
-  cards: frierenDeck,
+  cards: fernDeck,
   ability: {
     abilityName: "Prodigy",
     abilityEffectString: `One random card in your hand gets empowered every turn.
@@ -66,5 +61,7 @@ export const Fern = new CharacterData({
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
     defenseDamageReduction: 0,
+    fernBarrage: 0,
+    fernManaConcealment: false,
   },
 });

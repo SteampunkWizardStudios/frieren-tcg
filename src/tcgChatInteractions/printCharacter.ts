@@ -35,10 +35,16 @@ export const printCharacter = (
       `**Mana Suppression**: ${character.name} suppresses ${character.cosmetic.pronouns.possessive} mana - ${character.cosmetic.pronouns.possessive} HP is hidden.`
     );
   }
-  if (character.additionalMetadata.teaTimeStacks) {
+  if (character.additionalMetadata.senseTeaTimeStacks) {
     printStack.push(
-      `**Tea Time Snacks**: ${character.additionalMetadata.teaTimeStacks}`
+      `**Tea Time Snacks**: ${character.additionalMetadata.senseTeaTimeStacks}`
     );
+  }
+  if (
+    character.additionalMetadata.fernBarrage &&
+    character.additionalMetadata.fernBarrage > 0
+  ) {
+    printStack.push(`**Barrage**: ${character.additionalMetadata.fernBarrage}`);
   }
   if (character.timedEffects.length > 0) {
     printStack.push(`**Timed effects:**`);
