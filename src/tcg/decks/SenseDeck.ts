@@ -58,16 +58,32 @@ export const harden = new Card({
 export const rest = new Card({
   title: "Rest",
   cardMetadata: { nature: Nature.Util },
-  description: ([hp]) => `DEF-2. Heal ${hp} HP`,
+  description: ([hp]) => `DEF-2 for 2 turns. Heal ${hp} HP`,
   effects: [10],
   emoji: CardEmoji.HEART,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} rests up.`, TCGThread.Gameroom);
+
     character.adjustStat(-2, StatsEnum.DEF);
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
       StatsEnum.HP
+    );
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Rest",
+        description: `DEF-2 for 2 turns`,
+        turnDuration: 2,
+        endOfTimedEffectAction: (game, characterIndex, messageCache) => {
+          messageCache.push(
+            `${character.name} had a good rest.`,
+            TCGThread.Gameroom
+          );
+          game.characters[characterIndex].adjustStat(2, StatsEnum.DEF);
+        },
+      })
     );
   },
 });

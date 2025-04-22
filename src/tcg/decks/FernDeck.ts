@@ -6,7 +6,7 @@ import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 import { manaDetection, manaDetectionBaseCardAction } from "./LinieDeck";
 
-const a_fernZoltraakBase = new Card({
+export const a_fernZoltraakBase = new Card({
   title: "Zoltraak",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `HP-3. DMG ${dmg}. Gain 1 Barrage count.`,
@@ -43,7 +43,7 @@ const a_fernZoltraak = new Card({
   },
 });
 
-const a_fernBarrageBase = new Card({
+export const a_fernBarrageBase = new Card({
   title: "Barrage",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
@@ -207,7 +207,7 @@ const manaConcealment = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
-      `${character.name} conceals her presence.`,
+      `${character.name} conceals ${character.cosmetic.pronouns.possessive} presence.`,
       TCGThread.Gameroom
     );
 

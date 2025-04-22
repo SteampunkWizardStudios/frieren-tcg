@@ -1,95 +1,154 @@
 import Card, { Nature } from "../card";
 import {
-  serie_offensiveMagic,
-  serie_utilityMagic,
+  serie_offensiveMagic_common,
+  serie_offensiveMagic_rare,
+  serie_offensiveMagic_unusual,
+  serie_utilityMagic_recovery,
+  serie_utilityMagic_tactics,
 } from "./utilDecks/serieMagic";
 import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import { fieldOfFlower } from "./FrierenDeck";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import Game from "../game";
 
-export const a_livingGrimoireOffensive = new Card({
-  title: "Living Grimoire: Offense Chapter",
+const useRandomCard = function (props: {
+  cardPool: Card[];
+  empowerLevel: number;
+  game: Game;
+  characterIndex: number;
+  messageCache: MessageCache;
+}): Card {
+  const { cardPool, empowerLevel, game, characterIndex, messageCache } = props;
+
+  const character = game.getCharacter(characterIndex);
+  messageCache.push(
+    `${character.name} found an interesting magic.`,
+    TCGThread.Gameroom
+  );
+
+  const baseCard = cardPool[Math.floor(Math.random() * cardPool.length)];
+  const newCard = new Card({
+    ...baseCard,
+    empowerLevel,
+  });
+
+  messageCache.push(
+    `${character.name} used **${newCard.getTitle()}**.`,
+    TCGThread.Gameroom
+  );
+  return newCard;
+};
+
+export const a_livingGrimoireOffenseCommon = new Card({
+  title: "Living Grimoire: Offense Chapter. Common Magic Section",
   cardMetadata: { nature: Nature.Attack },
-  description: () => "Use a random offensive magic.",
+  description: () => "Use a random common offensive magic.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
-      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=67df98ad&is=67de472d&hm=4e4a0d4882573e7b51f3eacc7fcdd5e77d515168b05e319b221b368a9cfe2d67&",
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
   },
   effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} found an interesting magic.`,
-      TCGThread.Gameroom
-    );
-
-    const baseCard =
-      serie_offensiveMagic[
-        Math.floor(Math.random() * serie_offensiveMagic.length)
-      ];
-    const newCard = new Card({
-      ...baseCard,
+    const newCard = useRandomCard({
+      cardPool: serie_offensiveMagic_common,
       empowerLevel: this.empowerLevel,
+      game,
+      characterIndex,
+      messageCache,
     });
-
-    messageCache.push(
-      `${character.name} used **${newCard.getTitle()}**.`,
-      TCGThread.Gameroom
-    );
     newCard.cardAction(game, characterIndex, messageCache);
   },
 });
 
-export const a_livingGrimoireUtility = new Card({
-  title: "Living Grimoire: Utility Chapter",
+export const a_livingGrimoireOffenseRare = new Card({
+  title: "Living Grimoire: Offense Chapter. Rare Magic Section",
+  cardMetadata: { nature: Nature.Attack },
+  description: () => "Use a random rare offensive magic.",
+  emoji: CardEmoji.SERIE_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015121150022/Living_Grimoire1_1.png?ex=6808772d&is=680725ad&hm=903c0f575a5857d8527c631c5b4ef5fbf6ff9140ea44ea0a4f5ad7c6433a92a6&",
+  },
+  effects: [],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const newCard = useRandomCard({
+      cardPool: serie_offensiveMagic_rare,
+      empowerLevel: this.empowerLevel,
+      game,
+      characterIndex,
+      messageCache,
+    });
+    newCard.cardAction(game, characterIndex, messageCache);
+  },
+});
+
+export const a_livingGrimoireOffenseUnusual = new Card({
+  title: "Living Grimoire: Offense Chapter. Unusual Magic Section",
+  cardMetadata: { nature: Nature.Attack },
+  description: () => "Use a random unusual offensive magic.",
+  emoji: CardEmoji.SERIE_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015825924147/Living_Grimoire2_1.png?ex=6808772e&is=680725ae&hm=63b0595c68a10b5d7c4246e4747f43fc61b292a95577b3c00b479ef11320ac58&",
+  },
+  effects: [],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const newCard = useRandomCard({
+      cardPool: serie_offensiveMagic_unusual,
+      empowerLevel: this.empowerLevel,
+      game,
+      characterIndex,
+      messageCache,
+    });
+    newCard.cardAction(game, characterIndex, messageCache);
+  },
+});
+
+export const a_livingGrimoireUtilityTactics = new Card({
+  title: "Living Grimoire: Utility Chapter. Tactics Section.",
   cardMetadata: { nature: Nature.Util },
-  description: () => "Use a random utility magic.",
+  description: () => "Use a random stats adjusting utility magic.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
-      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=67df98ad&is=67de472d&hm=4e4a0d4882573e7b51f3eacc7fcdd5e77d515168b05e319b221b368a9cfe2d67&",
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
   },
   effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} found an interesting magic.`,
-      TCGThread.Gameroom
-    );
-
-    const baseCard =
-      serie_utilityMagic[Math.floor(Math.random() * serie_utilityMagic.length)];
-    const newCard = new Card({
-      ...baseCard,
+    const newCard = useRandomCard({
+      cardPool: serie_utilityMagic_tactics,
       empowerLevel: this.empowerLevel,
+      game,
+      characterIndex,
+      messageCache,
     });
-
-    messageCache.push(
-      `${character.name} used **${newCard.getTitle()}**.`,
-      TCGThread.Gameroom
-    );
     newCard.cardAction(game, characterIndex, messageCache);
   },
 });
 
-export const a_livingGrimoireOffensive1 = new Card({
-  ...a_livingGrimoireOffensive,
+export const a_livingGrimoireUtilityRecovery = new Card({
+  title: "Living Grimoire: Utility Chapter. Recovery Section.",
+  cardMetadata: { nature: Nature.Util },
+  description: () => "Use a random HP recovery utility magic.",
+  emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
-      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015121150022/Living_Grimoire1_1.png?ex=67df98ad&is=67de472d&hm=db27a11288f3168c98e39af2a3351c777dd280922231f3d422f7f397041b5bbd&",
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
   },
-  empowerLevel: 1,
-});
-
-const a_livingGrimoireOffensive2 = new Card({
-  ...a_livingGrimoireOffensive,
-  empowerLevel: 2,
-  cosmetic: {
-    cardImageUrl:
-      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015825924147/Living_Grimoire2_1.png?ex=67df98ae&is=67de472e&hm=e92e90b0be578e1e09fcfa9d0b9f07af1920f96ca6a66703b20e5360990ebf5c&",
+  effects: [],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const newCard = useRandomCard({
+      cardPool: serie_utilityMagic_recovery,
+      empowerLevel: this.empowerLevel,
+      game,
+      characterIndex,
+      messageCache,
+    });
+    newCard.cardAction(game, characterIndex, messageCache);
   },
 });
 
@@ -256,10 +315,11 @@ export const ancientBarrierMagic = new Card({
 });
 
 export const serieDeck = [
-  { card: a_livingGrimoireOffensive, count: 2 },
-  { card: a_livingGrimoireOffensive1, count: 2 },
-  { card: a_livingGrimoireOffensive2, count: 2 },
-  { card: a_livingGrimoireUtility, count: 2 },
+  { card: a_livingGrimoireOffenseCommon, count: 3 },
+  { card: a_livingGrimoireOffenseRare, count: 2 },
+  { card: a_livingGrimoireOffenseUnusual, count: 1 },
+  { card: a_livingGrimoireUtilityTactics, count: 1 },
+  { card: a_livingGrimoireUtilityRecovery, count: 1 },
   { card: fieldOfFlower, count: 1 },
   { card: mock, count: 2 },
   { card: basicDefensiveMagic, count: 2 },

@@ -10,7 +10,7 @@ import { a_malevolentShrine } from "./utilDecks/ubelSignature";
 
 export const empathyFailureName = "Stalking";
 
-const a_reelseiden = new Card({
+export const a_reelseiden = new Card({
   title: "Reelseiden",
   description: ([dmg]) =>
     `HP-4 Has a 20% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
@@ -40,7 +40,7 @@ const a_reelseiden = new Card({
   },
 });
 
-const a_cleave = new Card({
+export const a_cleave = new Card({
   title: "Cleave",
   description: ([dmg]) =>
     `HP-6. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
@@ -67,7 +67,7 @@ const a_cleave = new Card({
   },
 });
 
-const a_dismantle = new Card({
+export const a_dismantle = new Card({
   title: "Dismantle",
   description: ([dmg]) =>
     `HP-8. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
@@ -236,7 +236,7 @@ export const sorganeil = new Card({
   title: "Sorganeil",
   cardMetadata: { nature: Nature.Util },
   description: () =>
-    `Priority-1. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
+    `Priority-2. Clear opponent's timed effects. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
   emoji: CardEmoji.UBEL_CARD,
   priority: -2,
   effects: [],
@@ -245,7 +245,7 @@ export const sorganeil = new Card({
     const opponent = game.getCharacter(1 - characterIndex);
     opponent.skipTurn = true;
     messageCache.push(
-      `${opponent.name} got trapped in ${character.name}'s gaze!`,
+      `${character.name} traps ${opponent.name} in ${character.name}'s gaze!`,
       TCGThread.Gameroom
     );
     const opponentEffectsList = opponent.timedEffects;
@@ -258,7 +258,7 @@ export const sorganeil = new Card({
         priority: -1,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
-            `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze.`,
+            `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze. ${opponent} got free from ${character.name}'s Sorganeil.`,
             TCGThread.Gameroom
           );
         },
