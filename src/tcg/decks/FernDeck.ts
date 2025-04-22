@@ -237,7 +237,7 @@ export const spellToCreateManaButterflies = new Card({
   title: "Spell to Create Mana Butterflies",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, endHp]) =>
-    `Heal ${hp} HP. At the next 4 turn ends, heal ${endHp}. Reset Barrage count to 0.`,
+    `Heal ${hp} HP. At the next 4 turn ends, heal ${endHp}. Reduce Barrage count by 2.`,
   cosmetic: {
     cardGif: "https://c.tenor.com/B93aR7oWJ4IAAAAC/tenor.gif",
   },
@@ -254,9 +254,13 @@ export const spellToCreateManaButterflies = new Card({
     const endOfTurnHealing = this.calculateEffectValue(this.effects[1]);
     character.adjustStat(initialHealing, StatsEnum.HP);
 
-    character.additionalMetadata.fernBarrage = 0;
+    character.additionalMetadata.fernBarrage ??= 0;
+    character.additionalMetadata.fernBarrage = Math.max(
+      0,
+      character.additionalMetadata.fernBarrage - 2
+    );
     messageCache.push(
-      `${character.name}'s Barrage count is set to 0.'`,
+      `${character.name} lost 2 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
       TCGThread.Gameroom
     );
 
@@ -287,7 +291,7 @@ export const commonDefensiveMagic = new Card({
   title: "Common Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn. Reset Barrage count to 0.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn. Reduce Barrage count by 2.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [20],
   priority: 2,
@@ -300,9 +304,14 @@ export const commonDefensiveMagic = new Card({
 
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
-    character.additionalMetadata.fernBarrage = 0;
+
+    character.additionalMetadata.fernBarrage ??= 0;
+    character.additionalMetadata.fernBarrage = Math.max(
+      0,
+      character.additionalMetadata.fernBarrage - 2
+    );
     messageCache.push(
-      `${character.name}'s Barrage count is set to 0.'`,
+      `${character.name} lost 2 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
       TCGThread.Gameroom
     );
 
