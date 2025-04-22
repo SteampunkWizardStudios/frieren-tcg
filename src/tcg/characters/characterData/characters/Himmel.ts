@@ -60,6 +60,7 @@ export const Himmel = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
+    ignoreManaSuppressed: false,
     himmelEisenReadyToCounter: false,
     defenseDamageReduction: 0,
   },

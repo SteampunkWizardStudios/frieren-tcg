@@ -96,6 +96,15 @@ export const tcgMain = async (
     ],
     messageCache
   );
+
+  // update manaSuppression
+  game.characters.forEach((character: Character, characterIndex: number) => {
+    const opponent = game.getCharacter(1 - characterIndex);
+    if (opponent.additionalMetadata.ignoreManaSuppressed) {
+      character.additionalMetadata.manaSuppressed = false;
+    }
+  });
+
   game.gameStart();
 
   // game loop

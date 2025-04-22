@@ -56,6 +56,7 @@ export const Stark = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
+    ignoreManaSuppressed: false,
     defenseDamageReduction: 0,
   },
 });

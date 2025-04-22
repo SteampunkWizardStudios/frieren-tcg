@@ -257,6 +257,7 @@ export const Ubel = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
+    ignoreManaSuppressed: false,
     defenseDamageReduction: 0,
     pierceFactor: PIERCE_FACTOR,
     sureHit: UbelHit.Regular,

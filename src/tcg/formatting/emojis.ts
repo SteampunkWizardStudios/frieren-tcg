@@ -25,6 +25,7 @@ export enum CharacterEmoji {
   DENKEN = "<:DenkenOld:1198339325436371074>",
   HIMMEL = "<:HimmelCharming:1185700266452992010>",
   UBEL = "<:UbelSnipsnip:1140592823243112468>",
+  FERN = "<:FernThink:1179413599739986012>",
 
   STONE_GEISEL = "🐦‍⬛",
   FIRE_GOLEM = "❤️‍🔥",
@@ -51,6 +52,7 @@ export const characterNameToEmoji: Record<CharacterName, CharacterEmoji> = {
   [CharacterName.Denken]: CharacterEmoji.DENKEN,
   [CharacterName.Himmel]: CharacterEmoji.HIMMEL,
   [CharacterName.Ubel]: CharacterEmoji.UBEL,
+  [CharacterName.Fern]: CharacterEmoji.FERN,
 };
 
 export enum CardEmoji {

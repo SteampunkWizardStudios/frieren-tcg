@@ -10,4 +10,5 @@ export enum CharacterName {
   Denken = "Denken",
   Himmel = "Himmel",
   Ubel = "Übel",
+  Fern = "Fern",
 }

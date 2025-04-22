@@ -62,6 +62,7 @@ export const Laufen = new CharacterData({
   },
   additionalMetadata: {
     manaSuppressed: false,
+    ignoreManaSuppressed: false,
     attackedThisTurn: false,
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,

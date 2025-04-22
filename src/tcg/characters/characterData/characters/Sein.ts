@@ -72,6 +72,7 @@ export const Sein = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
+    ignoreManaSuppressed: false,
     overheal: true,
     defenseDamageReduction: 0,
   },

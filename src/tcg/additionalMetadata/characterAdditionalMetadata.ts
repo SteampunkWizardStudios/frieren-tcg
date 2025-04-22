@@ -1,11 +1,3 @@
-/* export interface CharacterAdditionalMetadataProps {
-  manaSuppressed: boolean;
-  attackedThisTurn: boolean;
-  timedEffectAttackedThisTurn: boolean;
-  teaTimeStacks?: number;
-  overheal?: boolean;
-} */
-
 export enum UbelHit {
   SureHit = "sureHit",
   SureMiss = "sureMiss",
@@ -14,6 +6,7 @@ export enum UbelHit {
 
 export type CharacterAdditionalMetadata = {
   manaSuppressed: boolean;
+  ignoreManaSuppressed: boolean;
   attackedThisTurn: boolean;
   timedEffectAttackedThisTurn: boolean;
   accessToDefaultCardOptions: boolean;

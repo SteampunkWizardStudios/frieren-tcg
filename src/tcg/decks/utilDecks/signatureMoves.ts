@@ -24,4 +24,5 @@ export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Stark]: a_lightningStrike,
   [CharacterName.Stille]: a_geisel,
   [CharacterName.Ubel]: a_malevolentShrine,
+  [CharacterName.Fern]: a_theHeightOfMagicBase,
 };

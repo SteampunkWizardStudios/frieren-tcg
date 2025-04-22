@@ -51,7 +51,9 @@ export const Serie = new CharacterData({
   ability: {
     abilityName: "Toying Around",
     abilityEffectString: `Any attack used by this character has its DMG+${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%. 
-      The turn after this character performs any attack, DMG-${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%.`,
+      The turn after this character performs any attack, DMG-${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%.
+
+      **Sub-Ability: Keen Eye** - See past the opponent's Mana Suppression.`,
     abilityStartOfTurnEffect(game, characterIndex, messageCache) {
       const character = game.getCharacter(characterIndex);
       if (character.additionalMetadata.serieToyingNextTurn) {
@@ -87,6 +89,7 @@ export const Serie = new CharacterData({
   },
   additionalMetadata: {
     manaSuppressed: true,
+    ignoreManaSuppressed: true,
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,

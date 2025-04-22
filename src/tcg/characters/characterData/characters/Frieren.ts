@@ -55,11 +55,13 @@ export const Frieren = new CharacterData({
         Whenever an "Analysis" move is used, gain 2 Analysis stacks.
         When an attack is used, its damage is increased by ${(ANALYSIS_BOOST * 100).toFixed(2)}% * the number of Analysis stacks.
         After an attack is used, Analysis stacks is reset to 0.
-        A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.`,
+        A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.
+
+        **Sub-Ability: Keen Eye** - See past the opponent's Mana Suppression.`,
     abilityAfterOwnCardUse: function (
       game: Game,
       characterIndex: number,
-      messageCache: MessageCache,
+      _messageCache: MessageCache,
       card: Card
     ) {
       const character = game.getCharacter(characterIndex);
@@ -118,6 +120,7 @@ export const Frieren = new CharacterData({
   },
   additionalMetadata: {
     manaSuppressed: true,
+    ignoreManaSuppressed: true,
     attackedThisTurn: false,
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,

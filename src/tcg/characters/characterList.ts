@@ -11,6 +11,7 @@ import { Denken } from "./characterData/characters/Denken";
 import { Himmel } from "./characterData/characters/Himmel";
 import { Ubel } from "./characterData/characters/Ubel";
 import { CharacterName } from "./metadata/CharacterName";
+import { Fern } from "./characterData/characters/Fern";
 
 export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
   [CharacterName.Frieren]: Frieren,
@@ -24,6 +25,7 @@ export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
   [CharacterName.Denken]: Denken,
   [CharacterName.Himmel]: Himmel,
   [CharacterName.Ubel]: Ubel,
+  [CharacterName.Fern]: Fern,
 } as const;
 
 export const CHARACTER_LIST: CharacterData[] = Object.values(CHARACTER_MAP);
