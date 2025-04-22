@@ -116,14 +116,15 @@ const a_fernConcentratedZoltraakSnipe = new Card({
     );
 
     const singleDamage = this.calculateEffectValue(this.effects[0]);
-    const barrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 1;
+    const newBarrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 1;
+    character.additionalMetadata.fernBarrage = newBarrageCount;
     messageCache.push(
       `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
       TCGThread.Gameroom
     );
 
     CommonCardAction.commonAttack(game, characterIndex, {
-      damage: singleDamage * barrageCount,
+      damage: singleDamage * newBarrageCount,
       hpCost: 12,
     });
 
