@@ -94,8 +94,6 @@ export default class Character {
   playCard(handIndex: number): Card {
     const discardedCard = this.discardCard(handIndex);
 
-    const card = this.hand[handIndex];
-
     // empower remaining cards
     this.empowerHand();
 

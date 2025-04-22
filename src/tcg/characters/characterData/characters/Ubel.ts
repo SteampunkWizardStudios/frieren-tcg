@@ -50,7 +50,7 @@ function missAttack(
 
   const hpCost = card.hpCost;
   game.getCharacter(characterIndex).adjustStat(-hpCost, StatsEnum.HP);
-  messageCache.push("The attack misses!", TCGThread.Gameroom);
+  messageCache.push("The attack cannot connect!", TCGThread.Gameroom);
 }
 
 function attackWhileRecomposing(
@@ -170,7 +170,7 @@ export const Ubel = new CharacterData({
     },
 
     // new turn surehit effect changes
-    abilityStartOfTurnEffect: function (game, characterIndex, messageCache) {
+    abilityStartOfTurnEffect: function (game, characterIndex, _messageCache) {
       const character = game.getCharacter(characterIndex);
       const effects = character.timedEffects.map((effect) => effect.name);
       const activeEffects = checkForEffects(effects);

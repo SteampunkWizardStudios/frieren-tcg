@@ -15,7 +15,7 @@ export const command: Command<ChatInputCommandInteraction> = {
     .addIntegerOption((option) =>
       option
         .setName("turn-duration-seconds")
-        .setDescription("The turn duration in seconds")
+        .setDescription("The turn duration in seconds. Min: 1. Max: 300")
         .setRequired(true)
     )
     .addBooleanOption((option) =>
@@ -38,8 +38,13 @@ export const command: Command<ChatInputCommandInteraction> = {
 
   async execute(interaction: ChatInputCommandInteraction) {
     try {
-      const turnDurationSeconds =
-        interaction.options.getInteger("turn-duration-seconds") ?? 45;
+      const turnDurationSeconds = Math.max(
+        Math.min(
+          interaction.options.getInteger("turn-duration-seconds") ?? 45,
+          300
+        ),
+        1
+      );
       const revealHand = interaction.options.getBoolean("reveal-hand") ?? false;
       const revealDraw =
         interaction.options.getBoolean("reveal-active-card") ?? false;

@@ -20,5 +20,4 @@ export type CharacterAdditionalMetadata = {
   himmelEisenReadyToCounter?: boolean;
   ubelSureHit?: UbelHit;
   fernBarrage?: number;
-  fernManaConcealment?: boolean;
 };

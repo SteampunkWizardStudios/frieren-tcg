@@ -6,7 +6,7 @@ import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 import { manaDetection, manaDetectionBaseCardAction } from "./LinieDeck";
 
-export const a_fernZoltraakBase = new Card({
+export const a_fernZoltraak = new Card({
   title: "Zoltraak",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `HP-3. DMG ${dmg}. Gain 1 Barrage count.`,
@@ -19,31 +19,16 @@ export const a_fernZoltraakBase = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     character.additionalMetadata.fernBarrage =
       (character.additionalMetadata.fernBarrage ?? 0) + 1;
+    messageCache.push(
+      `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+      TCGThread.Gameroom
+    );
 
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
   },
 });
 
-const a_fernZoltraak = new Card({
-  ...a_fernZoltraakBase,
-  cardAction: () => {},
-  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
-    const character = game.characters[characterIndex];
-
-    if (character.additionalMetadata.fernManaConcealment) {
-      return new Card({
-        ...a_fernZoltraakBase,
-        priority: 1,
-        description: ([dmg]) =>
-          `Priority+1. HP-3. DMG ${dmg}. Gain 1 Barrage count.`,
-      });
-    } else {
-      return a_fernZoltraakBase;
-    }
-  },
-});
-
-export const a_fernBarrageBase = new Card({
+export const a_fernBarrage = new Card({
   title: "Barrage",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
@@ -63,6 +48,10 @@ export const a_fernBarrageBase = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     const newBarrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 1;
     character.additionalMetadata.fernBarrage = newBarrageCount;
+    messageCache.push(
+      `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+      TCGThread.Gameroom
+    );
 
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
 
@@ -86,6 +75,10 @@ export const a_fernBarrageBase = new Card({
               TCGThread.Gameroom
             );
             character.additionalMetadata.fernBarrage -= 1;
+            messageCache.push(
+              `${character.name} lost 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+              TCGThread.Gameroom
+            );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
               hpCost: 3,
@@ -104,26 +97,7 @@ export const a_fernBarrageBase = new Card({
   },
 });
 
-const a_fernBarrage = new Card({
-  ...a_fernBarrageBase,
-  cardAction: () => {},
-  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
-    const character = game.characters[characterIndex];
-
-    if (character.additionalMetadata.fernManaConcealment) {
-      return new Card({
-        ...a_fernBarrageBase,
-        priority: 1,
-        description: ([dmg]) =>
-          `Priority+1. HP-3. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-3, deal ${dmg} DMG, until Barrage count reaches 0.`,
-      });
-    } else {
-      return a_fernBarrageBase;
-    }
-  },
-});
-
-const a_fernConcentratedZoltraakSnipeBase = new Card({
+const a_fernConcentratedZoltraakSnipe = new Card({
   title: "Concentrated Zoltraak Snipe",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
@@ -139,6 +113,10 @@ const a_fernConcentratedZoltraakSnipeBase = new Card({
 
     const singleDamage = this.calculateEffectValue(this.effects[0]);
     const barrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 1;
+    messageCache.push(
+      `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+      TCGThread.Gameroom
+    );
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: singleDamage * barrageCount,
@@ -146,25 +124,10 @@ const a_fernConcentratedZoltraakSnipeBase = new Card({
     });
 
     character.additionalMetadata.fernBarrage = 0;
-  },
-});
-
-const a_fernConcentratedZoltraakSnipe = new Card({
-  ...a_fernConcentratedZoltraakSnipeBase,
-  cardAction: () => {},
-  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
-    const character = game.characters[characterIndex];
-
-    if (character.additionalMetadata.fernManaConcealment) {
-      return new Card({
-        ...a_fernConcentratedZoltraakSnipeBase,
-        priority: 1,
-        description: ([dmg]) =>
-          `Priority+1. HP-12, Barrage count +1. Afterwards, deal ${dmg} DMG x Barrage count. Reset Barrage count to 0.`,
-      });
-    } else {
-      return a_fernConcentratedZoltraakSnipeBase;
-    }
+    messageCache.push(
+      `${character.name}'s barrage count is set to 0.`,
+      TCGThread.Gameroom
+    );
   },
 });
 
@@ -194,10 +157,14 @@ const disapprovingPout = new Card({
 
     character.additionalMetadata.fernBarrage =
       (character.additionalMetadata.fernBarrage ?? 0) + 1;
+    messageCache.push(
+      `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+      TCGThread.Gameroom
+    );
   },
 });
 
-const manaConcealment = new Card({
+export const manaConcealment = new Card({
   title: "Mana Concealment",
   cardMetadata: { nature: Nature.Util },
   description: ([atk]) =>
@@ -217,6 +184,35 @@ const manaConcealment = new Card({
     );
     character.additionalMetadata.fernBarrage =
       (character.additionalMetadata.fernBarrage ?? 0) + 1;
+    messageCache.push(
+      `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+      TCGThread.Gameroom
+    );
+    character.ability.abilitySelectedMoveModifierEffect = function (
+      _game,
+      _characterIndex,
+      _messageCache,
+      selectedCard
+    ) {
+      if (selectedCard.cardMetadata.nature === Nature.Attack) {
+        selectedCard.priority = 1;
+      }
+    };
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Mana Concealment",
+        description: `Attacking moves receive Priority+1`,
+        turnDuration: 2,
+        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
+          messageCache.push(
+            `${character.name} unveiled ${character.cosmetic.pronouns.possessive} presence.`,
+            TCGThread.Gameroom
+          );
+          character.ability.abilitySelectedMoveModifierEffect = undefined;
+        },
+      })
+    );
   },
 });
 
@@ -230,6 +226,10 @@ export const fernManaDetection = new Card({
     const character = game.getCharacter(characterIndex);
     character.additionalMetadata.fernBarrage =
       (character.additionalMetadata.fernBarrage ?? 0) + 1;
+    messageCache.push(
+      `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+      TCGThread.Gameroom
+    );
   },
 });
 
@@ -255,6 +255,10 @@ export const spellToCreateManaButterflies = new Card({
     character.adjustStat(initialHealing, StatsEnum.HP);
 
     character.additionalMetadata.fernBarrage = 0;
+    messageCache.push(
+      `${character.name}'s Barrage count is set to 0.'`,
+      TCGThread.Gameroom
+    );
 
     character.timedEffects.push(
       new TimedEffect({
@@ -297,6 +301,10 @@ export const commonDefensiveMagic = new Card({
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
     character.additionalMetadata.fernBarrage = 0;
+    messageCache.push(
+      `${character.name}'s Barrage count is set to 0.'`,
+      TCGThread.Gameroom
+    );
 
     character.timedEffects.push(
       new TimedEffect({

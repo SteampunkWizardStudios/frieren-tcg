@@ -11,6 +11,7 @@ import { ancientBarrierMagic } from "../SerieDeck";
 import { a_lightningStrike } from "../StarkDeck";
 import { a_geisel } from "../StilleDeck";
 import { a_malevolentShrine } from "./ubelSignature";
+import { spellToCreateManaButterflies } from "../FernDeck";
 
 export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Denken]: a_catastraviaBase,
@@ -24,5 +25,5 @@ export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Stark]: a_lightningStrike,
   [CharacterName.Stille]: a_geisel,
   [CharacterName.Ubel]: a_malevolentShrine,
-  [CharacterName.Fern]: a_theHeightOfMagicBase,
+  [CharacterName.Fern]: spellToCreateManaButterflies,
 };

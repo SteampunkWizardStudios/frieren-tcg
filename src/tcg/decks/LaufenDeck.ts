@@ -108,7 +108,7 @@ export const hide = new Card({
     );
 
     character.adjustStat(
-      this.calculateEffectValue(this.effects[2]),
+      this.calculateEffectValue(this.effects[1]),
       StatsEnum.HP
     );
   },
@@ -128,7 +128,7 @@ export const a_supersonicStrike = new Card({
     );
 
     const damage =
-      this.calculateEffectValue(this.effects[1]) +
+      this.calculateEffectValue(this.effects[0]) +
       character.stats.stats.SPD / 4;
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 7 });
   },

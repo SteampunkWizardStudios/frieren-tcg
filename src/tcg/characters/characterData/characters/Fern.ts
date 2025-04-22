@@ -34,6 +34,7 @@ export const Fern = new CharacterData({
     abilityName: "Prodigy",
     abilityEffectString: `One random card in your hand gets empowered every turn.
 
+    **Sub-Ability: Mana Suppression** - Hide the amount of HP this character has.
     **Sub-Ability: Keen Eye** - See past the opponent's Mana Suppression.`,
     abilityStartOfTurnEffect(
       game,
@@ -62,6 +63,5 @@ export const Fern = new CharacterData({
     timedEffectAttackedThisTurn: false,
     defenseDamageReduction: 0,
     fernBarrage: 0,
-    fernManaConcealment: false,
   },
 });

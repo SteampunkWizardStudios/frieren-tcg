@@ -13,7 +13,7 @@ export const empathyFailureName = "Stalking";
 export const a_reelseiden = new Card({
   title: "Reelseiden",
   description: ([dmg]) =>
-    `HP-4 Has a 20% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-4. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [8],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 20 },
@@ -43,7 +43,7 @@ export const a_reelseiden = new Card({
 export const a_cleave = new Card({
   title: "Cleave",
   description: ([dmg]) =>
-    `HP-6. Has a 40% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-6. If used by Übel,has a 40% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [12],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 40 },
@@ -55,7 +55,6 @@ export const a_cleave = new Card({
     messageCache: MessageCache
   ) {
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1 - characterIndex);
     const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(`A brutal slash!`, TCGThread.Gameroom);
 
@@ -70,7 +69,7 @@ export const a_cleave = new Card({
 export const a_dismantle = new Card({
   title: "Dismantle",
   description: ([dmg]) =>
-    `HP-8. Has a 60% of missing if the opponent didn't attack last turn. DMG ${dmg}.`,
+    `HP-8. If used by Übel, has a 60% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [16],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 60 },
@@ -137,7 +136,7 @@ export const rushdown = new Card({
           _messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
         },
-        replacedAction: function (this, _game, characterIndex) {
+        replacedAction: function (this, _game, _characterIndex) {
           character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
         },
       })
@@ -150,10 +149,10 @@ export const rushdown = new Card({
 const recompose = new Card({
   title: "Recompose",
   cardMetadata: { nature: Nature.Util },
-  description: ([hp]) =>
-    `SPD-10 for 2 turns. Heal ${hp}HP, then ${0.5 * Number(hp)}HP at the end of each turn.`,
+  description: ([hp, endOfTurnHp]) =>
+    `SPD-10 for 2 turns. Heal ${hp}HP, then ${endOfTurnHp} HP at the end of each turn.`,
   emoji: CardEmoji.UBEL_CARD,
-  effects: [10],
+  effects: [10, 5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -166,13 +165,14 @@ const recompose = new Card({
     const hpIncrease = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(hpIncrease, StatsEnum.HP);
 
+    const endOfTurnHpIncrease = this.calculateEffectValue(this.effects[1]);
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
       "ubelSpeedModifiers",
       new TimedEffect({
         name: "Recompose",
-        description: `Decreases SPD by 10 for ${turnCount} turns. Attacks will not hit`,
+        description: `Decreases SPD by 10 for ${turnCount} turns. Attacks will not hit. Heal ${endOfTurnHpIncrease} at turn end.`,
         turnDuration: turnCount,
         tags: { ubelSpeedModifiers: 1 },
 
@@ -181,7 +181,7 @@ const recompose = new Card({
             `${character.name} took a break and recoups.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(this.effects[0] / 2, StatsEnum.HP);
+          character.adjustStat(endOfTurnHpIncrease, StatsEnum.HP);
         },
 
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
@@ -191,7 +191,7 @@ const recompose = new Card({
           );
           character.adjustStat(10, StatsEnum.SPD);
         },
-        replacedAction: function (this, _game, characterIndex) {
+        replacedAction: function (this, _game, _characterIndex) {
           character.adjustStat(10, StatsEnum.SPD);
         },
       })
@@ -258,7 +258,7 @@ export const sorganeil = new Card({
         priority: -1,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
-            `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze. ${opponent} got free from ${character.name}'s Sorganeil.`,
+            `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze. ${opponent.name} got free from ${character.name}'s Sorganeil.`,
             TCGThread.Gameroom
           );
         },

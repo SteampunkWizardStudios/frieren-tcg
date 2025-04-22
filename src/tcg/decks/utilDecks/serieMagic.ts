@@ -5,8 +5,9 @@ import {
   a_waldgoseBase,
 } from "../DenkenDeck";
 import {
-  a_fernBarrageBase,
-  a_fernZoltraakBase,
+  a_fernBarrage,
+  a_fernZoltraak,
+  manaConcealment,
   spellToCreateManaButterflies,
 } from "../FernDeck";
 import {
@@ -52,7 +53,7 @@ export const serie_offensiveMagic_common = [
   a_trustInYourAllyFrierensZoltraak,
   a_trustInYourAllyFernsBarrage,
   a_reelseiden,
-  a_fernZoltraakBase,
+  a_fernZoltraak,
 ];
 
 export const serie_offensiveMagic_rare = [
@@ -61,7 +62,7 @@ export const serie_offensiveMagic_rare = [
   a_erfassenJavelin,
   a_erfassenAxe,
   a_pierce,
-  a_fernBarrageBase,
+  a_fernBarrage,
   a_waldgoseBase,
   a_daosdorgBase,
   a_concentratedOffensiveMagicZoltraak,
@@ -84,6 +85,7 @@ export const serie_utilityMagic_tactics = [
   manaDetection,
   barrierMagicAnalysis,
   demonMagicAnalysis,
+  manaConcealment,
   sorganeil,
 ];
 
