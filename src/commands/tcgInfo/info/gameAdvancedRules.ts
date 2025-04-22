@@ -2,8 +2,11 @@ import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { statDetails } from "../../../tcg/formatting/emojis";
 import { sendInfoMessage } from "./util/sendInfoMessage";
 import {
-  serie_offensiveMagic,
-  serie_utilityMagic,
+  serie_offensiveMagic_common,
+  serie_offensiveMagic_rare,
+  serie_offensiveMagic_unusual,
+  serie_utilityMagic_recovery,
+  serie_utilityMagic_tactics,
 } from "../../../tcg/decks/utilDecks/serieMagic";
 import Card from "../../../tcg/card";
 
@@ -60,24 +63,68 @@ const sectionToFields: Record<
       name: `Living Grimoire: Offense Chapter - Available Draw Pool:`,
       value: "",
     },
-    ...serie_offensiveMagic.map((card: Card) => {
-      return {
-        name: `${card.emoji} **${card.title}**:`,
-        value: `${card.getDescription()}`,
-      };
-    }),
+    {
+      name: "Common Magic Section",
+      value: serie_offensiveMagic_common
+        .map(
+          (card: Card) =>
+            `${card.emoji} **${card.title}**: ${card.getDescription()}`
+        )
+        .join("\n"),
+    },
+    {
+      name: "Rare Magic Section",
+      value: serie_offensiveMagic_rare
+        .slice(0, 7)
+        .map(
+          (card: Card) =>
+            `${card.emoji} **${card.title}**: ${card.getDescription()}`
+        )
+        .join("\n"),
+    },
+    {
+      name: "",
+      value: serie_offensiveMagic_rare
+        .slice(7, serie_offensiveMagic_rare.length)
+        .map(
+          (card: Card) =>
+            `${card.emoji} **${card.title}**: ${card.getDescription()}`
+        )
+        .join("\n"),
+    },
+    {
+      name: "Unusual Magic Section",
+      value: serie_offensiveMagic_unusual
+        .map(
+          (card: Card) =>
+            `${card.emoji} **${card.title}**: ${card.getDescription()}`
+        )
+        .join("\n"),
+    },
   ],
   [AdvancedRulesSection.SeriesPoolUtility]: [
     {
       name: `Living Grimoire: Utility Chapter - Available Draw Pool:`,
       value: "",
     },
-    ...serie_utilityMagic.map((card: Card) => {
-      return {
-        name: `${card.emoji} **${card.title}**:`,
-        value: `${card.getDescription()}`,
-      };
-    }),
+    {
+      name: "Tactics Section",
+      value: serie_utilityMagic_tactics
+        .map(
+          (card: Card) =>
+            `${card.emoji} **${card.title}**: ${card.getDescription()}`
+        )
+        .join("\n"),
+    },
+    {
+      name: "Recovery Section",
+      value: serie_utilityMagic_recovery
+        .map(
+          (card: Card) =>
+            `${card.emoji} **${card.title}**: ${card.getDescription()}`
+        )
+        .join("\n"),
+    },
   ],
 };
 
