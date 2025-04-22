@@ -53,7 +53,14 @@ export const initiateGame = async (
       })) as ThreadChannel;
       await opponentThread.members.add(opponent.id);
 
-      const { winner, winnerCharacter, loser, loserCharacter } = await tcgMain(
+      const {
+        winner,
+        winnerCharacter,
+        loser,
+        loserCharacter,
+        challengerCharacter,
+        opponentCharacter,
+      } = await tcgMain(
         challenger,
         opponent,
         gameThread,
@@ -73,12 +80,12 @@ export const initiateGame = async (
         opponentThread.members.remove(opponent.id),
       ]);
 
-      let winnerEmoji = "";
-      let loserEmoji = "";
-      if (winnerCharacter && loserCharacter) {
-        winnerEmoji = `${CHARACTER_MAP[winnerCharacter].cosmetic.emoji} `;
-        loserEmoji = `${CHARACTER_MAP[loserCharacter].cosmetic.emoji} `;
-      }
+      const challengerEmoji = challengerCharacter
+        ? `${CHARACTER_MAP[challengerCharacter].cosmetic.emoji} `
+        : "";
+      const opponentEmoji = opponentCharacter
+        ? `${CHARACTER_MAP[opponentCharacter].cosmetic.emoji} `
+        : "";
 
       let resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
@@ -87,7 +94,7 @@ export const initiateGame = async (
         )
         .setFields({
           name: "Characters",
-          value: `${winner} as ${winnerEmoji}${winnerCharacter}\n${loser} as ${loserEmoji}${loserCharacter}`,
+          value: `${challenger} as ${challengerEmoji}${challengerCharacter}\n${opponent} as ${opponentEmoji}${opponentCharacter}`,
         })
         .setFooter({
           text: `Game ID: ${gameId}`,
