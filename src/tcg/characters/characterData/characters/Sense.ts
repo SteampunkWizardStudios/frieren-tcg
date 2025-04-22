@@ -9,8 +9,8 @@ import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 // import config from "@src/config";
 
 // config module not found for some reason
-// const PACIFIST_TURN_COUNT = config.debugMode ? 1 : 15;
-const PACIFIST_TURN_COUNT = 15;
+// const PACIFIST_STACK_COUNT = config.debugMode ? 1 : 15;
+const PACIFIST_STACK_COUNT = 15;
 
 const senseStats = new Stats({
   [StatsEnum.HP]: 90.0,
@@ -37,7 +37,8 @@ export const Sense = new CharacterData({
   ability: {
     abilityName: "Pacifist",
     abilityEffectString: `When this character has 2 Tea Time Snacks, skip the turn for both characters.
-        This character wins if they don't attack for ${PACIFIST_TURN_COUNT} turns in a row.`,
+      Every turn this character doesn't attack, gain 1 stack. Everytime this character attacks, reduce stack count by 2 (minimum stack count: 0).
+      This character wins if their stack count is ${PACIFIST_STACK_COUNT}.`,
     abilityAfterOwnCardUse: function (
       game,
       characterIndex,
@@ -67,13 +68,14 @@ export const Sense = new CharacterData({
     ) => {
       const character = game.characters[characterIndex];
       if (character.additionalMetadata.attackedThisTurn) {
-        messageCache.push("Sense is no longer a Pacifist!", TCGThread.Gameroom);
-        character.setStat(0, StatsEnum.Ability);
+        messageCache.push("Sense went on the offensive!", TCGThread.Gameroom);
+        const newAbilityCount = Math.max(0, character.stats.stats.Ability - 2);
+        character.setStat(newAbilityCount, StatsEnum.Ability);
       } else {
-        messageCache.push("Sense is a Pacifist!", TCGThread.Gameroom);
+        messageCache.push("Sense was a Pacifist!", TCGThread.Gameroom);
         character.adjustStat(1, StatsEnum.Ability);
 
-        if (character.stats.stats.Ability === PACIFIST_TURN_COUNT) {
+        if (character.stats.stats.Ability === PACIFIST_STACK_COUNT) {
           messageCache.push("# Sense stayed a Pacifist!", TCGThread.Gameroom);
           game.additionalMetadata.forfeited[1 - characterIndex] = true;
         }

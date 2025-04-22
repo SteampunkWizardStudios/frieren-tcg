@@ -75,23 +75,24 @@ export const initiateGame = async (
 
       let winnerEmoji = "";
       let loserEmoji = "";
-      if (winnerCharacter && loserCharacter) {
-        winnerEmoji = `${CHARACTER_MAP[winnerCharacter].cosmetic.emoji} `;
-        loserEmoji = `${CHARACTER_MAP[loserCharacter].cosmetic.emoji} `;
-      }
 
       let resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
         .setTitle(
           `Frieren TCG - Results: ${challenger.displayName} vs ${opponent.displayName}`
         )
-        .setFields({
-          name: "Characters",
-          value: `${winner} as ${winnerEmoji}${winnerCharacter}\n${loser} as ${loserEmoji}${loserCharacter}`,
-        })
         .setFooter({
           text: `Game ID: ${gameId}`,
         });
+
+      if (winnerCharacter && loserCharacter) {
+        winnerEmoji = `${CHARACTER_MAP[winnerCharacter].cosmetic.emoji} `;
+        loserEmoji = `${CHARACTER_MAP[loserCharacter].cosmetic.emoji} `;
+        resultEmbed.setFields({
+          name: "Characters",
+          value: `${winner} as ${winnerEmoji}${winnerCharacter}\n${loser} as ${loserEmoji}${loserCharacter}`,
+        });
+      }
 
       // handle database operations
       if (winner && winnerCharacter && loser && loserCharacter && gameMode) {

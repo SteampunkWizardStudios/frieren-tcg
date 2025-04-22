@@ -142,7 +142,9 @@ export const tcgMain = async (
     if (game.turnCount === TURN_LIMIT) {
       return {
         winner: undefined,
+        winnerCharacter: game.characters[0].name,
         loser: undefined,
+        loserCharacter: game.characters[1].name,
       };
     }
 
@@ -371,7 +373,9 @@ export const tcgMain = async (
       game.gameOver = true;
       result = {
         winner: undefined,
+        winnerCharacter: game.characters[0].name,
         loser: undefined,
+        loserCharacter: game.characters[1].name,
       };
       messageCache.push(
         "# Both side foreited! The game ended in a draw!",
