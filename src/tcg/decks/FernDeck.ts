@@ -11,7 +11,7 @@ export const a_fernZoltraak = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `HP-3. DMG ${dmg}. Gain 1 Barrage count.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [6],
+  effects: [4],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
@@ -34,7 +34,7 @@ export const a_fernBarrage = new Card({
   description: ([dmg]) =>
     `HP-3. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-3, deal ${dmg} DMG, until Barrage count reaches 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [6],
+  effects: [4],
   cosmetic: {
     cardGif: "https://c.tenor.com/2RAJbNpiLI4AAAAd/tenor.gif",
   },
@@ -55,11 +55,15 @@ export const a_fernBarrage = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
 
-    character.timedEffects.push(
+    CommonCardAction.replaceOrAddNewTimedEffect(
+      game,
+      characterIndex,
+      "Barrage",
       new TimedEffect({
         name: "Barrage",
         description: `HP-3. Deal ${damage} DMG.`,
         turnDuration: newBarrageCount,
+        tags: { Barrage: 1 },
         endOfTurnAction: function (
           this: TimedEffect,
           game,
