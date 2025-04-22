@@ -35,12 +35,16 @@ export const tcgMain = async (
   winnerCharacter?: CharacterName;
   loser?: User;
   loserCharacter?: CharacterName;
+  challengerCharacter?: CharacterName;
+  opponentCharacter?: CharacterName;
 }> => {
   let result: {
     winner?: User;
     winnerCharacter?: CharacterName;
     loser?: User;
     loserCharacter?: CharacterName;
+    challengerCharacter?: CharacterName;
+    opponentCharacter?: CharacterName;
   } = {
     winner: undefined,
     loser: undefined,
@@ -70,6 +74,9 @@ export const tcgMain = async (
   }
   const challengerCharacterName = challengerSelection.char.name;
   const opponentCharacterName = opponentSelection.char.name;
+
+  result.challengerCharacter = challengerCharacterName;
+  result.opponentCharacter = opponentCharacterName;
 
   const messageCache = new MessageCache();
   const threadsMapping: TCGThreads = {
