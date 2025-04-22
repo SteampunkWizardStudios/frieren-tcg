@@ -66,6 +66,17 @@ const sectionToFields: Record<
     {
       name: "Common Magic Section",
       value: serie_offensiveMagic_common
+        .slice(0, 7)
+        .map(
+          (card: Card) =>
+            `${card.emoji} **${card.title}**: ${card.getDescription()}`
+        )
+        .join("\n"),
+    },
+    {
+      name: "",
+      value: serie_offensiveMagic_common
+        .slice(7, serie_offensiveMagic_common.length)
         .map(
           (card: Card) =>
             `${card.emoji} **${card.title}**: ${card.getDescription()}`
