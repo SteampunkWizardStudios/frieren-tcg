@@ -76,8 +76,8 @@ export const initiateGame = async (
       let winnerEmoji = "";
       let loserEmoji = "";
       if (winnerCharacter && loserCharacter) {
-        winnerEmoji = `${CHARACTER_MAP[winnerCharacter].cosmetic.emoji} `
-        loserEmoji = `${CHARACTER_MAP[loserCharacter].cosmetic.emoji} `
+        winnerEmoji = `${CHARACTER_MAP[winnerCharacter].cosmetic.emoji} `;
+        loserEmoji = `${CHARACTER_MAP[loserCharacter].cosmetic.emoji} `;
       }
 
       let resultEmbed = new EmbedBuilder()

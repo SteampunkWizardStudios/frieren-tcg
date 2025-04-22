@@ -20,7 +20,6 @@ import { printCharacter } from "./tcgChatInteractions/printCharacter";
 import TimedEffect from "./tcg/timedEffect";
 import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
 import { CharacterName } from "./tcg/characters/metadata/CharacterName";
-import { EmpoweredMode } from "./tcg/plugins/chaosMode";
 
 const TURN_LIMIT = 50;
 
@@ -61,16 +60,16 @@ export const tcgMain = async (
     opponent,
     opponentThread
   );
-  const [challengerCharacter, opponentCharacter] = await Promise.all([
+  const [challengerSelection, opponentSelection] = await Promise.all([
     challengerCharacterResponsePromise,
     opponentCharacterResponsePromise,
   ]);
 
-  if (!challengerCharacter || !opponentCharacter) {
+  if (!challengerSelection || !opponentSelection) {
     return result;
   }
-  const challengerCharacterName = challengerCharacter.name as CharacterName;
-  const opponentCharacterName = opponentCharacter.name as CharacterName;
+  const challengerCharacterName = challengerSelection.char.name;
+  const opponentCharacterName = opponentSelection.char.name;
 
   const messageCache = new MessageCache();
   const threadsMapping: TCGThreads = {
@@ -82,13 +81,13 @@ export const tcgMain = async (
   const game = new Game(
     [
       new Character({
-        characterData: challengerCharacter.clone(),
+        characterData: challengerSelection.char.clone(),
         messageCache: messageCache,
         characterUser: challenger,
         characterThread: TCGThread.ChallengerThread,
       }),
       new Character({
-        characterData: opponentCharacter.clone(),
+        characterData: opponentSelection.char.clone(),
         messageCache: messageCache,
         characterUser: opponent,
         characterThread: TCGThread.OpponentThread,
@@ -97,6 +96,14 @@ export const tcgMain = async (
     messageCache
   );
   game.gameStart();
+
+  [challengerSelection, opponentSelection].forEach((selection, i) => {
+    const username = i === 0 ? challenger.displayName : opponent.displayName;
+    const message = selection.wasRandom
+      ? `## ${username} rolled the dice and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`
+      : `## ${username} selected ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+    messageCache.push(message, TCGThread.Gameroom);
+  });
 
   // game loop
   while (!game.gameOver) {
