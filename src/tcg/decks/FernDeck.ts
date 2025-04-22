@@ -232,7 +232,7 @@ export const spellToCreateManaButterflies = new Card({
   title: "Spell to Create Mana Butterflies",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, endHp]) =>
-    `Heal ${hp} HP. At the next 4 turn ends, heal ${endHp} and gain 1 Barrage count.`,
+    `Heal ${hp} HP. At the next 4 turn ends, heal ${endHp} and gain 0.5 Barrage count.`,
   cosmetic: {
     cardGif: "https://c.tenor.com/B93aR7oWJ4IAAAAC/tenor.gif",
   },
@@ -265,9 +265,9 @@ export const spellToCreateManaButterflies = new Card({
           );
 
           character.additionalMetadata.fernBarrage =
-            (character.additionalMetadata.fernBarrage ?? 0) + 1;
+            (character.additionalMetadata.fernBarrage ?? 0) + 0.5;
           messageCache.push(
-            `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+            `${character.name} gained 0.5 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
             TCGThread.Gameroom
           );
         },
