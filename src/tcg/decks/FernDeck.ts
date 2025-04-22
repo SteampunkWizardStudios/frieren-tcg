@@ -11,7 +11,7 @@ const a_fernZoltraakBase = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `HP-4. DMG ${dmg}. Gain 1 Barrage count.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [7],
+  effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
@@ -49,7 +49,7 @@ const a_fernBarrageBase = new Card({
   description: ([dmg]) =>
     `HP-4. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG, until Barrage count reaches 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [7],
+  effects: [5],
   cosmetic: {
     cardGif: "https://c.tenor.com/vwJ7GPJqozkAAAAC/tenor.gif",
   },
