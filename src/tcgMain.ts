@@ -23,6 +23,15 @@ import { CharacterName } from "./tcg/characters/metadata/CharacterName";
 
 const TURN_LIMIT = 50;
 
+type TCGResult = {
+  winner?: User;
+  winnerCharacter?: CharacterName;
+  loser?: User;
+  loserCharacter?: CharacterName;
+  challengerCharacter?: CharacterName;
+  opponentCharacter?: CharacterName;
+};
+
 export const tcgMain = async (
   challenger: User,
   opponent: User,
@@ -30,22 +39,8 @@ export const tcgMain = async (
   challengerThread: PrivateThreadChannel,
   opponentThread: ThreadChannel<false>,
   gameSettings: GameSettings
-): Promise<{
-  winner?: User;
-  winnerCharacter?: CharacterName;
-  loser?: User;
-  loserCharacter?: CharacterName;
-  challengerCharacter?: CharacterName;
-  opponentCharacter?: CharacterName;
-}> => {
-  let result: {
-    winner?: User;
-    winnerCharacter?: CharacterName;
-    loser?: User;
-    loserCharacter?: CharacterName;
-    challengerCharacter?: CharacterName;
-    opponentCharacter?: CharacterName;
-  } = {
+): Promise<TCGResult> => {
+  let result: TCGResult = {
     winner: undefined,
     loser: undefined,
   };
@@ -53,6 +48,33 @@ export const tcgMain = async (
   const indexToUserMapping: Record<number, User> = {
     0: challenger,
     1: opponent,
+  };
+
+  const handleGameResult = (
+    props: { losingCharacterIndex: number } | { tie: true }
+  ) => {
+    let newResultInfo = {};
+
+    if ("tie" in props && props.tie) {
+      newResultInfo = { winner: undefined, loser: undefined };
+    } else {
+      const losingCharacterIndex = (props as { losingCharacterIndex: number })
+        .losingCharacterIndex;
+      newResultInfo = {
+        winner: indexToUserMapping[1 - losingCharacterIndex],
+        winnerCharacter:
+          losingCharacterIndex === 0
+            ? opponentCharacterName
+            : challengerCharacterName,
+        loser: indexToUserMapping[losingCharacterIndex],
+        loserCharacter:
+          losingCharacterIndex === 0
+            ? challengerCharacterName
+            : opponentCharacterName,
+      };
+    }
+
+    result = { ...result, ...newResultInfo };
   };
 
   // game start - ask for character selection
@@ -145,10 +167,8 @@ export const tcgMain = async (
     );
 
     if (game.turnCount === TURN_LIMIT) {
-      return {
-        winner: undefined,
-        loser: undefined,
-      };
+      handleGameResult({ tie: true });
+      return result;
     }
 
     // display playable cards
@@ -332,18 +352,7 @@ export const tcgMain = async (
         if (!game.additionalMetadata.forfeited[characterIndex]) {
           const losingCharacterIndex = game.checkGameOver();
           if (game.gameOver) {
-            result = {
-              winner: indexToUserMapping[1 - losingCharacterIndex!],
-              winnerCharacter:
-                losingCharacterIndex === 0
-                  ? opponentCharacterName
-                  : challengerCharacterName,
-              loser: indexToUserMapping[losingCharacterIndex!],
-              loserCharacter:
-                losingCharacterIndex === 0
-                  ? challengerCharacterName
-                  : opponentCharacterName,
-            };
+            handleGameResult({ losingCharacterIndex });
             return;
           }
         }
@@ -356,12 +365,9 @@ export const tcgMain = async (
       game.additionalMetadata.forfeited[1]
     ) {
       game.gameOver = true;
-      result = {
-        winner: undefined,
-        loser: undefined,
-      };
+      handleGameResult({ tie: true });
       messageCache.push(
-        "# Both side foreited! The game ended in a draw!",
+        "# Both players foreited! The game ended in a draw!",
         TCGThread.Gameroom
       );
     }
@@ -408,18 +414,7 @@ export const tcgMain = async (
 
             const losingCharacterIndex = game.checkGameOver();
             if (game.gameOver) {
-              result = {
-                winner: indexToUserMapping[1 - losingCharacterIndex!],
-                winnerCharacter:
-                  losingCharacterIndex === 0
-                    ? opponentCharacterName
-                    : challengerCharacterName,
-                loser: indexToUserMapping[losingCharacterIndex!],
-                loserCharacter:
-                  losingCharacterIndex === 0
-                    ? challengerCharacterName
-                    : opponentCharacterName,
-              };
+              handleGameResult({ losingCharacterIndex });
               return;
             }
           }
@@ -440,18 +435,7 @@ export const tcgMain = async (
 
         const losingCharacterIndex = game.checkGameOver();
         if (game.gameOver) {
-          result = {
-            winner: indexToUserMapping[1 - losingCharacterIndex!],
-            winnerCharacter:
-              losingCharacterIndex === 0
-                ? opponentCharacterName
-                : challengerCharacterName,
-            loser: indexToUserMapping[losingCharacterIndex!],
-            loserCharacter:
-              losingCharacterIndex === 0
-                ? challengerCharacterName
-                : opponentCharacterName,
-          };
+          handleGameResult({ losingCharacterIndex });
           return;
         }
       }
