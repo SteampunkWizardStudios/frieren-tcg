@@ -112,6 +112,26 @@ export const tcgMain = async (
     messageCache.push(message, TCGThread.Gameroom);
   });
 
+  const handleGameResult = (losingCharIndex: number, tie = false) => {
+    const resultInfo = tie
+      ? { winner: undefined, loser: undefined }
+      : {
+          winner: indexToUserMapping[1 - losingCharIndex],
+          winnerCharacter:
+            losingCharIndex === 0
+              ? opponentCharacterName
+              : challengerCharacterName,
+          loser: indexToUserMapping[losingCharIndex],
+          loserCharacter:
+            losingCharIndex === 0
+              ? challengerCharacterName
+              : opponentCharacterName,
+        };
+
+    // keep info about challenger and opponent character
+    result = { ...result, ...resultInfo };
+  };
+
   // game loop
   while (!game.gameOver) {
     game.turnCount += 1;
@@ -145,10 +165,8 @@ export const tcgMain = async (
     );
 
     if (game.turnCount === TURN_LIMIT) {
-      return {
-        winner: undefined,
-        loser: undefined,
-      };
+      handleGameResult(-1, true);
+      return result;
     }
 
     // display playable cards
@@ -332,18 +350,7 @@ export const tcgMain = async (
         if (!game.additionalMetadata.forfeited[characterIndex]) {
           const losingCharacterIndex = game.checkGameOver();
           if (game.gameOver) {
-            result = {
-              winner: indexToUserMapping[1 - losingCharacterIndex!],
-              winnerCharacter:
-                losingCharacterIndex === 0
-                  ? opponentCharacterName
-                  : challengerCharacterName,
-              loser: indexToUserMapping[losingCharacterIndex!],
-              loserCharacter:
-                losingCharacterIndex === 0
-                  ? challengerCharacterName
-                  : opponentCharacterName,
-            };
+            handleGameResult(losingCharacterIndex!);
             return;
           }
         }
@@ -356,12 +363,9 @@ export const tcgMain = async (
       game.additionalMetadata.forfeited[1]
     ) {
       game.gameOver = true;
-      result = {
-        winner: undefined,
-        loser: undefined,
-      };
+      handleGameResult(-1, true);
       messageCache.push(
-        "# Both side foreited! The game ended in a draw!",
+        "# Both players foreited! The game ended in a draw!",
         TCGThread.Gameroom
       );
     }
@@ -408,18 +412,7 @@ export const tcgMain = async (
 
             const losingCharacterIndex = game.checkGameOver();
             if (game.gameOver) {
-              result = {
-                winner: indexToUserMapping[1 - losingCharacterIndex!],
-                winnerCharacter:
-                  losingCharacterIndex === 0
-                    ? opponentCharacterName
-                    : challengerCharacterName,
-                loser: indexToUserMapping[losingCharacterIndex!],
-                loserCharacter:
-                  losingCharacterIndex === 0
-                    ? challengerCharacterName
-                    : opponentCharacterName,
-              };
+              handleGameResult(losingCharacterIndex!);
               return;
             }
           }
@@ -440,18 +433,7 @@ export const tcgMain = async (
 
         const losingCharacterIndex = game.checkGameOver();
         if (game.gameOver) {
-          result = {
-            winner: indexToUserMapping[1 - losingCharacterIndex!],
-            winnerCharacter:
-              losingCharacterIndex === 0
-                ? opponentCharacterName
-                : challengerCharacterName,
-            loser: indexToUserMapping[losingCharacterIndex!],
-            loserCharacter:
-              losingCharacterIndex === 0
-                ? challengerCharacterName
-                : opponentCharacterName,
-          };
+          handleGameResult(losingCharacterIndex!);
           return;
         }
       }
