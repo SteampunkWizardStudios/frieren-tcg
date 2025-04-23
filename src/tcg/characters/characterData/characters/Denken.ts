@@ -46,17 +46,17 @@ export const Denken = new CharacterData({
 
       if (character.stats.stats.HP <= 0) {
         character.adjustStat(-1, StatsEnum.Ability);
-      }
 
-      if (character.stats.stats.HP <= -50) {
-        character.adjustStat(-1, StatsEnum.Ability);
-      }
+        if (character.stats.stats.HP <= -50) {
+          character.adjustStat(-1, StatsEnum.Ability);
+        }
 
-      if (character.stats.stats.Ability > 0 && character.stats.stats.HP <= 0) {
-        messageCache.push(`Denken steels himself!`, TCGThread.Gameroom);
-      } else {
-        messageCache.push(`Denken's strength fades.`, TCGThread.Gameroom);
-        game.additionalMetadata.forfeited[characterIndex] = true;
+        if (character.stats.stats.Ability > 0) {
+          messageCache.push(`Denken steels himself!`, TCGThread.Gameroom);
+        } else {
+          messageCache.push(`Denken's strength fades.`, TCGThread.Gameroom);
+          game.additionalMetadata.forfeited[characterIndex] = true;
+        }
       }
     },
   },
