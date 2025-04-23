@@ -111,7 +111,7 @@ const a_fernConcentratedZoltraakSnipe = new Card({
   description: ([dmg]) =>
     `HP-12, Barrage count +1. Afterwards, deal ${dmg} DMG x Barrage count. Reset Barrage count to 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [7],
+  effects: [6],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364357151111385098/GIF_1619936813.gif?ex=6809601d&is=68080e9d&hm=d315925c27f678c96ed238bcc826abd1c209e5e1dae651b445b7fa4760e0cf09&",
