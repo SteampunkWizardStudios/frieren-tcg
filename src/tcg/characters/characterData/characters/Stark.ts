@@ -4,6 +4,8 @@ import { StatsEnum } from "../../../stats";
 import { starkDeck } from "../../../decks/StarkDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import Game from "@src/tcg/game";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 
 const starkStats = new Stats({
   [StatsEnum.HP]: 120.0,
@@ -30,7 +32,8 @@ export const Stark = new CharacterData({
   ability: {
     abilityName: "Bravest Coward",
     abilityEffectString: `Using attacks without (Resolve) reduces its DMG by 20%.
-        Using attacks with (Resolve) increases its DMG by 20%.`,
+        Using attacks with (Resolve) increases its DMG by 20%.
+        Every attack costs 1 (Resolve) unless stated otherwise.`,
     abilityAfterOwnCardUse: function (
       game,
       characterIndex,

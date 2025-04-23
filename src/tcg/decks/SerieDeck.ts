@@ -227,13 +227,14 @@ export const unbreakableBarrier = new Card({
   title: "Unbreakable Barrier",
   cardMetadata: { nature: Nature.Util },
   description: ([atk, def, oppSpd]) =>
-    `HP-7. ATK+${atk} for 5 turns. DEF+${def} for 5 turns. Opponent's SPD-${oppSpd} for 5 turns.`,
+    `HP-10. ATK+${atk} for 5 turns. DEF+${def} for 5 turns. Opponent's SPD-${oppSpd} for 5 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873016182177984/Unbreakable_Barrier.png?ex=67df98ae&is=67de472e&hm=ecaf6053851a3bb12e9d9b0ba65dc932f11a6e97c3efe3c4af20126fc8407ba3&",
   },
-  effects: [3, 3, 3],
+  effects: [5, 5, 5],
+  hpCost: 10,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -241,7 +242,7 @@ export const unbreakableBarrier = new Card({
       TCGThread.Gameroom
     );
 
-    if (character.adjustStat(-7, StatsEnum.HP)) {
+    if (character.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
       const opponent = game.getCharacter(1 - characterIndex);
       const atkBuff = this.calculateEffectValue(this.effects[0]);
       const defBuff = this.calculateEffectValue(this.effects[1]);

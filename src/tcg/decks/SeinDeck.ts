@@ -263,6 +263,8 @@ export const braceYourself = new Card({
   cosmetic: {
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1353035308182147102/Brace_Yourself.png?ex=67e02fd3&is=67dede53&hm=b4bcacc46cae5fcd120b76d666ef606186621d3edc230a851e09a77976fce8eb&",
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364568772136140810/GIF_1787578930.gif?ex=680a2533&is=6808d3b3&hm=1cfb307428d03155177b0ce8439cc92792a63fc2588d8483cf618682105449a3&",
   },
   priority: 2,
   effects: [20],

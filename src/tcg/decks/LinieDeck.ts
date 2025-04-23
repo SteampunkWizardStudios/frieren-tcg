@@ -50,6 +50,9 @@ export const adapt = new Card({
     `SPD+${spd}. If HP > 50, ATK+${atkDef}, DEF+${atkDef}. If HP <= 50, heal ${hp} HP.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [2, 2, 10],
+  cosmetic: {
+    cardGif: "https://c.tenor.com/Dcc6-Rvkts8AAAAd/tenor.gif",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -164,6 +167,9 @@ export const a_erfassenAxe = new Card({
   emoji: CardEmoji.LINIE_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [12],
+  cosmetic: {
+    cardGif: "https://c.tenor.com/eUCHN11H4B4AAAAd/tenor.gif",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -183,6 +189,9 @@ export const a_erfassenJavelin = new Card({
   emoji: CardEmoji.LINIE_CARD,
   cardMetadata: { nature: Nature.Attack },
   effects: [5],
+  cosmetic: {
+    cardGif: "https://c.tenor.com/zd9mOGFjT3IAAAAd/tenor.gif",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -220,6 +229,9 @@ export const a_erfassenSword = new Card({
   description: ([dmg]) => `HP-2. DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [8],
+  cosmetic: {
+    cardGif: "https://c.tenor.com/f4-8FBCgXg4AAAAd/tenor.gif",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

@@ -48,6 +48,10 @@ export const a_cleave = new Card({
   effects: [12],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 40 },
   hpCost: 6,
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364386420554203196/GIF_3999614558.gif?ex=680a241f&is=6808d29f&hm=ed397e2ab4a3166d3e6975560d40d37d928ff1a6df755fabb56425cf283d0f89&",
+  },
   cardAction: function (
     this: Card,
     game,
@@ -110,7 +114,7 @@ export const rushdown = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
-      `${character.name} rushes towards the ennemy!`,
+      `${character.name} rushes towards the enemy!`,
       TCGThread.Gameroom
     );
 
@@ -217,6 +221,10 @@ export const defend = new Card({
   emoji: CardEmoji.UBEL_CARD,
   effects: [20],
   priority: 2,
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364384151616094239/GIF_3928500915.gif?ex=680a2202&is=6808d082&hm=09e4cc493604c6e0be6f9a04263c49d93dd9a7d20bb18c78f6b58d1fd303c9b6&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

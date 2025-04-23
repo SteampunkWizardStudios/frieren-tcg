@@ -118,7 +118,7 @@ const jumboBerrySpecialBreak = new Card({
   title: "Jumbo Berry Special Break",
   cardMetadata: { nature: Nature.Util },
   description: ([def, hp]) =>
-    `SPD-2 for 2 turns. DEF+${def} for 2 turns. Heal ${hp} HP`,
+    `SPD-2 for 2 turns. DEF+${def} for 2 turns. Heal ${hp} HP. Gain 1 Resolve at the end of next turn.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [2, 10],
   cosmetic: {
@@ -156,6 +156,7 @@ const jumboBerrySpecialBreak = new Card({
             -1 * defChange,
             StatsEnum.DEF
           );
+          game.characters[characterIndex].adjustStat(1, StatsEnum.Ability);
         },
       })
     );

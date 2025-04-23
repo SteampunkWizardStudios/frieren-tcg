@@ -14,7 +14,7 @@ export const a_fernZoltraak = new Card({
   effects: [7],
   cosmetic: {
     cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364358893563809833/GIF_3693617284.gif?ex=680961bc&is=6808103c&hm=1e4dd4d07aec7555fddb90af77467cc6785456bc57e87dd3933306d1486e8783&",
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364355690780557404/GIF_4110295150.gif?ex=680a0781&is=6808b601&hm=4aa279af5d5b3ae167099775570328a51c55d8572aac6369a9748565b950f8a1&",
   },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -109,9 +109,9 @@ const a_fernConcentratedZoltraakSnipe = new Card({
   title: "Concentrated Zoltraak Snipe",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-12, Barrage count +1. Afterwards, deal ${dmg} DMG x Barrage count. Reset Barrage count to 0.`,
+    `HP-12, Barrage count +4. Afterwards, deal ${dmg} DMG x Barrage count. Reset Barrage count to 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [6],
+  effects: [2],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364357151111385098/GIF_1619936813.gif?ex=6809601d&is=68080e9d&hm=d315925c27f678c96ed238bcc826abd1c209e5e1dae651b445b7fa4760e0cf09&",
@@ -124,7 +124,7 @@ const a_fernConcentratedZoltraakSnipe = new Card({
     );
 
     const singleDamage = this.calculateEffectValue(this.effects[0]);
-    const newBarrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 1;
+    const newBarrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 4;
     character.additionalMetadata.fernBarrage = newBarrageCount;
     messageCache.push(
       `${character.name} gained 1 Barrage count. Current Barrage count: **${newBarrageCount}**.`,
