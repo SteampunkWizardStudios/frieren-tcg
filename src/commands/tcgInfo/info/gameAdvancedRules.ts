@@ -71,49 +71,34 @@ const sectionToFields: Record<
       name: "3rd Class Magic Section",
       value: serie_offensiveMagic_common
         .slice(0, 7)
-        .map(
-          (card: Card) =>
-            `${card.emoji} **${card.title}**: ${card.getDescription()}`
-        )
+        .map((card: Card) => `${card.emoji} **${card.title}**`)
         .join("\n"),
     },
     {
       name: "",
       value: serie_offensiveMagic_common
         .slice(7, serie_offensiveMagic_common.length)
-        .map(
-          (card: Card) =>
-            `${card.emoji} **${card.title}**: ${card.getDescription()}`
-        )
+        .map((card: Card) => `${card.emoji} **${card.title}**`)
         .join("\n"),
     },
     {
       name: "1st Class Magic Section",
       value: serie_offensiveMagic_rare
         .slice(0, 7)
-        .map(
-          (card: Card) =>
-            `${card.emoji} **${card.title}**: ${card.getDescription()}`
-        )
+        .map((card: Card) => `${card.emoji} **${card.title}**`)
         .join("\n"),
     },
     {
       name: "",
       value: serie_offensiveMagic_rare
         .slice(7, serie_offensiveMagic_rare.length)
-        .map(
-          (card: Card) =>
-            `${card.emoji} **${card.title}**: ${card.getDescription()}`
-        )
+        .map((card: Card) => `${card.emoji} **${card.title}**`)
         .join("\n"),
     },
     {
       name: "Great Mage's Magic Section",
       value: serie_offensiveMagic_unusual
-        .map(
-          (card: Card) =>
-            `${card.emoji} **${card.title}**: ${card.getDescription()}`
-        )
+        .map((card: Card) => `${card.emoji} **${card.title}**`)
         .join("\n"),
     },
   ],

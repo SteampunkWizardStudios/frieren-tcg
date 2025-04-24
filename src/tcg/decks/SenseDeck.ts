@@ -124,6 +124,10 @@ export const hairBarrier = new Card({
   effects: [20],
   emoji: CardEmoji.HOURGLASS,
   priority: 2,
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364942857307295905/GIF_0653594382.gif?ex=680b8198&is=680a3018&hm=368a1918766556e47cc2e4692113d174afa955d6f59f3206d2f0cb6269df4a34&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -156,6 +160,10 @@ export const teaTime = new Card({
   effects: [1, 5],
   tags: { TeaTime: 1 },
   emoji: CardEmoji.HEART,
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364949044656607232/GIF_0807192060.gif?ex=680b875b&is=680a35db&hm=ced86d0c723bc4d139d0012c97a29d89d6fad79d084e1607036211869d17b57e&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
@@ -180,6 +188,10 @@ export const teaParty = new Card({
   effects: [2, 7],
   tags: { TeaTime: 2 },
   emoji: CardEmoji.RANDOM,
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364970640016281755/GIF_1481380242.gif?ex=680b9b78&is=680a49f8&hm=8d28d2db0acba7954fd24059ededd4d30f495624d7bac107ddfdcd970e28c1da&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
@@ -203,6 +215,10 @@ export const a_piercingDrill = new Card({
   effects: [14],
   emoji: CardEmoji.PUNCH,
   cardMetadata: { nature: Nature.Attack, signature: true },
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364943023678427196/GIF_3233937113.gif?ex=680b81c0&is=680a3040&hm=07d5b41617b811cd069cc08f1de64d9966b4d03df7936844262be5f6ee25e0cb&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

@@ -11,13 +11,17 @@ import { a_malevolentShrine } from "./utilDecks/ubelSignature";
 export const empathyFailureName = "Stalking";
 
 export const a_reelseiden = new Card({
-  title: "Reelseiden: Initiate",
+  title: "Initiate",
   description: ([dmg]) =>
     `HP-4. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [8],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 20 },
   hpCost: 4,
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364756398772322304/GIF_3910829828.gif?ex=680b7cb1&is=680a2b31&hm=7aa3935ddcec9e8d1c44d6caec5f6288432c3f2800b2cec08ee42c0e5c94a25b&",
+  },
   cardAction: function (
     this: Card,
     game,
@@ -41,7 +45,7 @@ export const a_reelseiden = new Card({
 });
 
 export const a_cleave = new Card({
-  title: "Reelseiden: Cleave",
+  title: "Cleave",
   description: ([dmg]) =>
     `HP-6. If used by Übel,has a 40% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
@@ -71,13 +75,17 @@ export const a_cleave = new Card({
 });
 
 export const a_dismantle = new Card({
-  title: "Reelseiden: Dismantle",
+  title: "Dismantle",
   description: ([dmg]) =>
     `HP-8. If used by Übel, has a 60% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [16],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 60 },
   hpCost: 8,
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364758389111918673/GIF_1476107048.gif?ex=680b7e8b&is=680a2d0b&hm=28e6e00072ec765df91914cdea3090c0c582b5079a9ec977ca21a3f70be5aea0&",
+  },
   cardAction: function (
     this: Card,
     game,
@@ -154,11 +162,11 @@ export const rushdown = new Card({
   },
 });
 
-const recompose = new Card({
-  title: "Recompose",
+const slowdown = new Card({
+  title: "Slow Down",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, endOfTurnHp]) =>
-    `SPD-10 for 2 turns. Heal ${hp}HP, then ${endOfTurnHp} HP at the end of each turn. Attacks will not hit while Recompose is active.`,
+    `SPD-10 for 2 turns. Heal ${hp}HP, then ${endOfTurnHp} HP at the end of each turn. Attacks will not hit while this effect is active.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10, 5],
   cosmetic: {
@@ -257,6 +265,10 @@ export const sorganeil = new Card({
   emoji: CardEmoji.UBEL_CARD,
   priority: -2,
   effects: [],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364748769165447188/GIF_3534737554.gif?ex=680b7596&is=680a2416&hm=97e22820e064efed4dc8688572fffad891c01cdaac28df0e7a8e0ca77661521c&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
@@ -306,6 +318,10 @@ export const empathy = new Card({
   emoji: CardEmoji.UBEL_CARD,
   effects: [],
   cardAction: () => {},
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364937614494535711/GIF_3999726425.gif?ex=680b7cb6&is=680a2b36&hm=8e54664c9778ca6cc49807519b9e0afd09dffa377209d98eb3c92f78c4ce1d1b&",
+  },
   conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
     if (game.turnCount < 5) {
       return new Card({
@@ -329,6 +345,7 @@ export const empathy = new Card({
         ...signatureCard,
         empowerLevel: this.empowerLevel - 2,
         empathized: true,
+        cosmetic: this.cosmetic,
       });
     }
   },
@@ -341,7 +358,7 @@ export const ubelDeck = [
   { card: a_malevolentShrine, count: 1 },
   { card: rushdown, count: 2 },
   { card: defend, count: 2 },
-  { card: recompose, count: 2 },
+  { card: slowdown, count: 2 },
   { card: sorganeil, count: 1 },
   { card: empathy, count: 1 },
 ];
