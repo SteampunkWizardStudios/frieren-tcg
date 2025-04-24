@@ -18,7 +18,7 @@ export enum AdvancedRulesSection {
   InteractionsAndEdgeCases = "Interactions and Edge Cases",
   SeriesPoolOffense = "Serie's Living Grimoire: Offense Chapter's Card Pool",
   SeriesPoolUtility = "Serie's Living Grimoire: Utility Chapter's Card Pool",
-  SignatureMoves = "Character signature moves: Übel's Empathy Card Pool"
+  SignatureMoves = "Character signature moves: Übel's Empathy Card Pool",
 }
 
 const sectionToFields: Record<
@@ -148,8 +148,7 @@ const sectionToFields: Record<
     },
     {
       name: "",
-      value: SIGNATURE_MOVES_LIST
-        .slice(0, 7)
+      value: SIGNATURE_MOVES_LIST.slice(0, 7)
         .map(
           (nameCardPair) =>
             `${characterNameToEmoji[nameCardPair[0] as CharacterName]} **${nameCardPair[0]}**: ${nameCardPair[1].title}.`
@@ -158,8 +157,7 @@ const sectionToFields: Record<
     },
     {
       name: "",
-      value: SIGNATURE_MOVES_LIST
-        .slice(7, SIGNATURE_MOVES_LIST.length)
+      value: SIGNATURE_MOVES_LIST.slice(7, SIGNATURE_MOVES_LIST.length)
         .map(
           (nameCardPair) =>
             `${characterNameToEmoji[nameCardPair[0] as CharacterName]} **${nameCardPair[0]}**: ${nameCardPair[1].title}.`

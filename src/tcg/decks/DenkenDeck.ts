@@ -277,7 +277,7 @@ const a_daosdorg = new Card({
 
 export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
-  cardMetadata: { nature: Nature.Attack },
+  cardMetadata: { nature: Nature.Attack, signature: true },
   description: ([dmg, multiDmg]) =>
     `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,

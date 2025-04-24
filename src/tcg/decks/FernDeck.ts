@@ -231,7 +231,7 @@ export const manaConcealment = new Card({
 
 export const spellToCreateManaButterflies = new Card({
   title: "Spell to Create Mana Butterflies",
-  cardMetadata: { nature: Nature.Util },
+  cardMetadata: { nature: Nature.Util, signature: true },
   description: ([hp, endHp]) =>
     `Heal ${hp} HP. At the next 4 turn ends, heal ${endHp} and gain 0.5 Barrage count.`,
   cosmetic: {
@@ -284,7 +284,7 @@ export const commonDefensiveMagic = new Card({
   title: "Common Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn. Reduce 1 Barrage count.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [20],
   priority: 2,
@@ -301,6 +301,14 @@ export const commonDefensiveMagic = new Card({
 
     const def = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(def, StatsEnum.DEF);
+    character.additionalMetadata.fernBarrage = Math.max(
+      0,
+      (character.additionalMetadata.fernBarrage ?? 0) - 1
+    );
+    messageCache.push(
+      `${character.name} lost 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
+      TCGThread.Gameroom
+    );
 
     character.timedEffects.push(
       new TimedEffect({
