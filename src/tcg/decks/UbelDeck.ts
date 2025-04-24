@@ -253,7 +253,7 @@ export const sorganeil = new Card({
   title: "Sorganeil",
   cardMetadata: { nature: Nature.Util },
   description: () =>
-    `Priority-2. Will fail if the opponent's SPD is >=50. Clear opponent's timed effects. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
+    `Priority-2. Will fail if the opponent's SPD is higher than your SPD by 35 or more. Set opponent's SPD to 1. Clear opponent's timed effects. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
   emoji: CardEmoji.UBEL_CARD,
   priority: -2,
   effects: [],
@@ -270,8 +270,8 @@ export const sorganeil = new Card({
     }
 
     opponent.skipTurn = true;
-    const opponentSpeed = opponent.stats.stats.SPD;
-    opponent.adjustStat(-opponentSpeed + 1, StatsEnum.HP);
+    const opponentOriginalSpeed = opponent.stats.stats.SPD;
+    opponent.setStat(1, StatsEnum.SPD);
     messageCache.push(
       `${character.name} traps ${opponent.name} in ${character.name}'s gaze!`,
       TCGThread.Gameroom
@@ -291,7 +291,7 @@ export const sorganeil = new Card({
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze. ${opponent.name} got free from ${character.name}'s Sorganeil.`,
             TCGThread.Gameroom
           );
-          opponent.adjustStat(opponentSpeed - 1, StatsEnum.HP);
+          opponent.setStat(opponentOriginalSpeed, StatsEnum.SPD);
         },
       })
     );
