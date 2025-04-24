@@ -86,9 +86,9 @@ const a_uppercut = new Card({
   },
 });
 
-const bareHandedBlock = new Card({
+export const bareHandedBlock = new Card({
   title: "Bare-handed Block",
-  cardMetadata: { nature: Nature.Attack },
+  cardMetadata: { nature: Nature.Defense },
   description: ([def, tempDef]) =>
     `Priority+2. DEF+${def}. Increases DEF by an additional ${tempDef} until the end of the turn.`,
   emoji: CardEmoji.DENKEN_CARD,
