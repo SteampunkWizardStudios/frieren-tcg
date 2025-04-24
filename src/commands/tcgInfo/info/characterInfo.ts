@@ -87,7 +87,9 @@ export async function showCharacterInfo(
                 const card = cardCount.card;
                 const count = cardCount.count;
                 return {
-                  name: `${card.emoji} **${card.title}** x ${count}:`,
+                  name: `${card.emoji} **${card.title}** `
+                  + `${card.cardMetadata.signature ? "(signature) " : " "}`
+                  + `x ${count}:`,
                   value: `${card.getDescription()}`,
                 };
               })

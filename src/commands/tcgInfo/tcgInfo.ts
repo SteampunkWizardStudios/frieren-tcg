@@ -60,6 +60,10 @@ export const command: Command<ChatInputCommandInteraction> = {
               {
                 name: "Serie's Living Grimoire: Utility Chapter's Card Pool",
                 value: AdvancedRulesSection.SeriesPoolUtility,
+              },
+              {
+                name: "Character signature moves: Übel's Empathy Card Pool",
+                value: AdvancedRulesSection.SignatureMoves,
               }
             )
         )

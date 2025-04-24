@@ -27,3 +27,5 @@ export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Ubel]: a_malevolentShrine,
   [CharacterName.Fern]: spellToCreateManaButterflies,
 };
+
+export const SIGNATURE_MOVES_LIST = Object.entries(signatureMoves);
