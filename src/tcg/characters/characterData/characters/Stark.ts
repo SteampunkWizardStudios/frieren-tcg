@@ -31,7 +31,7 @@ export const Stark = new CharacterData({
   cards: starkDeck,
   ability: {
     abilityName: "Bravest Coward",
-    abilityEffectString: `Using attacks without (Resolve) reduces its DMG by 20%.
+    abilityEffectString: `Using attacks while your (Resolve) is negative reduces its DMG by 20%.
         Using attacks with (Resolve) increases its DMG by 20%.
         Every attack costs 1 (Resolve) unless stated otherwise.`,
     abilityAfterOwnCardUse: function (
@@ -49,8 +49,10 @@ export const Stark = new CharacterData({
       const character = game.getCharacter(characterIndex);
       if (character.stats.stats.Ability > 0) {
         game.additionalMetadata.attackModifier[characterIndex] = 1.2;
-      } else {
+      } else if (character.stats.stats.Ability < 0) {
         game.additionalMetadata.attackModifier[characterIndex] = 0.8;
+      } else {
+        game.additionalMetadata.attackModifier[characterIndex] = 1.0;
       }
     },
   },
