@@ -264,6 +264,10 @@ export default class Game {
       characterDefeated = true;
     }
 
+    if (character.stats.stats.HP <= -50) {
+      characterDefeated = true;
+    }
+
     if (this.additionalMetadata.forfeited[characterIndex]) {
       characterDefeated = true;
     }

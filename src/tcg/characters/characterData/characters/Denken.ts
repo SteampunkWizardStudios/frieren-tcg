@@ -34,8 +34,8 @@ export const Denken = new CharacterData({
     abilityName: "Preserverance",
     abilityEffectString: `This character starts with ${DENKEN_PRESERVERANCE_COUNT} Preserverance stacks.
     1 Stack is taken away when the character's HP is <= 0 at the end of the turn. 
-    An additional stack is taken away when the character's HP is <= -50. 
-    The character only loses when the number of Preserverance stack is 0.`,
+    An additional stack is taken away when the character's HP is <= -25. 
+    The character loses when the number of Preserverance stack is 0, or if the character's HP is <= -50.`,
     abilityEndOfTurnEffect: function (
       this,
       game,
@@ -47,7 +47,7 @@ export const Denken = new CharacterData({
       if (character.stats.stats.HP <= 0) {
         character.adjustStat(-1, StatsEnum.Ability);
 
-        if (character.stats.stats.HP <= -50) {
+        if (character.stats.stats.HP <= -25) {
           character.adjustStat(-1, StatsEnum.Ability);
         }
 
