@@ -287,11 +287,13 @@ export const a_theHeightOfMagic = new Card({
         ...a_vollzanbel,
         title: 'Hellfire Summoning: Vollzanbel ("The Height of Magic")',
         empowerLevel: this.empowerLevel,
+        priority: 0,
       });
     } else {
       return new Card({
         ...a_theHeightOfMagicBase,
         empowerLevel: this.empowerLevel,
+        priority: 1,
       });
     }
   },
