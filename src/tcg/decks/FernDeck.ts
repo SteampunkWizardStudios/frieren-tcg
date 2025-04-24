@@ -82,7 +82,10 @@ export const a_fernBarrage = new Card({
               `${character.name} puts on the pressure!`,
               TCGThread.Gameroom
             );
-            character.additionalMetadata.fernBarrage -= 1;
+            character.additionalMetadata.fernBarrage = Math.max(
+              0,
+              (character.additionalMetadata.fernBarrage ?? 0) - 1
+            );
             messageCache.push(
               `${character.name} lost 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
               TCGThread.Gameroom
