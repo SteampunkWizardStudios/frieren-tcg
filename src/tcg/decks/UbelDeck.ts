@@ -104,7 +104,7 @@ export const rushdown = new Card({
   title: "Rushdown",
   cardMetadata: { nature: Nature.Util },
   description: ([spd]) =>
-    `Increases SPD by ${spd} for 3 turns. Attacks will not miss during this period. At the end of every turn, HP-5.`,
+    `Increases SPD by ${spd} for 3 turns. Attacks will not miss during this period. At the end of every turn, HP-4.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10],
   cosmetic: {
@@ -137,7 +137,7 @@ export const rushdown = new Card({
             `${character.name} is being reckless.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(-5, StatsEnum.HP);
+          character.adjustStat(-4, StatsEnum.HP);
         },
 
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
