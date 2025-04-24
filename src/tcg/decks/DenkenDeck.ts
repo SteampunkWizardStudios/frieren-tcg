@@ -436,7 +436,7 @@ export const thisIsNoPlaceToGiveUp = new Card({
   description: ([hp]) =>
     `Heal ${hp}HP. Heal an additional ${hp}HP and gain 1 Preserverance stack if HP <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [7],
+  effects: [4],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     const healing = this.calculateEffectValue(this.effects[0]);
