@@ -5,6 +5,10 @@ import {
   MessageFlags,
   InteractionContextType,
   EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ButtonInteraction,
 } from "discord.js";
 import type { Command } from "../../types/command";
 import handleAchievementAutocomplete from "./achievementHandler/handleAchievementAutocomplete";
@@ -16,6 +20,9 @@ import {
   createAchievement,
   deleteAchievement,
 } from "./achievementHandler/handleManageAchievement";
+import handleLadderReset from "./handleLadderReset/handleLadderReset";
+
+const CONFIRM_LADDER_RESET_BUTTON_ID = "ladder-reset-confirm";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -128,6 +135,11 @@ export const command: Command<ChatInputCommandInteraction> = {
             )
             .setRequired(false)
         )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("ladder-reset")
+        .setDescription("Reset all active ladders for a new season")
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -230,6 +242,41 @@ export const command: Command<ChatInputCommandInteraction> = {
         }
         case "maintenance": {
           handleMaintenance(interaction);
+          break;
+        }
+        case "ladder-reset": {
+          await interaction.deferReply({
+            flags: MessageFlags.Ephemeral,
+          });
+          const reply = await interaction.editReply({
+            content:
+              "Are you sure you want to reset all active ladders and create new ones?",
+            components: [
+              new ActionRowBuilder<ButtonBuilder>().addComponents(
+                new ButtonBuilder()
+                  .setCustomId(CONFIRM_LADDER_RESET_BUTTON_ID)
+                  .setLabel("Confirm")
+                  .setStyle(ButtonStyle.Danger)
+              ),
+            ],
+          });
+          const collector = reply
+            .createMessageComponentCollector({
+              filter: (i) =>
+                i.user.id === interaction.user.id &&
+                i.customId === CONFIRM_LADDER_RESET_BUTTON_ID,
+              max: 1,
+              time: 120_000,
+            })
+            collector.on("collect", async (i: ButtonInteraction) => {
+              try {
+                await handleLadderReset(i);
+              } catch (error) {
+                console.error("Error in ladder reset:", error);
+              } finally {
+				collector.stop();
+              }
+            });
           break;
         }
         default: {

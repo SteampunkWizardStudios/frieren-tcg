@@ -88,3 +88,8 @@ export enum ProgressBarEmoji {
   END_HALF = "<:PB3HF:1164479711573983272>",
   END_FULL = "<:PB3F:1164479723225763892>",
 }
+
+export function charWithEmoji(char: CharacterName) {
+  const entry = characterNameToEmoji[char];
+  return entry ? `${entry} ${char}` : char;
+}
