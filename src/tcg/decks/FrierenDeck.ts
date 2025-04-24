@@ -87,7 +87,7 @@ export const a_judradjim = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364225378952020029/GIF_1668382682.gif?ex=6808e564&is=680793e4&hm=2c769b1580a0639d7e83a046cad25ff641b839f91ab7c035b0ae844aae3b551c&",
   },
   tags: { PostAnalysis: 1 },
-  effects: [12],
+  effects: [13],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -111,7 +111,7 @@ export const a_vollzanbel = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364225342218309674/GIF_1142333080.gif?ex=6808e55b&is=680793db&hm=11bd4be532ecf85eab598b0533e6c5b747d9bb8483c74ec2a86f3ede0fb352aa&",
   },
-  effects: [17],
+  effects: [18],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -236,7 +236,7 @@ export const ordinaryDefensiveMagic = new Card({
 export const a_theHeightOfMagicBase = new Card({
   title: `"The Height of Magic"`,
   description: ([dmg]) =>
-    `When used with HP <= 25, Priority+1. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1. Treat this card as "Hellfire Summoning: Vollzanbel" when used with HP > 25.`,
+    `When used with HP <= 25, Priority+1. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1. Treat this card as "Offensive Magic Analysis: Zoltraak" when used with HP > 25.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -284,8 +284,7 @@ export const a_theHeightOfMagic = new Card({
 
     if (character.stats.stats.HP > 25) {
       return new Card({
-        ...a_vollzanbel,
-        title: 'Hellfire Summoning: Vollzanbel ("The Height of Magic")',
+        ...a_zoltraak,
         empowerLevel: this.empowerLevel,
         priority: 0,
       });
@@ -301,8 +300,8 @@ export const a_theHeightOfMagic = new Card({
 
 export const frierenDeck = [
   { card: a_zoltraak, count: 2 },
-  { card: a_judradjim, count: 3 },
-  { card: a_vollzanbel, count: 1 },
+  { card: a_judradjim, count: 2 },
+  { card: a_vollzanbel, count: 2 },
   { card: barrierMagicAnalysis, count: 3 },
   { card: demonMagicAnalysis, count: 2 },
   { card: ordinaryDefensiveMagic, count: 2 },
