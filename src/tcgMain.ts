@@ -23,6 +23,7 @@ import { CharacterName } from "./tcg/characters/metadata/CharacterName";
 import { EmpoweredMode } from "./tcg/plugins/chaosMode";
 
 const TURN_LIMIT = 50;
+const MESSAGE_TIMEOUT_MS = 1500;
 
 export const tcgMain = async (
   challenger: User,
@@ -136,7 +137,7 @@ export const tcgMain = async (
       messageCache.flush(TCGThread.Gameroom),
       TCGThread.Gameroom,
       threadsMapping,
-      1000
+      MESSAGE_TIMEOUT_MS
     );
 
     if (game.turnCount === TURN_LIMIT) {
@@ -168,7 +169,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          1000
+          MESSAGE_TIMEOUT_MS
         );
 
         if (character.skipTurn) {
@@ -194,7 +195,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          1000
+          MESSAGE_TIMEOUT_MS
         );
 
         messageCache.push(`## ${character.name}'s Active Cards:`, useChannel);
@@ -202,7 +203,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          1000
+          MESSAGE_TIMEOUT_MS
         );
 
         const draws: string[] = [];
@@ -233,7 +234,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          1000
+          MESSAGE_TIMEOUT_MS
         );
       })
     );
@@ -245,7 +246,7 @@ export const tcgMain = async (
           [characterToDetailsString[index].hand],
           TCGThread.Gameroom,
           threadsMapping,
-          100
+          MESSAGE_TIMEOUT_MS / 10
         );
       }
       if (gameSettings.revealDraw) {
@@ -256,7 +257,7 @@ export const tcgMain = async (
           ],
           TCGThread.Gameroom,
           threadsMapping,
-          100
+          MESSAGE_TIMEOUT_MS / 10
         );
       }
     }
@@ -491,7 +492,7 @@ export const tcgMain = async (
         messageCache.flush(TCGThread.Gameroom),
         TCGThread.Gameroom,
         threadsMapping,
-        1000
+        MESSAGE_TIMEOUT_MS
       );
     }
   }
