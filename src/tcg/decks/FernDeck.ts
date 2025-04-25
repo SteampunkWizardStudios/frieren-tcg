@@ -38,7 +38,7 @@ export const a_fernBarrage = new Card({
   description: ([dmg]) =>
     `HP-4. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG, until Barrage count reaches 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [6],
+  effects: [7],
   cosmetic: {
     cardGif: "https://c.tenor.com/2RAJbNpiLI4AAAAd/tenor.gif",
   },
@@ -111,10 +111,11 @@ export const a_fernBarrage = new Card({
 const a_fernConcentratedZoltraakSnipe = new Card({
   title: "Concentrated Zoltraak Snipe",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) =>
-    `HP-12, Barrage count +3. Afterwards, deal ${dmg} DMG x Barrage count, bypassing 1/2 of opponent's DEF. Reset Barrage count to 0.`,
+  description: ([baseDmg, dmg]) =>
+    `HP-12. Deal ${baseDmg} + ${dmg} DMG x Barrage count, bypassing 1/2 of opponent's DEF. Reset Barrage count to 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [2],
+  effects: [6, 2],
+  hpCost: 12,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364357151111385098/GIF_1619936813.gif?ex=6809601d&is=68080e9d&hm=d315925c27f678c96ed238bcc826abd1c209e5e1dae651b445b7fa4760e0cf09&",
@@ -126,17 +127,14 @@ const a_fernConcentratedZoltraakSnipe = new Card({
       TCGThread.Gameroom
     );
 
-    const singleDamage = this.calculateEffectValue(this.effects[0]);
-    const newBarrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 3;
-    character.additionalMetadata.fernBarrage = newBarrageCount;
-    messageCache.push(
-      `${character.name} gained 1 Barrage count. Current Barrage count: **${newBarrageCount}**.`,
-      TCGThread.Gameroom
-    );
+    const baseDamage = this.calculateEffectValue(this.effects[0]);
+    const singleBarrageDamage = this.calculateEffectValue(this.effects[1]);
 
     CommonCardAction.commonAttack(game, characterIndex, {
-      damage: singleDamage * newBarrageCount,
-      hpCost: 12,
+      damage:
+        baseDamage +
+        singleBarrageDamage * (character.additionalMetadata.fernBarrage ??= 0),
+      hpCost: this.hpCost,
       pierceFactor: 0.5,
     });
 

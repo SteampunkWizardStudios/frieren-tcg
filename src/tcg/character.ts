@@ -109,9 +109,7 @@ export default class Character {
   ): Record<string, Card> {
     const defaultCardOptions: Record<string, Card> = {};
     if (this.additionalMetadata.accessToDefaultCardOptions) {
-      if (!this.skipTurn) {
-        defaultCardOptions["7"] = DefaultCards.discardCard.clone();
-      }
+      defaultCardOptions["7"] = DefaultCards.discardCard.clone();
       defaultCardOptions["8"] = DefaultCards.waitCard.clone();
     } else {
       if (this.skipTurn) {

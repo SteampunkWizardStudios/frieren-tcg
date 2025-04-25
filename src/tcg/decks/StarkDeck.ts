@@ -226,10 +226,11 @@ const concentration = new Card({
 const a_ordensSlashTechnique = new Card({
   title: "Orden's Slash Technique",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-8. DMG ${dmg}`,
+  description: ([dmg]) => `HP-7. DMG ${dmg}`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -1 },
-  effects: [12],
+  effects: [14],
+  hpCost: 8,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361187449522356324/IMG_3119.gif?ex=68086419&is=68071299&hm=f010c6a8f3b17eb25cdb15c8605dfb69ea06a323b0ca5aaed2484cce741ed4e6&",
@@ -242,7 +243,10 @@ const a_ordensSlashTechnique = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 8 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: this.hpCost,
+    });
   },
 });
 
@@ -274,10 +278,11 @@ const fearBroughtMeThisFar = new Card({
 const a_eisensAxeCleave = new Card({
   title: "Eisen's Axe Cleave",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-12. DMG ${dmg}. Uses up 2 Resolve stack.`,
+  description: ([dmg]) => `HP-11. DMG ${dmg}. Uses up 2 Resolve stack.`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -2 },
-  effects: [17],
+  effects: [19],
+  hpCost: 11,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361191191533719602/IMG_3110.gif?ex=68086795&is=68071615&hm=e80ebb6c7098f7f020cc5a67819287df12f6ea5fa9427231382b6a8b026f3e47&",
@@ -299,7 +304,7 @@ const a_eisensAxeCleave = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: 12,
+      hpCost: this.hpCost,
     });
   },
 });
@@ -307,34 +312,40 @@ const a_eisensAxeCleave = new Card({
 export const a_lightningStrike = new Card({
   title: "Lightning Strike",
   description: ([dmg]) =>
-    `Priority+1. HP-15. DEF-5 for this turn. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack.`,
+    `Priorit+1. HP-14. DEF-5 and SPD-5 for 2 turns. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack. Stark's HP cannot drop below 1 during the turn this move is used.`,
   emoji: CardEmoji.STARK_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   tags: { Resolve: -2 },
   priority: 1,
-  effects: [22],
+  effects: [24],
+  hpCost: 14,
   cosmetic: {
     cardGif: "https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif",
   },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
 
-    if (character.adjustStat(-15, StatsEnum.HP)) {
+    if (character.adjustStat(this.hpCost, StatsEnum.HP)) {
       messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
       const damage = this.calculateEffectValue(this.effects[0]);
 
       character.adjustStat(-5, StatsEnum.DEF);
+      character.adjustStat(-5, StatsEnum.SPD);
+      character.additionalMetadata.minimumPossibleHp = 1;
+
       game.characters[characterIndex].timedEffects.push(
         new TimedEffect({
           name: "Opening",
-          description: `DEF-5 for this turn.`,
-          turnDuration: 1,
+          description: `DEF-5 and SPD-5.`,
+          turnDuration: 2,
           removableBySorganeil: false,
           endOfTimedEffectAction: (game, characterIndex) => {
             game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
+            game.characters[characterIndex].adjustStat(5, StatsEnum.SPD);
           },
         })
       );
+
       game.characters[characterIndex].timedEffects.push(
         new TimedEffect({
           name: "Impending Lightning",
@@ -350,6 +361,23 @@ export const a_lightningStrike = new Card({
               hpCost: 0,
               isTimedEffectAttack: true,
             });
+          },
+        })
+      );
+
+      game.characters[characterIndex].timedEffects.push(
+        new TimedEffect({
+          name: "Sturdy",
+          description: `HP cannot fall below 1 this turn.`,
+          turnDuration: 1,
+          priority: -1,
+          removableBySorganeil: false,
+          endOfTimedEffectAction: (_game, _characterIndex) => {
+            messageCache.push(
+              `${character.name} let out all he has. Stark is no longer Sturdy.`,
+              TCGThread.Gameroom
+            );
+            character.additionalMetadata.minimumPossibleHp = undefined;
           },
         })
       );

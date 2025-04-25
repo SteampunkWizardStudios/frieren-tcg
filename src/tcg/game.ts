@@ -122,9 +122,14 @@ export default class Game {
 
       actualDamage = baseDamage;
 
-      const defenderRemainingHp = Number(
-        (defender.stats.stats.HP - actualDamage).toFixed(2)
+      const minimumDefenderHp =
+        defender.additionalMetadata.minimumPossibleHp ??
+        Number.MIN_SAFE_INTEGER;
+      const defenderRemainingHp = Math.max(
+        Number((defender.stats.stats.HP - actualDamage).toFixed(2)),
+        minimumDefenderHp
       );
+
       defender.stats.stats.HP = defenderRemainingHp;
       const hpLeft: string = defender.additionalMetadata.manaSuppressed
         ? ""

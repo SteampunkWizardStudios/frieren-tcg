@@ -11,7 +11,7 @@ import { a_malevolentShrine } from "./utilDecks/ubelSignature";
 export const empathyFailureName = "Stalking";
 
 export const a_reelseiden = new Card({
-  title: "Initiate",
+  title: "Shallow Slash",
   description: ([dmg]) =>
     `HP-4. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
   emoji: CardEmoji.UBEL_CARD,

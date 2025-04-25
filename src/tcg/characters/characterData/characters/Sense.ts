@@ -12,6 +12,7 @@ import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 // const PACIFIST_STACK_COUNT = config.debugMode ? 1 : 15;
 const PACIFIST_STACK_COUNT = 15;
 const PACIFIST_STACK_ATTACK_DEDUCTION = 1;
+const TEA_TIME_STACK_TURN_SKIP = 3;
 
 const senseStats = new Stats({
   [StatsEnum.HP]: 90.0,
@@ -37,7 +38,7 @@ export const Sense = new CharacterData({
   cards: senseDeck,
   ability: {
     abilityName: "Pacifist",
-    abilityEffectString: `When this character has 2 Tea Time Snacks, skip the turn for both characters.
+    abilityEffectString: `When this character has ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks, skip the turn for both characters.
       Every turn this character doesn't attack, gain 1 stack. Everytime this character attacks, reduce stack count by ${PACIFIST_STACK_ATTACK_DEDUCTION} (minimum stack count: 0).
       This character wins if their stack count is ${PACIFIST_STACK_COUNT}.`,
     abilityAfterOwnCardUse: function (
@@ -49,14 +50,19 @@ export const Sense = new CharacterData({
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
       if ("TeaTime" in card.tags) {
-        character.additionalMetadata.senseTeaTimeStacks! +=
-          card.tags["TeaTime"];
-        if (character.additionalMetadata.senseTeaTimeStacks! >= 2) {
+        character.additionalMetadata.senseTeaTimeStacks ??= 0;
+
+        character.additionalMetadata.senseTeaTimeStacks += card.tags["TeaTime"];
+        if (
+          character.additionalMetadata.senseTeaTimeStacks >=
+          TEA_TIME_STACK_TURN_SKIP
+        ) {
           messageCache.push(
             "Sense holds a tea party! Both characters take a turn to enjoy the tea.",
             TCGThread.Gameroom
           );
-          character.additionalMetadata.senseTeaTimeStacks! -= 2;
+          character.additionalMetadata.senseTeaTimeStacks -=
+            TEA_TIME_STACK_TURN_SKIP;
           character.skipTurn = true;
           opponent.skipTurn = true;
         }

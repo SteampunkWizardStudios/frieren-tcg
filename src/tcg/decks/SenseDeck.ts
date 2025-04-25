@@ -10,7 +10,7 @@ export const a_hairWhip = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
     `DEF+${def}. Afterwards, HP-4, DMG ${dmg}+DEF/4.`,
-  effects: [2, 7],
+  effects: [3, 7],
   emoji: CardEmoji.PUNCH,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -93,7 +93,7 @@ export const a_pierce = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
     `HP-7. DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
-  effects: [1, 10],
+  effects: [2, 10],
   emoji: CardEmoji.PUNCH,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -155,9 +155,9 @@ export const hairBarrier = new Card({
 export const teaTime = new Card({
   title: "Tea Time",
   cardMetadata: { nature: Nature.Util },
-  description: ([def, hp]) =>
-    `DEF+${def}. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
-  effects: [1, 5],
+  description: ([hp]) =>
+    `Empower both characters' hands. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
+  effects: [4],
   tags: { TeaTime: 1 },
   emoji: CardEmoji.HEART,
   cosmetic: {
@@ -168,24 +168,21 @@ export const teaTime = new Card({
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
-      `${character.name} enjoyed a cup of tea.`,
+      `${character.name} and ${opponent.name} enjoyed a refreshing cup of tea. Both characters' hands are empowered!`,
       TCGThread.Gameroom
     );
-    const defBuff = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(defBuff, StatsEnum.DEF);
 
-    const hpHeal = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(hpHeal, StatsEnum.HP);
-    opponent.adjustStat(hpHeal, StatsEnum.HP);
+    character.empowerHand();
+    opponent.empowerHand();
   },
 });
 
 export const teaParty = new Card({
   title: "Tea Party",
   cardMetadata: { nature: Nature.Util },
-  description: ([def, hp]) =>
-    `DEF+${def}. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
-  effects: [2, 7],
+  description: ([hp]) =>
+    `Empower both characters' hands twice. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
+  effects: [7],
   tags: { TeaTime: 2 },
   emoji: CardEmoji.RANDOM,
   cosmetic: {
@@ -196,15 +193,14 @@ export const teaParty = new Card({
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
-      `${character.name} held a tea party!`,
+      `${character.name} held a tea party! Both characters' hands are greatly empowered!`,
       TCGThread.Gameroom
     );
-    const defBuff = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(defBuff, StatsEnum.DEF);
 
-    const hpHeal = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(hpHeal, StatsEnum.HP);
-    opponent.adjustStat(hpHeal, StatsEnum.HP);
+    for (let i = 0; i < 2; i++) {
+      character.empowerHand();
+      opponent.empowerHand();
+    }
   },
 });
 
@@ -241,8 +237,8 @@ export const senseDeck = [
   { card: harden, count: 2 },
   { card: rest, count: 1 },
   { card: a_pierce, count: 2 },
-  { card: hairBarrier, count: 4 },
+  { card: hairBarrier, count: 3 },
   { card: teaTime, count: 2 },
-  { card: teaParty, count: 1 },
+  { card: teaParty, count: 2 },
   { card: a_piercingDrill, count: 2 },
 ];
