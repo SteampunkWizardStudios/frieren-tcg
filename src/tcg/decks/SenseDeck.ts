@@ -28,16 +28,16 @@ export const a_hairWhip = new Card({
   },
 });
 
-export const harden = new Card({
-  title: "Harden",
+export const sharpen = new Card({
+  title: "Sharpen",
   cardMetadata: { nature: Nature.Util },
   description: ([def, atk]) => `HP-1. DEF+${def}. ATK+${atk}.`,
   effects: [2, 2],
-  emoji: CardEmoji.SHIELD,
+  emoji: CardEmoji.PUNCH,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
-      `${character.name} toughened ${character.cosmetic.pronouns.possessive} hair defense!`,
+      `${character.name} sharpened ${character.cosmetic.pronouns.possessive} hair drills!`,
       TCGThread.Gameroom
     );
 
@@ -234,7 +234,7 @@ export const a_piercingDrill = new Card({
 
 export const senseDeck = [
   { card: a_hairWhip, count: 2 },
-  { card: harden, count: 2 },
+  { card: sharpen, count: 2 },
   { card: rest, count: 1 },
   { card: a_pierce, count: 2 },
   { card: hairBarrier, count: 3 },

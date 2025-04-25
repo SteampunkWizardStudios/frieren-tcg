@@ -33,15 +33,6 @@ type TCGResult = {
   opponentCharacter?: CharacterName;
 };
 
-type TCGResult = {
-  winner?: User;
-  winnerCharacter?: CharacterName;
-  loser?: User;
-  loserCharacter?: CharacterName;
-  challengerCharacter?: CharacterName;
-  opponentCharacter?: CharacterName;
-};
-
 export const tcgMain = async (
   challenger: User,
   opponent: User,

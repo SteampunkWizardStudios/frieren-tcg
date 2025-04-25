@@ -37,10 +37,10 @@ export const Sense = new CharacterData({
   stats: senseStats,
   cards: senseDeck,
   ability: {
-    abilityName: "Pacifist",
-    abilityEffectString: `When this character has ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks, skip the turn for both characters.
-      Every turn this character doesn't attack, gain 1 stack. Everytime this character attacks, reduce stack count by ${PACIFIST_STACK_ATTACK_DEDUCTION} (minimum stack count: 0).
-      This character wins if their stack count is ${PACIFIST_STACK_COUNT}.`,
+    abilityName: "Proctor",
+    abilityEffectString: `Every turn this character doesn't attack, gain 1 stack. Every turn this character attacks, lose ${PACIFIST_STACK_ATTACK_DEDUCTION} stack. (min 0)
+	This character wins if they have ${PACIFIST_STACK_COUNT} stacks.
+	\n**Sub-Ability: Tea Time** - When this character has ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks, skip the turn for both characters and eat ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks.`,
     abilityAfterOwnCardUse: function (
       game,
       characterIndex,

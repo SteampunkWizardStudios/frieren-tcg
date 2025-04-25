@@ -38,7 +38,7 @@ import {
   a_hairWhip,
   a_pierce,
   a_piercingDrill,
-  harden,
+  sharpen,
   rest,
 } from "../SenseDeck";
 import { a_cleave, a_dismantle, a_reelseiden, sorganeil } from "../UbelDeck";
@@ -79,7 +79,7 @@ export const serie_offensiveMagic_unusual = [
 ];
 
 export const serie_utilityMagic_tactics = [
-  harden,
+  sharpen,
   awakening,
   adapt,
   manaDetection,

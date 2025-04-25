@@ -86,7 +86,7 @@ const roost = new Card({
   title: "Roost",
   cardMetadata: { nature: Nature.Util },
   description: ([hp]) => `SPD-5 for 3 turns. DEF-3 for 2 turns. Heal ${hp}HP.`,
-  emoji: CardEmoji.STILLE_CARD,
+  emoji: CardEmoji.ROOST_CARD,
   effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];

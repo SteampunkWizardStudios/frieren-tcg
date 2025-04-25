@@ -79,7 +79,7 @@ export const hide = new Card({
   title: "Hide",
   cardMetadata: { nature: Nature.Util },
   description: ([def, hp]) => `DEF+${def} for 2 turns. Heal ${hp} HP.`,
-  emoji: CardEmoji.LAUFEN_CARD,
+  emoji: CardEmoji.DONUT_CARD,
   effects: [3, 10],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

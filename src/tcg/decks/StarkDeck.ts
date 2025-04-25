@@ -119,7 +119,7 @@ const jumboBerrySpecialBreak = new Card({
   cardMetadata: { nature: Nature.Util },
   description: ([def, hp]) =>
     `SPD-2 for 2 turns. DEF+${def} for 2 turns. Heal ${hp} HP. Gain 1 Resolve at the end of next turn.`,
-  emoji: CardEmoji.STARK_CARD,
+  emoji: CardEmoji.JUMBO_BERRY_CARD,
   effects: [2, 10],
   cosmetic: {
     cardGif:

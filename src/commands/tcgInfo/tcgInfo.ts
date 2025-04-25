@@ -76,7 +76,7 @@ export const command: Command<ChatInputCommandInteraction> = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("character")
-        .setDescription("Get information about the character")
+        .setDescription("Get information about a character")
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
