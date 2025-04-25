@@ -82,11 +82,11 @@ export const Sense = new CharacterData({
         );
         character.setStat(newAbilityCount, StatsEnum.Ability);
       } else {
-        messageCache.push("Sense remained a pacifist!", TCGThread.Gameroom);
+        messageCache.push(`${character.name} continued to proctor peacefully.`, TCGThread.Gameroom);
         character.adjustStat(1, StatsEnum.Ability);
 
         if (character.stats.stats.Ability === PACIFIST_STACK_COUNT) {
-          messageCache.push("# Sense stayed a Pacifist!", TCGThread.Gameroom);
+          messageCache.push(`# ${character.name} has proctored their test without killing!`, TCGThread.Gameroom);
           game.additionalMetadata.forfeited[1 - characterIndex] = true;
         }
       }
