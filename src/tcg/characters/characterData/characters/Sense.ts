@@ -86,7 +86,7 @@ export const Sense = new CharacterData({
         character.adjustStat(1, StatsEnum.Ability);
 
         if (character.stats.stats.Ability === PACIFIST_STACK_COUNT) {
-          messageCache.push(`# ${character.name} has proctored their test without killing!`, TCGThread.Gameroom);
+          messageCache.push(`# ${character.name} has finished proctoring ${character.cosmetic.pronouns.possessive} test. The examinee did not pass in time.`, TCGThread.Gameroom);
           game.additionalMetadata.forfeited[1 - characterIndex] = true;
         }
       }
