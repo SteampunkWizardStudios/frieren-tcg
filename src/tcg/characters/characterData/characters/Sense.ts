@@ -82,7 +82,7 @@ export const Sense = new CharacterData({
         );
         character.setStat(newAbilityCount, StatsEnum.Ability);
       } else {
-        messageCache.push("Sense was a Pacifist!", TCGThread.Gameroom);
+        messageCache.push("Sense remained a pacifist!", TCGThread.Gameroom);
         character.adjustStat(1, StatsEnum.Ability);
 
         if (character.stats.stats.Ability === PACIFIST_STACK_COUNT) {
