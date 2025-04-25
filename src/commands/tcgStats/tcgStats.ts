@@ -10,6 +10,7 @@ import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 import { handleGlobalStats } from "./statsHandlers/globalStats";
 import { handleCharacterGlobalStats } from "./statsHandlers/characterLeaderboard";
 import { handleCharacterStats } from "./statsHandlers/characterStats";
+import handleAchievementLeaderboard from "./statsHandlers/achievementLeaderboard";
 
 const charOptions = Object.entries(CHARACTER_LIST).map(([, character]) => ({
   name: character.name,
@@ -64,6 +65,13 @@ export const command: Command<ChatInputCommandInteraction> = {
     )
     .addSubcommand((subcommand) =>
       subcommand
+        .setName("achievement-leaderboard")
+        .setDescription(
+          "Get a leaderboard of players with the most achievements."
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("character")
         .setDescription("Get match stats for a certain character.")
         .addStringOption((option) =>
@@ -92,6 +100,10 @@ export const command: Command<ChatInputCommandInteraction> = {
         }
         case "character-leaderboard": {
           await handleCharacterGlobalStats(interaction);
+          break;
+        }
+        case "achievement-leaderboard": {
+          await handleAchievementLeaderboard(interaction);
           break;
         }
         case "character": {
