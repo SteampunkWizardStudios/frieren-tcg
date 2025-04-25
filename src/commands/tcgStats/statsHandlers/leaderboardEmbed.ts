@@ -1,12 +1,7 @@
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
 import { ColorResolvable, EmbedBuilder } from "discord.js";
-
-const rankEmotes: Record<number, string> = {
-  1: "🥇",
-  2: "🥈",
-  3: "🥉",
-};
+import { rankEmotes } from "@src/util/formatting/statsEmotes";
 
 function getRankString(rank: number, id: string): string {
   const hasRankEmotes = rank in rankEmotes;
