@@ -86,8 +86,16 @@ async function overviewCase(): Promise<EmbedBuilder> {
       name: true,
       _count: {
         select: {
-          winnerMatches: true,
-          loserMatches: true,
+          winnerMatches: {
+            where: {
+              ladderReset: { endDate: null },
+            },
+          },
+          loserMatches: {
+            where: {
+              ladderReset: { endDate: null },
+            },
+          },
         },
       },
     },
