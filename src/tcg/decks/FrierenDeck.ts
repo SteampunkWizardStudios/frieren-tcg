@@ -236,7 +236,7 @@ export const ordinaryDefensiveMagic = new Card({
 export const a_theHeightOfMagicBase = new Card({
   title: `"The Height of Magic"`,
   description: ([dmg]) =>
-    `When used with HP <= 25, Priority+1. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1. Treat this card as "Hellfire Summoning: Vollzanbel" when used with HP > 25.`,
+    `When used with HP <= 25, Priority+1. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1. Treat this card as "Spell to make a Field of Flowers" when used with HP > 25.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -284,7 +284,7 @@ export const a_theHeightOfMagic = new Card({
 
     if (character.stats.stats.HP > 25) {
       return new Card({
-        ...a_vollzanbel,
+        ...fieldOfFlower,
         empowerLevel: this.empowerLevel,
         priority: 0,
       });
@@ -299,9 +299,9 @@ export const a_theHeightOfMagic = new Card({
 });
 
 export const frierenDeck = [
-  { card: a_zoltraak, count: 3 },
+  { card: a_zoltraak, count: 2 },
   { card: a_judradjim, count: 2 },
-  { card: a_vollzanbel, count: 1 },
+  { card: a_vollzanbel, count: 2 },
   { card: barrierMagicAnalysis, count: 3 },
   { card: demonMagicAnalysis, count: 2 },
   { card: ordinaryDefensiveMagic, count: 2 },

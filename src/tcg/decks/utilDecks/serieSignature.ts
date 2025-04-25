@@ -12,6 +12,8 @@ export const ancientBarrierMagic = new Card({
   cosmetic: {
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014080966718/Ancient_Barrier_Magic_1.png?ex=67df98ad&is=67de472d&hm=c0b00575790207a93d00398d3351e5cd914f371b0c2118855f8f2dc259634420&",
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1365090141374513232/IMG_6559.gif?ex=680cb383&is=680b6203&hm=319be760a6a351a675a1f82ed84fc6cc78063ab4f302f01e5f00d677de814937&",
   },
   cardMetadata: { nature: Nature.Util, signature: true },
   effects: [5, 5, 5],

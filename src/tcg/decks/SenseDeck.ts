@@ -187,7 +187,7 @@ export const teaParty = new Card({
   emoji: CardEmoji.RANDOM,
   cosmetic: {
     cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364970640016281755/GIF_1481380242.gif?ex=680b9b78&is=680a49f8&hm=8d28d2db0acba7954fd24059ededd4d30f495624d7bac107ddfdcd970e28c1da&",
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364992405018902568/GIF_0507169428.gif?ex=680c587d&is=680b06fd&hm=dd2441c0af97bd72ee4c6ee262830ce4a418d07197f696bae7bb832202d6498c&",
   },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
