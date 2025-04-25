@@ -82,7 +82,7 @@ export const Sense = new CharacterData({
         );
         character.setStat(newAbilityCount, StatsEnum.Ability);
       } else {
-        messageCache.push(`${character.name} continued to proctor peacefully.`, TCGThread.Gameroom);
+        messageCache.push(`${character.name} continued to observe peacefully.`, TCGThread.Gameroom);
         character.adjustStat(1, StatsEnum.Ability);
 
         if (character.stats.stats.Ability === PROCTOR_STACK_COUNT) {
