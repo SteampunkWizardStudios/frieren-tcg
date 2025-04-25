@@ -9,9 +9,9 @@ import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 // import config from "@src/config";
 
 // config module not found for some reason
-// const PACIFIST_STACK_COUNT = config.debugMode ? 1 : 15;
-const PACIFIST_STACK_COUNT = 15;
-const PACIFIST_STACK_ATTACK_DEDUCTION = 1;
+// const PROCTOR_STACK_COUNT = config.debugMode ? 1 : 15;
+const PROCTOR_STACK_COUNT = 15;
+const PROCTOR_STACK_ATTACK_DEDUCTION = 1;
 const TEA_TIME_STACK_TURN_SKIP = 3;
 
 const senseStats = new Stats({
@@ -37,10 +37,10 @@ export const Sense = new CharacterData({
   stats: senseStats,
   cards: senseDeck,
   ability: {
-    abilityName: "Pacifist",
-    abilityEffectString: `When this character has ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks, skip the turn for both characters.
-      Every turn this character doesn't attack, gain 1 stack. Everytime this character attacks, reduce stack count by ${PACIFIST_STACK_ATTACK_DEDUCTION} (minimum stack count: 0).
-      This character wins if their stack count is ${PACIFIST_STACK_COUNT}.`,
+    abilityName: "Proctor",
+    abilityEffectString: `Every turn this character doesn't attack, gain 1 observation. Every turn this character attacks, lose ${PROCTOR_STACK_ATTACK_DEDUCTION} observation. (min 0)
+	This character wins when the test is over after ${PROCTOR_STACK_COUNT} observations.
+	\n**Sub-Ability: Tea Time** - When this character has ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks, skip the turn for both characters and eat ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks.`,
     abilityAfterOwnCardUse: function (
       game,
       characterIndex,
@@ -78,15 +78,15 @@ export const Sense = new CharacterData({
         messageCache.push("Sense went on the offensive!", TCGThread.Gameroom);
         const newAbilityCount = Math.max(
           0,
-          character.stats.stats.Ability - PACIFIST_STACK_ATTACK_DEDUCTION
+          character.stats.stats.Ability - PROCTOR_STACK_ATTACK_DEDUCTION
         );
         character.setStat(newAbilityCount, StatsEnum.Ability);
       } else {
-        messageCache.push("Sense was a Pacifist!", TCGThread.Gameroom);
+        messageCache.push(`${character.name} continued to observe peacefully.`, TCGThread.Gameroom);
         character.adjustStat(1, StatsEnum.Ability);
 
-        if (character.stats.stats.Ability === PACIFIST_STACK_COUNT) {
-          messageCache.push("# Sense stayed a Pacifist!", TCGThread.Gameroom);
+        if (character.stats.stats.Ability === PROCTOR_STACK_COUNT) {
+          messageCache.push(`# ${character.name} has finished proctoring ${character.cosmetic.pronouns.possessive} test. The examinee did not pass in time.`, TCGThread.Gameroom);
           game.additionalMetadata.forfeited[1 - characterIndex] = true;
         }
       }
