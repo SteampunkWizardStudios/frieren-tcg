@@ -325,7 +325,7 @@ export const a_lightningStrike = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
 
-    if (character.adjustStat(this.hpCost, StatsEnum.HP)) {
+    if (character.adjustStat(-1 * this.hpCost, StatsEnum.HP)) {
       messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
       const damage = this.calculateEffectValue(this.effects[0]);
 
