@@ -80,49 +80,28 @@ export const initiateGame = async (
         opponentThread.members.remove(opponent.id),
       ]);
 
-<<<<<<< HEAD
       let winnerEmoji = "";
       let loserEmoji = "";
-<<<<<<< HEAD
-=======
-      if (winnerCharacter && loserCharacter) {
-        winnerEmoji = `${CHARACTER_MAP[winnerCharacter].cosmetic.emoji} `;
-        loserEmoji = `${CHARACTER_MAP[loserCharacter].cosmetic.emoji} `;
-      }
->>>>>>> 101355f (print selections and if it was random to the gameroom)
-=======
+
       const challengerEmoji = challengerCharacter
         ? `${CHARACTER_MAP[challengerCharacter].cosmetic.emoji} `
         : "";
       const opponentEmoji = opponentCharacter
         ? `${CHARACTER_MAP[opponentCharacter].cosmetic.emoji} `
         : "";
->>>>>>> de386eb (fix undefined character embed section when tied)
 
       let resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
         .setTitle(
           `Frieren TCG - Results: ${challenger.displayName} vs ${opponent.displayName}`
         )
-<<<<<<< HEAD
-=======
         .setFields({
           name: "Characters",
           value: `${challenger} as ${challengerEmoji}${challengerCharacter}\n${opponent} as ${opponentEmoji}${opponentCharacter}`,
         })
->>>>>>> de386eb (fix undefined character embed section when tied)
         .setFooter({
           text: `Game ID: ${gameId}`,
         });
-
-      if (winnerCharacter && loserCharacter) {
-        winnerEmoji = `${CHARACTER_MAP[winnerCharacter].cosmetic.emoji} `;
-        loserEmoji = `${CHARACTER_MAP[loserCharacter].cosmetic.emoji} `;
-        resultEmbed.setFields({
-          name: "Characters",
-          value: `${winner} as ${winnerEmoji}${winnerCharacter}\n${loser} as ${loserEmoji}${loserCharacter}`,
-        });
-      }
 
       // handle database operations
       if (winner && winnerCharacter && loser && loserCharacter && gameMode) {
