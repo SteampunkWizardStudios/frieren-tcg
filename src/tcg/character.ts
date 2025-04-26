@@ -16,6 +16,7 @@ import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
 import { User } from "discord.js";
 import Game from "./game";
 import { CharacterName } from "./characters/metadata/CharacterName";
+import { DENKEN_DEATH_HP } from "./characters/characterData/characters/Denken";
 
 export interface CharacterProps {
   characterData: CharacterData;
@@ -249,7 +250,11 @@ export default class Character {
         if (this.stats.stats.HP <= 0) {
           // special denken negative HP case
           // if starting HP is already negative and new value is also negative, don't set it to 1
-          this.stats.stats.HP = newValue;
+          if (newValue <= DENKEN_DEATH_HP + 1) {
+            this.stats.stats.HP = DENKEN_DEATH_HP + 1;
+          } else {
+            this.stats.stats.HP = newValue;
+          }
         } else {
           this.stats.stats.HP = 1;
         }

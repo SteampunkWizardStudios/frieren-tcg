@@ -56,6 +56,7 @@ export const fieldOfFlower = new Card({
         name: "Field of Flowers",
         description: `Heal ${endOfTurnHealing} HP`,
         turnDuration: 3,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (game, characterIndex, messageCache) => {
           messageCache.push(
             `The Field of Flowers soothes ${character.name}.`,

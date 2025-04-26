@@ -139,7 +139,7 @@ export const rushdown = new Card({
         description: `Increases SPD by ${spdIncrease} for ${turnCount} turns. Attacks will not miss`,
         turnDuration: turnCount,
         tags: { ubelSpeedModifiers: 1 },
-
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} is being reckless.`,
@@ -195,7 +195,7 @@ const slowdown = new Card({
         description: `Decreases SPD by 10 for ${turnCount} turns. Attacks will not hit. Heal ${endOfTurnHpIncrease} at turn end.`,
         turnDuration: turnCount,
         tags: { ubelSpeedModifiers: 1 },
-
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} took a break and recoups.`,
@@ -289,15 +289,31 @@ export const sorganeil = new Card({
       TCGThread.Gameroom
     );
 
-    opponent.timedEffects = opponent.timedEffects.filter(
-      (timedEffect) => !timedEffect.removableBySorganeil
-    );
+    let newTimedEffects: TimedEffect[] = [];
+    opponent.timedEffects.map((timedEffect) => {
+      if (!timedEffect.removableBySorganeil) {
+        newTimedEffects.push(timedEffect);
+      }
+      if (
+        timedEffect.executeEndOfTimedEffectActionOnRemoval &&
+        timedEffect.endOfTimedEffectAction
+      ) {
+        timedEffect.endOfTimedEffectAction(
+          game,
+          1 - characterIndex,
+          messageCache
+        );
+      }
+    });
+    opponent.timedEffects = newTimedEffects;
+
     character.timedEffects.push(
       new TimedEffect({
         name: "Sorganeil",
         description: `Cannot miss next turn's attack`,
         turnDuration: 2,
         priority: -1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze. ${opponent.name} got free from ${character.name}'s Sorganeil.`,

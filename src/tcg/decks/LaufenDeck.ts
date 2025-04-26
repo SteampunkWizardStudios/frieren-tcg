@@ -224,6 +224,7 @@ export const jilwer = new Card({
         name: "Jilwer",
         description: `Increases SPD by ${spdIncrease} for ${turnCount} turns.`,
         turnDuration: turnCount,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} tires ${character.cosmetic.pronouns.reflexive} out.`,

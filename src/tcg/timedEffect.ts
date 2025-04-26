@@ -7,6 +7,7 @@ export interface TimedEffectProps {
   turnDuration: number;
   activateEndOfTurnActionThisTurn?: boolean;
   removableBySorganeil?: boolean;
+  executeEndOfTimedEffectActionOnRemoval?: boolean;
   priority?: number;
   tags?: Record<string, number>;
   endOfTurnAction?: (
@@ -33,6 +34,7 @@ export default class TimedEffect {
   priority: number;
   activateEndOfTurnActionThisTurn: boolean;
   removableBySorganeil: boolean;
+  executeEndOfTimedEffectActionOnRemoval: boolean;
   tags: Record<string, number>;
   endOfTurnAction?: (
     game: Game,
@@ -58,6 +60,8 @@ export default class TimedEffect {
     this.activateEndOfTurnActionThisTurn =
       props.activateEndOfTurnActionThisTurn ?? true;
     this.removableBySorganeil = props.removableBySorganeil ?? true;
+    this.executeEndOfTimedEffectActionOnRemoval =
+      props.executeEndOfTimedEffectActionOnRemoval ?? false;
     this.tags = props.tags ?? {};
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;

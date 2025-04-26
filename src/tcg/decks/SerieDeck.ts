@@ -258,6 +258,7 @@ export const unbreakableBarrier = new Card({
           description: `ATK+${atkBuff}. DEF+${defBuff}, Opponent's SPD -${spdDebuff} for 5 turns.`,
           turnDuration: 5,
           priority: -1,
+          executeEndOfTimedEffectActionOnRemoval: true,
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
             character.adjustStat(-1 * atkBuff, StatsEnum.ATK);

@@ -34,7 +34,6 @@ export default class CommonCardAction {
   }
 
   // function that looks up a character's timed effect and replace a timed effect with certain tag
-  // mainly used for Himmel
   static replaceOrAddNewTimedEffect(
     game: Game,
     characterIndex: number,

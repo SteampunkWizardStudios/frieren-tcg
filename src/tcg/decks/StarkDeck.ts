@@ -351,6 +351,7 @@ export const a_lightningStrike = new Card({
           name: "Impending Lightning",
           description: `Strike for ${damage} damage.`,
           turnDuration: 1,
+          activateEndOfTurnActionThisTurn: false,
           endOfTimedEffectAction: (game, characterIndex) => {
             messageCache.push(
               `${character.name} performs Lightning Strike!`,

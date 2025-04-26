@@ -40,6 +40,7 @@ export const ancientBarrierMagic = new Card({
           description: `An ominous barrier envelopes the battlefield...`,
           turnDuration: 7,
           priority: -1,
+          executeEndOfTimedEffectActionOnRemoval: true,
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
 

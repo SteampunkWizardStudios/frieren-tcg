@@ -207,7 +207,8 @@ export const a_erfassenJavelin = new Card({
         name: "Erfassen: Javelin",
         description: `Deal ${damage} at the end of the effect.`,
         turnDuration: 2,
-        endOfTimedEffectAction: (game, characterIndex, messageCache) => {
+        activateEndOfTurnActionThisTurn: false,
+        endOfTurnAction: (game, characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} launches a javelin!`,
             TCGThread.Gameroom

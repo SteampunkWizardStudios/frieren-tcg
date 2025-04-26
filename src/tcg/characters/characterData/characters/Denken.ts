@@ -7,6 +7,7 @@ import { denkenDeck } from "@src/tcg/decks/DenkenDeck";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const DENKEN_PRESERVERANCE_COUNT = 3;
+export const DENKEN_DEATH_HP = -50;
 
 const denkenStats = new Stats({
   [StatsEnum.HP]: 100.0,
@@ -34,8 +35,8 @@ export const Denken = new CharacterData({
     abilityName: "Preserverance",
     abilityEffectString: `This character starts with ${DENKEN_PRESERVERANCE_COUNT} Preserverance stacks.
     1 Stack is taken away when the character's HP is <= 0 at the end of the turn. 
-    An additional stack is taken away when the character's HP is <= -25. 
-    The character loses when the number of Preserverance stack is 0, or if the character's HP is <= -50.`,
+    An additional stack is taken away when the character's HP is <= ${DENKEN_DEATH_HP / 2}. 
+    The character loses when the number of Preserverance stack is 0, or if the character's HP is <= ${DENKEN_DEATH_HP}.`,
     abilityEndOfTurnEffect: function (
       this,
       game,
@@ -47,7 +48,7 @@ export const Denken = new CharacterData({
       if (character.stats.stats.HP <= 0) {
         character.adjustStat(-1, StatsEnum.Ability);
 
-        if (character.stats.stats.HP <= -25) {
+        if (character.stats.stats.HP <= DENKEN_DEATH_HP / 2) {
           character.adjustStat(-1, StatsEnum.Ability);
         }
 

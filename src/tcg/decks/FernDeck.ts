@@ -218,6 +218,7 @@ export const manaConcealment = new Card({
         name: "Mana Concealment",
         description: `Attacking moves receive Priority+1`,
         turnDuration: 2,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} unveiled ${character.cosmetic.pronouns.possessive} presence.`,
@@ -256,6 +257,7 @@ export const spellToCreateManaButterflies = new Card({
         name: "Field of Butterflies",
         description: `Heal ${endOfTurnHealing} HP`,
         turnDuration: 4,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (game, characterIndex, messageCache) => {
           messageCache.push(
             `The Mana Butterflies soothe ${character.name}.`,

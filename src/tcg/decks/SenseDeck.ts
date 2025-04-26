@@ -174,6 +174,10 @@ export const teaTime = new Card({
 
     character.empowerHand();
     opponent.empowerHand();
+
+    const hpHeal = this.calculateEffectValue(this.effects[0]);
+    character.adjustStat(hpHeal, StatsEnum.HP);
+    opponent.adjustStat(hpHeal, StatsEnum.HP);
   },
 });
 
@@ -201,6 +205,10 @@ export const teaParty = new Card({
       character.empowerHand();
       opponent.empowerHand();
     }
+
+    const hpHeal = this.calculateEffectValue(this.effects[0]);
+    character.adjustStat(hpHeal, StatsEnum.HP);
+    opponent.adjustStat(hpHeal, StatsEnum.HP);
   },
 });
 

@@ -82,7 +82,8 @@ export const a_trustInYourAllyFernsBarrage = new Card({
           name: "Barrage",
           description: `Deal ${damage} at the end of the effect.`,
           turnDuration: 2,
-          endOfTimedEffectAction: (game, characterIndex, messageCache) => {
+          activateEndOfTurnActionThisTurn: false,
+          endOfTurnAction: (game, characterIndex, messageCache) => {
             messageCache.push("The barrage continues!", TCGThread.Gameroom);
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
