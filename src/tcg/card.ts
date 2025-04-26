@@ -2,8 +2,6 @@ import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { CharacterName } from "./characters/metadata/CharacterName";
 import { CardEmoji } from "./formatting/emojis";
 import Game from "./game";
-// import { GameContext } from "./gameContextProvider";
-
 export interface CardCosmetic {
   cardImageUrl?: string;
   cardGif?: string;
@@ -37,10 +35,6 @@ export type CardProps = {
   effects: number[];
   emoji?: CardEmoji;
   cosmetic?: CardCosmetic;
-  /**
-   * The action to be performed when the card is played.
-   * Prefer using {@link GameContext} to access game state and perform actions.
-   */
   cardAction: (
     game: Game,
     characterIndex: number,
