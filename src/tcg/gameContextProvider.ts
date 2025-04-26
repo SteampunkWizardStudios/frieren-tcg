@@ -6,9 +6,7 @@ import Character from "@src/tcg/character";
 import Card from "@src/tcg/card";
 import CommonCardAction from "./util/commonCardActions";
 
-export type GameContext = ReturnType<typeof gameContextProvider>;
-
-// #region couldn't figure out how to reuse from Card class
+// #region from Card.ts
 const EMPOWER_BOOST = 0.1;
 
 const calculateEffectValue = (baseValue: number, empowerLevel: number) => {
