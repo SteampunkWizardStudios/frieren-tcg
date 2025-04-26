@@ -21,7 +21,7 @@ const calculateEffectValue = (baseValue: number, empowerLevel: number) => {
 /**
  * Provides convenience methods and properties for cardActions.
  */
-export function gameContextProvider(this: Card, game: Game, characterIndex: number, messageCache: MessageCache) {
+export default function gameContextProvider(this: Card, game: Game, characterIndex: number, messageCache: MessageCache) {
     const changeStat = (target: Character, amount: number, stat: StatsEnum ) => {
         target.adjustStat(amount, stat);
     }
