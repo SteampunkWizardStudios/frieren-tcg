@@ -43,8 +43,8 @@ export default function gameContextProvider(this: Card, game: Game, characterInd
     const flatOpponentStat = changeStat.bind(null, opponent);
     const opponentStat = changeStatWithEmpower.bind(null, opponent);
 
-    const basicAttack = (baseDamage: number, hpCost: number) => {
-        const damage = calculateEffectValue(baseDamage, this.empowerLevel);
+    const basicAttack = (effectIndex: number, hpCost: number) => {
+        const damage = calculateEffectValue(this.effects[effectIndex], this.empowerLevel);
         return CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost });
     };
 
