@@ -25,11 +25,13 @@ export type CardProps = {
   effects: number[];
   emoji?: CardEmoji;
   cosmetic?: CardCosmetic;
+  // TODO: change to a GameContext arg
   cardAction: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
   empowerLevel?: number;
   priority?: number;
@@ -50,11 +52,13 @@ export default class Card implements CardProps {
   effects: number[];
   emoji: CardEmoji;
   cosmetic?: CardCosmetic | undefined;
+  // TODO: change to a GameContext arg
   cardAction: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
   empowerLevel: number;
   priority: number;
