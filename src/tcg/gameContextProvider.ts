@@ -10,7 +10,7 @@ import CommonCardAction from "./util/commonCardActions";
 const EMPOWER_BOOST = 0.1;
 
 const calculateEffectValue = (baseValue: number, empowerLevel: number) => {
-  return Number((baseValue * (1 + empowerLevel * EMPOWER_BOOST)).toFixed(2));
+    return Number((baseValue * (1 + empowerLevel * EMPOWER_BOOST)).toFixed(2));
 };
 // #endregion
 
@@ -18,67 +18,86 @@ const calculateEffectValue = (baseValue: number, empowerLevel: number) => {
  * Provides convenience methods and properties for cardActions.
  */
 export default function gameContextProvider(
-  this: Card,
-  game: Game,
-  characterIndex: number,
-  messageCache: MessageCache
+    this: Card,
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache
 ) {
-  const changeStat = (target: Character, amount: number, stat: StatsEnum) => {
-    target.adjustStat(amount, stat);
-  };
-  const changeStatWithEmpower = (
-    target: Character,
-    stat: StatsEnum,
-    effectIndex: number
-  ) => {
-    const empowered = calculateEffectValue(
-      this.effects[effectIndex],
-      this.empowerLevel
-    );
-    target.adjustStat(empowered, stat);
-  };
+    const changeStat = (target: Character, amount: number, stat: StatsEnum, multiplier: number = 1) => {
+        const change = amount * multiplier;
+        target.adjustStat(change, stat);
+        return change;
+    };
+    const changeStatWithEmpower = (
+        target: Character,
+        stat: StatsEnum,
+        effectIndex: number,
+        multiplier: number = 1,
+    ) => {
+        const empowered = calculateEffectValue(
+            this.effects[effectIndex],
+            this.empowerLevel
+        );
+        const change = empowered * multiplier;
+        target.adjustStat(change, stat);
+        return change;
+    };
+    const flatAttack = (damage: number, hpCost: number) => {
+        return CommonCardAction.commonAttack(game, characterIndex, {
+            damage,
+            hpCost,
+        });
+    }
 
-  const self = game.getCharacter(characterIndex);
-  const opponent = game.getCharacter(characterIndex - 1);
+    const calcEffect = (effectIndex: number) => {
+        return calculateEffectValue(
+            this.effects[effectIndex],
+            this.empowerLevel
+        );
+    }
 
-  const sendToGameroom = (message: string) => {
-    messageCache.push(message, TCGThread.Gameroom);
-  };
+    const self = game.getCharacter(characterIndex);
+    const opponent = game.getCharacter(characterIndex - 1);
 
-  const flatSelfStat = changeStat.bind(null, self);
-  const selfStat = changeStatWithEmpower.bind(null, self);
-  const flatOpponentStat = changeStat.bind(null, opponent);
-  const opponentStat = changeStatWithEmpower.bind(null, opponent);
+    const sendToGameroom = (message: string) => {
+        messageCache.push(message, TCGThread.Gameroom);
+    };
 
-  const basicAttack = (effectIndex: number, hpCost: number) => {
-    const damage = calculateEffectValue(
-      this.effects[effectIndex],
-      this.empowerLevel
-    );
-    return CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-      hpCost,
-    });
-  };
+    const flatSelfStat = changeStat.bind(null, self);
+    const selfStat = changeStatWithEmpower.bind(null, self);
+    const flatOpponentStat = changeStat.bind(null, opponent);
+    const opponentStat = changeStatWithEmpower.bind(null, opponent);
 
-  return {
-    selfIndex: characterIndex,
-    self,
-    flatSelfStat,
-    selfStat,
-    basicAttack,
+    const basicAttack = (effectIndex: number, hpCost: number) => {
+        const damage = calculateEffectValue(
+            this.effects[effectIndex],
+            this.empowerLevel
+        );
+        flatAttack(damage, hpCost);
+        return damage;
+    };
 
-    name: self.name,
-    reflexive: self.cosmetic.pronouns.reflexive,
-    possessive: self.cosmetic.pronouns.possessive,
+    return {
+        selfIndex: characterIndex,
+        self,
+        flatSelfStat,
+        selfStat,
+        basicAttack,
+        flatAttack,
+        selfStats: self.stats.stats,
 
-    opponent,
-    flatOpponentStat,
-    opponentStat,
+        name: self.name,
+        reflexive: self.cosmetic.pronouns.reflexive,
+        possessive: self.cosmetic.pronouns.possessive,
 
-    messageCache,
-    sendToGameroom,
+        opponent,
+        opponentStats: opponent.stats.stats,
+        flatOpponentStat,
+        opponentStat,
 
-    game,
-  };
+        messageCache,
+        sendToGameroom,
+
+        game,
+    };
 }
