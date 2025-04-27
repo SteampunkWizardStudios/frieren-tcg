@@ -7,16 +7,19 @@ export interface TimedEffectProps {
   turnDuration: number;
   priority?: number;
   tags?: Record<string, number>;
+  // TODO: change to a GameContext arg
   endOfTurnAction?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  // TODO: change to a GameContext arg
   endOfTimedEffectAction?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  // TODO: change to a GameContext arg
   replacedAction?: (
     game: Game,
     characterIndex: number,
@@ -30,16 +33,19 @@ export default class TimedEffect {
   turnDuration: number;
   priority: number;
   tags: Record<string, number>;
+  // TODO: change to a GameContext arg
   endOfTurnAction?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  // TODO: change to a GameContext arg
   endOfTimedEffectAction?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  // TODO: change to a GameContext arg
   replacedAction?: (
     game: Game,
     characterIndex: number,

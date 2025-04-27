@@ -84,6 +84,7 @@ export default function gameContextProvider(
         selfStat,
         basicAttack,
         flatAttack,
+        calcEffect,
         selfStats: self.stats.stats,
 
         name: self.name,
