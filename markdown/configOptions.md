@@ -1,6 +1,6 @@
 # Configuration
 
-[Config File](src/config.ts)
+[Config File](../src/config.ts)
 
 ## Options
 
