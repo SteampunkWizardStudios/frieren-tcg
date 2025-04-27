@@ -83,45 +83,56 @@ export async function handleCharacterStats(
 async function overviewCase(): Promise<EmbedBuilder> {
   const characters = await prismaClient.character.findMany({
     select: {
+      id: true,
       name: true,
-      _count: {
+      winnerMatches: {
         select: {
-          winnerMatches: {
-            where: {
-              ladderReset: { endDate: null },
-            },
-          },
-          loserMatches: {
-            where: {
-              ladderReset: { endDate: null },
-            },
-          },
+          loserCharacterId: true,
+        },
+        where: {
+          ladderReset: { endDate: null },
+        },
+      },
+      loserMatches: {
+        select: {
+          winnerCharacterId: true,
+        },
+        where: {
+          ladderReset: { endDate: null },
         },
       },
     },
   });
 
+  characters.forEach((char) => {
+    char.winnerMatches = char.winnerMatches.filter(
+      (match) => match.loserCharacterId !== char.id
+    );
+    char.loserMatches = char.loserMatches.filter(
+      (match) => match.winnerCharacterId !== char.id
+    );
+  });
+
   const sortedCharacters = characters.sort((a, b) => {
     const winrateA = getWinrate(
-      a._count.winnerMatches,
-      a._count.loserMatches
+      a.winnerMatches.length,
+      a.loserMatches.length
     ).winrate;
     const winrateB = getWinrate(
-      b._count.winnerMatches,
-      b._count.loserMatches
+      b.winnerMatches.length,
+      b.loserMatches.length
     ).winrate;
     return winrateB - winrateA;
   });
 
   const description = sortedCharacters.map((char) => {
-    const { name, _count } = char;
-    const { winnerMatches, loserMatches } = _count;
-    const { winrate } = getWinrate(winnerMatches, loserMatches);
+    const { name, winnerMatches, loserMatches } = char;
+    const { winrate } = getWinrate(winnerMatches.length, loserMatches.length);
     const emoji =
       characterNameToEmoji[name as keyof typeof characterNameToEmoji];
     const formattedEmoji = emoji ? `${emoji} ` : "";
 
-    return `${formattedEmoji}${name}: ${winnerMatches} Wins, ${loserMatches} Losses, Winrate: ${winrate}%`;
+    return `${formattedEmoji}${name}: ${winnerMatches.length} Wins, ${loserMatches.length} Losses, Winrate: ${winrate}%`;
   });
 
   const embed = new EmbedBuilder()
@@ -129,7 +140,10 @@ async function overviewCase(): Promise<EmbedBuilder> {
     .setColor("Blurple")
     .setDescription(
       description.length > 0 ? description.join("\n") : "No characters found."
-    );
+    )
+    .setFooter({
+      text: "Excludes mirror matches",
+    });
 
   return embed;
 }
@@ -222,7 +236,10 @@ async function breakdownCase(character: string): Promise<EmbedBuilder | null> {
     .setColor(color ?? "Blurple")
     .setDescription(
       description.length > 0 ? description.join("\n") : "No matches found."
-    );
+    )
+    .setFooter({
+      text: "Excludes mirror matches",
+    });
 
   return embed;
 }
