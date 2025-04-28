@@ -9,7 +9,7 @@ import Game from "../game";
 
 export const imitate = new Card({
   title: "Imitate",
-  cardMetadata: { nature: Nature.Util },
+  cardMetadata: { nature: Nature.Util, signature: true },
   description: () =>
     `Use the card the opponent used last turn at this card's empower level -2.`,
   emoji: CardEmoji.LINIE_CARD,
@@ -165,7 +165,7 @@ export const a_erfassenAxe = new Card({
   title: "Erfassen: Axe",
   description: ([dmg]) => `HP-4. DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
-  cardMetadata: { nature: Nature.Attack, signature: true },
+  cardMetadata: { nature: Nature.Attack },
   effects: [12],
   cosmetic: {
     cardGif: "https://c.tenor.com/eUCHN11H4B4AAAAd/tenor.gif",

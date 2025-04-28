@@ -9,10 +9,10 @@ const a_staffStrike = new Card({
   title: "Staff Strike",
   cardMetadata: { nature: Nature.Attack },
   description: ([spd, dmg]) =>
-    `SPD+${spd}. Afterwards, HP-1, attack for DMG ${dmg}+SPD/7`,
+    `SPD+${spd}. Afterwards, HP-2, attack for DMG ${dmg}+SPD/7`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [3, 7],
-  hpCost: 1,
+  hpCost: 2,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1365418943023681656/GIF_0570739142.gif?ex=681088bc&is=680f373c&hm=11d929f2c7b8bbc30b003a0d981cf02eb802b3651ba64f281ca1f5e0fa36b358&",
@@ -40,10 +40,10 @@ const a_staffStrike = new Card({
 const a_staffBash = new Card({
   title: "Staff Bash",
   cardMetadata: { nature: Nature.Attack },
-  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-2, DMG ${dmg}+SPD/6`,
+  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-3, DMG ${dmg}+SPD/6`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [2, 8],
-  hpCost: 2,
+  hpCost: 3,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1365418943023681656/GIF_0570739142.gif?ex=681088bc&is=680f373c&hm=11d929f2c7b8bbc30b003a0d981cf02eb802b3651ba64f281ca1f5e0fa36b358&",
@@ -71,10 +71,10 @@ const a_staffBash = new Card({
 export const a_whip = new Card({
   title: "Whip",
   cardMetadata: { nature: Nature.Attack },
-  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-3, DMG ${dmg}+SPD/5`,
+  description: ([spd, dmg]) => `SPD+${spd}. Afterwards, HP-4, DMG ${dmg}+SPD/5`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [1, 9],
-  hpCost: 3,
+  hpCost: 4,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1365419009721499718/GIF_3626022317.gif?ex=681088cc&is=680f374c&hm=838847fac81db2afc9448524255aceece7c3015a4af205b3014cd79ba565380c&",
@@ -101,11 +101,11 @@ export const a_whip = new Card({
 
 export const a_supersonicStrike = new Card({
   title: "Supersonic Strike",
-  description: ([dmg]) => `HP-4, DMG ${dmg}+SPD/4`,
+  description: ([dmg]) => `HP-5, DMG ${dmg}+SPD/4`,
   emoji: CardEmoji.LAUFEN_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [10],
-  hpCost: 4,
+  hpCost: 5,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1366373963789242388/GIF_0816288304-ezgif.com-optimize.gif?ex=6810b66a&is=680f64ea&hm=04b17a787656912d7075211221d149c8eaca57ca5ca916c27ab634fedaa75fb0&",
