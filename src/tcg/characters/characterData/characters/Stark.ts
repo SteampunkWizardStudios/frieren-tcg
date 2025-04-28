@@ -17,6 +17,7 @@ export const Stark = new CharacterData({
   name: CharacterName.Stark,
   cosmetic: {
     pronouns: {
+      personal: "he",
       possessive: "his",
       reflexive: "himself",
     },

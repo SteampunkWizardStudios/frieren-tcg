@@ -21,6 +21,7 @@ export const Linie = new CharacterData({
   name: CharacterName.Linie,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },

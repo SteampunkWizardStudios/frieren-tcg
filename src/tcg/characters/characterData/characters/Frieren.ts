@@ -40,6 +40,7 @@ export const Frieren = new CharacterData({
   name: CharacterName.Frieren,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },

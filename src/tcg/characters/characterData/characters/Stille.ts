@@ -20,6 +20,7 @@ export const Stille = new CharacterData({
   name: CharacterName.Stille,
   cosmetic: {
     pronouns: {
+      personal: "it",
       possessive: "its",
       reflexive: "itself",
     },

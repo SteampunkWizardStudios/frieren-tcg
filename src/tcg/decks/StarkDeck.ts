@@ -381,7 +381,7 @@ export const a_lightningStrike = new Card({
           removableBySorganeil: false,
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push(
-              `${character.name} let out all he has. Stark is no longer Sturdy.`,
+              `${character.name} let out all ${character.cosmetic.pronouns.personal} has. ${character.name} is no longer Sturdy.`,
               TCGThread.Gameroom
             );
             character.additionalMetadata.minimumPossibleHp = undefined;

@@ -21,6 +21,7 @@ export const Denken = new CharacterData({
   name: CharacterName.Denken,
   cosmetic: {
     pronouns: {
+      personal: "he",
       possessive: "his",
       reflexive: "himself",
     },

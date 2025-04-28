@@ -21,6 +21,7 @@ export const Fern = new CharacterData({
   name: CharacterName.Fern,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },

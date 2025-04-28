@@ -121,6 +121,7 @@ export const Ubel = new CharacterData({
   name: CharacterName.Ubel,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },
@@ -186,13 +187,15 @@ export const Ubel = new CharacterData({
       } else if (activeEffects.Recompose) {
         character.additionalMetadata.ubelSureHit = UbelHit.SureMiss;
       } else {
-        if (
-          game.additionalMetadata.lastUsedCards[1 - characterIndex].cardMetadata
-            .nature != "Attack"
-        ) {
-          character.additionalMetadata.ubelSureHit = UbelHit.Regular;
-        } else {
-          character.additionalMetadata.ubelSureHit = UbelHit.SureHit;
+        if (game.additionalMetadata.lastUsedCards[1 - characterIndex]) {
+          if (
+            game.additionalMetadata.lastUsedCards[1 - characterIndex]
+              .cardMetadata.nature != "Attack"
+          ) {
+            character.additionalMetadata.ubelSureHit = UbelHit.Regular;
+          } else {
+            character.additionalMetadata.ubelSureHit = UbelHit.SureHit;
+          }
         }
       }
     },

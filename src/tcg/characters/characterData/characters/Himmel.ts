@@ -23,6 +23,7 @@ export const Himmel = new CharacterData({
   name: CharacterName.Himmel,
   cosmetic: {
     pronouns: {
+      personal: "he",
       possessive: "his",
       reflexive: "himself",
     },

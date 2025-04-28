@@ -28,6 +28,7 @@ export const Sein = new CharacterData({
   name: CharacterName.Sein,
   cosmetic: {
     pronouns: {
+      personal: "he",
       possessive: "his",
       reflexive: "himself",
     },

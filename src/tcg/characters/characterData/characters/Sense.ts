@@ -26,6 +26,7 @@ export const Sense = new CharacterData({
   name: CharacterName.Sense,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },

@@ -103,6 +103,7 @@ export const a_fernBarrage = new Card({
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
               hpCost: 4,
+              pierceFactor: 0.25 + basePierceFactor,
             });
           } else {
             messageCache.push(

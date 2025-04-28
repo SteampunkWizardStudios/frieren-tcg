@@ -7,6 +7,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import Game from "@src/tcg/game";
 
 const laufenStats = new Stats({
   [StatsEnum.HP]: 90.0,
@@ -20,6 +21,7 @@ export const Laufen = new CharacterData({
   name: CharacterName.Laufen,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },
@@ -48,9 +50,9 @@ export const Laufen = new CharacterData({
       character.setStat(spdDiff, StatsEnum.Ability, false);
     },
     abilityDefendEffect: (
-      game,
+      game: Game,
       characterIndex,
-      messageCache,
+      messageCache: MessageCache,
       _attackDamage
     ) => {
       const character = game.getCharacter(characterIndex);

@@ -39,6 +39,7 @@ export const Serie = new CharacterData({
   name: CharacterName.Serie,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },
