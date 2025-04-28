@@ -5,32 +5,45 @@ import {
   InteractionContextType,
 } from "discord.js";
 import type { Command } from "../../types/command";
-import handlePlayerProfile from "./profileHandlers/profileHandler";
+import handlePlayerProfile from "./playerHandlers/profileHandler";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
-    .setName("tcg-profile")
-    .setDescription("Get a TCG player profile")
+    .setName("tcg-player")
+    .setDescription("Get information about a TCG player")
     .setContexts([
       InteractionContextType.Guild,
       InteractionContextType.BotDM,
       InteractionContextType.PrivateChannel,
     ])
-    .addUserOption((option) =>
-      option
-        .setName("player")
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("profile")
         .setDescription(
-          "The player to get the profile of, defaults to yourself"
+          "Get a player's profile with ladder ranks, achievements, and character masteries"
+        )
+        .addUserOption((option) =>
+          option
+            .setName("player")
+            .setDescription(
+              "The player to get the profile of, defaults to yourself"
+            )
         )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
+    const subcommand = interaction.options.getSubcommand();
+
     await interaction.deferReply({
       flags: MessageFlags.Ephemeral,
     });
 
     try {
-      await handlePlayerProfile(interaction);
+		switch (subcommand) {
+			case "profile":
+				await handlePlayerProfile(interaction);
+		}
+      
     } catch (error) {
       console.log(error);
       await interaction.reply({
