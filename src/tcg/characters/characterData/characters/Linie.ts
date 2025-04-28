@@ -34,7 +34,7 @@ export const Linie = new CharacterData({
   ability: {
     abilityName: "Chain Attack",
     abilityEffectString: `After this character uses an attack, gain 1 Chain stack.
-        All attacks this character does has its damage increased by <#Chain>*${LINIE_CHAIN_BONUS * 100}%.
+        All attacks this character does has its damage increased by <#Chain>*${(LINIE_CHAIN_BONUS * 100).toFixed(2)}%.
         When this character does not attack in a turn, reset the count to 0.`,
     abilityAttackEffect: (game, characterIndex) => {
       const character = game.getCharacter(characterIndex);
