@@ -9,9 +9,9 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 const a_axeSwipe = new Card({
   title: "Axe Swipe",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-5. DMG ${dmg}.`,
+  description: ([dmg]) => `HP-5. DMG ${dmg}. Uses 0 Resolve.`,
   emoji: CardEmoji.STARK_CARD,
-  tags: { Resolve: -1 },
+  tags: { Resolve: 0 },
   effects: [9],
   cosmetic: {
     cardGif:
@@ -34,7 +34,7 @@ const offensiveStance = new Card({
   title: "Offensive Stance",
   cardMetadata: { nature: Nature.Util },
   description: ([atk, spd]) =>
-    `ATK+${atk}. DEF-2 for 2 turns. SPD+${spd}. Gain <Resolve> for next 1 Attack.`,
+    `ATK+${atk}. DEF-2 for 2 turns. SPD+${spd}. Gain 1 <Resolve>.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [2, 1],
   tags: { Resolve: 1 },
@@ -78,7 +78,7 @@ const defensiveStance = new Card({
   title: "Defensive Stance",
   cardMetadata: { nature: Nature.Util },
   description: ([def, spd]) =>
-    `DEF+${def}. ATK-2 for 2 turns. SPD+${spd}. Gain <Resolve> for next 1 Attack.`,
+    `DEF+${def}. ATK-2 for 2 turns. SPD+${spd}. Gain 1 <Resolve>.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [2, 1],
   tags: { Resolve: 1 },
@@ -118,9 +118,9 @@ const jumboBerrySpecialBreak = new Card({
   title: "Jumbo Berry Special Break",
   cardMetadata: { nature: Nature.Util },
   description: ([def, hp]) =>
-    `SPD-2 for 2 turns. DEF+${def} for 2 turns. Heal ${hp} HP. Gain 1 Resolve at the end of next turn.`,
+    `SPD-2 for 2 turns. DEF+${def} for 2 turns. Heal ${hp} HP. Gain 1 <Resolve> at the end of next turn.`,
   emoji: CardEmoji.JUMBO_BERRY_CARD,
-  effects: [2, 10],
+  effects: [2, 7],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360990957671153826/IMG_3099.gif?ex=680855da&is=6807045a&hm=7b11f297c0dc63b3bd8e9e19d7b7cb316001a389454bd05213d99686879f4f3c&",
@@ -202,8 +202,7 @@ export const block = new Card({
 const concentration = new Card({
   title: "Concentration",
   cardMetadata: { nature: Nature.Util },
-  description: ([spd]) =>
-    `Increases SPD by ${spd}. Gain <Resolve> for next 2 attacks`,
+  description: ([spd]) => `Increases SPD by ${spd}. Gain 2 <Resolve>.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [3],
   tags: { Resolve: 2 },
@@ -226,7 +225,7 @@ const concentration = new Card({
 const a_ordensSlashTechnique = new Card({
   title: "Orden's Slash Technique",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-7. DMG ${dmg}`,
+  description: ([dmg]) => `HP-8. DMG ${dmg}`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -1 },
   effects: [14],
@@ -253,10 +252,10 @@ const a_ordensSlashTechnique = new Card({
 const fearBroughtMeThisFar = new Card({
   title: "Fear Brought Me This Far",
   cardMetadata: { nature: Nature.Util },
-  description: ([atkDef]) =>
-    `Increases ATK and DEF by ${atkDef}. Gain <Resolve> for next 2 attacks.`,
+  description: ([atkDef, atkDefAdditional]) =>
+    `Increases ATK and DEF by ${atkDef}. Increases ATK and DEF by an addition ${atkDefAdditional} if HP <=60. Gain 2 <Resolve>.`,
   emoji: CardEmoji.STARK_CARD,
-  effects: [3],
+  effects: [2, 1],
   tags: { Resolve: 2 },
   cosmetic: {
     cardGif:
@@ -265,11 +264,19 @@ const fearBroughtMeThisFar = new Card({
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
-      `${character.name} resolves ${character.cosmetic.pronouns.reflexive}...`,
+      `${character.name}'s hands can't stop shaking, but ${character.name} is determined.`,
       TCGThread.Gameroom
     );
 
-    const atkDef = this.calculateEffectValue(this.effects[0]);
+    let atkDef = this.calculateEffectValue(this.effects[0]);
+    if (character.stats.stats.HP <= 60) {
+      messageCache.push(
+        `${character.name} resolves ${character.cosmetic.pronouns.reflexive}...`,
+        TCGThread.Gameroom
+      );
+      atkDef += this.calculateEffectValue(this.effects[1]);
+    }
+
     character.adjustStat(atkDef, StatsEnum.ATK);
     character.adjustStat(atkDef, StatsEnum.DEF);
   },
@@ -312,12 +319,11 @@ const a_eisensAxeCleave = new Card({
 export const a_lightningStrike = new Card({
   title: "Lightning Strike",
   description: ([dmg]) =>
-    `Priorit+1. HP-14. DEF-5 and SPD-5 for 2 turns. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack. Stark's HP cannot drop below 1 during the turn this move is used.`,
+    `HP-14. DEF-5 and SPD-5 for 2 turns. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack. Stark's HP cannot drop below 1 during the turn this move is used.`,
   emoji: CardEmoji.STARK_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   tags: { Resolve: -2 },
-  priority: 1,
-  effects: [24],
+  effects: [20],
   hpCost: 14,
   cosmetic: {
     cardGif: "https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif",

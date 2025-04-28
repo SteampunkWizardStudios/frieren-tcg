@@ -58,7 +58,7 @@ export const Frieren = new CharacterData({
         A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.
 
         **Sub-Ability: Mana Suppression** - Hide the amount of HP this character has.
-        **Sub-Ability: Keen Eye** - See past the opponent's Mana Suppression.`,
+        **Sub-Ability: Flamme's Teachings** - See past the opponent's Mana Suppression.`,
     abilityAfterOwnCardUse: function (
       game: Game,
       characterIndex: number,

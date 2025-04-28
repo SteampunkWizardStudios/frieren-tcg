@@ -10,7 +10,7 @@ const a_jab = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal  ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [1, 1, 2],
+  effects: [2, 2, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -38,7 +38,7 @@ const a_hook = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([atk, dmg]) => `ATK+${atk}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 2],
+  effects: [3, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -62,7 +62,7 @@ const a_uppercut = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [1, 1, 3],
+  effects: [2, 2, 3],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364978489035460708/GIF_0836074812.gif?ex=680c4b87&is=680afa07&hm=84fd66beff9352aba9c037ff66d2b0e69219b34c0e3c9c5e62edbf96dc62a0f8&",
@@ -132,7 +132,7 @@ export const a_waldgoseBase = new Card({
   description: ([dmg, multiDmg]) =>
     `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [6, 2],
+  effects: [6, 3],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364217876323500123/GIF_0112106003.gif?ex=6808de67&is=68078ce7&hm=53339631d41657c84bff7858a0d4ca127e5dd726db694b68d34f5d833a75c8ba&",
@@ -210,16 +210,16 @@ const a_waldgose = new Card({
 export const a_daosdorgBase = new Card({
   title: "Hellfire: Daosdorg",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, waldgoseDmgBonus]) =>
-    `HP-9. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus}. Treat this card as "Hook" if the user's HP is <= 0.`,
+  description: ([dmg, waldgoseDmgBonus, oppDefDebuff]) =>
+    `HP-9. Opponent's DEF-${oppDefDebuff}. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus}. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [12, 3],
+  effects: [12, 3, 2],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364218009102581871/GIF_4214490964.gif?ex=6808de87&is=68078d07&hm=dedf596f960aafe344c5eedec122d4dbd54c3b5c6f8b002b3cae75da891fdedf&",
   },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.characters[characterIndex];
+    const character = game.getCharacter(characterIndex);
     if (character.stats.stats.HP <= 0) {
       const hook = new Card({
         ...a_hook,
@@ -227,10 +227,13 @@ export const a_daosdorgBase = new Card({
       });
       hook.cardAction(game, characterIndex, messageCache);
     } else {
+      const opponent = game.getCharacter(1 - characterIndex);
       messageCache.push(
         `${character.name} set the sky aflame.`,
         TCGThread.Gameroom
       );
+      const oppDefDebuff = this.calculateEffectValue(this.effects[2]);
+      opponent.adjustStat(-1 * oppDefDebuff, StatsEnum.DEF);
 
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: this.calculateEffectValue(this.effects[0]),
@@ -440,7 +443,7 @@ export const thisIsNoPlaceToGiveUp = new Card({
   description: ([hp]) =>
     `Heal ${hp}HP. Heal an additional ${hp}HP and gain 1 Preserverance stack if HP <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [7],
+  effects: [10],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364979223357296802/GIF_0406490421.gif?ex=680c4c36&is=680afab6&hm=cf5c0f9d7e3e14ec143a8b304c0d416868db25cb8de5a1f0b38cc4c7507df73d&",
@@ -469,12 +472,12 @@ export const thisIsNoPlaceToGiveUp = new Card({
 export const denkenDeck = [
   { card: a_jab, count: 2 },
   { card: a_hook, count: 2 },
-  { card: a_uppercut, count: 1 },
+  { card: a_uppercut, count: 2 },
   { card: bareHandedBlock, count: 1 },
   { card: a_waldgose, count: 2 },
   { card: a_daosdorg, count: 2 },
   { card: a_catastravia, count: 1 },
-  { card: elementaryDefensiveMagic, count: 2 },
+  { card: elementaryDefensiveMagic, count: 1 },
   { card: a_concentratedOffensiveMagicZoltraak, count: 2 },
   { card: thisIsNoPlaceToGiveUp, count: 1 },
 ];

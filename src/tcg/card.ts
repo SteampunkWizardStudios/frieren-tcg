@@ -42,6 +42,11 @@ export type CardProps = {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  alternateCardAction?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache
+  ) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
   empowerLevel?: number;

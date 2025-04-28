@@ -47,11 +47,8 @@ import { a_malevolentShrine } from "./ubelSignature";
 export const serie_offensiveMagic_common = [
   a_zoltraak,
   a_whip,
-  a_erfassenKnife,
   a_erfassenSword,
-  a_hairWhip,
   a_trustInYourAllyFrierensZoltraak,
-  a_trustInYourAllyFernsBarrage,
   a_reelseiden,
   a_fernZoltraak,
 ];
@@ -69,6 +66,9 @@ export const serie_offensiveMagic_rare = [
   a_killingMagic,
   a_cleave,
   a_dismantle,
+  a_hairWhip,
+  a_erfassenKnife,
+  a_trustInYourAllyFernsBarrage,
 ];
 
 export const serie_offensiveMagic_unusual = [

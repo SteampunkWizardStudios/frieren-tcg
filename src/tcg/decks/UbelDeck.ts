@@ -12,10 +12,10 @@ export const empathyFailureName = "Stalking";
 
 export const a_reelseiden = new Card({
   title: "Shallow Slash",
-  description: ([dmg]) =>
-    `HP-4. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
+  description: ([dmg, atkSpd]) =>
+    `HP-4. DMG ${dmg}. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   emoji: CardEmoji.UBEL_CARD,
-  effects: [8],
+  effects: [8, 2],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 20 },
   hpCost: 4,
   cosmetic: {
@@ -46,10 +46,10 @@ export const a_reelseiden = new Card({
 
 export const a_cleave = new Card({
   title: "Cleave",
-  description: ([dmg]) =>
-    `HP-6. If used by Übel,has a 40% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
+  description: ([dmg, atkSpd]) =>
+    `HP-6. DMG ${dmg}. If used by Übel,has a 40% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   emoji: CardEmoji.UBEL_CARD,
-  effects: [12],
+  effects: [12, 3],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 40 },
   hpCost: 6,
   cosmetic: {
@@ -76,10 +76,10 @@ export const a_cleave = new Card({
 
 export const a_dismantle = new Card({
   title: "Dismantle",
-  description: ([dmg]) =>
-    `HP-8. If used by Übel, has a 60% of missing if the opponent didn't use an Attack card before this move is used. DMG ${dmg}.`,
+  description: ([dmg, atkSpd]) =>
+    `HP-8. DMG ${dmg}. If used by Übel, has a 60% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   emoji: CardEmoji.UBEL_CARD,
-  effects: [16],
+  effects: [16, 4],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 60 },
   hpCost: 8,
   cosmetic: {
@@ -112,7 +112,7 @@ export const rushdown = new Card({
   title: "Rushdown",
   cardMetadata: { nature: Nature.Util },
   description: ([spd]) =>
-    `Increases SPD by ${spd} for 3 turns. Attacks will not miss during this period. At the end of every turn, HP-4.`,
+    `Increases SPD by ${spd} for 4 turns. Attacks will not miss during this period. At the end of every turn, HP-2.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [10],
   cosmetic: {
@@ -126,7 +126,7 @@ export const rushdown = new Card({
       TCGThread.Gameroom
     );
 
-    const turnCount = 3;
+    const turnCount = 4;
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(spdIncrease, StatsEnum.SPD);
 
@@ -145,7 +145,7 @@ export const rushdown = new Card({
             `${character.name} is being reckless.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(-4, StatsEnum.HP);
+          character.adjustStat(-2, StatsEnum.HP);
         },
 
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {

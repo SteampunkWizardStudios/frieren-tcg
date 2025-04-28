@@ -7,7 +7,7 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
-const LINIE_CHAIN_BONUS = 0.08;
+const LINIE_CHAIN_BONUS = 0.07;
 
 const linieStats = new Stats({
   [StatsEnum.HP]: 95.0,

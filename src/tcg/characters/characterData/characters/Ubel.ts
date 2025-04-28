@@ -45,12 +45,18 @@ function missAttack(
   // Non Ubel slashing sureHits get treated normally
   if (failureRate === 0) {
     card.cardAction(game, characterIndex, messageCache);
-    return;
-  }
+  } else {
+    const character = game.getCharacter(characterIndex);
 
-  const hpCost = card.hpCost;
-  game.getCharacter(characterIndex).adjustStat(-hpCost, StatsEnum.HP);
-  messageCache.push("The attack cannot connect!", TCGThread.Gameroom);
+    const hpCost = card.hpCost;
+    character.adjustStat(-hpCost, StatsEnum.HP);
+    messageCache.push("The attack cannot connect!", TCGThread.Gameroom);
+    messageCache.push("Yet Übel keeps rushing forward!", TCGThread.Gameroom);
+
+    const atkSpdBuff = card.calculateEffectValue(card.effects[1]);
+    character.adjustStat(atkSpdBuff, StatsEnum.ATK);
+    character.adjustStat(atkSpdBuff, StatsEnum.SPD);
+  }
 }
 
 function attackWhileRecomposing(
@@ -180,20 +186,13 @@ export const Ubel = new CharacterData({
       } else if (activeEffects.Recompose) {
         character.additionalMetadata.ubelSureHit = UbelHit.SureMiss;
       } else {
-        switch (character.additionalMetadata.ubelSureHit) {
-          case UbelHit.SureHit:
-            if (
-              game.additionalMetadata.lastUsedCards[1 - characterIndex]
-                .cardMetadata.nature != "Attack"
-            ) {
-              character.additionalMetadata.ubelSureHit = UbelHit.Regular;
-            }
-            break;
-          case UbelHit.SureMiss:
-            character.additionalMetadata.ubelSureHit = UbelHit.Regular;
-            break;
-          default:
-          // do nothing
+        if (
+          game.additionalMetadata.lastUsedCards[1 - characterIndex].cardMetadata
+            .nature != "Attack"
+        ) {
+          character.additionalMetadata.ubelSureHit = UbelHit.Regular;
+        } else {
+          character.additionalMetadata.ubelSureHit = UbelHit.SureHit;
         }
       }
     },

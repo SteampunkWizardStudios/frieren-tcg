@@ -21,6 +21,7 @@ export const a_fernZoltraak = new Card({
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
 
     const damage = this.calculateEffectValue(this.effects[0]);
+    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     character.additionalMetadata.fernBarrage =
       (character.additionalMetadata.fernBarrage ?? 0) + 1;
     messageCache.push(
@@ -28,7 +29,11 @@ export const a_fernZoltraak = new Card({
       TCGThread.Gameroom
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: 4,
+      pierceFactor,
+    });
   },
 });
 
@@ -36,9 +41,9 @@ export const a_fernBarrage = new Card({
   title: "Barrage",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-4. DMG ${dmg}. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG, until Barrage count reaches 0.`,
+    `HP-4. DMG ${dmg} with 25% Pierce. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG with 25% Pierce, until Barrage count reaches 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [7],
+  effects: [5],
   cosmetic: {
     cardGif: "https://c.tenor.com/2RAJbNpiLI4AAAAd/tenor.gif",
   },
@@ -51,13 +56,18 @@ export const a_fernBarrage = new Card({
 
     const damage = this.calculateEffectValue(this.effects[0]);
     const newBarrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 1;
+    const basePierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     character.additionalMetadata.fernBarrage = newBarrageCount;
     messageCache.push(
       `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
       TCGThread.Gameroom
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: 4,
+      pierceFactor: 0.25 + basePierceFactor,
+    });
 
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
@@ -112,7 +122,7 @@ const a_fernConcentratedZoltraakSnipe = new Card({
   title: "Concentrated Zoltraak Snipe",
   cardMetadata: { nature: Nature.Attack },
   description: ([baseDmg, dmg]) =>
-    `HP-12. Deal ${baseDmg} + ${dmg} DMG x Barrage count, bypassing 1/2 of opponent's DEF. Reset Barrage count to 0.`,
+    `HP-12. Deal ${baseDmg} + ${dmg} DMG x Barrage count, with 50% Pierce. Reset Barrage count to 0.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [6, 2],
   hpCost: 12,
@@ -129,13 +139,13 @@ const a_fernConcentratedZoltraakSnipe = new Card({
 
     const baseDamage = this.calculateEffectValue(this.effects[0]);
     const singleBarrageDamage = this.calculateEffectValue(this.effects[1]);
-
+    const basePierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage:
         baseDamage +
         singleBarrageDamage * (character.additionalMetadata.fernBarrage ??= 0),
       hpCost: this.hpCost,
-      pierceFactor: 0.5,
+      pierceFactor: 0.5 + basePierceFactor,
     });
 
     character.additionalMetadata.fernBarrage = 0;
@@ -149,10 +159,10 @@ const a_fernConcentratedZoltraakSnipe = new Card({
 const disapprovingPout = new Card({
   title: "Disapproving Pout",
   cardMetadata: { nature: Nature.Util },
-  description: ([hp, spd, oppAtkDecrease]) =>
-    `HP+${hp}. SPD+${spd}. Opp's ATK-${oppAtkDecrease}.`,
+  description: ([hp, oppAtkDecrease]) =>
+    `HP+${hp}. Opp's ATK-${oppAtkDecrease}.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [3, 2, 2],
+  effects: [3, 2],
   cosmetic: {
     cardGif: "https://c.tenor.com/V1ad9v260E8AAAAd/tenor.gif",
   },
@@ -168,12 +178,8 @@ const disapprovingPout = new Card({
       this.calculateEffectValue(this.effects[0]),
       StatsEnum.HP
     );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[1]),
-      StatsEnum.SPD
-    );
     opponent.adjustStat(
-      -1 * this.calculateEffectValue(this.effects[2]),
+      -1 * this.calculateEffectValue(this.effects[1]),
       StatsEnum.ATK
     );
   },
@@ -183,9 +189,9 @@ export const manaConcealment = new Card({
   title: "Mana Concealment",
   cardMetadata: { nature: Nature.Util },
   description: ([atk, def]) =>
-    `ATK+${atk}. DEF+${def}. Receive Priority+1 on attacks for next turn.`,
+    `ATK+${atk}. DEF+${def}. Receive Priority+1 and additional 50% Pierce on attacks for next turn.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [2, 2],
+  effects: [1, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -212,6 +218,7 @@ export const manaConcealment = new Card({
         selectedCard.priority = 1;
       }
     };
+    character.additionalMetadata.pierceFactor = 0.5;
 
     character.timedEffects.push(
       new TimedEffect({
@@ -225,6 +232,7 @@ export const manaConcealment = new Card({
             TCGThread.Gameroom
           );
           character.ability.abilitySelectedMoveModifierEffect = undefined;
+          character.additionalMetadata.pierceFactor = 0;
         },
       })
     );

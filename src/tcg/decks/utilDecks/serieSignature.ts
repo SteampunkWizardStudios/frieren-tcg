@@ -7,7 +7,7 @@ import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
 export const ancientBarrierMagic = new Card({
   title: "Ancient Barrier Magic",
   description: ([atk, def, oppSpd]) =>
-    `HP-15. ATK+${atk} for 7 turns. Opponent's DEF-${def} for 7 turns. Opponent's SPD -${oppSpd} for 7 turns.`,
+    `HP-10. HP-2 at the end of the next 5 turns. ATK+${atk}, Opponent's DEF-${def} and Opponent's SPD -${oppSpd} for 5 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -17,6 +17,7 @@ export const ancientBarrierMagic = new Card({
   },
   cardMetadata: { nature: Nature.Util, signature: true },
   effects: [5, 5, 5],
+  hpCost: 10,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -24,7 +25,7 @@ export const ancientBarrierMagic = new Card({
       TCGThread.Gameroom
     );
 
-    if (character.adjustStat(-15, StatsEnum.HP)) {
+    if (character.adjustStat(-1 * this.hpCost, StatsEnum.HP)) {
       const opponent = game.getCharacter(1 - characterIndex);
       const atkBuff = this.calculateEffectValue(this.effects[0]);
       const defDebuff = this.calculateEffectValue(this.effects[1]);
@@ -37,10 +38,17 @@ export const ancientBarrierMagic = new Card({
       character.timedEffects.push(
         new TimedEffect({
           name: "Ancient Barrier Magic",
-          description: `An ominous barrier envelopes the battlefield...`,
-          turnDuration: 7,
+          description: `ATK+${atkBuff}, Opponent's DEF-${defDebuff}, Opponent's SPD -${spdDebuff} for 5 turns.`,
+          turnDuration: 5,
           priority: -1,
           executeEndOfTimedEffectActionOnRemoval: true,
+          endOfTurnAction: (_game, _characterIndex) => {
+            messageCache.push(
+              `An ominous barrier envelopes the battlefield...`,
+              TCGThread.Gameroom
+            );
+            character.adjustStat(-2, StatsEnum.HP);
+          },
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
 

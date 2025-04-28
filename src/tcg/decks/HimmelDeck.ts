@@ -11,16 +11,17 @@ import { CharacterName } from "../characters/metadata/CharacterName";
 const a_FrierenStrikeTheirWeakpoint = new Card({
   title: "Frieren! Strike Their Weakpoint!",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) =>
-    `Frieren attacks for ${dmg} DMG. At next turn's end, Frieren attacks for an additional ${dmg} DMG.`,
+  description: ([dmg, oppDef]) =>
+    `Opponent's DEF-${oppDef} for 2 turns. Frieren attacks for ${dmg} DMG. At next turn's end, Frieren attacks for an additional ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1362092606695145482/GIF_1369578971.gif?ex=68086357&is=680711d7&hm=07c26c17a9a859865c2f107f8358b50df98cc49d49ed0daa2f659c6acb494f1e&",
   },
-  effects: [7],
+  effects: [7, 1],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.characters[characterIndex];
+    const character = game.getCharacter(characterIndex);
+    const opponent = game.getCharacter(1 - characterIndex);
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
@@ -35,6 +36,8 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
     }
 
     const damage = this.calculateEffectValue(this.effects[0]);
+    const oppDefDebuff = this.calculateEffectValue(this.effects[1]);
+    opponent.adjustStat(-1 * oppDefDebuff, StatsEnum.DEF);
 
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
@@ -57,6 +60,8 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
             hpCost: 0,
             isTimedEffectAttack: true,
           });
+
+          opponent.adjustStat(oppDefDebuff, StatsEnum.DEF);
         },
       })
     );
@@ -68,12 +73,13 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
 const a_FrierenBackMeUp = new Card({
   title: "Frieren! Back Me Up!",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) =>
-    `Frieren attacks for ${dmg} DMG. For the next 3 turn ends, Frieren attacks for an additional ${dmg} DMG.`,
+  description: ([dmg, oppDef]) =>
+    `Opponent's DEF-${oppDef} for 4 turns. Frieren attacks for ${dmg} DMG. For the next 4 turn ends, Frieren attacks for an additional ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [3],
+  effects: [3, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.characters[characterIndex];
+    const character = game.getCharacter(characterIndex);
+    const opponent = game.getCharacter(1 - characterIndex);
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
@@ -86,7 +92,10 @@ const a_FrierenBackMeUp = new Card({
         TCGThread.Gameroom
       );
     }
+
     const damage = this.calculateEffectValue(this.effects[0]);
+    const oppDefDebuff = this.calculateEffectValue(this.effects[1]);
+    opponent.adjustStat(-1 * oppDefDebuff, StatsEnum.DEF);
 
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
@@ -95,7 +104,7 @@ const a_FrierenBackMeUp = new Card({
       new TimedEffect({
         name: `${isHimmel ? "Frieren: " : "Mage: "}Backing Fire`,
         description: `Deal ${damage} at each turn's end.`,
-        turnDuration: 3,
+        turnDuration: 4,
         tags: { Frieren: 1 },
         removableBySorganeil: false,
         endOfTurnAction: function (this, game, characterIndex) {
@@ -109,6 +118,60 @@ const a_FrierenBackMeUp = new Card({
             hpCost: 0,
             isTimedEffectAttack: true,
           });
+        },
+        endOfTimedEffectAction: function (this, game, characterIndex) {
+          const otherCharacter = game.characters[characterIndex];
+          messageCache.push(
+            `${isHimmel ? "Frieren" : `${otherCharacter.name}`} let up the supporting fire.`,
+            TCGThread.Gameroom
+          );
+          opponent.adjustStat(oppDefDebuff, StatsEnum.DEF);
+        },
+      })
+    );
+
+    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
+  },
+});
+
+export const a_FrierenNow = new Card({
+  title: "Frieren! Now!",
+  cardMetadata: { nature: Nature.Attack },
+  description: ([dmg]) => `DMG ${dmg}`,
+  emoji: CardEmoji.FRIEREN_CARD,
+  effects: [12],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const character = game.characters[characterIndex];
+    const isHimmel = character.name === CharacterName.Himmel;
+    if (isHimmel) {
+      messageCache.push(
+        `${character.name} called on help from Frieren!`,
+        TCGThread.Gameroom
+      );
+    } else {
+      messageCache.push(
+        `${character.name} sent forth hellfire.`,
+        TCGThread.Gameroom
+      );
+    }
+    const damage = this.calculateEffectValue(this.effects[0]);
+
+    CommonCardAction.replaceOrAddNewTimedEffect(
+      game,
+      characterIndex,
+      "Frieren",
+      new TimedEffect({
+        name: `${isHimmel ? "Frieren: " : "Mage: "}Strike`,
+        description: `Deal ${damage}.`,
+        turnDuration: 1,
+        tags: { Frieren: 1 },
+        removableBySorganeil: false,
+        endOfTimedEffectAction: function (this, game, characterIndex) {
+          const otherCharacter = game.characters[characterIndex];
+          messageCache.push(
+            `${isHimmel ? "Frieren" : `${otherCharacter.name}`} stepped back after ${isHimmel ? "her" : otherCharacter.cosmetic.pronouns.possessive} attack.`,
+            TCGThread.Gameroom
+          );
         },
       })
     );
@@ -499,9 +562,9 @@ const rally = new Card({
   title: "Rally",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, stat]) =>
-    `HP+${hp}. ATK+${stat}. DEF+${stat}. SPD+${stat} for each one of your active allies.`,
+    `HP+${hp}. ATK+${stat}. DEF+${stat}. SPD+${stat}. An additional HP+${hp}, ATK+${stat}, DEF+${stat}, SPD+${stat} for each one of your active allies.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [6, 1],
+  effects: [2, 1],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
@@ -517,26 +580,25 @@ const rally = new Card({
       );
     }
 
-    const activeAllies = character.timedEffects.length;
-    const hp = this.calculateEffectValue(this.effects[0]);
+    const activeAllies = 1 + character.timedEffects.length;
+    const hp = activeAllies * this.calculateEffectValue(this.effects[0]);
     const stat = activeAllies * this.calculateEffectValue(this.effects[1]);
 
     character.adjustStat(hp, StatsEnum.HP);
-    if (stat > 0) {
-      character.adjustStat(stat, StatsEnum.ATK);
-      character.adjustStat(stat, StatsEnum.DEF);
-      character.adjustStat(stat, StatsEnum.SPD);
-    }
+    character.adjustStat(stat, StatsEnum.ATK);
+    character.adjustStat(stat, StatsEnum.DEF);
+    character.adjustStat(stat, StatsEnum.SPD);
   },
 });
 
 export const a_extremeSpeed = new Card({
   title: "Extreme Speed",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `Priority+1. HP-12. DMG ${dmg}`,
+  description: ([dmg]) => `Priority+1. HP-8. DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 1,
   effects: [12],
+  hpCost: 8,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361210956872421497/IMG_3122.gif?ex=6807d13e&is=68067fbe&hm=3ac9b147ffc7c93d02121986546428f4b36f0bb08a2c8bc526d5ba51df5a4bd6&",
@@ -549,7 +611,10 @@ export const a_extremeSpeed = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 12 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: this.hpCost,
+    });
   },
 });
 
@@ -577,6 +642,7 @@ export const a_realHeroSwing = new Card({
 });
 
 export const himmelDeck = [
+  { card: a_FrierenNow, count: 1 },
   { card: a_FrierenStrikeTheirWeakpoint, count: 1 },
   { card: a_FrierenBackMeUp, count: 1 },
   { card: a_EisenTheEnemysOpen, count: 1 },
@@ -588,5 +654,5 @@ export const himmelDeck = [
   { card: quickBlock, count: 2 },
   { card: rally, count: 2 },
   { card: a_extremeSpeed, count: 2 },
-  { card: a_realHeroSwing, count: 2 },
+  { card: a_realHeroSwing, count: 1 },
 ];

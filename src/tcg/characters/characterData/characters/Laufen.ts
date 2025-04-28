@@ -11,7 +11,7 @@ import { CharacterEmoji } from "../../../formatting/emojis";
 const laufenStats = new Stats({
   [StatsEnum.HP]: 90.0,
   [StatsEnum.ATK]: 10.0,
-  [StatsEnum.DEF]: 7.0,
+  [StatsEnum.DEF]: 8.0,
   [StatsEnum.SPD]: 30.0,
   [StatsEnum.Ability]: 0.0,
 });
@@ -32,8 +32,9 @@ export const Laufen = new CharacterData({
   cards: laufenDeck,
   ability: {
     abilityName: "Graze",
-    abilityEffectString: `DMG to this character is reduced by (this character's SPD - the opponent's SPD)%.
-        The minimum damage reduction is 0%, and the maximum is 100%.`,
+    abilityEffectString: `When the opponent attacks, roll a D100. The lower the roll, the less damage the move deals. 
+      The move deals maximum damage if the roll is higher than the difference between the 2 character’s SPD. 
+      The opponent’s attack deals at minimum 0% damage, and at maximum only (100 - This character’s SPD + Opponent’s SPD)% damage.`,
     abilityStartOfTurnEffect: function (
       this,
       game,
@@ -49,15 +50,36 @@ export const Laufen = new CharacterData({
     abilityDefendEffect: (
       game,
       characterIndex,
-      _messageCache,
+      messageCache,
       _attackDamage
     ) => {
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
 
       const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
-      const damageReduction = Math.min(Math.max(spdDiff / 100, 0), 1);
-      character.additionalMetadata.defenseDamageReduction = damageReduction;
+      const grazeReduction = Math.min(Math.max(spdDiff / 100, 0), 1);
+
+      const roll = Rolls.rollD100();
+      messageCache.push(`### **SPD diff**: ${spdDiff}`, TCGThread.Gameroom);
+      messageCache.push(`### Roll: ${roll}`, TCGThread.Gameroom);
+      const evasionReduction = Math.min(
+        Math.max(1 + (roll - spdDiff) / spdDiff, 0),
+        1
+      );
+      if (roll < spdDiff) {
+        messageCache.push(
+          "## The attack barely grazed Laufen!",
+          TCGThread.Gameroom
+        );
+      } else {
+        messageCache.push(
+          "## Laufen failed to evade the attack!",
+          TCGThread.Gameroom
+        );
+      }
+
+      character.additionalMetadata.defenseDamageReduction =
+        grazeReduction * evasionReduction;
     },
   },
   additionalMetadata: {

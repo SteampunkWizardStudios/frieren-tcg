@@ -9,7 +9,7 @@ export const a_zoltraak = new Card({
   title: "Offensive Magic Analysis: Zoltraak",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-5. DMG ${dmg}. 2 Analysis stacks will be gained after attack.`,
+    `HP-5. DMG ${dmg}. 1 Analysis stacks will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -17,8 +17,8 @@ export const a_zoltraak = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364283548789379163/GIF_2604048789.gif?ex=68091b91&is=6807ca11&hm=a7fd85473cc4a8c441193bd990c6517e95d5cc6789023f530c27f4d21e5e70dc&",
   },
-  tags: { PostAnalysis: 2 },
-  effects: [9],
+  tags: { PostAnalysis: 1 },
+  effects: [8],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
@@ -76,10 +76,9 @@ export const fieldOfFlower = new Card({
 });
 
 export const a_judradjim = new Card({
-  title: "Destructive Lightning Analysis: Judradjim",
+  title: "Destructive Lightning: Judradjim",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) =>
-    `HP-7. DMG ${dmg}. 1 Analysis stack will be gained after attack.`,
+  description: ([dmg]) => `HP-7. DMG ${dmg}.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -87,7 +86,6 @@ export const a_judradjim = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364225378952020029/GIF_1668382682.gif?ex=6808e564&is=680793e4&hm=2c769b1580a0639d7e83a046cad25ff641b839f91ab7c035b0ae844aae3b551c&",
   },
-  tags: { PostAnalysis: 1 },
   effects: [13],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);

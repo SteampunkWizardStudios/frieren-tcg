@@ -197,7 +197,7 @@ export const basicDefensiveMagic = new Card({
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014416506932/Basic_Defense_Magic.png?ex=67df98ad&is=67de472d&hm=79bab34bdef07e7fa529c5ac67ed093e7bfa2b69914f644ac434e4a564c47396&",
   },
-  effects: [30],
+  effects: [20],
   priority: 2,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -227,7 +227,7 @@ export const unbreakableBarrier = new Card({
   title: "Unbreakable Barrier",
   cardMetadata: { nature: Nature.Util },
   description: ([atk, def, oppSpd]) =>
-    `HP-10. ATK+${atk} for 5 turns. DEF+${def} for 5 turns. Opponent's SPD-${oppSpd} for 5 turns.`,
+    `HP-10. HP-2 at the end of the next 5 turns. ATK+${atk}, DEF+${def} and Opponent's SPD-${oppSpd} for 5 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -259,6 +259,13 @@ export const unbreakableBarrier = new Card({
           turnDuration: 5,
           priority: -1,
           executeEndOfTimedEffectActionOnRemoval: true,
+          endOfTurnAction: (_game, _characterIndex) => {
+            messageCache.push(
+              `The unbreakable barrier looms...`,
+              TCGThread.Gameroom
+            );
+            character.adjustStat(-2, StatsEnum.HP);
+          },
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
             character.adjustStat(-1 * atkBuff, StatsEnum.ATK);

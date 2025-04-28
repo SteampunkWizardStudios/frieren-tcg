@@ -20,7 +20,7 @@ const serieStats = new Stats({
   [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 14.0,
   [StatsEnum.DEF]: 10.0,
-  [StatsEnum.SPD]: 14.0,
+  [StatsEnum.SPD]: 10.0,
   [StatsEnum.Ability]: 0.0,
 });
 
@@ -54,7 +54,7 @@ export const Serie = new CharacterData({
       The turn after this character performs any attack, DMG-${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%.
 
       **Sub-Ability: Mana Suppression** - Hide the amount of HP this character has.
-      **Sub-Ability: Keen Eye** - See past the opponent's Mana Suppression.`,
+      **Sub-Ability: Serie's Intuition** - See past the opponent's Mana Suppression.`,
     abilityStartOfTurnEffect(game, characterIndex, messageCache) {
       const character = game.getCharacter(characterIndex);
       if (character.additionalMetadata.serieToyingNextTurn) {
