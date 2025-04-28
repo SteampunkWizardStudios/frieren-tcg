@@ -74,6 +74,6 @@ export const Sein = new CharacterData({
     manaSuppressed: false,
     ignoreManaSuppressed: false,
     overheal: true,
-    defenseDamageReduction: 0,
+    defenderDamageScaling: 1,
   },
 });

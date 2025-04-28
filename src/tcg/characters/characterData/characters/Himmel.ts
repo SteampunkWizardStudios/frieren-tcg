@@ -62,6 +62,6 @@ export const Himmel = new CharacterData({
     manaSuppressed: false,
     ignoreManaSuppressed: false,
     himmelEisenReadyToCounter: false,
-    defenseDamageReduction: 0,
+    defenderDamageScaling: 1,
   },
 });

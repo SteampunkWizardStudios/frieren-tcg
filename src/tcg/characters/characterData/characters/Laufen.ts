@@ -78,8 +78,8 @@ export const Laufen = new CharacterData({
         );
       }
 
-      character.additionalMetadata.defenseDamageReduction =
-        grazeReduction * evasionReduction;
+      character.additionalMetadata.defenderDamageScaling =
+        (1 - grazeReduction) * evasionReduction;
     },
   },
   additionalMetadata: {
@@ -88,6 +88,6 @@ export const Laufen = new CharacterData({
     attackedThisTurn: false,
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
-    defenseDamageReduction: 0,
+    defenderDamageScaling: 1,
   },
 });

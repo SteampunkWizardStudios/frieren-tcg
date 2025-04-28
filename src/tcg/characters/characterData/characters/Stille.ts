@@ -102,6 +102,6 @@ export const Stille = new CharacterData({
     accessToDefaultCardOptions: false,
     manaSuppressed: false,
     ignoreManaSuppressed: false,
-    defenseDamageReduction: 0,
+    defenderDamageScaling: 1,
   },
 });

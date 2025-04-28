@@ -94,7 +94,7 @@ export const Serie = new CharacterData({
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
-    defenseDamageReduction: 0,
+    defenderDamageScaling: 1,
     serieToyingNextTurn: false,
     serieToyingTurn: false,
   },

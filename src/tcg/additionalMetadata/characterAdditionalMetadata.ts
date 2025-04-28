@@ -10,7 +10,7 @@ export type CharacterAdditionalMetadata = {
   attackedThisTurn: boolean;
   timedEffectAttackedThisTurn: boolean;
   accessToDefaultCardOptions: boolean;
-  defenseDamageReduction: number;
+  defenderDamageScaling: number;
   minimumPossibleHp?: number | undefined; // if undefined, there is no minimum hp cap
   pierceFactor?: number;
   overheal?: boolean;

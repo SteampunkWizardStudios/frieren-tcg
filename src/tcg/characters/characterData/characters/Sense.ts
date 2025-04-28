@@ -105,6 +105,6 @@ export const Sense = new CharacterData({
     manaSuppressed: false,
     ignoreManaSuppressed: false,
     senseTeaTimeStacks: 0,
-    defenseDamageReduction: 0,
+    defenderDamageScaling: 1,
   },
 });

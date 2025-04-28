@@ -61,7 +61,7 @@ export const Fern = new CharacterData({
     attackedThisTurn: false,
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
-    defenseDamageReduction: 0,
+    defenderDamageScaling: 1,
     fernBarrage: 0,
   },
 });

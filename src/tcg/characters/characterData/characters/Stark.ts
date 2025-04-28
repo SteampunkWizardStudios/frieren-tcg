@@ -60,6 +60,6 @@ export const Stark = new CharacterData({
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
     ignoreManaSuppressed: false,
-    defenseDamageReduction: 0,
+    defenderDamageScaling: 1,
   },
 });
