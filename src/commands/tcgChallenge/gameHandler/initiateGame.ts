@@ -21,6 +21,7 @@ export const initiateGame = async (
   opponent: User,
   gameSettings: GameSettings,
   ranked: boolean,
+  textSpeedMs: number,
   gameMode?: GameMode
 ) => {
   try {
@@ -66,7 +67,8 @@ export const initiateGame = async (
         gameThread,
         challengerThread,
         opponentThread,
-        gameSettings
+        gameSettings,
+        textSpeedMs
       );
 
       // thread cleanup
@@ -79,9 +81,6 @@ export const initiateGame = async (
         opponentThread.setArchived(true, "Game completed."),
         opponentThread.members.remove(opponent.id),
       ]);
-
-      let winnerEmoji = "";
-      let loserEmoji = "";
 
       const challengerEmoji = challengerCharacter
         ? `${CHARACTER_MAP[challengerCharacter].cosmetic.emoji} `

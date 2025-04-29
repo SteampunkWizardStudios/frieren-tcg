@@ -22,7 +22,6 @@ import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
 import { CharacterName } from "./tcg/characters/metadata/CharacterName";
 
 const TURN_LIMIT = 50;
-const MESSAGE_TIMEOUT_MS = 1500;
 
 type TCGResult = {
   winner?: User;
@@ -39,7 +38,8 @@ export const tcgMain = async (
   gameThread: PublicThreadChannel<false>,
   challengerThread: PrivateThreadChannel,
   opponentThread: ThreadChannel<false>,
-  gameSettings: GameSettings
+  gameSettings: GameSettings,
+  textSpeedMs: number
 ): Promise<TCGResult> => {
   let result: TCGResult = {
     winner: undefined,
@@ -173,7 +173,7 @@ export const tcgMain = async (
       messageCache.flush(TCGThread.Gameroom),
       TCGThread.Gameroom,
       threadsMapping,
-      MESSAGE_TIMEOUT_MS
+      textSpeedMs
     );
 
     if (game.turnCount === TURN_LIMIT) {
@@ -201,7 +201,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          MESSAGE_TIMEOUT_MS
+          textSpeedMs
         );
 
         if (character.skipTurn) {
@@ -227,7 +227,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          MESSAGE_TIMEOUT_MS
+          textSpeedMs
         );
 
         messageCache.push(`## ${character.name}'s Active Cards:`, useChannel);
@@ -235,7 +235,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          MESSAGE_TIMEOUT_MS
+          textSpeedMs
         );
 
         const draws: string[] = [];
@@ -266,7 +266,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          MESSAGE_TIMEOUT_MS
+          textSpeedMs
         );
       })
     );
@@ -278,7 +278,7 @@ export const tcgMain = async (
           [characterToDetailsString[index].hand],
           TCGThread.Gameroom,
           threadsMapping,
-          MESSAGE_TIMEOUT_MS / 10
+          textSpeedMs / 10
         );
       }
       if (gameSettings.revealDraw) {
@@ -289,7 +289,7 @@ export const tcgMain = async (
           ],
           TCGThread.Gameroom,
           threadsMapping,
-          MESSAGE_TIMEOUT_MS / 10
+          textSpeedMs / 10
         );
       }
     }
@@ -486,7 +486,7 @@ export const tcgMain = async (
         messageCache.flush(TCGThread.Gameroom),
         TCGThread.Gameroom,
         threadsMapping,
-        MESSAGE_TIMEOUT_MS
+        textSpeedMs
       );
     }
   }

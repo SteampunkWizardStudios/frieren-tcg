@@ -31,6 +31,16 @@ export const command: Command<ChatInputCommandInteraction> = {
               value: key,
             }))
         )
+    )
+    .addIntegerOption((option) =>
+      option
+        .setName("text_speed_ms")
+        .setDescription(
+          "What the delay between game messages should be in ms. Defaults to 1500ms."
+        )
+        .setMinValue(100)
+        .setMaxValue(3000)
+        .setRequired(false)
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -39,11 +49,14 @@ export const command: Command<ChatInputCommandInteraction> = {
         (interaction.options.getString("gamemode") as GameMode) ??
         GameMode.CLASSIC;
       const gameSettings = GAME_SETTINGS[gamemode];
+      const textSpeedMs =
+        interaction.options.getInteger("text_speed_ms") ?? 1500;
 
       initiateChallengeRequest({
         interaction,
         gameSettings,
         ranked: true,
+        textSpeedMs,
         gamemode,
       });
     } catch (error) {

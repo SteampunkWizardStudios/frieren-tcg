@@ -8,9 +8,10 @@ export async function initiateChallengeRequest(prop: {
   interaction: ChatInputCommandInteraction;
   gameSettings: GameSettings;
   ranked: boolean;
+  textSpeedMs: number;
   gamemode?: GameMode;
 }): Promise<void> {
-  const { interaction, gameSettings, ranked, gamemode } = prop;
+  const { interaction, gameSettings, ranked, gamemode, textSpeedMs } = prop;
   if (config.maintenance) {
     await interaction.reply({
       content:
@@ -35,6 +36,7 @@ export async function initiateChallengeRequest(prop: {
     opponent,
     gameSettings,
     ranked,
+    textSpeedMs,
     gamemode
   );
 }

@@ -34,6 +34,16 @@ export const command: Command<ChatInputCommandInteraction> = {
       option
         .setName("opponent")
         .setDescription("The user you want to challenge")
+    )
+    .addIntegerOption((option) =>
+      option
+        .setName("text_speed_ms")
+        .setDescription(
+          "What the delay between game messages should be in ms. Defaults to 1500ms."
+        )
+        .setMinValue(100)
+        .setMaxValue(3000)
+        .setRequired(false)
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -48,6 +58,8 @@ export const command: Command<ChatInputCommandInteraction> = {
       const revealHand = interaction.options.getBoolean("reveal-hand") ?? false;
       const revealDraw =
         interaction.options.getBoolean("reveal-active-card") ?? false;
+      const textSpeedMs =
+        interaction.options.getInteger("text_speed_ms") ?? 1500;
 
       initiateChallengeRequest({
         interaction,
@@ -58,6 +70,7 @@ export const command: Command<ChatInputCommandInteraction> = {
         },
         ranked: false,
         gamemode: undefined,
+        textSpeedMs,
       });
     } catch (error) {
       console.log(error);
