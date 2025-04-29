@@ -319,7 +319,7 @@ const a_eisensAxeCleave = new Card({
 export const a_lightningStrike = new Card({
   title: "Lightning Strike",
   description: ([dmg]) =>
-    `HP-14. DEF-5 and SPD-5 for 2 turns. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack. Stark's HP cannot drop below 1 during the turn this move is used.`,
+    `HP-14. DEF-5 and SPD-5 for 2 turns. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack. Stark's HP cannot drop below 1 until the end of the turn after this move is used.`,
   emoji: CardEmoji.STARK_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   tags: { Resolve: -2 },
