@@ -79,8 +79,8 @@ export default async function handleMatchHistory(
   const pages = chunks.map((chunk, pageIndex) => {
     const description = chunk
       .map((match, matchIndex) => {
-        const index = pageIndex * PAGE_SIZE + matchIndex;
-        const matchNumber = matches.length - index - 1;
+		const globalMatchIndex = (pageIndex * PAGE_SIZE) + matchIndex;
+        const matchNumber = matches.length - globalMatchIndex;
         const { winnerCharacter, loserCharacter, finishedAt, winner, loser } =
           match;
         const won = winner.discordId === player.id;
