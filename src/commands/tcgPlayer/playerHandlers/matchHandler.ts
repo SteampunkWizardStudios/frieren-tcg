@@ -84,7 +84,7 @@ export default async function handleMatchHistory(
         const { winnerCharacter, loserCharacter, finishedAt, winner, loser } =
           match;
         const won = winner.discordId === player.id;
-        const result = `**${won ? "Won" : "Lost"}**`;
+        const result = won ? "🏆 **Won**" : "💥 **Lost**";
         const character = charWithEmoji(
           (won ? winnerCharacter.name : loserCharacter.name) as CharacterName
         );
