@@ -110,19 +110,13 @@ const sectionToFields: Record<
     {
       name: "Tactics Section",
       value: serie_utilityMagic_tactics
-        .map(
-          (card: Card) =>
-            `${card.emoji} **${card.title}**: ${card.getDescription()}`
-        )
+        .map((card: Card) => `${card.emoji} **${card.title}**`)
         .join("\n"),
     },
     {
       name: "Recovery Section",
       value: serie_utilityMagic_recovery
-        .map(
-          (card: Card) =>
-            `${card.emoji} **${card.title}**: ${card.getDescription()}`
-        )
+        .map((card: Card) => `${card.emoji} **${card.title}**`)
         .join("\n"),
     },
   ],
