@@ -226,7 +226,7 @@ export const manaConcealment = new Card({
     character.timedEffects.push(
       new TimedEffect({
         name: "Mana Concealment",
-        description: `Attacking moves receive Priority+1 and 25% Pierce.`,
+        description: `Attacking moves receive Priority+1 and 50% Pierce.`,
         turnDuration: 2,
         priority: -1,
         executeEndOfTimedEffectActionOnRemoval: true,
