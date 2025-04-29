@@ -136,7 +136,7 @@ export const a_waldgoseBase = new Card({
   description: ([dmg, multiDmg]) =>
     `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [6, 3],
+  effects: [6, 2],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364217876323500123/GIF_0112106003.gif?ex=6808de67&is=68078ce7&hm=53339631d41657c84bff7858a0d4ca127e5dd726db694b68d34f5d833a75c8ba&",
@@ -215,9 +215,9 @@ export const a_daosdorgBase = new Card({
   title: "Hellfire: Daosdorg",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg, waldgoseDmgBonus, oppDefDebuff]) =>
-    `HP-9. Opponent's DEF-${oppDefDebuff}. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus}. Treat this card as "Hook" if the user's HP is <= 0.`,
+    `HP-9. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus} and reduce Opponent's DEF by ${oppDefDebuff}. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [12, 3, 2],
+  effects: [12, 3, 1],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364218009102581871/GIF_4214490964.gif?ex=6808de87&is=68078d07&hm=dedf596f960aafe344c5eedec122d4dbd54c3b5c6f8b002b3cae75da891fdedf&",
@@ -231,13 +231,10 @@ export const a_daosdorgBase = new Card({
       });
       hook.cardAction(game, characterIndex, messageCache);
     } else {
-      const opponent = game.getCharacter(1 - characterIndex);
       messageCache.push(
         `${character.name} set the sky aflame.`,
         TCGThread.Gameroom
       );
-      const oppDefDebuff = this.calculateEffectValue(this.effects[2]);
-      opponent.adjustStat(-1 * oppDefDebuff, StatsEnum.DEF);
 
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: this.calculateEffectValue(this.effects[0]),
@@ -260,6 +257,10 @@ export const a_daosdorgBase = new Card({
           `The hellfire infused itself into the raging winds!`,
           TCGThread.Gameroom
         );
+
+        const opponent = game.getCharacter(1 - characterIndex);
+        const oppDefDebuff = this.calculateEffectValue(this.effects[2]);
+        opponent.adjustStat(-1 * oppDefDebuff, StatsEnum.DEF);
       }
     }
   },
@@ -444,32 +445,38 @@ export const a_concentratedOffensiveMagicZoltraak = new Card({
 export const thisIsNoPlaceToGiveUp = new Card({
   title: "This Is No Place To Give Up",
   cardMetadata: { nature: Nature.Util },
-  description: ([hp]) =>
-    `Heal ${hp}HP. Heal an additional ${hp}HP and gain 1 Preserverance stack if HP <= 0.`,
+  description: ([hpFirst, hpSecond]) =>
+    `Heal ${hpFirst}HP. Heal an additional ${hpSecond}HP and gain 1 Preserverance stack if HP <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [10],
+  effects: [7, 11],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364979223357296802/GIF_0406490421.gif?ex=680c4c36&is=680afab6&hm=cf5c0f9d7e3e14ec143a8b304c0d416868db25cb8de5a1f0b38cc4c7507df73d&",
   },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
-    const healing = this.calculateEffectValue(this.effects[0]);
+    const healingFirst = this.calculateEffectValue(this.effects[0]);
+    const healingSecond = this.calculateEffectValue(this.effects[1]);
 
+    let healAdditional = false;
     if (character.stats.stats.HP <= 0) {
-      messageCache.push(
-        `${character.name} cannot give up!`,
-        TCGThread.Gameroom
-      );
-      character.adjustStat(healing, StatsEnum.HP);
-      character.adjustStat(1, StatsEnum.Ability);
+      healAdditional = true;
     }
 
     messageCache.push(
       `${character.name} resolves himself.`,
       TCGThread.Gameroom
     );
-    character.adjustStat(healing, StatsEnum.HP);
+    character.adjustStat(healingFirst, StatsEnum.HP);
+
+    if (healAdditional) {
+      messageCache.push(
+        `${character.name} cannot give up!`,
+        TCGThread.Gameroom
+      );
+      character.adjustStat(healingSecond, StatsEnum.HP);
+      character.adjustStat(1, StatsEnum.Ability);
+    }
   },
 });
 
