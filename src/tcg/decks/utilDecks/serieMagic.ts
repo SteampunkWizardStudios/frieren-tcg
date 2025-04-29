@@ -51,6 +51,7 @@ export const serie_offensiveMagic_common = [
   a_trustInYourAllyFrierensZoltraak,
   a_reelseiden,
   a_fernZoltraak,
+  a_erfassenKnife,
 ];
 
 export const serie_offensiveMagic_rare = [
@@ -67,7 +68,6 @@ export const serie_offensiveMagic_rare = [
   a_cleave,
   a_dismantle,
   a_hairWhip,
-  a_erfassenKnife,
   a_trustInYourAllyFernsBarrage,
 ];
 

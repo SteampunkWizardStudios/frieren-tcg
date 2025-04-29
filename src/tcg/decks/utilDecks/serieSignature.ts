@@ -7,7 +7,7 @@ import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
 export const ancientBarrierMagic = new Card({
   title: "Ancient Barrier Magic",
   description: ([atk, def, oppSpd]) =>
-    `HP-10. HP-2 at the end of the next 5 turns. ATK+${atk}, Opponent's DEF-${def} and Opponent's SPD -${oppSpd} for 5 turns.`,
+    `HP-5. HP-2 at the end of the next 7 turns. ATK+${atk}, Opponent's DEF-${def} and Opponent's SPD -${oppSpd} for 7 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -17,7 +17,7 @@ export const ancientBarrierMagic = new Card({
   },
   cardMetadata: { nature: Nature.Util, signature: true },
   effects: [5, 5, 5],
-  hpCost: 10,
+  hpCost: 5,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -39,7 +39,7 @@ export const ancientBarrierMagic = new Card({
         new TimedEffect({
           name: "Ancient Barrier Magic",
           description: `ATK+${atkBuff}, Opponent's DEF-${defDebuff}, Opponent's SPD -${spdDebuff} for 5 turns.`,
-          turnDuration: 5,
+          turnDuration: 7,
           priority: -1,
           executeEndOfTimedEffectActionOnRemoval: true,
           endOfTurnAction: (_game, _characterIndex) => {

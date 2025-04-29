@@ -8,9 +8,9 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 const a_jab = new Card({
   title: "Jab",
   cardMetadata: { nature: Nature.Attack },
-  description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal  ${dmg} DMG.`,
+  description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 2, 2],
+  effects: [2, 1, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -36,9 +36,9 @@ const a_jab = new Card({
 const a_hook = new Card({
   title: "Hook",
   cardMetadata: { nature: Nature.Attack },
-  description: ([atk, dmg]) => `ATK+${atk}. Deal ${dmg} DMG.`,
+  description: ([spd, atk, dmg]) => `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [3, 2],
+  effects: [2, 1, 2],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -48,10 +48,14 @@ const a_hook = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
+      StatsEnum.SPD
+    );
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[1]),
       StatsEnum.ATK
     );
     CommonCardAction.commonAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[1]),
+      damage: this.calculateEffectValue(this.effects[2]),
       hpCost: 0,
     });
   },
@@ -62,7 +66,7 @@ const a_uppercut = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 2, 3],
+  effects: [2, 1, 3],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364978489035460708/GIF_0836074812.gif?ex=680c4b87&is=680afa07&hm=84fd66beff9352aba9c037ff66d2b0e69219b34c0e3c9c5e62edbf96dc62a0f8&",

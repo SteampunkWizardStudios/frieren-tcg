@@ -130,9 +130,9 @@ export const a_supersonicStrike = new Card({
 export const hide = new Card({
   title: "Hide",
   cardMetadata: { nature: Nature.Util },
-  description: ([def, hp]) => `DEF+${def} for 2 turns. Heal ${hp} HP.`,
+  description: ([spd, hp]) => `SPD+${spd}. Heal ${hp} HP.`,
   emoji: CardEmoji.DONUT_CARD,
-  effects: [3, 10],
+  effects: [2, 7],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1365422814097707120/GIF_3467240538.gif?ex=68108c57&is=680f3ad7&hm=afdbfcbce169548db1583e2f07027c57cf975b395500daee05e77e21a6b96b48&",
@@ -144,26 +144,10 @@ export const hide = new Card({
       TCGThread.Gameroom
     );
 
-    const defIncrease = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(defIncrease, StatsEnum.DEF);
-
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Hide",
-        description: `Increases DEF by ${defIncrease} for 2 turns.`,
-        priority: -1,
-        turnDuration: 2,
-        removableBySorganeil: false,
-        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          messageCache.push(
-            `${character.name} came out of hiding.`,
-            TCGThread.Gameroom
-          );
-          character.adjustStat(-1 * defIncrease, StatsEnum.DEF);
-        },
-      })
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[0]),
+      StatsEnum.SPD
     );
-
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
       StatsEnum.HP
