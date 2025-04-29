@@ -100,10 +100,12 @@ export const a_fernBarrage = new Card({
               `${character.name} lost 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
               TCGThread.Gameroom
             );
+            const currPierceFactor =
+              (character.additionalMetadata.pierceFactor ??= 0);
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
               hpCost: 4,
-              pierceFactor: 0.25 + basePierceFactor,
+              pierceFactor: 0.25 + currPierceFactor,
             });
           } else {
             messageCache.push(
@@ -224,8 +226,9 @@ export const manaConcealment = new Card({
     character.timedEffects.push(
       new TimedEffect({
         name: "Mana Concealment",
-        description: `Attacking moves receive Priority+1`,
+        description: `Attacking moves receive Priority+1 and 25% Pierce.`,
         turnDuration: 2,
+        priority: -1,
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
