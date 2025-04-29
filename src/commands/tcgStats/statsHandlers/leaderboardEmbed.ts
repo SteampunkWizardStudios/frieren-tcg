@@ -26,7 +26,7 @@ export default function leaderboardEmbed(props: {
     leaderboard,
     isCharacterLeaderboard,
     page = 1,
-    pageSize = 10,
+    pageSize = 12,
     color = "Blurple",
   } = props;
 
