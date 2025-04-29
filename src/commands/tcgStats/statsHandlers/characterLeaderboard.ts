@@ -1,6 +1,10 @@
 import prismaClient from "@prismaClient";
 import { getOrCreateCharacters } from "@src/util/db/getCharacter";
-import { ChatInputCommandInteraction } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  ComponentType,
+  ButtonStyle,
+} from "discord.js";
 import { Prisma } from "@prisma/client";
 import leaderboardEmbed from "./leaderboardEmbed";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
@@ -9,6 +13,8 @@ import {
   PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
 import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
+
+const PAGE_SIZE = 12;
 
 export type CharacterMasteryWithPlayer = Prisma.CharacterMasteryGetPayload<{
   include: { player: true };
@@ -57,12 +63,11 @@ export async function handleCharacterGlobalStats(
     points: masteryPoints,
   }));
 
-  const PAGE_SIZE = 10;
   const totalPages = Math.ceil(idsToPoints.length / PAGE_SIZE);
 
   const pages = Array.from({ length: totalPages }, (_, i) => async () => {
     const pageData = idsToPoints.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE);
-    const embed = await leaderboardEmbed({
+    const embed = leaderboardEmbed({
       idsToPoints: pageData,
       leaderboard: character,
       isCharacterLeaderboard: false,
@@ -79,5 +84,10 @@ export async function handleCharacterGlobalStats(
   });
 
   const paginated = new LazyPaginatedMessage({ pages });
+  paginated.actions.forEach((action) => {
+    if (action.type === ComponentType.Button) {
+      action.style = ButtonStyle.Secondary;
+    }
+  });
   await paginated.run(interaction);
 }

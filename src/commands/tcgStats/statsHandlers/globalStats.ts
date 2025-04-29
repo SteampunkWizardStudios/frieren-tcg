@@ -1,7 +1,12 @@
 import prismaClient from "@prismaClient";
 import { GameMode } from "@src/commands/tcgChallenge/gameHandler/gameSettings";
 import { getLatestLadderReset } from "@src/util/db/getLatestLadderReset";
-import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  ComponentType,
+  ButtonStyle,
+} from "discord.js";
 import { Prisma } from "@prisma/client";
 import { capitalizeFirstLetter } from "@src/util/utils";
 import leaderboardEmbed from "./leaderboardEmbed";
@@ -9,6 +14,8 @@ import {
   LazyPaginatedMessage,
   type PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
+
+const PAGE_SIZE = 12;
 
 export type LadderRankWithPlayer = Prisma.LadderRankGetPayload<{
   include: { player: true };
@@ -55,12 +62,11 @@ export async function handleGlobalStats(
     points: rankPoints,
   }));
 
-  const PAGE_SIZE = 10;
   const totalPages = Math.ceil(idsToPoints.length / PAGE_SIZE);
 
   const pages = Array.from({ length: totalPages }, (_, i) => async () => {
     const pageData = idsToPoints.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE);
-    const embed = await leaderboardEmbed({
+    const embed = leaderboardEmbed({
       idsToPoints: pageData,
       leaderboard: capitalizeFirstLetter(gamemode),
       isCharacterLeaderboard: false,
@@ -92,6 +98,10 @@ export async function handleGlobalStats(
 
   const paginated = new LazyPaginatedMessage({ pages });
   // you can change the message settings here
-
+  paginated.actions.forEach((action) => {
+    if (action.type === ComponentType.Button) {
+      action.style = ButtonStyle.Secondary;
+    }
+  });
   await paginated.run(interaction);
 }

@@ -11,7 +11,7 @@ import {
 } from "@sapphire/discord.js-utilities";
 import achievementLeaderboardEmbed from "./achievementLeaderboardEmbed";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 12;
 
 export default async function handleAchievementLeaderboard(
   interaction: ChatInputCommandInteraction
