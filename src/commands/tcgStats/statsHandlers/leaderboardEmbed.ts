@@ -13,14 +13,14 @@ function getRankString(rank: number, id: string): string {
   }
 }
 
-export default async function leaderboardEmbed(props: {
+export default function leaderboardEmbed(props: {
   idsToPoints: { id: string; points: number }[];
   leaderboard: string;
   isCharacterLeaderboard: boolean;
   page?: number;
   pageSize?: number;
   color?: ColorResolvable;
-}): Promise<EmbedBuilder> {
+}): EmbedBuilder {
   const {
     idsToPoints,
     leaderboard,
