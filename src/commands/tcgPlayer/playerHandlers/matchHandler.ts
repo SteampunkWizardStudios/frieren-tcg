@@ -12,7 +12,7 @@ import {
 import { charWithEmoji } from "@src/tcg/formatting/emojis";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 10;
 
 export default async function handleMatchHistory(
   interaction: ChatInputCommandInteraction
@@ -79,8 +79,8 @@ export default async function handleMatchHistory(
   const pages = chunks.map((chunk, pageIndex) => {
     const description = chunk
       .map((match, matchIndex) => {
-		const globalMatchIndex = (pageIndex * PAGE_SIZE) + matchIndex;
-        const matchNumber = matches.length - globalMatchIndex;
+        const matchNumber =
+          matches.length - (pageIndex * PAGE_SIZE + matchIndex);
         const { winnerCharacter, loserCharacter, finishedAt, winner, loser } =
           match;
         const won = winner.discordId === player.id;
@@ -94,9 +94,9 @@ export default async function handleMatchHistory(
         );
         const timestamp = `<t:${Math.floor(new Date(finishedAt).getTime() / 1000)}:R>`;
 
-        return `${matchNumber}. ${result} with ${character}  ${timestamp}\n against ${opponent} as ${opponentCharacter}`;
+        return `${matchNumber}\\. ${result} with ${character}  ${timestamp}\n against ${opponent} as ${opponentCharacter}`;
       })
-      .join("\n");
+      .join("\n\n");
 
     const embed = new EmbedBuilder()
       .setTitle(`${player.displayName}'s Match History`)
