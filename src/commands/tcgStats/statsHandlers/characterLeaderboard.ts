@@ -62,7 +62,7 @@ export async function handleCharacterGlobalStats(
 
   const pages = Array.from({ length: totalPages }, (_, i) => async () => {
     const pageData = idsToPoints.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE);
-    const embed = await leaderboardEmbed({
+    const embed = leaderboardEmbed({
       idsToPoints: pageData,
       leaderboard: character,
       isCharacterLeaderboard: false,

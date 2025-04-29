@@ -4,8 +4,9 @@ import {
   MessageFlags,
   InteractionContextType,
 } from "discord.js";
-import type { Command } from "../../types/command";
+import type { Command } from "@src/types/command";
 import handlePlayerProfile from "./playerHandlers/profileHandler";
+import handleMatchHistory from "./playerHandlers/matchHandler";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -29,6 +30,18 @@ export const command: Command<ChatInputCommandInteraction> = {
               "The player to get the profile of, defaults to yourself"
             )
         )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("match-history")
+        .setDescription("Get a player's match history")
+        .addUserOption((option) =>
+          option
+            .setName("player")
+            .setDescription(
+              "The player to get the match history of, defaults to yourself"
+            )
+        )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -39,11 +52,18 @@ export const command: Command<ChatInputCommandInteraction> = {
     });
 
     try {
-		switch (subcommand) {
-			case "profile":
-				await handlePlayerProfile(interaction);
-		}
-      
+      switch (subcommand) {
+        case "profile":
+          {
+            await handlePlayerProfile(interaction);
+          }
+          break;
+        case "match-history":
+          {
+            await handleMatchHistory(interaction);
+          }
+          break;
+      }
     } catch (error) {
       console.log(error);
       await interaction.reply({
