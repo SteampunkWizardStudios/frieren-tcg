@@ -44,7 +44,7 @@ const useRandomCard = function (props: {
 };
 
 export const a_livingGrimoireOffenseCommon = new Card({
-  title: "Living Grimoire: Offense Chapter. 3rd Class Magic section.",
+  title: "Living Grimoire: Offense Chapter. 3rd Class Magic Section.",
   cardMetadata: { nature: Nature.Attack },
   description: () => "Use a random common offensive magic.",
   emoji: CardEmoji.SERIE_CARD,
@@ -66,7 +66,7 @@ export const a_livingGrimoireOffenseCommon = new Card({
 });
 
 export const a_livingGrimoireOffenseRare = new Card({
-  title: "Living Grimoire: Offense Chapter. 1st Class Magic section.",
+  title: "Living Grimoire: Offense Chapter. 1st Class Magic Section.",
   cardMetadata: { nature: Nature.Attack },
   description: () => "Use a random rare offensive magic.",
   emoji: CardEmoji.SERIE_CARD,
@@ -88,7 +88,7 @@ export const a_livingGrimoireOffenseRare = new Card({
 });
 
 export const a_livingGrimoireOffenseUnusual = new Card({
-  title: "Living Grimoire: Offense Chapter. Great Mage's Magic section.",
+  title: "Living Grimoire: Offense Chapter. Great Mage's Magic Section.",
   cardMetadata: { nature: Nature.Attack },
   description: () => "Use a random unusual offensive magic.",
   emoji: CardEmoji.SERIE_CARD,
