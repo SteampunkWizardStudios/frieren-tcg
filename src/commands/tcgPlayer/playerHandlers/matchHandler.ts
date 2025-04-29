@@ -1,6 +1,9 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import prismaClient from "@prismaClient";
-import { LazyPaginatedMessage } from "@sapphire/discord.js-utilities";
+import {
+  LazyPaginatedMessage,
+  PaginatedMessageMessageOptionsUnion,
+} from "@sapphire/discord.js-utilities";
 
 const PAGE_SIZE = 12;
 
@@ -35,6 +38,16 @@ export default async function handleMatchHistory(
           name: true,
         },
       },
+      winner: {
+        select: {
+          discordId: true,
+        },
+      },
+      loser: {
+        select: {
+          discordId: true,
+        },
+      },
     },
     orderBy: {
       finishedAt: "desc",
@@ -53,16 +66,33 @@ export default async function handleMatchHistory(
     chunks.push(matches.slice(i, i + PAGE_SIZE));
   }
 
-  const pages = chunks.map((chunk) => {
-    const description = chunk
-      .map((match) => {
-        return `${match}`;
-      })
-      .join("\n");
-    return new EmbedBuilder()
-      .setTitle(`${player.username}'s Match History`)
-      .setColor("Blurple")
-      .setDescription(description);
+  const pages = chunks.map((chunk, pageIndex) => {
+	const description = chunk
+	  .map((match, matchIndex) => {
+		const globalIndex = pageIndex * PAGE_SIZE + matchIndex;
+		const matchNumber = matches.length - globalIndex;
+		const { winnerId, winnerCharacter, loserCharacter, finishedAt, winner, loser } = match;
+		const won = winnerId.toString() === player.id;
+		const result = won ? "Won" : "Lost";
+		const character = won ? winnerCharacter.name : loserCharacter.name;
+		const opponent = `<@${won ? loser.discordId : winner.discordId}>`;
+		const opponentCharacter = won ? loserCharacter.name : winnerCharacter.name;
+		const timestamp = `<t:${Math.floor(new Date(finishedAt).getTime() / 1000)}:R>`;
+  
+		return `${matchNumber}. ${result} with ${character} against ${opponent} as ${opponentCharacter} ${timestamp}`;
+	  })
+	  .join("\n");
+  
+	const embed = new EmbedBuilder()
+	  .setTitle(`${player.username}'s Match History`)
+	  .setColor("Blurple")
+	  .setDescription(description);
+  
+	const page: PaginatedMessageMessageOptionsUnion = {
+	  embeds: [embed],
+	};
+  
+	return page;
   });
 
   const paginated = new LazyPaginatedMessage({ pages });
