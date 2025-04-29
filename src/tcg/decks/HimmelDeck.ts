@@ -138,7 +138,7 @@ export const a_FrierenNow = new Card({
   title: "Frieren! Now!",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `DMG ${dmg}`,
-  emoji: CardEmoji.FRIEREN_CARD,
+  emoji: CardEmoji.HIMMEL_CARD,
   effects: [12],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
