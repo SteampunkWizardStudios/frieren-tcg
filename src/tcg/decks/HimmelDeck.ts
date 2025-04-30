@@ -48,8 +48,9 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
         description: `Deal ${damage} at each turn's end.`,
         turnDuration: 2,
         tags: { Frieren: 1 },
-        removableBySorganeil: false,
-        endOfTimedEffectAction: function (this, game, characterIndex) {
+        activateEndOfTurnActionThisTurn: false,
+        executeEndOfTimedEffectActionOnRemoval: true,
+        endOfTurnAction: function (this, game, characterIndex) {
           const otherCharacter = game.characters[characterIndex];
           messageCache.push(
             `${isHimmel ? "Frieren" : `${otherCharacter.name}`} strikes the weakpoint!`,
@@ -60,7 +61,8 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
             hpCost: 0,
             isTimedEffectAttack: true,
           });
-
+        },
+        endOfTimedEffectAction: function (this, _game, _characterIndex) {
           opponent.adjustStat(oppDefDebuff, StatsEnum.DEF);
         },
       })
@@ -106,7 +108,7 @@ const a_FrierenBackMeUp = new Card({
         description: `Deal ${damage} at each turn's end.`,
         turnDuration: 4,
         tags: { Frieren: 1 },
-        removableBySorganeil: false,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: function (this, game, characterIndex) {
           const otherCharacter = game.characters[characterIndex];
           messageCache.push(
@@ -165,7 +167,7 @@ export const a_FrierenNow = new Card({
         description: `Deal ${damage}.`,
         turnDuration: 1,
         tags: { Frieren: 1 },
-        removableBySorganeil: false,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: function (this, game, characterIndex) {
           const otherCharacter = game.characters[characterIndex];
           messageCache.push(
@@ -202,6 +204,19 @@ const a_EisenTheEnemysOpen = new Card({
     const damage = this.calculateEffectValue(this.effects[1]);
     character.adjustStat(def, StatsEnum.DEF);
 
+    const endOfTimedEffectAction = function (
+      _game: Game,
+      _characterIndex: number,
+      messageCache: MessageCache
+    ) {
+      const otherCharacter = game.characters[characterIndex];
+      messageCache.push(
+        `${isHimmel ? "Eisen shifted his stance." : `${otherCharacter.name} shifted ${otherCharacter.cosmetic.pronouns.possessive} stance.`}`,
+        TCGThread.Gameroom
+      );
+      character.adjustStat(-def, StatsEnum.DEF);
+    };
+
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
@@ -211,8 +226,9 @@ const a_EisenTheEnemysOpen = new Card({
         description: `DEF+${def}. Deal ${damage} at end of timed effect.`,
         turnDuration: 2,
         tags: { Eisen: 1 },
-        removableBySorganeil: false,
-        endOfTimedEffectAction: function (this, game, characterIndex) {
+        activateEndOfTurnActionThisTurn: false,
+        executeEndOfTimedEffectActionOnRemoval: true,
+        endOfTurnAction: function (this, game, characterIndex) {
           const otherCharacter = game.characters[characterIndex];
           messageCache.push(
             `${isHimmel ? "Eisen lands his attack!" : `${otherCharacter.name} lands ${otherCharacter.cosmetic.pronouns.possessive} attack!`}`,
@@ -223,16 +239,9 @@ const a_EisenTheEnemysOpen = new Card({
             hpCost: 0,
             isTimedEffectAttack: true,
           });
-          character.adjustStat(-def, StatsEnum.DEF);
         },
-        replacedAction: function (this, _game, characterIndex) {
-          const otherCharacter = game.characters[characterIndex];
-          messageCache.push(
-            `${isHimmel ? "Eisen shifted his stance." : `${otherCharacter.name} shifted ${otherCharacter.cosmetic.pronouns.possessive} stance.`}`,
-            TCGThread.Gameroom
-          );
-          character.adjustStat(-def, StatsEnum.DEF);
-        },
+        endOfTimedEffectAction: endOfTimedEffectAction,
+        replacedAction: endOfTimedEffectAction,
       })
     );
   },
@@ -310,7 +319,7 @@ const a_EisenCoverMyBack = new Card({
         turnDuration: 3,
         priority: -99,
         tags: { Eisen: 1 },
-        removableBySorganeil: false,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: function (this, _game, _characterIndex) {
           // priority -99 means it would always go after everything else, to make a pseudo-start-of-turn effect
           character.additionalMetadata.himmelEisenReadyToCounter = true;
@@ -367,7 +376,7 @@ const eisenHoldTheLine = new Card({
         description: `DEF+${def}.`,
         turnDuration: 4,
         tags: { Eisen: 1 },
-        removableBySorganeil: false,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: endOfTimedEffectAction,
         replacedAction: endOfTimedEffectAction,
       })
@@ -408,7 +417,7 @@ const heiterEmergency = new Card({
         description: `Heal ${heal} at end of timed effect.`,
         turnDuration: 2,
         tags: { Heiter: 1 },
-        removableBySorganeil: false,
+        executeEndOfTimedEffectActionOnRemoval: false,
         endOfTimedEffectAction: function (this, game, characterIndex) {
           const otherCharacter = game.characters[characterIndex];
           messageCache.push(
@@ -453,7 +462,7 @@ const a_heiterThreeSpears = new Card({
         description: `Deal ${damage} at each turn's end.`,
         turnDuration: 3,
         tags: { Heiter: 1 },
-        removableBySorganeil: false,
+        executeEndOfTimedEffectActionOnRemoval: false,
         endOfTurnAction: (game, characterIndex) => {
           messageCache.push(
             "The goddess' spears continue to rain!",
@@ -504,7 +513,7 @@ const heiterTrustYou = new Card({
         description: `ATK+${atkSpd}. SPD+${atkSpd}.`,
         turnDuration: 4,
         tags: { Heiter: 1 },
-        removableBySorganeil: false,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: function (this, _game, _characterIndex) {
           messageCache.push(
             `${isHimmel ? "Heiter needs to take a breather." : "The goddess' aura fades."}`,
