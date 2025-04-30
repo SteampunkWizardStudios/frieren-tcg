@@ -64,10 +64,17 @@ export const Laufen = new CharacterData({
       const roll = Rolls.rollD100();
       messageCache.push(`### **SPD diff**: ${spdDiff}`, TCGThread.Gameroom);
       messageCache.push(`### Roll: ${roll}`, TCGThread.Gameroom);
-      const evasionReduction = Math.min(
-        Math.max(1 + (roll - spdDiff) / spdDiff, 0),
-        1
-      );
+
+      let evasionReduction;
+      if (spdDiff > 0) {
+        evasionReduction = Math.min(
+          Math.max(1 + (roll - spdDiff) / spdDiff, 0),
+          1
+        );
+      } else {
+        evasionReduction = 1;
+      }
+
       if (roll < spdDiff) {
         messageCache.push(
           "## The attack barely grazed Laufen!",
