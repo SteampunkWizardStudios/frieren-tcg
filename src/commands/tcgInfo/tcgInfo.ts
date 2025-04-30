@@ -60,6 +60,10 @@ export const command: Command<ChatInputCommandInteraction> = {
               {
                 name: "Serie's Living Grimoire: Utility Chapter's Card Pool",
                 value: AdvancedRulesSection.SeriesPoolUtility,
+              },
+              {
+                name: "Character signature moves: Übel's Empathy Card Pool",
+                value: AdvancedRulesSection.SignatureMoves,
               }
             )
         )
@@ -72,7 +76,7 @@ export const command: Command<ChatInputCommandInteraction> = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("character")
-        .setDescription("Get information about the character")
+        .setDescription("Get information about a character")
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {

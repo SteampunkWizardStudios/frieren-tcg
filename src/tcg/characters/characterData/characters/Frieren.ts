@@ -40,6 +40,7 @@ export const Frieren = new CharacterData({
   name: CharacterName.Frieren,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },
@@ -55,11 +56,14 @@ export const Frieren = new CharacterData({
         Whenever an "Analysis" move is used, gain 2 Analysis stacks.
         When an attack is used, its damage is increased by ${(ANALYSIS_BOOST * 100).toFixed(2)}% * the number of Analysis stacks.
         After an attack is used, Analysis stacks is reset to 0.
-        A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.`,
-    abilityOnCardUse: function (
+        A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.
+
+        **Sub-Ability: Mana Suppression** - Hide the amount of HP this character has.
+        **Sub-Ability: Flamme's Teachings** - See past the opponent's Mana Suppression.`,
+    abilityAfterOwnCardUse: function (
       game: Game,
       characterIndex: number,
-      messageCache: MessageCache,
+      _messageCache: MessageCache,
       card: Card
     ) {
       const character = game.getCharacter(characterIndex);
@@ -73,9 +77,10 @@ export const Frieren = new CharacterData({
       if ("PostAnalysis" in card.tags) {
         character.timedEffects.push(
           new TimedEffect({
-            name: "Offensive Magic Analysis: Zoltraak",
+            name: "Post Analysis",
             description: `At this turn's resolution, gain ${card.tags["PostAnalysis"]} Analysis stack.`,
             turnDuration: 1,
+            removableBySorganeil: false,
             endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
               messageCache.push(
                 "Frieren performed her analysis.",
@@ -118,8 +123,10 @@ export const Frieren = new CharacterData({
   },
   additionalMetadata: {
     manaSuppressed: true,
+    ignoreManaSuppressed: true,
     attackedThisTurn: false,
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
+    defenderDamageScaling: 1,
   },
 });

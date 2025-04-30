@@ -7,11 +7,12 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import Game from "@src/tcg/game";
 
 const laufenStats = new Stats({
   [StatsEnum.HP]: 90.0,
   [StatsEnum.ATK]: 10.0,
-  [StatsEnum.DEF]: 7.0,
+  [StatsEnum.DEF]: 8.0,
   [StatsEnum.SPD]: 30.0,
   [StatsEnum.Ability]: 0.0,
 });
@@ -20,6 +21,7 @@ export const Laufen = new CharacterData({
   name: CharacterName.Laufen,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },
@@ -31,9 +33,10 @@ export const Laufen = new CharacterData({
   stats: laufenStats,
   cards: laufenDeck,
   ability: {
-    abilityName: "Evasive",
-    abilityEffectString: `When the opponent attacks, roll a D100.
-        If the result is less than the character's speed minus the opponent's speed, the attack deals 0 damage.`,
+    abilityName: "Graze",
+    abilityEffectString: `When the opponent attacks, roll a D100. The lower the roll, the less damage the move deals. 
+      The move deals maximum damage if the roll is higher than the difference between the 2 character’s SPD. 
+      The opponent’s attack deals at minimum 0% damage, and at maximum only (100 - This character’s SPD + Opponent’s SPD)% damage.`,
     abilityStartOfTurnEffect: function (
       this,
       game,
@@ -44,10 +47,10 @@ export const Laufen = new CharacterData({
       const opponent = game.getCharacter(1 - characterIndex);
       const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
 
-      character.setStat(100 - spdDiff, StatsEnum.Ability, false);
+      character.setStat(spdDiff, StatsEnum.Ability, false);
     },
     abilityDefendEffect: (
-      game,
+      game: Game,
       characterIndex,
       messageCache: MessageCache,
       _attackDamage
@@ -55,27 +58,38 @@ export const Laufen = new CharacterData({
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
 
-      const roll = Rolls.rollD100();
       const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
-      messageCache.push(`## **SPD diff**: ${spdDiff}`, TCGThread.Gameroom);
-      messageCache.push(`# Evasion Roll: ${roll}`, TCGThread.Gameroom);
+      const grazeReduction = Math.min(Math.max(spdDiff / 100, 0), 1);
 
+      const roll = Rolls.rollD100();
+      messageCache.push(`### **SPD diff**: ${spdDiff}`, TCGThread.Gameroom);
+      messageCache.push(`### Roll: ${roll}`, TCGThread.Gameroom);
+      const evasionReduction = Math.min(
+        Math.max(1 + (roll - spdDiff) / spdDiff, 0),
+        1
+      );
       if (roll < spdDiff) {
-        messageCache.push("Laufen evaded the attack!", TCGThread.Gameroom);
-        game.additionalMetadata.attackMissed[1 - characterIndex] = true;
-      } else {
         messageCache.push(
-          "Laufen failed to evade the attack!",
+          "## The attack barely grazed Laufen!",
           TCGThread.Gameroom
         );
-        game.additionalMetadata.attackMissed[1 - characterIndex] = false;
+      } else {
+        messageCache.push(
+          "## Laufen failed to evade the attack!",
+          TCGThread.Gameroom
+        );
       }
+
+      character.additionalMetadata.defenderDamageScaling =
+        (1 - grazeReduction) * evasionReduction;
     },
   },
   additionalMetadata: {
     manaSuppressed: false,
+    ignoreManaSuppressed: false,
     attackedThisTurn: false,
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
+    defenderDamageScaling: 1,
   },
 });

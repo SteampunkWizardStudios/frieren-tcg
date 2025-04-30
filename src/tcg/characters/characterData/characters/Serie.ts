@@ -20,7 +20,7 @@ const serieStats = new Stats({
   [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 14.0,
   [StatsEnum.DEF]: 10.0,
-  [StatsEnum.SPD]: 14.0,
+  [StatsEnum.SPD]: 10.0,
   [StatsEnum.Ability]: 0.0,
 });
 
@@ -39,6 +39,7 @@ export const Serie = new CharacterData({
   name: CharacterName.Serie,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },
@@ -51,7 +52,10 @@ export const Serie = new CharacterData({
   ability: {
     abilityName: "Toying Around",
     abilityEffectString: `Any attack used by this character has its DMG+${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%. 
-      The turn after this character performs any attack, DMG-${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%.`,
+      The turn after this character performs any attack, DMG-${(SERIE_TOYING_DAMAGE_BONUS * 100).toFixed(2)}%.
+
+      **Sub-Ability: Mana Suppression** - Hide the amount of HP this character has.
+      **Sub-Ability: Serie's Intuition** - See past the opponent's Mana Suppression.`,
     abilityStartOfTurnEffect(game, characterIndex, messageCache) {
       const character = game.getCharacter(characterIndex);
       if (character.additionalMetadata.serieToyingNextTurn) {
@@ -87,9 +91,11 @@ export const Serie = new CharacterData({
   },
   additionalMetadata: {
     manaSuppressed: true,
+    ignoreManaSuppressed: true,
     attackedThisTurn: false,
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
+    defenderDamageScaling: 1,
     serieToyingNextTurn: false,
     serieToyingTurn: false,
   },

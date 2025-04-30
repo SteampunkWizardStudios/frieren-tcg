@@ -6,8 +6,8 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
 const starkStats = new Stats({
-  [StatsEnum.HP]: 110.0,
-  [StatsEnum.ATK]: 11.0,
+  [StatsEnum.HP]: 120.0,
+  [StatsEnum.ATK]: 10.0,
   [StatsEnum.DEF]: 10.0,
   [StatsEnum.SPD]: 8.0,
   [StatsEnum.Ability]: 0.0,
@@ -17,6 +17,7 @@ export const Stark = new CharacterData({
   name: CharacterName.Stark,
   cosmetic: {
     pronouns: {
+      personal: "he",
       possessive: "his",
       reflexive: "himself",
     },
@@ -29,9 +30,15 @@ export const Stark = new CharacterData({
   cards: starkDeck,
   ability: {
     abilityName: "Bravest Coward",
-    abilityEffectString: `Using attacks without (Resolve) reduces its DMG by 20%.
-        Using attacks with (Resolve) increases its DMG by 20%.`,
-    abilityOnCardUse: function (game, characterIndex, _messageCache, card) {
+    abilityEffectString: `Using attacks while your (Resolve) is negative reduces its DMG by 20%.
+        Using attacks with (Resolve) increases its DMG by 20%.
+        Every attack costs 1 (Resolve) unless stated otherwise.`,
+    abilityAfterOwnCardUse: function (
+      game,
+      characterIndex,
+      _messageCache,
+      card
+    ) {
       const character = game.getCharacter(characterIndex);
       if ("Resolve" in card.tags) {
         character.adjustStat(card.tags["Resolve"], StatsEnum.Ability);
@@ -41,8 +48,10 @@ export const Stark = new CharacterData({
       const character = game.getCharacter(characterIndex);
       if (character.stats.stats.Ability > 0) {
         game.additionalMetadata.attackModifier[characterIndex] = 1.2;
-      } else {
+      } else if (character.stats.stats.Ability < 0) {
         game.additionalMetadata.attackModifier[characterIndex] = 0.8;
+      } else {
+        game.additionalMetadata.attackModifier[characterIndex] = 1.0;
       }
     },
   },
@@ -51,5 +60,7 @@ export const Stark = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
+    ignoreManaSuppressed: false,
+    defenderDamageScaling: 1,
   },
 });

@@ -5,7 +5,7 @@ import { himmelDeck } from "../../../decks/HimmelDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
-const HIMMEL_HERO_PARTY_DAMAGE_BONUS = 0.2;
+const HIMMEL_HERO_PARTY_DAMAGE_BONUS = 0.15;
 
 const imageUrl: Record<string, string> = {
   icon: "https://static.wikia.nocookie.net/frieren/images/9/96/Himmel_anime_portrait.png/revision/latest?cb=20231017083515",
@@ -23,6 +23,7 @@ export const Himmel = new CharacterData({
   name: CharacterName.Himmel,
   cosmetic: {
     pronouns: {
+      personal: "he",
       possessive: "his",
       reflexive: "himself",
     },
@@ -60,5 +61,8 @@ export const Himmel = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
+    ignoreManaSuppressed: false,
+    himmelEisenReadyToCounter: false,
+    defenderDamageScaling: 1,
   },
 });

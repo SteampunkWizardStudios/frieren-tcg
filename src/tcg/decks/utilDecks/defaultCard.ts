@@ -1,5 +1,5 @@
 import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
-import Card from "../../card";
+import Card, { Nature } from "../../card";
 import { CardEmoji } from "../../formatting/emojis";
 import Game from "../../game";
 import { StatsEnum } from "../../stats";
@@ -7,13 +7,18 @@ import { StatsEnum } from "../../stats";
 export default class DefaultCards {
   static readonly discardCard: Card = new Card({
     title: "Discard",
+    cardMetadata: { nature: Nature.Default },
     description: () =>
-      "Discards all of your current active cards. Draw the same number of cards you discarded. Empower all cards in your hand afterwards.",
+      "ATK+1. DEF+1. SPD+1. Discards all of your current active cards. Draw the same number of cards you discarded. Empower all cards in your hand afterwards.",
     effects: [],
     emoji: CardEmoji.RECYCLE,
     printEmpower: false,
     cardAction: (game, characterIndex, messageCache) => {
       const character = game.getCharacter(characterIndex);
+
+      character.adjustStat(1, StatsEnum.ATK);
+      character.adjustStat(1, StatsEnum.DEF);
+      character.adjustStat(1, StatsEnum.SPD);
 
       const handsIndicesDescending = Object.keys(
         game.additionalMetadata.currentDraws[characterIndex]
@@ -36,7 +41,9 @@ export default class DefaultCards {
 
   static readonly waitCard: Card = new Card({
     title: "Wait",
-    description: () => "Heals 10 HP.",
+    cardMetadata: { nature: Nature.Default },
+    description: () =>
+      "Heals 10 HP. Empower all cards in your hand afterwards.",
     effects: [],
     printEmpower: false,
     emoji: CardEmoji.WAIT,
@@ -51,8 +58,27 @@ export default class DefaultCards {
     },
   });
 
+  static readonly doNothing: Card = new Card({
+    title: "Do Nothing.",
+    description: () =>
+      "Does nothing. Empower all cards in your hand afterwards.",
+    cardMetadata: { nature: Nature.Default },
+    effects: [],
+    printEmpower: false,
+    emoji: CardEmoji.WAIT,
+    cardAction: (game, characterIndex, messageCache) => {
+      const character = game.getCharacter(characterIndex);
+      character.empowerHand();
+      messageCache.push(
+        `${character.name} did nothing. All cards in ${character.name}'s hand are empowered.`,
+        TCGThread.Gameroom
+      );
+    },
+  });
+
   static readonly forfeitCard: Card = new Card({
     title: "Forfeit",
+    cardMetadata: { nature: Nature.Default },
     description: () => "Forfeits the game.",
     effects: [],
     printEmpower: false,

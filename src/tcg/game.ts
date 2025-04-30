@@ -5,6 +5,7 @@ import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
 import { CharacterName } from "./characters/metadata/CharacterName";
 import type { GamePlugin } from "./gamePlugin";
+import { DENKEN_DEATH_HP } from "./characters/characterData/characters/Denken";
 
 export default class Game {
   characters: [Character, Character];
@@ -105,7 +106,8 @@ export default class Game {
       baseDamage = this.calculateDamage(
         baseDamage,
         attacker.stats.stats.ATK,
-        defender.stats.stats.DEF
+        defender.stats.stats.DEF,
+        defender.additionalMetadata.defenderDamageScaling
       );
 
       // allow plugins to modify damage before applying
@@ -121,9 +123,14 @@ export default class Game {
 
       actualDamage = baseDamage;
 
-      const defenderRemainingHp = Number(
-        (defender.stats.stats.HP - actualDamage).toFixed(2)
+      const minimumDefenderHp =
+        defender.additionalMetadata.minimumPossibleHp ??
+        Number.MIN_SAFE_INTEGER;
+      const defenderRemainingHp = Math.max(
+        Number((defender.stats.stats.HP - actualDamage).toFixed(2)),
+        minimumDefenderHp
       );
+
       defender.stats.stats.HP = defenderRemainingHp;
       const hpLeft: string = defender.additionalMetadata.manaSuppressed
         ? ""
@@ -263,6 +270,12 @@ export default class Game {
       characterDefeated = true;
     }
 
+    if (character.name === CharacterName.Denken) {
+      if (character.stats.stats.HP <= DENKEN_DEATH_HP) {
+        characterDefeated = true;
+      }
+    }
+
     if (this.additionalMetadata.forfeited[characterIndex]) {
       characterDefeated = true;
     }
@@ -273,8 +286,12 @@ export default class Game {
   private calculateDamage(
     moveDamage: number,
     attackerAttack: number,
-    defenderDefense: number
+    defenderDefense: number,
+    defenderDamageScaling: number
   ) {
-    return Math.max(1, moveDamage + attackerAttack - defenderDefense);
+    return (
+      Math.max(1, moveDamage + attackerAttack - defenderDefense) *
+      defenderDamageScaling
+    );
   }
 }

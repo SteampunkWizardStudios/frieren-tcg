@@ -15,6 +15,8 @@ import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
 import { User } from "discord.js";
 import Game from "./game";
+import { CharacterName } from "./characters/metadata/CharacterName";
+import { DENKEN_DEATH_HP } from "./characters/characterData/characters/Denken";
 
 export interface CharacterProps {
   characterData: CharacterData;
@@ -24,7 +26,7 @@ export interface CharacterProps {
 }
 
 export default class Character {
-  name: string; // change to CharacterName if possible
+  name: CharacterName;
   cosmetic: CharacterCosmetic;
 
   stats: Stats;
@@ -93,8 +95,6 @@ export default class Character {
   playCard(handIndex: number): Card {
     const discardedCard = this.discardCard(handIndex);
 
-    const card = this.hand[handIndex];
-
     // empower remaining cards
     this.empowerHand();
 
@@ -110,10 +110,12 @@ export default class Character {
   ): Record<string, Card> {
     const defaultCardOptions: Record<string, Card> = {};
     if (this.additionalMetadata.accessToDefaultCardOptions) {
-      if (!this.skipTurn) {
-        defaultCardOptions["8"] = DefaultCards.discardCard.clone();
+      defaultCardOptions["7"] = DefaultCards.discardCard.clone();
+      defaultCardOptions["8"] = DefaultCards.waitCard.clone();
+    } else {
+      if (this.skipTurn) {
+        defaultCardOptions["9"] = DefaultCards.doNothing.clone();
       }
-      defaultCardOptions["9"] = DefaultCards.waitCard.clone();
     }
     defaultCardOptions["10"] = DefaultCards.forfeitCard.clone();
 
@@ -139,10 +141,15 @@ export default class Character {
 
           // special conditional card handling
           if (card.conditionalTreatAsEffect) {
-            indexToUsableCardMap[roll] = card.conditionalTreatAsEffect(
-              game,
-              characterIndex
-            );
+            const newCard = card.conditionalTreatAsEffect(game, characterIndex);
+            if (newCard.conditionalTreatAsEffect) {
+              indexToUsableCardMap[roll] = newCard.conditionalTreatAsEffect(
+                game,
+                characterIndex
+              );
+            } else {
+              indexToUsableCardMap[roll] = newCard;
+            }
           } else {
             indexToUsableCardMap[roll] = card;
           }
@@ -243,7 +250,11 @@ export default class Character {
         if (this.stats.stats.HP <= 0) {
           // special denken negative HP case
           // if starting HP is already negative and new value is also negative, don't set it to 1
-          this.stats.stats.HP = newValue;
+          if (newValue <= DENKEN_DEATH_HP + 1) {
+            this.stats.stats.HP = DENKEN_DEATH_HP + 1;
+          } else {
+            this.stats.stats.HP = newValue;
+          }
         } else {
           this.stats.stats.HP = 1;
         }

@@ -9,8 +9,10 @@ import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 // import config from "@src/config";
 
 // config module not found for some reason
-// const PACIFIST_TURN_COUNT = config.debugMode ? 1 : 15;
-const PACIFIST_TURN_COUNT = 15;
+// const PROCTOR_STACK_COUNT = config.debugMode ? 1 : 15;
+const PROCTOR_STACK_COUNT = 15;
+const PROCTOR_STACK_ATTACK_DEDUCTION = 1;
+const TEA_TIME_STACK_TURN_SKIP = 3;
 
 const senseStats = new Stats({
   [StatsEnum.HP]: 90.0,
@@ -24,6 +26,7 @@ export const Sense = new CharacterData({
   name: CharacterName.Sense,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },
@@ -35,10 +38,11 @@ export const Sense = new CharacterData({
   stats: senseStats,
   cards: senseDeck,
   ability: {
-    abilityName: "Pacifist",
-    abilityEffectString: `When this character has 2 Tea Time Snacks, skip the turn for both characters.
-        This character wins if they don't attack for ${PACIFIST_TURN_COUNT} turns in a row.`,
-    abilityOnCardUse: function (
+    abilityName: "Proctor",
+    abilityEffectString: `Every turn this character doesn't attack, gain 1 observation. Every turn this character attacks, lose ${PROCTOR_STACK_ATTACK_DEDUCTION} observation. (min 0)
+	This character wins when the test is over after ${PROCTOR_STACK_COUNT} observations.
+	\n**Sub-Ability: Tea Time** - When this character has ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks, skip the turn for both characters and eat ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks.`,
+    abilityAfterOwnCardUse: function (
       game,
       characterIndex,
       messageCache: MessageCache,
@@ -47,13 +51,19 @@ export const Sense = new CharacterData({
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
       if ("TeaTime" in card.tags) {
-        character.additionalMetadata.teaTimeStacks! += card.tags["TeaTime"];
-        if (character.additionalMetadata.teaTimeStacks! >= 2) {
+        character.additionalMetadata.senseTeaTimeStacks ??= 0;
+
+        character.additionalMetadata.senseTeaTimeStacks += card.tags["TeaTime"];
+        if (
+          character.additionalMetadata.senseTeaTimeStacks >=
+          TEA_TIME_STACK_TURN_SKIP
+        ) {
           messageCache.push(
             "Sense holds a tea party! Both characters take a turn to enjoy the tea.",
             TCGThread.Gameroom
           );
-          character.additionalMetadata.teaTimeStacks! -= 2;
+          character.additionalMetadata.senseTeaTimeStacks -=
+            TEA_TIME_STACK_TURN_SKIP;
           character.skipTurn = true;
           opponent.skipTurn = true;
         }
@@ -66,14 +76,24 @@ export const Sense = new CharacterData({
     ) => {
       const character = game.characters[characterIndex];
       if (character.additionalMetadata.attackedThisTurn) {
-        messageCache.push("Sense is no longer a Pacifist!", TCGThread.Gameroom);
-        character.setStat(0, StatsEnum.Ability);
+        messageCache.push("Sense went on the offensive!", TCGThread.Gameroom);
+        const newAbilityCount = Math.max(
+          0,
+          character.stats.stats.Ability - PROCTOR_STACK_ATTACK_DEDUCTION
+        );
+        character.setStat(newAbilityCount, StatsEnum.Ability);
       } else {
-        messageCache.push("Sense is a Pacifist!", TCGThread.Gameroom);
+        messageCache.push(
+          `${character.name} continued to observe peacefully.`,
+          TCGThread.Gameroom
+        );
         character.adjustStat(1, StatsEnum.Ability);
 
-        if (character.stats.stats.Ability === PACIFIST_TURN_COUNT) {
-          messageCache.push("# Sense stayed a Pacifist!", TCGThread.Gameroom);
+        if (character.stats.stats.Ability === PROCTOR_STACK_COUNT) {
+          messageCache.push(
+            `# ${character.name} has finished proctoring ${character.cosmetic.pronouns.possessive} test. The examinee did not pass in time.`,
+            TCGThread.Gameroom
+          );
           game.additionalMetadata.forfeited[1 - characterIndex] = true;
         }
       }
@@ -84,6 +104,8 @@ export const Sense = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
-    teaTimeStacks: 0,
+    ignoreManaSuppressed: false,
+    senseTeaTimeStacks: 0,
+    defenderDamageScaling: 1,
   },
 });

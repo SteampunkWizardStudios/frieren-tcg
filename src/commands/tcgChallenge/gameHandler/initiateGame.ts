@@ -21,6 +21,7 @@ export const initiateGame = async (
   opponent: User,
   gameSettings: GameSettings,
   ranked: boolean,
+  textSpeedMs: number,
   gameMode?: GameMode
 ) => {
   try {
@@ -66,7 +67,8 @@ export const initiateGame = async (
         gameThread,
         challengerThread,
         opponentThread,
-        gameSettings
+        gameSettings,
+        textSpeedMs
       );
 
       // thread cleanup

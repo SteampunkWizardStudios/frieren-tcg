@@ -38,7 +38,8 @@ export const tcgMain = async (
   gameThread: PublicThreadChannel<false>,
   challengerThread: PrivateThreadChannel,
   opponentThread: ThreadChannel<false>,
-  gameSettings: GameSettings
+  gameSettings: GameSettings,
+  textSpeedMs: number
 ): Promise<TCGResult> => {
   let result: TCGResult = {
     winner: undefined,
@@ -124,6 +125,15 @@ export const tcgMain = async (
     ],
     messageCache
   );
+
+  // update manaSuppression
+  game.characters.forEach((character: Character, characterIndex: number) => {
+    const opponent = game.getCharacter(1 - characterIndex);
+    if (opponent.additionalMetadata.ignoreManaSuppressed) {
+      character.additionalMetadata.manaSuppressed = false;
+    }
+  });
+
   game.gameStart();
 
   [challengerSelection, opponentSelection].forEach((selection, i) => {
@@ -163,7 +173,7 @@ export const tcgMain = async (
       messageCache.flush(TCGThread.Gameroom),
       TCGThread.Gameroom,
       threadsMapping,
-      1000
+      textSpeedMs
     );
 
     if (game.turnCount === TURN_LIMIT) {
@@ -191,7 +201,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          1000
+          textSpeedMs
         );
 
         if (character.skipTurn) {
@@ -217,7 +227,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          1000
+          textSpeedMs
         );
 
         messageCache.push(`## ${character.name}'s Active Cards:`, useChannel);
@@ -225,7 +235,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          1000
+          textSpeedMs
         );
 
         const draws: string[] = [];
@@ -256,7 +266,7 @@ export const tcgMain = async (
           messageCache.flush(useChannel),
           useChannel,
           threadsMapping,
-          1000
+          textSpeedMs
         );
       })
     );
@@ -268,7 +278,7 @@ export const tcgMain = async (
           [characterToDetailsString[index].hand],
           TCGThread.Gameroom,
           threadsMapping,
-          100
+          textSpeedMs / 10
         );
       }
       if (gameSettings.revealDraw) {
@@ -279,7 +289,7 @@ export const tcgMain = async (
           ],
           TCGThread.Gameroom,
           threadsMapping,
-          100
+          textSpeedMs / 10
         );
       }
     }
@@ -315,6 +325,14 @@ export const tcgMain = async (
     }
 
     // move resolution step
+    game.characters.forEach((character: Character, characterIndex: number) => {
+      character.ability.abilitySelectedMoveModifierEffect?.(
+        game,
+        characterIndex,
+        messageCache,
+        characterToSelectedMoveMap[characterIndex]
+      );
+    });
     const moveFirst = game.getFirstMove(characterToSelectedMoveMap);
     const moveOrder = [moveFirst, 1 - moveFirst];
 
@@ -327,6 +345,7 @@ export const tcgMain = async (
         const card = characterToSelectedMoveMap[characterIndex];
         if (card) {
           const character = game.getCharacter(characterIndex);
+          const opponentCharacter = game.getCharacter(1 - characterIndex);
           messageCache.push(
             `## ${character.cosmetic.emoji} ${character.name} (${characterIndex === 0 ? `${challenger.displayName}` : `${opponent.displayName}`}) used **${card.emoji} ${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[⠀](${card.cosmetic?.cardImageUrl})` : "!"}`,
             TCGThread.Gameroom
@@ -337,9 +356,26 @@ export const tcgMain = async (
               TCGThread.Gameroom
             );
           }
-          card.cardAction?.(game, characterIndex, messageCache);
-          if (character.ability.abilityOnCardUse) {
-            character.ability.abilityOnCardUse(
+          if (character.ability.abilityOwnCardEffectWrapper) {
+            character.ability.abilityOwnCardEffectWrapper(
+              game,
+              characterIndex,
+              messageCache,
+              card
+            );
+          } else {
+            card.cardAction?.(game, characterIndex, messageCache);
+          }
+          if (opponentCharacter.ability.abilityAfterOpponentsMoveEffect) {
+            opponentCharacter.ability.abilityAfterOpponentsMoveEffect(
+              game,
+              1 - characterIndex,
+              messageCache,
+              card
+            );
+          }
+          if (character.ability.abilityAfterOwnCardUse) {
+            character.ability.abilityAfterOwnCardUse(
               game,
               characterIndex,
               messageCache,
@@ -450,7 +486,7 @@ export const tcgMain = async (
         messageCache.flush(TCGThread.Gameroom),
         TCGThread.Gameroom,
         threadsMapping,
-        1000
+        textSpeedMs
       );
     }
   }

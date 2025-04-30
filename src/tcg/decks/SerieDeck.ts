@@ -1,98 +1,161 @@
-import Card from "../card";
+import Card, { Nature } from "../card";
 import {
-  serie_offensiveMagic,
-  serie_utilityMagic,
+  serie_offensiveMagic_common,
+  serie_offensiveMagic_rare,
+  serie_offensiveMagic_unusual,
+  serie_utilityMagic_recovery,
+  serie_utilityMagic_tactics,
 } from "./utilDecks/serieMagic";
 import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import { fieldOfFlower } from "./FrierenDeck";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import Game from "../game";
+import { ancientBarrierMagic } from "./utilDecks/serieSignature";
 
-export const a_livingGrimoireOffensive = new Card({
-  title: "Living Grimoire: Offense Chapter",
-  description: () => "Use a random offensive magic.",
+const useRandomCard = function (props: {
+  cardPool: Card[];
+  empowerLevel: number;
+  game: Game;
+  characterIndex: number;
+  messageCache: MessageCache;
+}): Card {
+  const { cardPool, empowerLevel, game, characterIndex, messageCache } = props;
+
+  const character = game.getCharacter(characterIndex);
+  messageCache.push(
+    `${character.name} found an interesting magic.`,
+    TCGThread.Gameroom
+  );
+
+  const baseCard = cardPool[Math.floor(Math.random() * cardPool.length)];
+  const newCard = new Card({
+    ...baseCard,
+    empowerLevel,
+  });
+
+  messageCache.push(
+    `${character.name} used **${newCard.getTitle()}**.`,
+    TCGThread.Gameroom
+  );
+  return newCard;
+};
+
+export const a_livingGrimoireOffenseCommon = new Card({
+  title: "Living Grimoire: Offense Chapter. 3rd Class Magic Section.",
+  cardMetadata: { nature: Nature.Attack },
+  description: () => "Use a random common offensive magic.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
-      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=67df98ad&is=67de472d&hm=4e4a0d4882573e7b51f3eacc7fcdd5e77d515168b05e319b221b368a9cfe2d67&",
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
   },
   effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} found an interesting magic.`,
-      TCGThread.Gameroom
-    );
-
-    const baseCard =
-      serie_offensiveMagic[
-        Math.floor(Math.random() * serie_offensiveMagic.length)
-      ];
-    const newCard = new Card({
-      ...baseCard,
+    const newCard = useRandomCard({
+      cardPool: serie_offensiveMagic_common,
       empowerLevel: this.empowerLevel,
+      game,
+      characterIndex,
+      messageCache,
     });
-
-    messageCache.push(
-      `${character.name} used **${newCard.getTitle()}**.`,
-      TCGThread.Gameroom
-    );
     newCard.cardAction(game, characterIndex, messageCache);
   },
 });
 
-export const a_livingGrimoireUtility = new Card({
-  title: "Living Grimoire: Utility Chapter",
-  description: () => "Use a random utility magic.",
+export const a_livingGrimoireOffenseRare = new Card({
+  title: "Living Grimoire: Offense Chapter. 1st Class Magic Section.",
+  cardMetadata: { nature: Nature.Attack },
+  description: () => "Use a random rare offensive magic.",
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
-      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=67df98ad&is=67de472d&hm=4e4a0d4882573e7b51f3eacc7fcdd5e77d515168b05e319b221b368a9cfe2d67&",
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015121150022/Living_Grimoire1_1.png?ex=6808772d&is=680725ad&hm=903c0f575a5857d8527c631c5b4ef5fbf6ff9140ea44ea0a4f5ad7c6433a92a6&",
   },
   effects: [],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} found an interesting magic.`,
-      TCGThread.Gameroom
-    );
-
-    const baseCard =
-      serie_utilityMagic[Math.floor(Math.random() * serie_utilityMagic.length)];
-    const newCard = new Card({
-      ...baseCard,
+    const newCard = useRandomCard({
+      cardPool: serie_offensiveMagic_rare,
       empowerLevel: this.empowerLevel,
+      game,
+      characterIndex,
+      messageCache,
     });
-
-    messageCache.push(
-      `${character.name} used **${newCard.getTitle()}**.`,
-      TCGThread.Gameroom
-    );
     newCard.cardAction(game, characterIndex, messageCache);
   },
 });
 
-export const a_livingGrimoireOffensive1 = new Card({
-  ...a_livingGrimoireOffensive,
+export const a_livingGrimoireOffenseUnusual = new Card({
+  title: "Living Grimoire: Offense Chapter. Great Mage's Magic Section.",
+  cardMetadata: { nature: Nature.Attack },
+  description: () => "Use a random unusual offensive magic.",
+  emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
-      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015121150022/Living_Grimoire1_1.png?ex=67df98ad&is=67de472d&hm=db27a11288f3168c98e39af2a3351c777dd280922231f3d422f7f397041b5bbd&",
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015825924147/Living_Grimoire2_1.png?ex=6808772e&is=680725ae&hm=63b0595c68a10b5d7c4246e4747f43fc61b292a95577b3c00b479ef11320ac58&",
   },
-  empowerLevel: 1,
+  effects: [],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const newCard = useRandomCard({
+      cardPool: serie_offensiveMagic_unusual,
+      empowerLevel: this.empowerLevel,
+      game,
+      characterIndex,
+      messageCache,
+    });
+    newCard.cardAction(game, characterIndex, messageCache);
+  },
 });
 
-const a_livingGrimoireOffensive2 = new Card({
-  ...a_livingGrimoireOffensive,
-  empowerLevel: 2,
+export const a_livingGrimoireUtilityTactics = new Card({
+  title: "Living Grimoire: Utility Chapter. Tactics Section.",
+  cardMetadata: { nature: Nature.Util },
+  description: () => "Use a random stats adjusting utility magic.",
+  emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
-      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015825924147/Living_Grimoire2_1.png?ex=67df98ae&is=67de472e&hm=e92e90b0be578e1e09fcfa9d0b9f07af1920f96ca6a66703b20e5360990ebf5c&",
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
+  },
+  effects: [],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const newCard = useRandomCard({
+      cardPool: serie_utilityMagic_tactics,
+      empowerLevel: this.empowerLevel,
+      game,
+      characterIndex,
+      messageCache,
+    });
+    newCard.cardAction(game, characterIndex, messageCache);
+  },
+});
+
+export const a_livingGrimoireUtilityRecovery = new Card({
+  title: "Living Grimoire: Utility Chapter. Recovery Section.",
+  cardMetadata: { nature: Nature.Util },
+  description: () => "Use a random HP recovery utility magic.",
+  emoji: CardEmoji.SERIE_CARD,
+  cosmetic: {
+    cardImageUrl:
+      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
+  },
+  effects: [],
+  cardAction: function (this: Card, game, characterIndex, messageCache) {
+    const newCard = useRandomCard({
+      cardPool: serie_utilityMagic_recovery,
+      empowerLevel: this.empowerLevel,
+      game,
+      characterIndex,
+      messageCache,
+    });
+    newCard.cardAction(game, characterIndex, messageCache);
   },
 });
 
 export const mock = new Card({
   title: "Mock",
+  cardMetadata: { nature: Nature.Util },
   description: ([hp, def, spd]) =>
     `HP+${hp}. Opponent's DEF-${def}. Opponent's SPD-${spd}`,
   emoji: CardEmoji.SERIE_CARD,
@@ -126,6 +189,7 @@ export const mock = new Card({
 
 export const basicDefensiveMagic = new Card({
   title: "Basic Defensive Magic",
+  cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SERIE_CARD,
@@ -133,7 +197,7 @@ export const basicDefensiveMagic = new Card({
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014416506932/Basic_Defense_Magic.png?ex=67df98ad&is=67de472d&hm=79bab34bdef07e7fa529c5ac67ed093e7bfa2b69914f644ac434e4a564c47396&",
   },
-  effects: [30],
+  effects: [20],
   priority: 2,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
@@ -150,6 +214,7 @@ export const basicDefensiveMagic = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -160,14 +225,16 @@ export const basicDefensiveMagic = new Card({
 
 export const unbreakableBarrier = new Card({
   title: "Unbreakable Barrier",
+  cardMetadata: { nature: Nature.Util },
   description: ([atk, def, oppSpd]) =>
-    `HP-10. ATK+${atk} for 5 turns. DEF+${def} for 5 turns. Opponent's SPD-${oppSpd} for 5 turns.`,
+    `HP-5. HP-2 at the end of the next 5 turns. ATK+${atk}, DEF+${def} and Opponent's SPD-${oppSpd} for 5 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873016182177984/Unbreakable_Barrier.png?ex=67df98ae&is=67de472e&hm=ecaf6053851a3bb12e9d9b0ba65dc932f11a6e97c3efe3c4af20126fc8407ba3&",
   },
   effects: [5, 5, 5],
+  hpCost: 5,
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
@@ -175,7 +242,7 @@ export const unbreakableBarrier = new Card({
       TCGThread.Gameroom
     );
 
-    if (character.adjustStat(-10, StatsEnum.HP)) {
+    if (character.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
       const opponent = game.getCharacter(1 - characterIndex);
       const atkBuff = this.calculateEffectValue(this.effects[0]);
       const defBuff = this.calculateEffectValue(this.effects[1]);
@@ -191,6 +258,14 @@ export const unbreakableBarrier = new Card({
           description: `ATK+${atkBuff}. DEF+${defBuff}, Opponent's SPD -${spdDebuff} for 5 turns.`,
           turnDuration: 5,
           priority: -1,
+          executeEndOfTimedEffectActionOnRemoval: true,
+          endOfTurnAction: (_game, _characterIndex) => {
+            messageCache.push(
+              `The unbreakable barrier looms...`,
+              TCGThread.Gameroom
+            );
+            character.adjustStat(-2, StatsEnum.HP);
+          },
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
             character.adjustStat(-1 * atkBuff, StatsEnum.ATK);
@@ -203,60 +278,15 @@ export const unbreakableBarrier = new Card({
   },
 });
 
-export const ancientBarrierMagic = new Card({
-  title: "Ancient Barrier Magic",
-  description: ([atk, def, oppSpd]) =>
-    `HP-20. ATK+${atk} for 7 turns. Opponent's DEF-${def} for 7 turns. Opponent's SPD -${oppSpd} for 7 turns.`,
-  emoji: CardEmoji.SERIE_CARD,
-  cosmetic: {
-    cardImageUrl:
-      "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014080966718/Ancient_Barrier_Magic_1.png?ex=67df98ad&is=67de472d&hm=c0b00575790207a93d00398d3351e5cd914f371b0c2118855f8f2dc259634420&",
-  },
-  effects: [7, 7, 7],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} expanded an ancient barrier magic.`,
-      TCGThread.Gameroom
-    );
-
-    if (character.adjustStat(-20, StatsEnum.HP)) {
-      const opponent = game.getCharacter(1 - characterIndex);
-      const atkBuff = this.calculateEffectValue(this.effects[0]);
-      const defDebuff = this.calculateEffectValue(this.effects[1]);
-      const spdDebuff = this.calculateEffectValue(this.effects[2]);
-
-      character.adjustStat(atkBuff, StatsEnum.ATK);
-      opponent.adjustStat(-1 * defDebuff, StatsEnum.DEF);
-      opponent.adjustStat(-1 * spdDebuff, StatsEnum.SPD);
-
-      character.timedEffects.push(
-        new TimedEffect({
-          name: "Ancient Barrier Magic",
-          description: `An ominous barrier envelopes the battlefield...`,
-          turnDuration: 7,
-          priority: -1,
-          endOfTimedEffectAction: (_game, _characterIndex) => {
-            messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
-
-            character.adjustStat(-1 * atkBuff, StatsEnum.ATK);
-            opponent.adjustStat(defDebuff, StatsEnum.DEF);
-            opponent.adjustStat(spdDebuff, StatsEnum.SPD);
-          },
-        })
-      );
-    }
-  },
-});
-
 export const serieDeck = [
-  { card: a_livingGrimoireOffensive, count: 2 },
-  { card: a_livingGrimoireOffensive1, count: 2 },
-  { card: a_livingGrimoireOffensive2, count: 2 },
-  { card: a_livingGrimoireUtility, count: 2 },
+  { card: a_livingGrimoireOffenseCommon, count: 3 },
+  { card: a_livingGrimoireOffenseRare, count: 2 },
+  { card: a_livingGrimoireOffenseUnusual, count: 1 },
+  { card: a_livingGrimoireUtilityTactics, count: 1 },
+  { card: a_livingGrimoireUtilityRecovery, count: 1 },
   { card: fieldOfFlower, count: 1 },
   { card: mock, count: 2 },
-  { card: basicDefensiveMagic, count: 1 },
+  { card: basicDefensiveMagic, count: 2 },
   { card: unbreakableBarrier, count: 2 },
   { card: ancientBarrierMagic, count: 1 },
 ];

@@ -5,6 +5,12 @@ import {
   a_waldgoseBase,
 } from "../DenkenDeck";
 import {
+  a_fernBarrage,
+  a_fernZoltraak,
+  manaConcealment,
+  spellToCreateManaButterflies,
+} from "../FernDeck";
+import {
   a_judradjim,
   a_vollzanbel,
   a_zoltraak,
@@ -16,14 +22,13 @@ import { a_supersonicStrike, a_whip, hide } from "../LaufenDeck";
 import {
   a_erfassenAxe,
   a_erfassenKnife,
-  a_erfassenSpear,
   a_erfassenSword,
+  a_erfassenJavelin,
   adapt,
   manaDetection,
 } from "../LinieDeck";
 import { a_killingMagic, solitude } from "../monsterDecks/CosmicTonDeck";
 import {
-  a_threeSpearsOfTheGoddess,
   a_trustInYourAllyFernsBarrage,
   a_trustInYourAllyFrierensZoltraak,
   awakening,
@@ -33,44 +38,62 @@ import {
   a_hairWhip,
   a_pierce,
   a_piercingDrill,
-  harden,
+  sharpen,
   rest,
 } from "../SenseDeck";
+import { a_cleave, a_dismantle, a_reelseiden, sorganeil } from "../UbelDeck";
+import { a_malevolentShrine } from "./ubelSignature";
 
-export const serie_offensiveMagic = [
+export const serie_offensiveMagic_common = [
   a_zoltraak,
-  a_judradjim,
-  a_vollzanbel,
   a_whip,
-  a_supersonicStrike,
-  a_erfassenAxe,
-  a_erfassenKnife,
-  a_erfassenSpear,
   a_erfassenSword,
-  a_trustInYourAllyFernsBarrage,
   a_trustInYourAllyFrierensZoltraak,
-  // a_threeSpearsOfTheGoddess,
-  a_hairWhip,
+  a_reelseiden,
+  a_fernZoltraak,
+  a_erfassenKnife,
+];
+
+export const serie_offensiveMagic_rare = [
+  a_judradjim,
+  a_supersonicStrike,
+  a_erfassenJavelin,
+  a_erfassenAxe,
   a_pierce,
-  a_piercingDrill,
+  a_fernBarrage,
   a_waldgoseBase,
   a_daosdorgBase,
   a_concentratedOffensiveMagicZoltraak,
-  a_catastraviaBase,
-
   a_killingMagic,
+  a_cleave,
+  a_dismantle,
+  a_hairWhip,
+  a_trustInYourAllyFernsBarrage,
 ];
 
-export const serie_utilityMagic = [
-  solitude,
-  harden,
-  rest,
+export const serie_offensiveMagic_unusual = [
+  a_vollzanbel,
+  a_piercingDrill,
+  a_catastraviaBase,
+  a_malevolentShrine,
+];
+
+export const serie_utilityMagic_tactics = [
+  sharpen,
   awakening,
-  poisonCure,
   adapt,
   manaDetection,
-  hide,
   barrierMagicAnalysis,
   demonMagicAnalysis,
+  manaConcealment,
+  sorganeil,
+];
+
+export const serie_utilityMagic_recovery = [
+  solitude,
+  rest,
+  poisonCure,
+  hide,
   fieldOfFlower,
+  spellToCreateManaButterflies,
 ];

@@ -5,7 +5,25 @@ import Game from "./game";
 export type Ability = {
   abilityName: string;
   abilityEffectString: string;
-  abilityOnCardUse?: (
+  abilityStartOfTurnEffect?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+    additionalParam?: Record<any, any>
+  ) => void;
+  abilitySelectedMoveModifierEffect?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+    card: Card
+  ) => void;
+  abilityOwnCardEffectWrapper?: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache,
+    card: Card
+  ) => void;
+  abilityAfterOwnCardUse?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
@@ -38,11 +56,11 @@ export type Ability = {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
-  abilityStartOfTurnEffect?: (
+  abilityAfterOpponentsMoveEffect?: (
     game: Game,
     characterIndex: number,
     messageCache: MessageCache,
-    additionalParam?: Record<any, any>
+    card: Card
   ) => void;
   abilityEndOfTurnEffect?: (
     game: Game,

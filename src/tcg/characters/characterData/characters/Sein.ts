@@ -7,7 +7,7 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
-const SEIN_BASE_HEALING = 3;
+const SEIN_BASE_HEALING = 2;
 const SEIN_HEALING_RAMP = 0.1;
 
 const imageUrl: Record<string, string> = {
@@ -28,6 +28,7 @@ export const Sein = new CharacterData({
   name: CharacterName.Sein,
   cosmetic: {
     pronouns: {
+      personal: "he",
       possessive: "his",
       reflexive: "himself",
     },
@@ -72,6 +73,8 @@ export const Sein = new CharacterData({
     timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: true,
     manaSuppressed: false,
+    ignoreManaSuppressed: false,
     overheal: true,
+    defenderDamageScaling: 1,
   },
 });

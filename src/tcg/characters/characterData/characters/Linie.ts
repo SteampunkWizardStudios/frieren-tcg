@@ -7,7 +7,7 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
-const LINIE_CHAIN_BONUS = 0.08;
+const LINIE_CHAIN_BONUS = 0.07;
 
 const linieStats = new Stats({
   [StatsEnum.HP]: 95.0,
@@ -21,6 +21,7 @@ export const Linie = new CharacterData({
   name: CharacterName.Linie,
   cosmetic: {
     pronouns: {
+      personal: "she",
       possessive: "her",
       reflexive: "herself",
     },
@@ -34,7 +35,7 @@ export const Linie = new CharacterData({
   ability: {
     abilityName: "Chain Attack",
     abilityEffectString: `After this character uses an attack, gain 1 Chain stack.
-        All attacks this character does has its damage increased by <#Chain>*${LINIE_CHAIN_BONUS * 100}%.
+        All attacks this character does has its damage increased by <#Chain>*${(LINIE_CHAIN_BONUS * 100).toFixed(2)}%.
         When this character does not attack in a turn, reset the count to 0.`,
     abilityAttackEffect: (game, characterIndex) => {
       const character = game.getCharacter(characterIndex);
@@ -67,8 +68,10 @@ export const Linie = new CharacterData({
   },
   additionalMetadata: {
     manaSuppressed: false,
+    ignoreManaSuppressed: false,
     attackedThisTurn: false,
     accessToDefaultCardOptions: true,
     timedEffectAttackedThisTurn: false,
+    defenderDamageScaling: 1,
   },
 });

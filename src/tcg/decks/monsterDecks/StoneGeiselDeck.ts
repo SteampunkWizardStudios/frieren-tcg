@@ -1,5 +1,5 @@
 import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
-import Card from "../../card";
+import Card, { Nature } from "../../card";
 import { CardEmoji } from "../../formatting/emojis";
 import { StatsEnum } from "../../stats";
 import TimedEffect from "../../timedEffect";
@@ -7,6 +7,7 @@ import CommonCardAction from "../../util/commonCardActions";
 
 export const a_charge = new Card({
   title: "Charge",
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
@@ -21,6 +22,7 @@ export const a_charge = new Card({
 
 const earPiercingScream = new Card({
   title: "Ear Piercing Scream",
+  cardMetadata: { nature: Nature.Util },
   description: ([def]) => `HP-2. Opponent's DEF-${def}.`,
   emoji: CardEmoji.ENERGY,
   effects: [5],
@@ -42,6 +44,7 @@ const earPiercingScream = new Card({
 
 const hide = new Card({
   title: "Hide",
+  cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SHIELD,
@@ -62,6 +65,7 @@ const hide = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -76,6 +80,7 @@ export const a_roomCollapse = new Card({
     `DMG ${dmg}. Reduces the user's HP to 1. Does not factor in ATK in Damage calculation.`,
   emoji: CardEmoji.PUNCH,
   effects: [40],
+  cardMetadata: { nature: Nature.Attack, signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

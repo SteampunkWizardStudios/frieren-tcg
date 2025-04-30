@@ -21,6 +21,7 @@ export const buildChallengeButtonRespond = async (
   opponent: User | null,
   gameSettings: GameSettings,
   ranked: boolean,
+  textSpeedMs: number,
   gameMode?: GameMode
 ) => {
   const acceptButton = new ButtonBuilder()
@@ -61,6 +62,11 @@ export const buildChallengeButtonRespond = async (
       {
         name: "Reveal Active Cards",
         value: gameSettings.revealDraw ? "Yes" : "No",
+        inline: true,
+      },
+      {
+        name: "Text Speed",
+        value: `${textSpeedMs}ms`,
         inline: true,
       }
     )
@@ -111,6 +117,7 @@ export const buildChallengeButtonRespond = async (
           opponent ?? buttonInteraction.user,
           gameSettings,
           ranked,
+          textSpeedMs,
           gameMode
         );
       } else if (buttonInteraction.customId === DECLINE_BUTTON_ID) {

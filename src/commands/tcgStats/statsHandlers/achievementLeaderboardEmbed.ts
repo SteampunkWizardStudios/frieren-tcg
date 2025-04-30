@@ -10,7 +10,8 @@ export default function achievementLeaderboardEmbed(
     const { id, points } = idtoPoint;
     const rank = index + 1 + (page - 1) * pageSize;
     const maxEmoteRank = Object.keys(rankEmotes).length;
-    const rankEmoji = rank <= maxEmoteRank && rankEmotes[rank] ? `${rankEmotes[rank]} ` : "";
+    const rankEmoji =
+      rank <= maxEmoteRank && rankEmotes[rank] ? `${rankEmotes[rank]} ` : "";
     return `${rankEmoji}${rank}. <@${id}>: ${points} achievements`;
   });
 

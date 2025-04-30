@@ -24,6 +24,8 @@ export enum CharacterEmoji {
   LAUFEN = "<:LaufenNom:1198338042449113190>",
   DENKEN = "<:DenkenOld:1198339325436371074>",
   HIMMEL = "<:HimmelCharming:1185700266452992010>",
+  UBEL = "<:UbelSnipsnip:1140592823243112468>",
+  FERN = "<:FernThink:1179413599739986012>",
 
   STONE_GEISEL = "🐦‍⬛",
   FIRE_GOLEM = "❤️‍🔥",
@@ -39,16 +41,18 @@ export enum CharacterEmoji {
 }
 
 export const characterNameToEmoji: Record<CharacterName, CharacterEmoji> = {
-  Frieren: CharacterEmoji.FRIEREN,
-  Sense: CharacterEmoji.SENSE,
-  Serie: CharacterEmoji.SERIE,
-  Stille: CharacterEmoji.STILLE,
-  Linie: CharacterEmoji.LINIE,
-  Sein: CharacterEmoji.SEIN,
-  Stark: CharacterEmoji.STARK,
-  Laufen: CharacterEmoji.LAUFEN,
-  Denken: CharacterEmoji.DENKEN,
-  Himmel: CharacterEmoji.HIMMEL,
+  [CharacterName.Frieren]: CharacterEmoji.FRIEREN,
+  [CharacterName.Sense]: CharacterEmoji.SENSE,
+  [CharacterName.Serie]: CharacterEmoji.SERIE,
+  [CharacterName.Stille]: CharacterEmoji.STILLE,
+  [CharacterName.Linie]: CharacterEmoji.LINIE,
+  [CharacterName.Sein]: CharacterEmoji.SEIN,
+  [CharacterName.Stark]: CharacterEmoji.STARK,
+  [CharacterName.Laufen]: CharacterEmoji.LAUFEN,
+  [CharacterName.Denken]: CharacterEmoji.DENKEN,
+  [CharacterName.Himmel]: CharacterEmoji.HIMMEL,
+  [CharacterName.Ubel]: CharacterEmoji.UBEL,
+  [CharacterName.Fern]: CharacterEmoji.FERN,
 };
 
 export enum CardEmoji {
@@ -72,8 +76,14 @@ export enum CardEmoji {
   LAUFEN_CARD = "<:LaufenCard:1347723068943892490>",
   DENKEN_CARD = "<:DenkenCard:1358052686418673725>",
   HIMMEL_CARD = "<:HimmelCard:1358052672787185845>",
+  FERN_CARD = "<:FernCard:1363517169585099013>",
+  UBEL_CARD = "<:UbelCard:1362910824133562679>",
 
   FLOWER_FIELD = "<:FlowerFieldCard:1347719503290695803>",
+  MANA_CARD = "<:ManaCard:1363597189229576322>",
+  DONUT_CARD = "<:DonutCard:1365436094191239228>",
+  JUMBO_BERRY_CARD = "<:IceCreamCard:1365436733088596048>",
+  ROOST_CARD = "<:NestCard:1365437097481343027>",
 }
 
 export enum ProgressBarEmoji {

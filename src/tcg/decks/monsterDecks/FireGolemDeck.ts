@@ -1,5 +1,5 @@
 import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
-import Card from "../../card";
+import Card, { Nature } from "../../card";
 import { CardEmoji } from "../../formatting/emojis";
 import { StatsEnum } from "../../stats";
 import TimedEffect from "../../timedEffect";
@@ -7,6 +7,7 @@ import CommonCardAction from "../../util/commonCardActions";
 
 const a_flame = new Card({
   title: "Flame",
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [12],
@@ -24,6 +25,7 @@ const a_flame = new Card({
 
 const a_burn = new Card({
   title: "Burn",
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg, def]) => `HP-4. DMG ${dmg}. Opponent's DEF-${def}.`,
   emoji: CardEmoji.ENERGY,
   effects: [10, 3],
@@ -47,6 +49,7 @@ const a_burn = new Card({
 
 const extinguish = new Card({
   title: "Extinguish",
+  cardMetadata: { nature: Nature.Util },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} for 2 turns. ATK-10.`,
   emoji: CardEmoji.SHIELD,
@@ -69,6 +72,7 @@ const extinguish = new Card({
         description: `Increases DEF by ${def} for 2 turns.`,
         priority: -1,
         turnDuration: 2,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -82,6 +86,7 @@ const a_inferno = new Card({
   description: ([dmg]) => `DMG ${dmg}. Reduces the user's HP to 1.`,
   emoji: CardEmoji.ENERGY,
   effects: [30],
+  cardMetadata: { nature: Nature.Attack, signature: true },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(

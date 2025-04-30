@@ -78,7 +78,7 @@ export async function showCharacterInfo(
                 value: `${char.ability.abilityEffectString}`,
               },
               {
-                name: `Deck: 15 Cards`,
+                name: `Deck: 16 Cards`,
                 value: "",
               }
             )
@@ -87,7 +87,10 @@ export async function showCharacterInfo(
                 const card = cardCount.card;
                 const count = cardCount.count;
                 return {
-                  name: `${card.emoji} **${card.title}** x ${count}:`,
+                  name:
+                    `${card.emoji} **${card.title}** ` +
+                    `${card.cardMetadata.signature ? "(signature) " : " "}` +
+                    `x ${count}:`,
                   value: `${card.getDescription()}`,
                 };
               })

@@ -1,4 +1,4 @@
-import Card from "../card";
+import Card, { Nature } from "../card";
 import CommonCardAction from "../util/commonCardActions";
 import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
@@ -9,6 +9,7 @@ import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_peck = new Card({
   title: "Peck",
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
     `SPD-2. Discard a random card in hand and draw 1 card. DMG ${dmg}.`,
   emoji: CardEmoji.STILLE_CARD,
@@ -37,6 +38,7 @@ const a_peck = new Card({
 
 const a_ironFeather = new Card({
   title: "Iron Feather",
+  cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) => `SPD-3. DEF+${def}. DMG ${dmg}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [1, 3],
@@ -61,6 +63,7 @@ const a_ironFeather = new Card({
 
 const hide = new Card({
   title: "Hide",
+  cardMetadata: { nature: Nature.Util },
   description: ([def]) => `SPD-3. DEF+${def}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [2],
@@ -81,8 +84,9 @@ const hide = new Card({
 
 const roost = new Card({
   title: "Roost",
+  cardMetadata: { nature: Nature.Util },
   description: ([hp]) => `SPD-5 for 3 turns. DEF-3 for 2 turns. Heal ${hp}HP.`,
-  emoji: CardEmoji.STILLE_CARD,
+  emoji: CardEmoji.ROOST_CARD,
   effects: [5],
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
@@ -103,6 +107,7 @@ const roost = new Card({
         name: "Roost",
         description: `DEF-3 for 2 turns.`,
         turnDuration: 2,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} opened its wings.`,
@@ -118,6 +123,7 @@ const roost = new Card({
         name: "Roost",
         description: `SPD-5 for 3 turns.`,
         turnDuration: 3,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
             `${character.name} took flight again!`,
@@ -130,8 +136,9 @@ const roost = new Card({
   },
 });
 
-const deflect = new Card({
+export const deflect = new Card({
   title: "Deflect",
+  cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
     `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.STILLE_CARD,
@@ -152,6 +159,7 @@ const deflect = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         turnDuration: 1,
         priority: -1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -162,10 +170,15 @@ const deflect = new Card({
 
 const flyAway = new Card({
   title: "Fly Away",
+  cardMetadata: { nature: Nature.Util },
   description: ([spd]) => `Priority+2. SPD + ${spd} until the end of the turn.`,
   emoji: CardEmoji.STILLE_CARD,
   priority: 2,
   effects: [25],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1361940199583780864/IMG_3171.gif?ex=6807d567&is=680683e7&hm=55cb8759a21dc4e1d852861c8856dd068b299cb289a109cd4be8cdd27cca4e2f&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} flew away!`, TCGThread.Gameroom);
@@ -174,10 +187,11 @@ const flyAway = new Card({
     character.adjustStat(spd, StatsEnum.SPD);
     character.timedEffects.push(
       new TimedEffect({
-        name: "Deflect",
+        name: "Fly Away",
         description: `Increases SPD by ${spd} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
+        removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-spd, StatsEnum.SPD);
         },
@@ -189,9 +203,14 @@ const flyAway = new Card({
 export const a_geisel = new Card({
   title: "Geisel",
   description: ([dmg]) =>
-    `SPD-20. Lands on a tree and asks its fellow Geisel for help! Geisel (ATK: 15) will show up to attack for ${dmg}DMG between 1 - 3 turns.`,
+    `SPD-20. Lands on a tree and asks its fellow Geisel for help! Geisel (ATK: 15) will show up to attack for ${dmg}DMG for 2 turns.`,
   emoji: CardEmoji.STILLE_CARD,
+  cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [15],
+  cosmetic: {
+    cardGif:
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1364971079096995840/GIF_0867566819.gif?ex=680b9be1&is=680a4a61&hm=af689691d54884d9f7df5a639c214146c59d7b3a9a6b0e8547fb41cf6b914c6c&",
+  },
   cardAction: function (this: Card, game, characterIndex, messageCache) {
     const character = game.characters[characterIndex];
     messageCache.push(
@@ -201,12 +220,11 @@ export const a_geisel = new Card({
 
     character.adjustStat(-20, StatsEnum.SPD);
     const damage = this.calculateEffectValue(this.effects[0]);
-    const turnCount = Rolls.rollDAny(3) + 1;
     character.timedEffects.push(
       new TimedEffect({
         name: "Geisel Strike!",
         description: `Deal ${damage} at each turn's end.`,
-        turnDuration: turnCount,
+        turnDuration: 2,
         endOfTurnAction: (game, characterIndex) => {
           messageCache.push("The Geisel doesn't stop!", TCGThread.Gameroom);
           CommonCardAction.commonAttack(game, characterIndex, {
@@ -225,7 +243,7 @@ export const stilleDeck = [
   { card: a_ironFeather, count: 3 },
   { card: hide, count: 2 },
   { card: roost, count: 2 },
-  { card: deflect, count: 1 },
+  { card: deflect, count: 2 },
   { card: flyAway, count: 3 },
   { card: a_geisel, count: 2 },
 ];
