@@ -66,9 +66,7 @@ export const Laufen = new CharacterData({
       messageCache.push(`### Roll: ${roll}`, TCGThread.Gameroom);
 
       const evasionReduction =
-        spdDiff > 0
-          ? Math.min(Math.max(1 + (roll - spdDiff) / spdDiff, 0), 1)
-          : 1;
+        spdDiff > 0 ? Math.min(Math.max(roll / spdDiff, 0), 1) : 1;
 
       if (roll < spdDiff) {
         messageCache.push(
