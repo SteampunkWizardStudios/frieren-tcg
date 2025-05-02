@@ -55,15 +55,16 @@ model LadderReset {
   ladderId Int
   ladder   Ladder @relation(fields: [ladderId], references: [id])
 
-  startDate DateTime @default(now())
-  endDate DateTime?
+  startDate DateTime  @default(now())
+  endDate   DateTime?
 
   matches     Match[]
   ladderRanks LadderRank[]
 }
 
 model Match {
-  id Int @id @default(autoincrement())
+  id     Int    @id @default(autoincrement())
+  gameId String @default("")
 
   ladderResetId Int
   ladderReset   LadderReset @relation(fields: [ladderResetId], references: [id])
@@ -73,10 +74,10 @@ model Match {
   winnerCharacterId Int
   winnerCharacter   Character @relation("WinnerCharacter", fields: [winnerCharacterId], references: [id])
 
-  loserId           Int
-  loser             Player    @relation("Loser", fields: [loserId], references: [id])
-  loserCharacterId  Int
-  loserCharacter    Character @relation("LoserCharacter", fields: [loserCharacterId], references: [id])
+  loserId          Int
+  loser            Player    @relation("Loser", fields: [loserId], references: [id])
+  loserCharacterId Int
+  loserCharacter   Character @relation("LoserCharacter", fields: [loserCharacterId], references: [id])
 
   finishedAt DateTime @default(now())
 }

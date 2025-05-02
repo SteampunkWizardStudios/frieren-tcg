@@ -114,6 +114,7 @@ export const initiateGame = async (
               ranked,
               gameMode,
               resultEmbed,
+              gameThread,
             }
           );
         } catch (error) {

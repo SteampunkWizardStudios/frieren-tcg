@@ -11,6 +11,7 @@ import {
 } from "@sapphire/discord.js-utilities";
 import { charWithEmoji } from "@src/tcg/formatting/emojis";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { buildThreadLink } from "@src/util/formatting/links";
 
 const PAGE_SIZE = 10;
 
@@ -93,8 +94,12 @@ export default async function handleMatchHistory(
           (won ? loserCharacter.name : winnerCharacter.name) as CharacterName
         );
         const timestamp = `<t:${Math.floor(new Date(finishedAt).getTime() / 1000)}:R>`;
+        const resultText =
+          match.gameId === ""
+            ? `${result}`
+            : `[${result}](${buildThreadLink(match.gameId)})`;
 
-        return `${matchNumber}\\. ${result} with ${character}  ${timestamp}\n against ${opponent} as ${opponentCharacter}`;
+        return `${matchNumber}\\. ${resultText} with ${character}  ${timestamp}\n against ${opponent} as ${opponentCharacter}`;
       })
       .join("\n\n");
 

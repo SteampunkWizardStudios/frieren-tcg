@@ -1,4 +1,4 @@
-import { EmbedBuilder, User } from "discord.js";
+import { EmbedBuilder, User, type ThreadChannel } from "discord.js";
 import { GameMode } from "./gameSettings";
 import prismaClient from "../../../../prisma/client";
 import { getOrCreatePlayers } from "@src/util/db/getPlayer";
@@ -20,6 +20,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
   ranked: boolean;
   gameMode: GameMode;
   resultEmbed: EmbedBuilder;
+  gameThread: ThreadChannel;
 }): Promise<EmbedBuilder> => {
   const {
     winner,
@@ -29,6 +30,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
     ranked,
     gameMode,
     resultEmbed,
+    gameThread,
   } = props;
 
   // get latest reset
@@ -55,6 +57,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
         winnerCharacterId: winnerCharacterDbObject.id,
         loserId: loserDbObject.id,
         loserCharacterId: loserCharacterDbObject.id,
+        gameId: gameThread.id,
       });
 
       // fetch respective ladderrank and charactermastery objects if ranked
