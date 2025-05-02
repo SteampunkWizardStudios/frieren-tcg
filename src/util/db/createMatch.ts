@@ -6,7 +6,7 @@ export const createMatch = async (prop: {
   winnerCharacterId: number;
   loserId: number;
   loserCharacterId: number;
-  gameId: string;
+  threadId: string;
 }): Promise<{ id: number }> => {
   const {
     ladderResetId,
@@ -14,7 +14,7 @@ export const createMatch = async (prop: {
     winnerCharacterId,
     loserId,
     loserCharacterId,
-    gameId,
+    threadId,
   } = prop;
 
   return prismaClient.match.create({
@@ -24,7 +24,7 @@ export const createMatch = async (prop: {
       winnerCharacterId,
       loserId,
       loserCharacterId,
-      gameId,
+      threadId,
     },
     select: {
       id: true,

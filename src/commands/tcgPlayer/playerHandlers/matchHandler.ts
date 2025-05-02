@@ -94,10 +94,9 @@ export default async function handleMatchHistory(
           (won ? loserCharacter.name : winnerCharacter.name) as CharacterName
         );
         const timestamp = `<t:${Math.floor(new Date(finishedAt).getTime() / 1000)}:R>`;
-        const resultText =
-          match.gameId === ""
-            ? `${result}`
-            : `[${result}](${buildThreadLink(match.gameId)})`;
+        const resultText = match.threadId
+          ? `[${result}](${buildThreadLink(match.threadId)})`
+          : `${result}`;
 
         return `${matchNumber}\\. ${resultText} with ${character}  ${timestamp}\n against ${opponent} as ${opponentCharacter}`;
       })

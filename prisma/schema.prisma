@@ -63,8 +63,8 @@ model LadderReset {
 }
 
 model Match {
-  id     Int    @id @default(autoincrement())
-  gameId String @default("")
+  id       Int    @id @default(autoincrement())
+  threadId String
 
   ladderResetId Int
   ladderReset   LadderReset @relation(fields: [ladderResetId], references: [id])

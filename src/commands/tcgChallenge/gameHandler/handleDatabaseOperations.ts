@@ -57,7 +57,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
         winnerCharacterId: winnerCharacterDbObject.id,
         loserId: loserDbObject.id,
         loserCharacterId: loserCharacterDbObject.id,
-        gameId: gameThread.id,
+        threadId: gameThread.id,
       });
 
       // fetch respective ladderrank and charactermastery objects if ranked
