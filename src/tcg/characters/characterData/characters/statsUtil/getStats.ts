@@ -1,4 +1,4 @@
-import { readFile, readFileSync, Stats } from "fs";
+import { readFileSync } from "fs";
 import path from "path";
 
 export function getStats() {

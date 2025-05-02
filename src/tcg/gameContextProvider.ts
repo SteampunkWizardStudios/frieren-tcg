@@ -29,7 +29,7 @@ export default function gameContextProvider(
   characterIndex: number
 ) {
   const self = game.getCharacter(characterIndex);
-  const opponent = game.getCharacter(characterIndex - 1);
+  const opponent = game.getCharacter(1 - characterIndex);
 
   const calcEffect = (effectIndex: number) => {
     return calculateEffectValue(this.effects[effectIndex], this.empowerLevel);

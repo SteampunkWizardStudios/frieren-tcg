@@ -4,8 +4,7 @@ import TimedEffect from "../timedEffect";
 import CommonCardAction from "../util/commonCardActions";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
-import { MessageCache } from "@src/tcgChatInteractions/messageCache";
-import Game from "../game";
+import { GameMessageContext } from "../gameContextProvider";
 
 export const imitate = new Card({
   title: "Imitate",
@@ -31,7 +30,7 @@ export const imitate = new Card({
         description: () => "No card to imitate. This move will fail.",
         effects: [],
         emoji: CardEmoji.LINIE_CARD,
-        cardAction: (_game, _characterIndex, messageCache: MessageCache) => {
+        cardAction: ({ messageCache }) => {
           messageCache.push(
             `No card to imitate. The move failed!`,
             TCGThread.Gameroom
@@ -53,7 +52,10 @@ export const adapt = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/Dcc6-Rvkts8AAAAd/tenor.gif",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} adapts to the situation.`,
@@ -80,10 +82,9 @@ export const adapt = new Card({
 
 export const manaDetectionBaseCardAction = function (
   this: Card,
-  game: Game,
-  characterIndex: number,
-  messageCache: MessageCache
+  context: GameMessageContext
 ) {
+  const { game, selfIndex: characterIndex, messageCache } = context;
   const character = game.getCharacter(characterIndex);
   messageCache.push(
     `${character.name} detects the opponent's mana flow.`,
@@ -137,7 +138,10 @@ const parry = new Card({
   emoji: CardEmoji.LINIE_CARD,
   effects: [20],
   priority: 2,
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} prepares to parry the opponent's attack.`,
@@ -170,7 +174,10 @@ export const a_erfassenAxe = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/eUCHN11H4B4AAAAd/tenor.gif",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Axe imitation.`,
@@ -192,7 +199,10 @@ export const a_erfassenJavelin = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/zd9mOGFjT3IAAAAd/tenor.gif",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Javelin imitation.`,
@@ -233,7 +243,10 @@ export const a_erfassenSword = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/f4-8FBCgXg4AAAAd/tenor.gif",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Sword imitation.`,
@@ -252,7 +265,10 @@ export const a_erfassenKnife = new Card({
     `HP-1. DMG ${dmg}. At the end of the next 2 turns, deal ${dmg}.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [2],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} recalls ${character.cosmetic.pronouns.possessive} Knife throw imitation.`,

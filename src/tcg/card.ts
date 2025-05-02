@@ -1,7 +1,7 @@
-import { MessageCache } from "../tcgChatInteractions/messageCache";
 import { CharacterName } from "./characters/metadata/CharacterName";
 import { CardEmoji } from "./formatting/emojis";
 import Game from "./game";
+import { GameMessageContext } from "@src/tcg/gameContextProvider";
 
 export interface CardCosmetic {
   cardImageUrl?: string;
@@ -36,12 +36,7 @@ export type CardProps = {
   effects: number[];
   emoji?: CardEmoji;
   cosmetic?: CardCosmetic;
-  // TODO: change to a GameContext arg
-  cardAction: (
-    game: Game,
-    characterIndex: number,
-    messageCache: MessageCache
-  ) => void;
+  cardAction: (context: GameMessageContext) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
   empowerLevel?: number;
@@ -64,12 +59,7 @@ export default class Card implements CardProps {
   effects: number[];
   emoji: CardEmoji;
   cosmetic?: CardCosmetic | undefined;
-  // TODO: change to a GameContext arg
-  cardAction: (
-    game: Game,
-    characterIndex: number,
-    messageCache: MessageCache
-  ) => void;
+  cardAction: (context: GameMessageContext) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
   empowerLevel: number;

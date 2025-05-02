@@ -1,7 +1,6 @@
 import Card, { Nature } from "../../card";
 import CommonCardAction from "../../util/commonCardActions";
 import { CardEmoji } from "../../formatting/emojis";
-import { MessageCache } from "../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
 
 export const a_malevolentShrine = new Card({
@@ -18,9 +17,7 @@ export const a_malevolentShrine = new Card({
   hpCost: 11,
   cardAction: function (
     this: Card,
-    game,
-    characterIndex,
-    messageCache: MessageCache
+    { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
     const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);

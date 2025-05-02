@@ -12,7 +12,7 @@ export const a_hairWhip = new Card({
     `DEF+${def}. Afterwards, HP-4, DMG ${dmg}+DEF/4.`,
   effects: [3, 7],
   emoji: CardEmoji.PUNCH,
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} whipped ${character.cosmetic.pronouns.possessive} hair!`,
@@ -34,7 +34,7 @@ export const sharpen = new Card({
   description: ([def, atk]) => `HP-1. DEF+${def}. ATK+${atk}.`,
   effects: [2, 2],
   emoji: CardEmoji.PUNCH,
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} sharpened ${character.cosmetic.pronouns.possessive} hair drills!`,
@@ -60,7 +60,7 @@ export const rest = new Card({
   description: ([hp]) => `DEF-2 for 2 turns. Heal ${hp} HP`,
   effects: [10],
   emoji: CardEmoji.HEART,
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} rests up.`, TCGThread.Gameroom);
 
@@ -95,7 +95,7 @@ export const a_pierce = new Card({
     `HP-7. DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
   effects: [2, 10],
   emoji: CardEmoji.PUNCH,
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} pierced the opponent!`,
@@ -128,7 +128,7 @@ export const hairBarrier = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364942857307295905/GIF_0653594382.gif?ex=680b8198&is=680a3018&hm=368a1918766556e47cc2e4692113d174afa955d6f59f3206d2f0cb6269df4a34&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} surrounded ${character.cosmetic.pronouns.reflexive} in ${character.cosmetic.pronouns.possessive} hair barrier!`,
@@ -164,7 +164,7 @@ export const teaTime = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364949044656607232/GIF_0807192060.gif?ex=680b875b&is=680a35db&hm=ced86d0c723bc4d139d0012c97a29d89d6fad79d084e1607036211869d17b57e&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
@@ -193,7 +193,7 @@ export const teaParty = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364992405018902568/GIF_0507169428.gif?ex=680c587d&is=680b06fd&hm=dd2441c0af97bd72ee4c6ee262830ce4a418d07197f696bae7bb832202d6498c&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
@@ -223,7 +223,7 @@ export const a_piercingDrill = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364943023678427196/GIF_3233937113.gif?ex=680b81c0&is=680a3040&hm=07d5b41617b811cd069cc08f1de64d9966b4d03df7936844262be5f6ee25e0cb&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} used a piercing drill!`,

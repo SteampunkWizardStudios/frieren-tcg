@@ -1,7 +1,5 @@
-import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
 import Card, { Nature } from "../../card";
 import { CardEmoji } from "../../formatting/emojis";
-import Game from "../../game";
 import { StatsEnum } from "../../stats";
 
 export default class DefaultCards {
@@ -13,29 +11,24 @@ export default class DefaultCards {
     effects: [],
     emoji: CardEmoji.RECYCLE,
     printEmpower: false,
-    cardAction: (game, characterIndex, messageCache) => {
-      const character = game.getCharacter(characterIndex);
-
-      character.adjustStat(1, StatsEnum.ATK);
-      character.adjustStat(1, StatsEnum.DEF);
-      character.adjustStat(1, StatsEnum.SPD);
+    cardAction: ({ self, selfIndex, name, sendToGameroom, game }) => {
+      self.adjustStat(1, StatsEnum.ATK);
+      self.adjustStat(1, StatsEnum.DEF);
+      self.adjustStat(1, StatsEnum.SPD);
 
       const handsIndicesDescending = Object.keys(
-        game.additionalMetadata.currentDraws[characterIndex]
+        game.additionalMetadata.currentDraws[selfIndex]
       )
         .map((stringIndex: string) => parseInt(stringIndex))
         .filter((a) => a < 6)
         .sort((a, b) => b - a);
       for (const index of handsIndicesDescending) {
-        character.discardCard(index);
-        character.drawCard();
+        self.discardCard(index);
+        self.drawCard();
       }
 
-      character.empowerHand();
-      messageCache.push(
-        `All cards in ${character.name}'s hand are empowered!`,
-        TCGThread.Gameroom
-      );
+      self.empowerHand();
+      sendToGameroom(`All cards in ${name}'s hand are empowered!`);
     },
   });
 
@@ -47,14 +40,12 @@ export default class DefaultCards {
     effects: [],
     printEmpower: false,
     emoji: CardEmoji.WAIT,
-    cardAction: (game, characterIndex, messageCache) => {
-      const character = game.getCharacter(characterIndex);
-      character.empowerHand();
-      messageCache.push(
-        `${character.name} waited it out! All cards in ${character.name}'s hand are empowered!`,
-        TCGThread.Gameroom
+    cardAction: ({ name, self, sendToGameroom }) => {
+      self.empowerHand();
+      sendToGameroom(
+        `${name} waited it out! All cards in ${name}'s hand are empowered!`
       );
-      character.adjustStat(10, StatsEnum.HP);
+      self.adjustStat(10, StatsEnum.HP);
     },
   });
 
@@ -66,12 +57,10 @@ export default class DefaultCards {
     effects: [],
     printEmpower: false,
     emoji: CardEmoji.WAIT,
-    cardAction: (game, characterIndex, messageCache) => {
-      const character = game.getCharacter(characterIndex);
-      character.empowerHand();
-      messageCache.push(
-        `${character.name} did nothing. All cards in ${character.name}'s hand are empowered.`,
-        TCGThread.Gameroom
+    cardAction: ({ self, name, sendToGameroom }) => {
+      self.empowerHand();
+      sendToGameroom(
+        `${name} did nothing. All cards in ${name}'s hand are empowered.`
       );
     },
   });
@@ -83,12 +72,9 @@ export default class DefaultCards {
     effects: [],
     printEmpower: false,
     emoji: CardEmoji.RANDOM,
-    cardAction: (game: Game, characterIndex, messageCache) => {
-      const character = game.getCharacter(characterIndex);
-      messageCache.push(
-        `${character.name} forfeited the game!`,
-        TCGThread.Gameroom
-      );
+	priority: 99,
+    cardAction: ({ game, selfIndex: characterIndex, name, sendToGameroom }) => {
+      sendToGameroom(`${name} forfeited the game!`);
       game.additionalMetadata.forfeited[characterIndex] = true;
     },
   });

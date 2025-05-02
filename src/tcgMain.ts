@@ -20,6 +20,7 @@ import { printCharacter } from "./tcgChatInteractions/printCharacter";
 import TimedEffect from "./tcg/timedEffect";
 import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
 import { CharacterName } from "./tcg/characters/metadata/CharacterName";
+import { gameAndMessageContext } from "@src/tcg/gameContextProvider";
 
 const TURN_LIMIT = 50;
 
@@ -351,20 +352,22 @@ export const tcgMain = async (
             TCGThread.Gameroom
           );
           if (card.cosmetic?.cardGif) {
+			// look into discord's new media components from components v2 for this
             messageCache.push(
               `[⠀](${card.cosmetic?.cardGif})`,
               TCGThread.Gameroom
             );
           }
+          const context = gameAndMessageContext.call(
+            card,
+            game,
+            messageCache,
+            characterIndex
+          );
           if (character.ability.abilityOwnCardEffectWrapper) {
-            character.ability.abilityOwnCardEffectWrapper(
-              game,
-              characterIndex,
-              messageCache,
-              card
-            );
+            character.ability.abilityOwnCardEffectWrapper(context, card);
           } else {
-            card.cardAction?.(game, characterIndex, messageCache);
+            card.cardAction?.(context);
           }
           if (opponentCharacter.ability.abilityAfterOpponentsMoveEffect) {
             opponentCharacter.ability.abilityAfterOpponentsMoveEffect(

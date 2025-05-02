@@ -11,6 +11,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import { GameMessageContext } from "@src/tcg/gameContextProvider";
 
 const PIERCE_FACTOR = 1.0;
 
@@ -36,15 +37,14 @@ function checkForEffects(effects: string[]): Record<string, boolean> {
 }
 
 function missAttack(
-  game: Game,
-  characterIndex: number,
-  messageCache: MessageCache,
+  context: GameMessageContext,
   card: Card,
   failureRate: number
 ) {
+  const { game, selfIndex: characterIndex, messageCache } = context;
   // Non Ubel slashing sureHits get treated normally
   if (failureRate === 0) {
-    card.cardAction(game, characterIndex, messageCache);
+    card.cardAction(context);
   } else {
     const character = game.getCharacter(characterIndex);
 
@@ -70,15 +70,14 @@ function attackWhileRecomposing(
 }
 
 function playOffensiveCard(
-  game: Game,
-  characterIndex: number,
+  context: GameMessageContext,
   card: Card,
-  failureRate: number,
-  messageCache: MessageCache
+  failureRate: number
 ): void {
   // check for always hitting empathy attacks
+  const { messageCache } = context;
   if (failureRate === 0) {
-    card.cardAction?.(game, characterIndex, messageCache);
+    card.cardAction?.(context);
     return;
   }
 
@@ -89,10 +88,10 @@ function playOffensiveCard(
   );
   messageCache.push(`# Luck roll: ${luckRoll}`, TCGThread.Gameroom);
   if (luckRoll < failureRate) {
-    missAttack(game, characterIndex, messageCache, card, failureRate);
+    missAttack(context, card, failureRate);
   } else {
     messageCache.push("The attack connects!", TCGThread.Gameroom);
-    card.cardAction?.(game, characterIndex, messageCache);
+    card.cardAction?.(context);
   }
 }
 
@@ -202,12 +201,10 @@ export const Ubel = new CharacterData({
 
     // attacks should potentially fail
     abilityOwnCardEffectWrapper: function (
-      game: Game,
-      characterIndex: number,
-      messageCache: MessageCache,
+      context: GameMessageContext,
       card: Card
     ) {
-      const character = game.getCharacter(characterIndex);
+      const { self: character, messageCache } = context;
       const effects = character.timedEffects;
       const effectsNames = effects.map((eff) => eff.name);
       const activeEffects = checkForEffects(effectsNames);
@@ -219,7 +216,7 @@ export const Ubel = new CharacterData({
 
       //utils and default cards don't care about hitting status
       if (card.cardMetadata.nature != Nature.Attack) {
-        card.cardAction?.(game, characterIndex, messageCache);
+        card.cardAction?.(context);
         return;
       }
 
@@ -227,26 +224,20 @@ export const Ubel = new CharacterData({
       const failureRate = card.cardMetadata.ubelFailureRate ?? 0;
       switch (character.additionalMetadata.ubelSureHit) {
         case UbelHit.Regular:
-          playOffensiveCard(
-            game,
-            characterIndex,
-            card,
-            failureRate,
-            messageCache
-          );
+          playOffensiveCard(context, card, failureRate);
           break;
         case UbelHit.SureHit:
-          card.cardAction?.(game, characterIndex, messageCache);
+          card.cardAction?.(context);
           break;
         case UbelHit.SureMiss:
           // defensive move
           if (!activeEffects.Recompose) {
-            missAttack(game, characterIndex, messageCache, card, failureRate);
+            missAttack(context, card, failureRate);
             return;
           }
           // Recomposing
           if (activeEffects.Sorganeil) {
-            card.cardAction?.(game, characterIndex, messageCache);
+            card.cardAction?.(context);
           } else {
             attackWhileRecomposing(character, messageCache);
           }

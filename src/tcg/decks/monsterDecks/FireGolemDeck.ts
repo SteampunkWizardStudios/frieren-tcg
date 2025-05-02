@@ -11,7 +11,7 @@ const a_flame = new Card({
   description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [12],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} sets the floor ablaze!`,
@@ -29,7 +29,7 @@ const a_burn = new Card({
   description: ([dmg, def]) => `HP-4. DMG ${dmg}. Opponent's DEF-${def}.`,
   emoji: CardEmoji.ENERGY,
   effects: [10, 3],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
@@ -55,7 +55,7 @@ const extinguish = new Card({
   emoji: CardEmoji.SHIELD,
   priority: 2,
   effects: [50],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} extinguishes itself!`,
@@ -87,7 +87,7 @@ const a_inferno = new Card({
   emoji: CardEmoji.ENERGY,
   effects: [30],
   cardMetadata: { nature: Nature.Attack, signature: true },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} lets out a gigantic inferno!`,
