@@ -47,8 +47,8 @@ export default function gameContextProvider(
   };
   const changeStatWithEmpower = (
     target: Character,
-    stat: StatsEnum,
     effectIndex: number,
+    stat: StatsEnum,
     multiplier: number = 1
   ) => {
     const empowered = calculateEffectValue(
@@ -60,18 +60,27 @@ export default function gameContextProvider(
     return change;
   };
 
-  const flatAttack = (damage: number, hpCost: number) => {
+  const flatAttack = (
+    damage: number,
+    hpCost: number,
+    pierceFactor?: number
+  ) => {
     return CommonCardAction.commonAttack(game, characterIndex, {
       damage,
       hpCost,
+      pierceFactor,
     });
   };
-  const basicAttack = (effectIndex: number, hpCost: number) => {
+  const basicAttack = (
+    effectIndex: number,
+    hpCost: number,
+    pierceFactor?: number
+  ) => {
     const damage = calculateEffectValue(
       this.effects[effectIndex],
       this.empowerLevel
     );
-    flatAttack(damage, hpCost);
+    flatAttack(damage, hpCost, pierceFactor);
     return damage;
   };
 
