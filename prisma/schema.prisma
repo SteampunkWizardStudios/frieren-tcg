@@ -64,7 +64,7 @@ model LadderReset {
 
 model Match {
   id       Int    @id @default(autoincrement())
-  threadId String
+  threadId String @default("")
 
   ladderResetId Int
   ladderReset   LadderReset @relation(fields: [ladderResetId], references: [id])
