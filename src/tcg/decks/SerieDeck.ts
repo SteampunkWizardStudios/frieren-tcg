@@ -10,7 +10,6 @@ import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import { fieldOfFlower } from "./FrierenDeck";
 import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 import { ancientBarrierMagic } from "./utilDecks/serieSignature";
 import { GameMessageContext } from "../gameContextProvider";
 
@@ -147,27 +146,13 @@ export const mock = new Card({
   effects: [3, 2, 1],
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { name, sendToGameroom, selfStat, opponentStat }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} mocked the opponent.`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} mocked the opponent.`);
 
-    const opponent = game.getCharacter(1 - characterIndex);
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP
-    );
-    opponent.adjustStat(
-      -1 * this.calculateEffectValue(this.effects[1]),
-      StatsEnum.DEF
-    );
-    opponent.adjustStat(
-      -1 * this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD
-    );
+    selfStat(0, StatsEnum.HP);
+    opponentStat(1, StatsEnum.DEF, -1);
+    opponentStat(2, StatsEnum.SPD, -1);
   },
 });
 
@@ -185,17 +170,14 @@ export const basicDefensiveMagic = new Card({
   priority: 2,
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, calcEffect }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} casted a basic defensive magic!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} cast a basic defensive magic!`);
 
-    const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
-    character.timedEffects.push(
+    const def = calcEffect(0);
+    self.adjustStat(def, StatsEnum.DEF);
+
+    self.timedEffects.push(
       new TimedEffect({
         name: "Ordinary Defensive Magic",
         description: `Increases DEF by ${def} until the end of the turn.`,
@@ -203,7 +185,7 @@ export const basicDefensiveMagic = new Card({
         turnDuration: 1,
         removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          character.adjustStat(-def, StatsEnum.DEF);
+          self.adjustStat(-def, StatsEnum.DEF);
         },
       })
     );
@@ -224,25 +206,20 @@ export const unbreakableBarrier = new Card({
   hpCost: 5,
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, opponent, sendToGameroom, selfStat, opponentStat, calcEffect }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} deployed an unbreakable barrier.`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} deployed an unbreakable barrier.`);
 
-    if (character.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
-      const opponent = game.getCharacter(1 - characterIndex);
-      const atkBuff = this.calculateEffectValue(this.effects[0]);
-      const defBuff = this.calculateEffectValue(this.effects[1]);
-      const spdDebuff = this.calculateEffectValue(this.effects[2]);
+    if (self.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
+      const atkBuff = calcEffect(0);
+      const defBuff = calcEffect(1);
+      const spdDebuff = calcEffect(2);
 
-      character.adjustStat(atkBuff, StatsEnum.ATK);
-      character.adjustStat(defBuff, StatsEnum.DEF);
-      opponent.adjustStat(-1 * spdDebuff, StatsEnum.SPD);
+      selfStat(0, StatsEnum.ATK);
+      selfStat(1, StatsEnum.DEF);
+      opponentStat(2, StatsEnum.SPD, -1);
 
-      character.timedEffects.push(
+      self.timedEffects.push(
         new TimedEffect({
           name: "Unbreakable Barrier",
           description: `ATK+${atkBuff}. DEF+${defBuff}, Opponent's SPD -${spdDebuff} for 5 turns.`,
@@ -250,16 +227,13 @@ export const unbreakableBarrier = new Card({
           priority: -1,
           executeEndOfTimedEffectActionOnRemoval: true,
           endOfTurnAction: (_game, _characterIndex) => {
-            messageCache.push(
-              `The unbreakable barrier looms...`,
-              TCGThread.Gameroom
-            );
-            character.adjustStat(-2, StatsEnum.HP);
+            sendToGameroom("The unbreakable barrier looms...");
+            self.adjustStat(-2, StatsEnum.HP);
           },
           endOfTimedEffectAction: (_game, _characterIndex) => {
-            messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
-            character.adjustStat(-1 * atkBuff, StatsEnum.ATK);
-            character.adjustStat(-1 * defBuff, StatsEnum.DEF);
+            sendToGameroom("The barrier dissipated");
+            self.adjustStat(-1 * atkBuff, StatsEnum.ATK);
+            self.adjustStat(-1 * defBuff, StatsEnum.DEF);
             opponent.adjustStat(spdDebuff, StatsEnum.SPD);
           },
         })
