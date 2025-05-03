@@ -60,6 +60,11 @@ export default function gameContextProvider(
     return change;
   };
 
+  /**
+   * Takes a given damage value and hp cost, and attacks with a flat number of damage
+   * @param {number} damage - How much damage to deal
+   * @param {number} hpCost - The amount of HP used for the attack
+   */
   const flatAttack = (
     damage: number,
     hpCost: number,
@@ -71,6 +76,12 @@ export default function gameContextProvider(
       pierceFactor,
     });
   };
+
+  /**
+   * Takes a given effect index and hp cost, and uses empowered damage for the attack
+   * @param {number} effectIndex - The index of the effect to use for the damage
+   * @param {number} hpCost - The amount of HP used for the attack
+   */
   const basicAttack = (
     effectIndex: number,
     hpCost: number,
@@ -84,9 +95,30 @@ export default function gameContextProvider(
     return damage;
   };
 
+  /**
+   * Adjusts self's stats by a given amount
+   * @param {number} amount - The amount to adjust the stat by
+   * @param {StatsEnum} stat - The stat to adjust
+   */
   const flatSelfStat = changeStat.bind(null, self);
+  /**
+   * Takes a given effect index and stat, and adjusts self's stats by the empowered value of that effect
+   * @param {number} effectIndex - The index of the effect to use for the adjustment
+   * @param {StatsEnum} stat - The stat to adjust
+   */
   const selfStat = changeStatWithEmpower.bind(null, self);
+  /**
+   * Adjusts opponent's stats by a given amount
+   * @param {number} amount - The amount to adjust the stat by
+   * @param {StatsEnum} stat - The stat to adjust
+   */
   const flatOpponentStat = changeStat.bind(null, opponent);
+  /**
+   * Takes a given effect index and stat, and adjusts opponent's stats by the empowered value of that effect
+   * @param {number} effectIndex - The index of the effect to use for the adjustment
+   * @param {StatsEnum} stat - The stat to adjust
+   * @param {number} multiplier - The multiplier to apply to the effect value, you'll want to use -1 for a debuff
+   */
   const opponentStat = changeStatWithEmpower.bind(null, opponent);
 
   return {
