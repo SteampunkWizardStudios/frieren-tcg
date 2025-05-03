@@ -2,6 +2,7 @@ import Card, { Nature } from "@tcg/card";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import Character from "@tcg/character";
 import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "../timedEffect";
 
 const redrawRandom = (opponent: Character) => {
   const randomIndex = Math.floor(Math.random() * opponent.hand.length);
@@ -39,8 +40,10 @@ const one_step_ahead = new Card({
   effects: [20, 2, 10],
   priority: 3,
   cardAction: ({
+    self,
     opponent,
     name,
+	calcEffect,
     sendToGameroom,
     selfStat,
     opponentStat,
@@ -48,6 +51,21 @@ const one_step_ahead = new Card({
   }) => {
     sendToGameroom(`${name} put up a full coverage defense.`);
     selfStat(0, StatsEnum.DEF);
+
+	const def = calcEffect(0)
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Full Coverage Defense",
+        description: `Increases DEF by ${def} until the end of the turn.`,
+        priority: -1,
+        turnDuration: 1,
+        removableBySorganeil: false,
+        endOfTimedEffectAction: (game, characterIndex) => {
+          game.characters[characterIndex].adjustStat(-def, StatsEnum.DEF);
+        },
+      })
+    );
 
     if (
       opponent.additionalMetadata.selectedCard?.cardMetadata.nature !==
