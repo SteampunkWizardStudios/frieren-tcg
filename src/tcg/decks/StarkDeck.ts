@@ -253,7 +253,7 @@ const fearBroughtMeThisFar = new Card({
   title: "Fear Brought Me This Far",
   cardMetadata: { nature: Nature.Util },
   description: ([atkDef, atkDefAdditional]) =>
-    `Increases ATK and DEF by ${atkDef}. Increases ATK and DEF by an addition ${atkDefAdditional} if HP <=60. Gain 2 <Resolve>.`,
+    `Increases ATK and DEF by ${atkDef}. Increases ATK and DEF by an additional ${atkDefAdditional} if HP <=60. Gain 2 <Resolve>.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [2, 1],
   tags: { Resolve: 2 },
