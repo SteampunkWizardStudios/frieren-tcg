@@ -12,6 +12,7 @@ import { Himmel } from "./characterData/characters/Himmel";
 import { Ubel } from "./characterData/characters/Ubel";
 import { CharacterName } from "./metadata/CharacterName";
 import { Fern } from "./characterData/characters/Fern";
+import Edel from "@tcg/characters/characterData/characters/Edel";
 
 export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
   [CharacterName.Frieren]: Frieren,
@@ -26,6 +27,7 @@ export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
   [CharacterName.Himmel]: Himmel,
   [CharacterName.Ubel]: Ubel,
   [CharacterName.Fern]: Fern,
+  [CharacterName.Edel]: Edel,
 } as const;
 
 export const CHARACTER_LIST: CharacterData[] = Object.values(CHARACTER_MAP);

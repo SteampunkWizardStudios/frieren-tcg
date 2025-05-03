@@ -325,6 +325,11 @@ export const tcgMain = async (
       characterToSelectedMoveMap[1] = opponentSelectedMove;
     }
 
+	// set the selected moves for each character to be used as metadata 
+	Object.entries(characterToSelectedMoveMap).forEach(([key, value]) => {
+		game.characters[Number(key)].additionalMetadata.selectedCard = value;
+	});
+
     // move resolution step
     game.characters.forEach((character: Character, characterIndex: number) => {
       character.ability.abilitySelectedMoveModifierEffect?.(

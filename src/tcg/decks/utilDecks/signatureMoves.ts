@@ -12,6 +12,7 @@ import { a_lightningStrike } from "../StarkDeck";
 import { a_geisel } from "../StilleDeck";
 import { a_malevolentShrine } from "./ubelSignature";
 import { spellToCreateManaButterflies } from "../FernDeck";
+import { telekinesis } from "@tcg/decks/EdelDeck";
 
 export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Denken]: a_catastraviaBase,
@@ -26,6 +27,7 @@ export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Stille]: a_geisel,
   [CharacterName.Ubel]: a_malevolentShrine,
   [CharacterName.Fern]: spellToCreateManaButterflies,
+  [CharacterName.Edel]: telekinesis,
 };
 
 export const SIGNATURE_MOVES_LIST = Object.entries(signatureMoves);
