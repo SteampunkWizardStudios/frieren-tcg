@@ -43,7 +43,7 @@ const one_step_ahead = new Card({
     self,
     opponent,
     name,
-	calcEffect,
+    calcEffect,
     sendToGameroom,
     selfStat,
     opponentStat,
@@ -52,7 +52,7 @@ const one_step_ahead = new Card({
     sendToGameroom(`${name} put up a full coverage defense.`);
     selfStat(0, StatsEnum.DEF);
 
-	const def = calcEffect(0)
+    const def = calcEffect(0);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -83,9 +83,43 @@ const one_step_ahead = new Card({
   },
 });
 
+const mental_fog = new Card({
+  title: "Mental Fog",
+  cardMetadata: { nature: Nature.Util },
+  emoji: CardEmoji.EDEL_CARD,
+  description: ([spd, cost]) =>
+    `HP-10. Eye Contact next turn. Opponent's SPD-${spd} and they redraw a card. Their highest empowered card they draw will cost ${cost} additional HP for the next 5 turns.`,
+  effects: [2, 7],
+  cardAction: ({
+    name,
+    opponent,
+    opponentStat,
+    sendToGameroom,
+    calcEffect,
+  }) => {
+    sendToGameroom(
+      `${name} hypnotizes ${opponent.name} and ${opponent.cosmetic.pronouns.personal} starts to blank out.`
+    );
+
+    opponentStat(0, StatsEnum.SPD, -1);
+    redrawRandom(opponent);
+
+    const cost = calcEffect(1);
+
+    opponent.timedEffects.push(
+      new TimedEffect({
+        name: "Mental Fog",
+        description: `Your highest empowered card will cost ${cost} additional HP for the next 5 turns.`,
+        turnDuration: 5,
+      })
+    );
+  },
+});
+
 const edelDeck = [
-  { card: telekinesis, count: 8 },
+  { card: telekinesis, count: 4 },
   { card: one_step_ahead, count: 8 },
+  { card: mental_fog, count: 4 },
 ];
 
 export default edelDeck;
