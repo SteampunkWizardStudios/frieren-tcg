@@ -5,7 +5,7 @@ import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 export const a_zoltraak = new Card({
-  title: "Offenive Magic Analysis: Zoltraask",
+  title: "Offensive Magic Analysis: Zoltraak",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
     `HP-5. DMG ${dmg}. 1 Analysis stacks will be gained after attack.`,
