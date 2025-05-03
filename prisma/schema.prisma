@@ -22,6 +22,17 @@ model Player {
   matchesAsLoser     Match[]            @relation("Loser")
   characterMasteries CharacterMastery[] @relation("PlayerCharacterMastery")
   ladderRanks        LadderRank[]       @relation("PlayerLadderRank")
+
+  preferences PlayerPreferences?
+}
+
+model PlayerPreferences {
+  id       Int    @id @default(autoincrement())
+  playerId Int    @unique
+  player   Player @relation(fields: [playerId], references: [id])
+
+  tcgTextSpeed        Int         @default(1500)
+  favouriteCharacters Character[] @relation("PlayerFavouriteCharacters")
 }
 
 model LadderRank {
@@ -89,6 +100,8 @@ model Character {
   characterMasteries CharacterMastery[] @relation("CharacterMastery")
   winnerMatches      Match[]            @relation("WinnerCharacter")
   loserMatches       Match[]            @relation("LoserCharacter")
+
+  favouritedByPlayers PlayerPreferences[] @relation("PlayerFavouriteCharacters")
 }
 
 model CharacterMastery {
