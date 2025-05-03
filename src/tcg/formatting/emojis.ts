@@ -26,6 +26,7 @@ export enum CharacterEmoji {
   HIMMEL = "<:HimmelCharming:1185700266452992010>",
   UBEL = "<:UbelSnipsnip:1140592823243112468>",
   FERN = "<:FernThink:1179413599739986012>",
+  EDEL = "<:EdelMad:1258499320504914003>",
 
   STONE_GEISEL = "🐦‍⬛",
   FIRE_GOLEM = "❤️‍🔥",
@@ -53,6 +54,7 @@ export const characterNameToEmoji: Record<CharacterName, CharacterEmoji> = {
   [CharacterName.Himmel]: CharacterEmoji.HIMMEL,
   [CharacterName.Ubel]: CharacterEmoji.UBEL,
   [CharacterName.Fern]: CharacterEmoji.FERN,
+  [CharacterName.Edel]: CharacterEmoji.EDEL,
 };
 
 export enum CardEmoji {
@@ -78,6 +80,7 @@ export enum CardEmoji {
   HIMMEL_CARD = "<:HimmelCard:1358052672787185845>",
   FERN_CARD = "<:FernCard:1363517169585099013>",
   UBEL_CARD = "<:UbelCard:1362910824133562679>",
+  EDEL_CARD = "❓",
 
   FLOWER_FIELD = "<:FlowerFieldCard:1347719503290695803>",
   MANA_CARD = "<:ManaCard:1363597189229576322>",
