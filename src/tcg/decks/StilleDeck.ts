@@ -34,23 +34,14 @@ const a_ironFeather = new Card({
   effects: [1, 3],
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { reflexive, name, sendToGameroom, basicAttack, flatSelfStat, selfStat }
   ) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} sharpened ${character.cosmetic.pronouns.possessive} feathers!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} sharpened ${reflexive} feathers!`);
 
-    character.adjustStat(-3, StatsEnum.SPD);
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF
-    );
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[1]),
-      hpCost: 0,
-    });
+    flatSelfStat(-3, StatsEnum.SPD);
+    selfStat(0, StatsEnum.DEF);
+
+    basicAttack(1, 0);
   },
 });
 
@@ -62,19 +53,12 @@ const hide = new Card({
   effects: [2],
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { name, reflexive, selfStat, flatSelfStat, sendToGameroom }
   ) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} hid ${character.cosmetic.pronouns.reflexive} and flew to safety!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} hid ${reflexive} and flew to safety!`);
 
-    character.adjustStat(-3, StatsEnum.SPD);
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF
-    );
+    flatSelfStat(-3, StatsEnum.SPD);
+    selfStat(0, StatsEnum.DEF);
   },
 });
 
@@ -86,49 +70,36 @@ const roost = new Card({
   effects: [5],
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, selfStat, flatSelfStat }
   ) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} landed on the ground.`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} landed on the ground.`);
 
-    character.adjustStat(-5, StatsEnum.SPD);
-    character.adjustStat(-3, StatsEnum.DEF);
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP
-    );
+    flatSelfStat(-5, StatsEnum.SPD);
+    flatSelfStat(-3, StatsEnum.DEF);
+    selfStat(0, StatsEnum.HP);
 
-    character.timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Roost",
         description: `DEF-3 for 2 turns.`,
         turnDuration: 2,
         removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
-          messageCache.push(
-            `${character.name} opened its wings.`,
-            TCGThread.Gameroom
-          );
-          character.adjustStat(3, StatsEnum.DEF);
+          messageCache.push(`${name} opened its wings.`, TCGThread.Gameroom);
+          self.adjustStat(3, StatsEnum.DEF);
         },
       })
     );
 
-    character.timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Roost",
         description: `SPD-5 for 3 turns.`,
         turnDuration: 3,
         removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
-          messageCache.push(
-            `${character.name} took flight again!`,
-            TCGThread.Gameroom
-          );
-          character.adjustStat(5, StatsEnum.SPD);
+          messageCache.push(`${name} took flight again!`, TCGThread.Gameroom);
+          self.adjustStat(5, StatsEnum.SPD);
         },
       })
     );
@@ -145,17 +116,14 @@ export const deflect = new Card({
   priority: 2,
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, calcEffect }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} prepares to deflect an attack!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} prepares to deflect an attack!`);
 
-    const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
-    character.timedEffects.push(
+    const def = calcEffect(0);
+    self.adjustStat(def, StatsEnum.DEF);
+
+    self.timedEffects.push(
       new TimedEffect({
         name: "Deflect",
         description: `Increases DEF by ${def} until the end of the turn.`,
@@ -163,7 +131,7 @@ export const deflect = new Card({
         priority: -1,
         removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.DEF);
+          self.adjustStat(-def, StatsEnum.DEF);
         },
       })
     );
@@ -183,14 +151,14 @@ const flyAway = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, calcEffect }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(`${character.name} flew away!`, TCGThread.Gameroom);
+    sendToGameroom(`${name} flew away!`);
 
-    const spd = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(spd, StatsEnum.SPD);
-    character.timedEffects.push(
+    const spd = calcEffect(0);
+    self.adjustStat(spd, StatsEnum.SPD);
+
+    self.timedEffects.push(
       new TimedEffect({
         name: "Fly Away",
         description: `Increases SPD by ${spd} until the end of the turn.`,
@@ -198,7 +166,7 @@ const flyAway = new Card({
         turnDuration: 1,
         removableBySorganeil: false,
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-spd, StatsEnum.SPD);
+          self.adjustStat(-spd, StatsEnum.SPD);
         },
       })
     );
@@ -218,23 +186,20 @@ export const a_geisel = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, calcEffect }
   ) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} called its fellow friends the Geisel for help!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} called its fellow friends the Geisel for help!`);
 
-    character.adjustStat(-20, StatsEnum.SPD);
-    const damage = this.calculateEffectValue(this.effects[0]);
-    character.timedEffects.push(
+    self.adjustStat(-20, StatsEnum.SPD);
+    const damage = calcEffect(0);
+
+    self.timedEffects.push(
       new TimedEffect({
         name: "Geisel Strike!",
         description: `Deal ${damage} at each turn's end.`,
         turnDuration: 2,
         endOfTurnAction: (game, characterIndex) => {
-          messageCache.push("The Geisel doesn't stop!", TCGThread.Gameroom);
+          sendToGameroom("The Geisel doesn't stop!");
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage + 15,
             hpCost: 0,
