@@ -12,7 +12,7 @@ const a_shadowImpalement = new Card({
   description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} dropped a shadow nail!`,
@@ -31,7 +31,7 @@ const camouflage = new Card({
     `ATK+${atk} for 3 turns. DEF+${def} for 3 turns.`,
   emoji: CardEmoji.HOURGLASS,
   effects: [3, 3],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} camouflaged ${character.cosmetic.pronouns.reflexive} in the shadow!`,
@@ -67,7 +67,7 @@ export const a_dragonfire = new Card({
   emoji: CardEmoji.PUNCH,
   effects: [10],
   cardMetadata: { nature: Nature.Attack, signature: true },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} breath forth a purple stream of flame!`,

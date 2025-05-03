@@ -7,6 +7,7 @@ import Card from "@src/tcg/card";
 import CommonCardAction from "./util/commonCardActions";
 
 export type GameContext = ReturnType<typeof gameContextProvider>;
+export type GameMessageContext = ReturnType<typeof gameAndMessageContext>;
 
 // adapted from Card.ts
 const EMPOWER_BOOST = 0.1;
@@ -20,17 +21,15 @@ const calculateEffectValue = (baseValue: number, empowerLevel: number) => {
  * @param {Card} this - A card instance
  * @param {Game} game - The game instance
  * @param {number} characterIndex - The index of the character using the card or effect
- * @param {MessageCache} messageCache - The message cache instance
  * @returns The GameContext object with context-specific methods and properties for use in game actions
  */
 export default function gameContextProvider(
   this: Card,
   game: Game,
-  characterIndex: number,
-  messageCache: MessageCache
+  characterIndex: number
 ) {
   const self = game.getCharacter(characterIndex);
-  const opponent = game.getCharacter(characterIndex - 1);
+  const opponent = game.getCharacter(1 - characterIndex);
 
   const calcEffect = (effectIndex: number) => {
     return calculateEffectValue(this.effects[effectIndex], this.empowerLevel);
@@ -81,10 +80,6 @@ export default function gameContextProvider(
   const flatOpponentStat = changeStat.bind(null, opponent);
   const opponentStat = changeStatWithEmpower.bind(null, opponent);
 
-  const sendToGameroom = (message: string) => {
-    messageCache.push(message, TCGThread.Gameroom);
-  };
-
   return {
     // self properties
     self,
@@ -115,9 +110,29 @@ export default function gameContextProvider(
 
     // game
     game,
+  };
+}
 
+function messageContext(messageCache: MessageCache) {
+  const sendToGameroom = (message: string) => {
+    messageCache.push(message, TCGThread.Gameroom);
+  };
+
+  return {
     // thread messaging
-    messageCache,
     sendToGameroom,
+    messageCache,
+  };
+}
+
+export function gameAndMessageContext(
+  this: Card,
+  game: Game,
+  messageCache: MessageCache,
+  characterIndex: number
+) {
+  return {
+    ...gameContextProvider.call(this, game, characterIndex),
+    ...messageContext(messageCache),
   };
 }

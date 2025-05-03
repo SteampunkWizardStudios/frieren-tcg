@@ -11,24 +11,18 @@ import TimedEffect from "../timedEffect";
 import { fieldOfFlower } from "./FrierenDeck";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
-import { MessageCache } from "@src/tcgChatInteractions/messageCache";
-import Game from "../game";
 import { ancientBarrierMagic } from "./utilDecks/serieSignature";
+import { GameMessageContext } from "../gameContextProvider";
 
 const useRandomCard = function (props: {
   cardPool: Card[];
   empowerLevel: number;
-  game: Game;
-  characterIndex: number;
-  messageCache: MessageCache;
+  context: GameMessageContext;
 }): Card {
-  const { cardPool, empowerLevel, game, characterIndex, messageCache } = props;
+  const { cardPool, empowerLevel, context } = props;
+  const { name, sendToGameroom } = context;
 
-  const character = game.getCharacter(characterIndex);
-  messageCache.push(
-    `${character.name} found an interesting magic.`,
-    TCGThread.Gameroom
-  );
+  sendToGameroom(`${name} found an interesting magic.`);
 
   const baseCard = cardPool[Math.floor(Math.random() * cardPool.length)];
   const newCard = new Card({
@@ -36,10 +30,7 @@ const useRandomCard = function (props: {
     empowerLevel,
   });
 
-  messageCache.push(
-    `${character.name} used **${newCard.getTitle()}**.`,
-    TCGThread.Gameroom
-  );
+  sendToGameroom(`${name} used **${newCard.getTitle()}**.`);
   return newCard;
 };
 
@@ -53,15 +44,13 @@ export const a_livingGrimoireOffenseCommon = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
   },
   effects: [],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, context) {
     const newCard = useRandomCard({
       cardPool: serie_offensiveMagic_common,
       empowerLevel: this.empowerLevel,
-      game,
-      characterIndex,
-      messageCache,
+      context,
     });
-    newCard.cardAction(game, characterIndex, messageCache);
+    newCard.cardAction(context);
   },
 });
 
@@ -75,15 +64,13 @@ export const a_livingGrimoireOffenseRare = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015121150022/Living_Grimoire1_1.png?ex=6808772d&is=680725ad&hm=903c0f575a5857d8527c631c5b4ef5fbf6ff9140ea44ea0a4f5ad7c6433a92a6&",
   },
   effects: [],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, context) {
     const newCard = useRandomCard({
       cardPool: serie_offensiveMagic_rare,
       empowerLevel: this.empowerLevel,
-      game,
-      characterIndex,
-      messageCache,
+      context,
     });
-    newCard.cardAction(game, characterIndex, messageCache);
+    newCard.cardAction(context);
   },
 });
 
@@ -97,15 +84,13 @@ export const a_livingGrimoireOffenseUnusual = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015825924147/Living_Grimoire2_1.png?ex=6808772e&is=680725ae&hm=63b0595c68a10b5d7c4246e4747f43fc61b292a95577b3c00b479ef11320ac58&",
   },
   effects: [],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, context) {
     const newCard = useRandomCard({
       cardPool: serie_offensiveMagic_unusual,
       empowerLevel: this.empowerLevel,
-      game,
-      characterIndex,
-      messageCache,
+      context,
     });
-    newCard.cardAction(game, characterIndex, messageCache);
+    newCard.cardAction(context);
   },
 });
 
@@ -119,15 +104,13 @@ export const a_livingGrimoireUtilityTactics = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
   },
   effects: [],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, context) {
     const newCard = useRandomCard({
       cardPool: serie_utilityMagic_tactics,
       empowerLevel: this.empowerLevel,
-      game,
-      characterIndex,
-      messageCache,
+      context,
     });
-    newCard.cardAction(game, characterIndex, messageCache);
+    newCard.cardAction(context);
   },
 });
 
@@ -141,15 +124,13 @@ export const a_livingGrimoireUtilityRecovery = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
   },
   effects: [],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, context) {
     const newCard = useRandomCard({
       cardPool: serie_utilityMagic_recovery,
       empowerLevel: this.empowerLevel,
-      game,
-      characterIndex,
-      messageCache,
+      context,
     });
-    newCard.cardAction(game, characterIndex, messageCache);
+    newCard.cardAction(context);
   },
 });
 
@@ -164,7 +145,10 @@ export const mock = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015502966825/Mock_1.png?ex=67df98ae&is=67de472e&hm=b4bfad8c4a548745a18660e2fcb39e7927661f269b17f9f8c73b66fa780f3d04&",
   },
   effects: [3, 2, 1],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} mocked the opponent.`,
@@ -199,7 +183,10 @@ export const basicDefensiveMagic = new Card({
   },
   effects: [20],
   priority: 2,
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} casted a basic defensive magic!`,
@@ -235,7 +222,10 @@ export const unbreakableBarrier = new Card({
   },
   effects: [5, 5, 5],
   hpCost: 5,
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} deployed an unbreakable barrier.`,

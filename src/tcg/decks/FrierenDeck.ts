@@ -19,7 +19,7 @@ export const a_zoltraak = new Card({
   },
   tags: { PostAnalysis: 1 },
   effects: [8],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
 
@@ -41,7 +41,7 @@ export const fieldOfFlower = new Card({
   },
   emoji: CardEmoji.FLOWER_FIELD,
   effects: [5, 3],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} conjured a field of flowers!`,
@@ -87,7 +87,7 @@ export const a_judradjim = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364225378952020029/GIF_1668382682.gif?ex=6808e564&is=680793e4&hm=2c769b1580a0639d7e83a046cad25ff641b839f91ab7c035b0ae844aae3b551c&",
   },
   effects: [13],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} sent forth Judradjim!`,
@@ -111,7 +111,7 @@ export const a_vollzanbel = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364225342218309674/GIF_1142333080.gif?ex=6808e55b&is=680793db&hm=11bd4be532ecf85eab598b0533e6c5b747d9bb8483c74ec2a86f3ede0fb352aa&",
   },
   effects: [18],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} summoned Vollzanbel!`,
@@ -137,7 +137,7 @@ export const barrierMagicAnalysis = new Card({
   },
   effects: [2, 1, 1],
   tags: { Analysis: 2 },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} analyzed the opponent's defense!`,
@@ -172,7 +172,7 @@ export const demonMagicAnalysis = new Card({
   },
   effects: [2, 2, 1],
   tags: { Analysis: 2 },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} analyzed ancient demon's magic!`,
@@ -208,7 +208,7 @@ export const ordinaryDefensiveMagic = new Card({
   },
   effects: [20],
   priority: 2,
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} cast ordinary defensive magic!`,
@@ -246,7 +246,7 @@ export const a_theHeightOfMagicBase = new Card({
   cardMetadata: { nature: Nature.Attack, signature: true },
   priority: 1,
   effects: [30],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} used "The Height of Magic"`,

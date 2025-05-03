@@ -3,7 +3,6 @@ import CommonCardAction from "../util/commonCardActions";
 import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import { CardEmoji } from "../formatting/emojis";
-import { MessageCache } from "../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 import { signatureMoves } from "./utilDecks/signatureMoves";
 import { a_malevolentShrine } from "./utilDecks/ubelSignature";
@@ -24,9 +23,7 @@ export const a_reelseiden = new Card({
   },
   cardAction: function (
     this: Card,
-    game,
-    characterIndex,
-    messageCache: MessageCache
+    { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
@@ -58,9 +55,7 @@ export const a_cleave = new Card({
   },
   cardAction: function (
     this: Card,
-    game,
-    characterIndex,
-    messageCache: MessageCache
+    { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
     const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
@@ -88,9 +83,7 @@ export const a_dismantle = new Card({
   },
   cardAction: function (
     this: Card,
-    game,
-    characterIndex,
-    messageCache: MessageCache
+    { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
@@ -119,7 +112,10 @@ export const rushdown = new Card({
     cardGif:
       "https://media.discordapp.net/attachments/1360969158623232300/1364216562600509570/GIF_2060261812.gif?ex=6808dd2e&is=68078bae&hm=120ce38d9abf8a42357d0bd650f0e5c63da9ea2232bd5ceae2716ee67a2fb67f&=&width=1440&height=820",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} rushes towards the enemy!`,
@@ -173,7 +169,10 @@ const slowdown = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364216703541837844/GIF_2189012353.gif?ex=6808dd50&is=68078bd0&hm=644b405b52a67b684bda6bfff12ce2ffa99d091de554b967213e07aa87883a8d&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} takes cover to ponder the fleeting nature of her life.`,
@@ -233,7 +232,10 @@ export const defend = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364384151616094239/GIF_3928500915.gif?ex=680a2202&is=6808d082&hm=09e4cc493604c6e0be6f9a04263c49d93dd9a7d20bb18c78f6b58d1fd303c9b6&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} prepares to defend against an incoming attack!`,
@@ -269,7 +271,10 @@ export const sorganeil = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364748769165447188/GIF_3534737554.gif?ex=680b7596&is=680a2416&hm=97e22820e064efed4dc8688572fffad891c01cdaac28df0e7a8e0ca77661521c&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
 
@@ -289,7 +294,7 @@ export const sorganeil = new Card({
       TCGThread.Gameroom
     );
 
-    let newTimedEffects: TimedEffect[] = [];
+    const newTimedEffects: TimedEffect[] = [];
     opponent.timedEffects.map((timedEffect) => {
       if (!timedEffect.removableBySorganeil) {
         newTimedEffects.push(timedEffect);
@@ -346,10 +351,9 @@ export const empathy = new Card({
         description: () => "Not enough time to empathize. This move will fail.",
         effects: [],
         emoji: CardEmoji.UBEL_CARD,
-        cardAction: (_game, _characterIndex, messageCache: MessageCache) => {
-          messageCache.push(
-            `${game.getCharacter(characterIndex).name} didn't get enough time to know ${game.getCharacter(1 - characterIndex).name} well enough!`,
-            TCGThread.Gameroom
+        cardAction: ({ name, opponent, sendToGameroom }) => {
+          sendToGameroom(
+            `${name} didn't get enough time to know ${opponent.name} well enough!`
           );
         },
         empathized: true,

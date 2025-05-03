@@ -4,6 +4,7 @@ import { CardEmoji } from "../../formatting/emojis";
 import { StatsEnum } from "../../stats";
 import CommonCardAction from "../../util/commonCardActions";
 import { serie_offensiveMagic } from "../utilDecks/serieMagic";
+import { GameMessageContext } from "@src/tcg/gameContextProvider";
 
 // Regurgitate (x5) : use any offensive magic spell you stole from the mages you digested
 // Oh nom nom nom (x3) : 15 DMG, -2 DEF : restores an equal amount of HP compared to the damage
@@ -17,8 +18,11 @@ const a_regurgitate = new Card({
   description: () => `Use a random offensive spell at Empower level -2`,
   emoji: CardEmoji.SERIE_CARD,
   effects: [],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
+  cardAction: function (
+    this: Card,
+    context: GameMessageContext,
+  ) {
+	const { self: character, messageCache } = context;
     messageCache.push(
       `${character.name} regurgitated a spell it stole from a mage it munched on.`,
       TCGThread.Gameroom
@@ -37,7 +41,7 @@ const a_regurgitate = new Card({
       `${character.name} used **${newCard.getTitle()}**.`,
       TCGThread.Gameroom
     );
-    newCard.cardAction(game, characterIndex, messageCache);
+    newCard.cardAction(context);
   },
 });
 
@@ -48,7 +52,10 @@ const omNomNomNom = new Card({
     `HP-5. DMG ${dmg}. Restores HP by half of the move's dealt damage.`,
   emoji: CardEmoji.ENERGY,
   effects: [5],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} gobbles the opposition!`,
@@ -72,10 +79,14 @@ const mimic = new Card({
     `Use the card the opponent used last turn at this card's empower level -3.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1 - characterIndex);
-
+  cardAction: function (this: Card, context) {
+    const {
+      game,
+      self: character,
+      selfIndex: characterIndex,
+      opponent,
+      messageCache,
+    } = context;
     messageCache.push(
       `${character.name} imitates ${opponent.name}'s last move.`,
       TCGThread.Gameroom
@@ -93,7 +104,7 @@ const mimic = new Card({
         `${character.name} uses ${newCard.getTitle()}`,
         TCGThread.Gameroom
       );
-      newCard.cardAction(game, characterIndex, messageCache);
+      newCard.cardAction(context);
     } else {
       messageCache.push(
         "There was no move to imitate. The move failed!",
@@ -109,7 +120,10 @@ const camouflage = new Card({
   description: ([def]) => `DEF + ${def}`,
   emoji: CardEmoji.SHIELD,
   effects: [4],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} camouflaged itself!`,
@@ -128,7 +142,10 @@ const a_callOfCthulhu = new Card({
   emoji: CardEmoji.ENERGY,
   effects: [30],
   cardMetadata: { nature: Nature.Attack, signature: true },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} heeds the call of Cthulhu.`,

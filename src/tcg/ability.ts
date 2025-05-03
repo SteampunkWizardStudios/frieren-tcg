@@ -1,6 +1,7 @@
 import { MessageCache } from "../tcgChatInteractions/messageCache";
 import Card from "./card";
 import Game from "./game";
+import { GameMessageContext } from "./gameContextProvider";
 
 export type Ability = {
   abilityName: string;
@@ -18,9 +19,7 @@ export type Ability = {
     card: Card
   ) => void;
   abilityOwnCardEffectWrapper?: (
-    game: Game,
-    characterIndex: number,
-    messageCache: MessageCache,
+    context: GameMessageContext,
     card: Card
   ) => void;
   abilityAfterOwnCardUse?: (

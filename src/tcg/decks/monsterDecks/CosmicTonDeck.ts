@@ -12,7 +12,7 @@ const madness = new Card({
   description: ([atk, def]) => `ATK+${atk}. DEF+${def}`,
   emoji: CardEmoji.HOURGLASS,
   effects: [3, 2],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     const randomMessage = generateCustomRandomString(60, {
       useLowercase: true,
@@ -34,7 +34,7 @@ const earPiercingScream = new Card({
   description: ([def]) => `HP-2. Opponent's DEF-${def}.`,
   emoji: CardEmoji.ENERGY,
   effects: [3],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     const randomMessage = generateCustomRandomString(60, {
@@ -58,7 +58,7 @@ export const solitude = new Card({
   description: ([hp]) => `Heal for ${hp}.`,
   emoji: CardEmoji.HEART,
   effects: [12],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     const randomMessage = generateCustomRandomString(30, {
       useLowercase: true,
@@ -78,7 +78,7 @@ export const a_curse = new Card({
   description: ([dmg]) => `HP-11. DMG ${dmg} at turn end for 5 turns.`,
   emoji: CardEmoji.PUNCH,
   effects: [5],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.characters[characterIndex];
     const randomMessage = generateCustomRandomString(80, {
       useNumbers: true,
@@ -117,7 +117,7 @@ const guiltTrip = new Card({
   description: ([def, spd]) => `Opp's DEF-${def}. Opp's SPD-${spd}`,
   emoji: CardEmoji.HOURGLASS,
   effects: [3, 3],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const randomMessage = generateCustomRandomString(100, {
       useUppercase: true,
       useSpecial: true,
@@ -140,7 +140,7 @@ export const a_killingMagic = new Card({
   description: ([dmg]) => `HP-10. DMG ${dmg}`,
   emoji: CardEmoji.PUNCH,
   effects: [15],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const randomMessage = generateCustomRandomString(90, {
       useUppercase: true,
       useSpecial: true,
@@ -165,7 +165,7 @@ export const a_solitaryPractice = new Card({
   emoji: CardEmoji.ENERGY,
   effects: [30],
   cardMetadata: { nature: Nature.Attack, signature: true },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`solitary practice`, TCGThread.Gameroom);
     const endOfTurnDamage = this.calculateEffectValue(this.effects[0]);

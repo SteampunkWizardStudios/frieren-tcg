@@ -19,7 +19,7 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1362092606695145482/GIF_1369578971.gif?ex=68086357&is=680711d7&hm=07c26c17a9a859865c2f107f8358b50df98cc49d49ed0daa2f659c6acb494f1e&",
   },
   effects: [7, 1],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     const isHimmel = character.name === CharacterName.Himmel;
@@ -79,7 +79,7 @@ const a_FrierenBackMeUp = new Card({
     `Opponent's DEF-${oppDef} for 4 turns. Frieren attacks for ${dmg} DMG. For the next 4 turn ends, Frieren attacks for an additional ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [3, 2],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     const isHimmel = character.name === CharacterName.Himmel;
@@ -142,7 +142,7 @@ export const a_FrierenNow = new Card({
   description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [12],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
@@ -189,7 +189,7 @@ const a_EisenTheEnemysOpen = new Card({
     `Eisen winds up. DEF+${def} for 2 turns. At next turn's end, deal ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [2, 10],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
@@ -254,7 +254,7 @@ const a_EisenCoverMyBack = new Card({
     `Eisen provides cover. DEF+${def} for 3 turns. Once per turn, when an opponent attacks, counter for ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [3, 5],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
@@ -337,7 +337,7 @@ const eisenHoldTheLine = new Card({
   description: ([def]) => `Eisen holds the line. DEF+${def} for 4 turns.`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [3],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
@@ -391,7 +391,7 @@ const heiterEmergency = new Card({
     `Heiter heals the party for ${heal}HP. At next turn's end, heal an additional ${heal} HP.`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [5],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
@@ -438,7 +438,7 @@ const a_heiterThreeSpears = new Card({
     `Heiter casts Three Spears of the Goddess! At next 3 turn's end, deal ${heal} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [5],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
@@ -486,7 +486,7 @@ const heiterTrustYou = new Card({
     `Heiter supports the party. ATK+${atkSpd}, SPD+${atkSpd} for 4 turns.`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [3],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
@@ -543,7 +543,7 @@ export const quickBlock = new Card({
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 3,
   effects: [20],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} swiftly readied ${character.cosmetic.pronouns.possessive} sword to prepare for the opponent's attack!`,
@@ -574,7 +574,7 @@ const rally = new Card({
     `HP+${hp}. ATK+${stat}. DEF+${stat}. SPD+${stat}. An additional HP+${hp}, ATK+${stat}, DEF+${stat}, SPD+${stat} for each one of your active allies.`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [2, 1],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.characters[characterIndex];
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
@@ -612,7 +612,7 @@ export const a_extremeSpeed = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361210956872421497/IMG_3122.gif?ex=6807d13e&is=68067fbe&hm=3ac9b147ffc7c93d02121986546428f4b36f0bb08a2c8bc526d5ba51df5a4bd6&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} dashed at the opponent!`,
@@ -637,7 +637,7 @@ export const a_realHeroSwing = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361777461620248576/GIF_1092034222.gif?ex=6807e697&is=68069517&hm=853f7d8910a4ab79010685a4399cd55c0af1f343295e0b2e04c49f829b54eee7&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
     const character = game.getCharacter(characterIndex);
     const isHimmel = character.name === CharacterName.Himmel;
     messageCache.push(

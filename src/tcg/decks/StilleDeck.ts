@@ -4,7 +4,6 @@ import { StatsEnum } from "../stats";
 import TimedEffect from "../timedEffect";
 import Rolls from "../util/rolls";
 import { CardEmoji } from "../formatting/emojis";
-import { MessageCache } from "../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
 
 const a_peck = new Card({
@@ -16,23 +15,14 @@ const a_peck = new Card({
   effects: [5],
   cardAction: function (
     this: Card,
-    game,
-    characterIndex,
-    messageCache: MessageCache
+    { name, self, sendToGameroom, basicAttack }
   ) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} pecked the opposition!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} pecked the opposition!`);
 
-    character.adjustStat(-2, StatsEnum.SPD);
-    character.discardCard(Rolls.rollDAny(5));
-    character.drawCard();
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 0,
-    });
+    self.adjustStat(-2, StatsEnum.SPD);
+    self.discardCard(Rolls.rollDAny(5));
+    self.drawCard();
+    basicAttack(0, 0);
   },
 });
 
@@ -42,7 +32,10 @@ const a_ironFeather = new Card({
   description: ([def, dmg]) => `SPD-3. DEF+${def}. DMG ${dmg}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [1, 3],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} sharpened ${character.cosmetic.pronouns.possessive} feathers!`,
@@ -67,7 +60,10 @@ const hide = new Card({
   description: ([def]) => `SPD-3. DEF+${def}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [2],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} hid ${character.cosmetic.pronouns.reflexive} and flew to safety!`,
@@ -88,7 +84,10 @@ const roost = new Card({
   description: ([hp]) => `SPD-5 for 3 turns. DEF-3 for 2 turns. Heal ${hp}HP.`,
   emoji: CardEmoji.ROOST_CARD,
   effects: [5],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} landed on the ground.`,
@@ -144,7 +143,10 @@ export const deflect = new Card({
   emoji: CardEmoji.STILLE_CARD,
   effects: [20],
   priority: 2,
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} prepares to deflect an attack!`,
@@ -179,7 +181,10 @@ const flyAway = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361940199583780864/IMG_3171.gif?ex=6807d567&is=680683e7&hm=55cb8759a21dc4e1d852861c8856dd068b299cb289a109cd4be8cdd27cca4e2f&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} flew away!`, TCGThread.Gameroom);
 
@@ -211,7 +216,10 @@ export const a_geisel = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364971079096995840/GIF_0867566819.gif?ex=680b9be1&is=680a4a61&hm=af689691d54884d9f7df5a639c214146c59d7b3a9a6b0e8547fb41cf6b914c6c&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} called its fellow friends the Geisel for help!`,

@@ -11,7 +11,10 @@ const a_jab = new Card({
   description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} jabbed with ${character.cosmetic.pronouns.possessive} fist.`,
@@ -39,7 +42,10 @@ const a_hook = new Card({
   description: ([spd, atk, dmg]) => `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} threw out a hook!`,
@@ -71,7 +77,10 @@ const a_uppercut = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364978489035460708/GIF_0836074812.gif?ex=680c4b87&is=680afa07&hm=84fd66beff9352aba9c037ff66d2b0e69219b34c0e3c9c5e62edbf96dc62a0f8&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     const damage = this.calculateEffectValue(this.effects[2]);
     messageCache.push(
@@ -102,7 +111,10 @@ export const bareHandedBlock = new Card({
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [2, 8],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} raised his hands to prepare to block the opponent's attack!`,
@@ -141,15 +153,20 @@ export const a_waldgoseBase = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364217876323500123/GIF_0112106003.gif?ex=6808de67&is=68078ce7&hm=53339631d41657c84bff7858a0d4ca127e5dd726db694b68d34f5d833a75c8ba&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.characters[characterIndex];
+  cardAction: function (this: Card, context) {
+    const {
+      game,
+      selfIndex: characterIndex,
+      self: character,
+      messageCache,
+    } = context;
 
     if (character.stats.stats.HP <= 0) {
       const jab = new Card({
         ...a_jab,
         empowerLevel: this.empowerLevel,
       });
-      jab.cardAction(game, characterIndex, messageCache);
+      jab.cardAction(context);
     } else {
       messageCache.push(
         `${character.name} whipped up a tornado!`,
@@ -222,14 +239,19 @@ export const a_daosdorgBase = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364218009102581871/GIF_4214490964.gif?ex=6808de87&is=68078d07&hm=dedf596f960aafe344c5eedec122d4dbd54c3b5c6f8b002b3cae75da891fdedf&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.getCharacter(characterIndex);
+  cardAction: function (this: Card, context) {
+    const {
+      game,
+      selfIndex: characterIndex,
+      self: character,
+      messageCache,
+    } = context;
     if (character.stats.stats.HP <= 0) {
       const hook = new Card({
         ...a_hook,
         empowerLevel: this.empowerLevel,
       });
-      hook.cardAction(game, characterIndex, messageCache);
+      hook.cardAction(context);
     } else {
       messageCache.push(
         `${character.name} set the sky aflame.`,
@@ -298,14 +320,19 @@ export const a_catastraviaBase = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364218121669316608/GIF_1295476803.gif?ex=6808dea2&is=68078d22&hm=bdc2fd9b990ddf12a7cb0d6ad7b24dca2a24203773cd3896f0c53681dad85ed9&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
-    const character = game.characters[characterIndex];
+  cardAction: function (this: Card, context) {
+    const {
+      game,
+      selfIndex: characterIndex,
+      self: character,
+      messageCache,
+    } = context;
     if (character.stats.stats.HP <= 0) {
       const uppercut = new Card({
         ...a_uppercut,
         empowerLevel: this.empowerLevel,
       });
-      uppercut.cardAction(game, characterIndex, messageCache);
+      uppercut.cardAction(context);
     } else {
       messageCache.push(
         `${character.name} covered the sky in stars.`,
@@ -370,7 +397,10 @@ const elementaryDefensiveMagicBase = new Card({
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [20],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
 
     messageCache.push(
@@ -428,7 +458,10 @@ export const a_concentratedOffensiveMagicZoltraak = new Card({
   description: ([dmg]) => `HP-8. DMG ${dmg}.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [14],
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} sent forth a concentrated blast of Zoltraak.`,
@@ -453,7 +486,10 @@ export const thisIsNoPlaceToGiveUp = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364979223357296802/GIF_0406490421.gif?ex=680c4c36&is=680afab6&hm=cf5c0f9d7e3e14ec143a8b304c0d416868db25cb8de5a1f0b38cc4c7507df73d&",
   },
-  cardAction: function (this: Card, game, characterIndex, messageCache) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     const healingFirst = this.calculateEffectValue(this.effects[0]);
     const healingSecond = this.calculateEffectValue(this.effects[1]);
