@@ -1,6 +1,5 @@
-import { ChatInputCommandInteraction, Interaction } from "discord.js";
+import { Interaction } from "discord.js";
 import { Middleware, NextMiddleware } from "../types/middleware";
-import { PrismaClient } from "@prisma/client";
 import { updateTcgTextSpeed } from "@src/util/db/preferences";
 import prismaClient from "@prismaClient";
 
