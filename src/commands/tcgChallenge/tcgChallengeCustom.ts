@@ -59,8 +59,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       const revealHand = interaction.options.getBoolean("reveal-hand") ?? false;
       const revealDraw =
         interaction.options.getBoolean("reveal-active-card") ?? false;
-      const textSpeedMs =
-        interaction.options.getInteger("text_speed_ms") ?? 1500;
+      const textSpeedMs = interaction.options.getInteger("text_speed_ms");
 
       initiateChallengeRequest({
         interaction,
