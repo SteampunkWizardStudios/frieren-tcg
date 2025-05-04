@@ -225,7 +225,7 @@ const concentration = new Card({
 const a_ordensSlashTechnique = new Card({
   title: "Orden's Slash Technique",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-8. DMG ${dmg}`,
+  description: ([dmg]) => `HP-8. DMG ${dmg}. Uses 1 Resolve.`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -1 },
   effects: [14],
