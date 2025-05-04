@@ -1,4 +1,4 @@
-import { EmbedBuilder, User } from "discord.js";
+import { EmbedBuilder, User, type ThreadChannel } from "discord.js";
 import { GameMode } from "./gameSettings";
 import prismaClient from "../../../../prisma/client";
 import { getOrCreatePlayers } from "@src/util/db/getPlayer";
@@ -20,6 +20,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
   ranked: boolean;
   gameMode: GameMode;
   resultEmbed: EmbedBuilder;
+  gameThread: ThreadChannel;
 }): Promise<EmbedBuilder> => {
   const {
     winner,
@@ -29,6 +30,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
     ranked,
     gameMode,
     resultEmbed,
+    gameThread,
   } = props;
 
   // get latest reset
@@ -55,6 +57,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
         winnerCharacterId: winnerCharacterDbObject.id,
         loserId: loserDbObject.id,
         loserCharacterId: loserCharacterDbObject.id,
+        threadId: gameThread.id,
       });
 
       // fetch respective ladderrank and charactermastery objects if ranked
@@ -168,7 +171,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
               ]);
             });
           } else {
-            let errors = [];
+            const errors = [];
             if (!winnerCharacterMastery) {
               errors.push(
                 `Failed to find or create winner character mastery for player ${winner.id} and character ${winnerCharacter}`
@@ -182,7 +185,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             throw new Error(errors.join(";"));
           }
         } else {
-          let errors = [];
+          const errors = [];
           if (!winnerLadderRank) {
             errors.push(
               `Failed to find or create winner ladder rank for player ${winner.id} and ladderReset ${currLadderReset.id}`
@@ -197,7 +200,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
         }
       }
     } else {
-      let errors = [];
+      const errors = [];
       if (!winnerDbObject) {
         errors.push(
           `Failed to find or create winning player ${winner.id} in database`

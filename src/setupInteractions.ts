@@ -1,55 +1,95 @@
-import { Client, CommandInteraction, MessageFlags, Events } from "discord.js";
+import {
+  Client,
+  CommandInteraction,
+  MessageFlags,
+  Events,
+  Interaction,
+} from "discord.js";
 import { Command } from "./types/command";
-import config from "@src/config";
-import logInteraction from "@src/logInteractions";
+import { Middleware, NextMiddleware } from "./types/middleware";
+
+import logInteractionMiddleware from "./middlewares/logInteractionMiddleware";
+import textSpeedMiddleware from "./middlewares/textSpeedMiddleware";
+
+const middlewares: Middleware[] = [
+  logInteractionMiddleware,
+  textSpeedMiddleware,
+];
 
 export const setupInteractions = async (
   client: Client,
-  commands: Record<string, Command<CommandInteraction>>
+  commands: Record<string, Command<CommandInteraction | any>>
 ) => {
-  // Set up command handling
   client.on(Events.InteractionCreate, async (interaction) => {
-    if (config.logInteractions?.logInteractions) {
-      logInteraction(interaction);
-    }
+    let middlewareIndex = 0;
+    const next: NextMiddleware = async () => {
+      if (middlewareIndex < middlewares.length) {
+        const currentMiddleware = middlewares[middlewareIndex];
+        middlewareIndex++;
+        await currentMiddleware(interaction, next);
+      } else {
+        if (interaction.isChatInputCommand()) {
+          const command = commands[interaction.commandName];
+          if (!command || typeof command.execute !== "function") {
+            console.error(
+              `Chat command not found or execute function missing: ${interaction.commandName}`
+            );
+            if (!interaction.replied && !interaction.deferred) {
+              await interaction.reply({
+                content: "Command not found or improperly configured.",
+                flags: MessageFlags.Ephemeral,
+              });
+            } else {
+              await interaction.editReply(
+                "Command not found or improperly configured."
+              );
+            }
+            return;
+          }
+          try {
+            await command.execute(interaction);
+          } catch (error) {
+            console.error(
+              `Error executing chat command ${interaction.commandName}:`,
+              error
+            );
+            if (!interaction.replied && !interaction.deferred) {
+              await interaction.reply({
+                content: "There was an error executing this command.",
+                flags: MessageFlags.Ephemeral,
+              });
+            } else {
+              await interaction.editReply(
+                "There was an error executing this command."
+              );
+            }
+          }
+        } else if (interaction.isAutocomplete()) {
+          const command = commands[interaction.commandName];
+          if (!command || typeof command.execute !== "function") {
+            console.error(
+              `Autocomplete requested for command not found or missing execute: ${interaction.commandName}`
+            );
+            return await interaction.respond([]);
+          }
+          try {
+            await command.execute(interaction);
+          } catch (error) {
+            console.error(
+              `Error handling autocomplete for command ${interaction.commandName}:`,
+              error
+            );
+            await interaction.respond([]);
+          }
+        }
+        // Add other interaction types here if needed (e.g., isButton(), isModalSubmit())
+        // else {
+        //     // Unhandled interaction type, maybe log or ignore
+        //     console.warn(`Unhandled interaction type: ${interaction.type}`);
+        // }
+      }
+    };
 
-    if (interaction.isChatInputCommand()) {
-      const command = commands[interaction.commandName];
-      if (!command) {
-        console.error(
-          `Command not found: ${interaction.commandName}\nInteraction: ${interaction}`
-        );
-        interaction.reply({
-          content: "Command not found.",
-          flags: MessageFlags.Ephemeral,
-        });
-      }
-      try {
-        await command.execute(interaction);
-      } catch (error) {
-        console.error(error);
-        await interaction.reply({
-          content: "There was an error executing this command",
-          flags: MessageFlags.Ephemeral,
-        });
-      }
-    } else if (interaction.isAutocomplete()) {
-      const command = commands[interaction.commandName];
-      if (!command || !command.autocomplete) {
-        console.error(
-          `Command not found or autocomplete not defined: ${interaction.commandName}\nInteraction: ${interaction}`
-        );
-        return await interaction.respond([]);
-      }
-
-      try {
-        await command.autocomplete(interaction);
-      } catch (error) {
-        console.error(error);
-        await interaction.respond([]);
-      }
-    } else {
-      return;
-    }
+    await next();
   });
 };
