@@ -11,8 +11,6 @@ import { handlePlayerPreferences } from "./playerHandlers/preferencesHandler";
 import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 import { CHAR_OPTIONS, MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
 
-
-
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
     .setName("tcg-player")

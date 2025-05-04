@@ -11,7 +11,10 @@ export const a_charge = new Card({
   description: ([dmg]) => `HP-5. DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} charged ahead!`, TCGThread.Gameroom);
 
@@ -26,7 +29,10 @@ const earPiercingScream = new Card({
   description: ([def]) => `HP-2. Opponent's DEF-${def}.`,
   emoji: CardEmoji.ENERGY,
   effects: [5],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
@@ -50,7 +56,10 @@ const hide = new Card({
   emoji: CardEmoji.SHIELD,
   effects: [20],
   priority: 2,
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} made a quick retreat!`,
@@ -81,7 +90,10 @@ export const a_roomCollapse = new Card({
   emoji: CardEmoji.PUNCH,
   effects: [40],
   cardMetadata: { nature: Nature.Attack, signature: true },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} collapsed the ceiling!`,

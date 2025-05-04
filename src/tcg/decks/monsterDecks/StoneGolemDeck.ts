@@ -12,7 +12,10 @@ export const a_rockTomb = new Card({
   description: ([dmg, spd]) => `HP-3. DMG ${dmg}. Opponent's SPD-${spd}`,
   emoji: CardEmoji.PUNCH,
   effects: [10, 5],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
@@ -36,7 +39,10 @@ const crystalize = new Card({
   emoji: CardEmoji.SHIELD,
   priority: 2,
   effects: [30],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} crystalizes ${character.cosmetic.pronouns.reflexive}!`,
@@ -72,7 +78,10 @@ const a_crusher = new Card({
   description: ([dmg, spd]) => `HP-5. DMG ${dmg}. Opponent's SPD-${spd}.`,
   emoji: CardEmoji.PUNCH,
   effects: [15, 7],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(

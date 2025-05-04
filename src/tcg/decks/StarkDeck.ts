@@ -17,7 +17,10 @@ const a_axeSwipe = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361125002761605140/IMG_3109.gif?ex=680829f1&is=6806d871&hm=ae00597c479d370662a52ae4f04cb024103354b0c758c483ff09946a0c1288ec&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} swiped ${character.cosmetic.pronouns.possessive} axe!`,
@@ -42,7 +45,10 @@ const offensiveStance = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361122664416018593/IMG_3106.gif?ex=680827c3&is=6806d643&hm=d6fdc758cc5b780bad809f674a6d3bf88f19ff038136bd96dca94e7c09ce18ed&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} took an offensive stance!`,
@@ -82,7 +88,10 @@ const defensiveStance = new Card({
   emoji: CardEmoji.STARK_CARD,
   effects: [2, 1],
   tags: { Resolve: 1 },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} took a defensive stance!`,
@@ -125,7 +134,10 @@ const jumboBerrySpecialBreak = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360990957671153826/IMG_3099.gif?ex=680855da&is=6807045a&hm=7b11f297c0dc63b3bd8e9e19d7b7cb316001a389454bd05213d99686879f4f3c&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} chowed down on a Jumbo Berry Special!`,
@@ -175,7 +187,10 @@ export const block = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360996196788867283/IMG_3102.gif?ex=68085abb&is=6807093b&hm=0602a1a0ef9278e1544911aa3e5b873617d0ab8cdd84c958c62e94f162bfe111&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} prepares to block an attack!`,
@@ -210,7 +225,10 @@ const concentration = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360979639362781304/IMG_3087.gif?ex=68084b4f&is=6806f9cf&hm=98d20b75a63aca3116965b33fac4adac213feaefa4895cf0751976527dd483a0&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} concentrates on the battle.`,
@@ -234,7 +252,10 @@ const a_ordensSlashTechnique = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361187449522356324/IMG_3119.gif?ex=68086419&is=68071299&hm=f010c6a8f3b17eb25cdb15c8605dfb69ea06a323b0ca5aaed2484cce741ed4e6&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} used Orden's Slash Technique!`,
@@ -261,7 +282,10 @@ const fearBroughtMeThisFar = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360983005946183957/IMG_3091.gif?ex=68084e72&is=6806fcf2&hm=5e9453189ccb1c31a4def06862e8dc7d2468c471eff0f8faa63d6288c8127c6c&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name}'s hands can't stop shaking, but ${character.name} is determined.`,
@@ -294,7 +318,10 @@ const a_eisensAxeCleave = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361191191533719602/IMG_3110.gif?ex=68086795&is=68071615&hm=e80ebb6c7098f7f020cc5a67819287df12f6ea5fa9427231382b6a8b026f3e47&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     if (character.name === CharacterName.Stark) {
       messageCache.push(
@@ -328,7 +355,10 @@ export const a_lightningStrike = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
 
     if (character.adjustStat(-1 * this.hpCost, StatsEnum.HP)) {

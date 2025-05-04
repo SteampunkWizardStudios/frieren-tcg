@@ -352,7 +352,7 @@ export const tcgMain = async (
             TCGThread.Gameroom
           );
           if (card.cosmetic?.cardGif) {
-			// look into discord's new media components from components v2 for this
+            // look into discord's new media components from components v2 for this
             messageCache.push(
               `[⠀](${card.cosmetic?.cardGif})`,
               TCGThread.Gameroom
