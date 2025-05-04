@@ -23,7 +23,7 @@ const calculateEffectValue = (baseValue: number, empowerLevel: number) => {
  * @param {number} characterIndex - The index of the character using the card or effect
  * @returns The GameContext object with context-specific methods and properties for use in game actions
  */
-export default function gameContextProvider(
+export function gameContextProvider(
   this: Card,
   game: Game,
   characterIndex: number
@@ -149,8 +149,9 @@ export default function gameContextProvider(
     opponentStat,
     flatOpponentStat,
 
-    // game
+    // game and character index
     game,
+    characterIndex,
   };
 }
 
