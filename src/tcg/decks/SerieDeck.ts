@@ -49,7 +49,7 @@ export const a_livingGrimoireOffenseCommon = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(context);
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -69,7 +69,7 @@ export const a_livingGrimoireOffenseRare = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(context);
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -89,7 +89,7 @@ export const a_livingGrimoireOffenseUnusual = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(context);
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -109,7 +109,7 @@ export const a_livingGrimoireUtilityTactics = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(context);
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -129,7 +129,7 @@ export const a_livingGrimoireUtilityRecovery = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(context);
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
