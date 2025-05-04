@@ -11,10 +11,7 @@ import TimedEffect from "../timedEffect";
 import { fieldOfFlower } from "./FrierenDeck";
 import { CardEmoji } from "../formatting/emojis";
 import { ancientBarrierMagic } from "./utilDecks/serieSignature";
-import {
-  gameAndMessageContext,
-  GameMessageContext,
-} from "../gameContextProvider";
+import { GameMessageContext } from "../gameContextProvider";
 
 const useRandomCard = function (props: {
   cardPool: Card[];
@@ -52,14 +49,7 @@ export const a_livingGrimoireOffenseCommon = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(
-      gameAndMessageContext.call(
-        newCard,
-        context.game,
-        context.messageCache,
-        context.characterIndex
-      )
-    );
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -79,14 +69,7 @@ export const a_livingGrimoireOffenseRare = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(
-      gameAndMessageContext.call(
-        newCard,
-        context.game,
-        context.messageCache,
-        context.characterIndex
-      )
-    );
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -106,14 +89,7 @@ export const a_livingGrimoireOffenseUnusual = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(
-      gameAndMessageContext.call(
-        newCard,
-        context.game,
-        context.messageCache,
-        context.characterIndex
-      )
-    );
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -133,14 +109,7 @@ export const a_livingGrimoireUtilityTactics = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(
-      gameAndMessageContext.call(
-        newCard,
-        context.game,
-        context.messageCache,
-        context.characterIndex
-      )
-    );
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -160,14 +129,7 @@ export const a_livingGrimoireUtilityRecovery = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(
-      gameAndMessageContext.call(
-        newCard,
-        context.game,
-        context.messageCache,
-        context.characterIndex
-      )
-    );
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 

@@ -149,9 +149,8 @@ export function gameContextProvider(
     opponentStat,
     flatOpponentStat,
 
-    // game and character index
+    // game
     game,
-    characterIndex,
   };
 }
 
@@ -173,8 +172,16 @@ export function gameAndMessageContext(
   messageCache: MessageCache,
   characterIndex: number
 ) {
+  /**
+   * Takes a new card and recreate the context bound to the new card
+   * @param {Card} newCard - The new card to use for the context
+   */
+  const duplicateContext = (newCard: Card) =>
+    gameAndMessageContext.call(newCard, game, messageCache, characterIndex);
+
   return {
     ...gameContextProvider.call(this, game, characterIndex),
     ...messageContext(messageCache),
+    duplicateContext,
   };
 }
