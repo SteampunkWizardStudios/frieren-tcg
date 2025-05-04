@@ -18,11 +18,8 @@ const a_regurgitate = new Card({
   description: () => `Use a random offensive spell at Empower level -2`,
   emoji: CardEmoji.SERIE_CARD,
   effects: [],
-  cardAction: function (
-    this: Card,
-    context: GameMessageContext,
-  ) {
-	const { self: character, messageCache } = context;
+  cardAction: function (this: Card, context: GameMessageContext) {
+    const { self: character, messageCache } = context;
     messageCache.push(
       `${character.name} regurgitated a spell it stole from a mage it munched on.`,
       TCGThread.Gameroom

@@ -1,5 +1,6 @@
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import prismaClient from "../../../prisma/client";
+import type { Character } from "@prisma/client";
 
 export const getOrCreateCharacters = async (
   characterNames: CharacterName[]
@@ -20,3 +21,16 @@ export const getOrCreateCharacters = async (
     );
   });
 };
+
+export async function findCharacterByName(
+  name: string
+): Promise<Character | null> {
+  return prismaClient.character.findFirst({
+    where: {
+      name: {
+        equals: name,
+        mode: "insensitive",
+      },
+    },
+  });
+}

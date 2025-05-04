@@ -22,6 +22,17 @@ model Player {
   matchesAsLoser     Match[]            @relation("Loser")
   characterMasteries CharacterMastery[] @relation("PlayerCharacterMastery")
   ladderRanks        LadderRank[]       @relation("PlayerLadderRank")
+
+  preferences PlayerPreferences?
+}
+
+model PlayerPreferences {
+  id       Int    @id @default(autoincrement())
+  playerId Int    @unique
+  player   Player @relation(fields: [playerId], references: [id])
+
+  tcgTextSpeed        Int         @default(1500)
+  favouriteCharacters Character[] @relation("PlayerFavouriteCharacters")
 }
 
 model LadderRank {
@@ -55,15 +66,16 @@ model LadderReset {
   ladderId Int
   ladder   Ladder @relation(fields: [ladderId], references: [id])
 
-  startDate DateTime @default(now())
-  endDate DateTime?
+  startDate DateTime  @default(now())
+  endDate   DateTime?
 
   matches     Match[]
   ladderRanks LadderRank[]
 }
 
 model Match {
-  id Int @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
+  threadId String @default("")
 
   ladderResetId Int
   ladderReset   LadderReset @relation(fields: [ladderResetId], references: [id])
@@ -73,10 +85,10 @@ model Match {
   winnerCharacterId Int
   winnerCharacter   Character @relation("WinnerCharacter", fields: [winnerCharacterId], references: [id])
 
-  loserId           Int
-  loser             Player    @relation("Loser", fields: [loserId], references: [id])
-  loserCharacterId  Int
-  loserCharacter    Character @relation("LoserCharacter", fields: [loserCharacterId], references: [id])
+  loserId          Int
+  loser            Player    @relation("Loser", fields: [loserId], references: [id])
+  loserCharacterId Int
+  loserCharacter   Character @relation("LoserCharacter", fields: [loserCharacterId], references: [id])
 
   finishedAt DateTime @default(now())
 }
@@ -88,6 +100,8 @@ model Character {
   characterMasteries CharacterMastery[] @relation("CharacterMastery")
   winnerMatches      Match[]            @relation("WinnerCharacter")
   loserMatches       Match[]            @relation("LoserCharacter")
+
+  favouritedByPlayers PlayerPreferences[] @relation("PlayerFavouriteCharacters")
 }
 
 model CharacterMastery {

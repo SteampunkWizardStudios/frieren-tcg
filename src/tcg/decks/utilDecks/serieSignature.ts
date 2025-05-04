@@ -18,7 +18,10 @@ export const ancientBarrierMagic = new Card({
   cardMetadata: { nature: Nature.Util, signature: true },
   effects: [5, 5, 5],
   hpCost: 5,
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} expanded an ancient barrier magic.`,

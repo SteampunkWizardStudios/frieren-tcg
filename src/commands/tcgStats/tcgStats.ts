@@ -6,16 +6,11 @@ import {
 } from "discord.js";
 import type { Command } from "../../types/command";
 import { GAME_SETTINGS } from "../tcgChallenge/gameHandler/gameSettings";
-import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 import { handleGlobalStats } from "./statsHandlers/globalStats";
 import { handleCharacterGlobalStats } from "./statsHandlers/characterLeaderboard";
 import { handleCharacterStats } from "./statsHandlers/characterStats";
 import handleAchievementLeaderboard from "./statsHandlers/achievementLeaderboard";
-
-const charOptions = Object.entries(CHARACTER_LIST).map(([, character]) => ({
-  name: character.name,
-  value: character.name,
-}));
+import { CHAR_OPTIONS } from "@src/constants";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -60,7 +55,7 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setName("character")
             .setDescription("Select the character to get stats for.")
             .setRequired(true)
-            .addChoices(charOptions)
+            .addChoices(CHAR_OPTIONS)
         )
     )
     .addSubcommand((subcommand) =>
@@ -81,7 +76,7 @@ export const command: Command<ChatInputCommandInteraction> = {
               "Select the character to get stats for, defaults to an overview."
             )
             .setRequired(false)
-            .addChoices(charOptions)
+            .addChoices(CHAR_OPTIONS)
         )
     ),
 
