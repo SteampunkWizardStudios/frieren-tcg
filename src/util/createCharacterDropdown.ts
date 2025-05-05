@@ -47,7 +47,7 @@ export const createCharacterDropdown = async (
     );
 
     sortedCharacters = CHARACTER_LIST.slice().sort((a, b) => {
-      const [isBfav, isAfav] = [a, b].map(({ name }) => favouritedCharacterNames.has(name));
+      const [isAfav, isBfav] = [a, b].map(({ name }) => favouritedCharacterNames.has(name));
 
       // Sort by favourited characters first, then alpabetically
       if (isAfav && !isBfav) return -1;
