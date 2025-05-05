@@ -31,8 +31,8 @@ export const Stark = new CharacterData({
   ability: {
     abilityName: "Bravest Coward",
     abilityEffectString: `Using attacks while your (Resolve) is negative reduces its DMG by 20%.
-        Using attacks with (Resolve) increases its DMG by 20%.
-        Every attack costs 1 (Resolve) unless stated otherwise.`,
+        Using attacks while your (Resolve) is positive increases its DMG by 20%.
+        Your attacks stay the same when your (Resolve) is 0.`,
     abilityAfterOwnCardUse: function (
       game,
       characterIndex,

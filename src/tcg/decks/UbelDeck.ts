@@ -153,8 +153,6 @@ export const rushdown = new Card({
         },
       })
     );
-
-    character.timedEffects.push();
   },
 });
 
@@ -215,8 +213,6 @@ const slowdown = new Card({
         },
       })
     );
-
-    character.timedEffects.push();
   },
 });
 

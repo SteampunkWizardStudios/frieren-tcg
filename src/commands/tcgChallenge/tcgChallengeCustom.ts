@@ -6,6 +6,7 @@ import {
 } from "discord.js";
 import type { Command } from "../../types/command";
 import { initiateChallengeRequest } from "./gameHandler/initiateChallengeRequest";
+import { MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -41,8 +42,8 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setDescription(
           "What the delay between game messages should be in ms. Defaults to 1500ms."
         )
-        .setMinValue(100)
-        .setMaxValue(3000)
+        .setMinValue(MIN_TEXT_SPEED)
+        .setMaxValue(MAX_TEXT_SPEED)
         .setRequired(false)
     ),
 
@@ -58,8 +59,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       const revealHand = interaction.options.getBoolean("reveal-hand") ?? false;
       const revealDraw =
         interaction.options.getBoolean("reveal-active-card") ?? false;
-      const textSpeedMs =
-        interaction.options.getInteger("text_speed_ms") ?? 1500;
+      const textSpeedMs = interaction.options.getInteger("text_speed_ms");
 
       initiateChallengeRequest({
         interaction,

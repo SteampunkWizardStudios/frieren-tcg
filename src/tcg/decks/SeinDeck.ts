@@ -18,7 +18,10 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361022845664104740/GIF_0907854706.gif?ex=6807cacc&is=6806794c&hm=c4c3d7908005bbcd23defb42f4c9b756135c8a5c1726330d0a52495998ec2c53&",
   },
   effects: [5],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     if (character.name === CharacterName.Sein) {
       messageCache.push(
@@ -52,7 +55,10 @@ export const a_trustInYourAllyFernsBarrage = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361022927788834966/GIF_2294206836.gif?ex=6807cae0&is=68067960&hm=ca32887d358b3c43ad2d4c5618373b8cab1a11d0acdcc496a7203544936a9244&",
   },
   effects: [3],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     if (character.name === CharacterName.Sein) {
       messageCache.push(
@@ -108,7 +114,10 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
   },
   effects: [7],
   priority: -1,
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     if (character.name === CharacterName.Sein) {
       messageCache.push(
@@ -144,7 +153,10 @@ export const mugOfBeer = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361017071886012681/GIF_3575013087.gif?ex=6807c56c&is=680673ec&hm=1e20739be8a75140974b9babb65729cf83c31d4f3d991bc35c90207fda41cd34&",
   },
   effects: [6, 2],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} downed a mug of beer.`,
@@ -176,7 +188,10 @@ export const smokeBreak = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361017954392866997/3.2.1.sein.gif?ex=6807c63e&is=680674be&hm=110488d337d86b35ac2b84cfec08e01c070a3ecb4563ccdfb3c1df602c5249f9&",
   },
   effects: [3, 2, 2],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} took a smoke break.`,
@@ -211,7 +226,10 @@ export const awakening = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361016482263208137/GIF_1188387197.gif?ex=6807c4df&is=6806735f&hm=f5ed7c521144db3412cf1a52b1417497950c1adf96d45301ff7421b5a75d8ca7&",
   },
   effects: [2, 1, 2],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(`${character.name} used Awakening!`, TCGThread.Gameroom);
 
@@ -242,7 +260,10 @@ export const poisonCure = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361016416488390776/GIF_0966802288.gif?ex=6807c4d0&is=68067350&hm=2d09267ccc0505a949b0c57e6c9bb84fc99decb89d35637cadced435723f5904&",
   },
   effects: [10],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} applied a poison cure.`,
@@ -269,7 +290,10 @@ export const braceYourself = new Card({
   },
   priority: 2,
   effects: [20],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     if (character.name === CharacterName.Sein) {
       messageCache.push(
@@ -313,7 +337,10 @@ export const a_threeSpearsOfTheGoddess = new Card({
   },
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [7],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.characters[characterIndex];
     messageCache.push(
       `${character.name} used Three Spears of the Goddess!`,

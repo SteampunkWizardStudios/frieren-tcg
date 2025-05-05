@@ -16,7 +16,10 @@ export const a_fernZoltraak = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364355690780557404/GIF_4110295150.gif?ex=680a0781&is=6808b601&hm=4aa279af5d5b3ae167099775570328a51c55d8572aac6369a9748565b950f8a1&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
 
@@ -47,7 +50,10 @@ export const a_fernBarrage = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/2RAJbNpiLI4AAAAd/tenor.gif",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} initiated her barrage!`,
@@ -133,7 +139,10 @@ const a_fernConcentratedZoltraakSnipe = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364357151111385098/GIF_1619936813.gif?ex=6809601d&is=68080e9d&hm=d315925c27f678c96ed238bcc826abd1c209e5e1dae651b445b7fa4760e0cf09&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} sniped at the opponent!`,
@@ -169,7 +178,10 @@ const disapprovingPout = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/V1ad9v260E8AAAAd/tenor.gif",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     messageCache.push(
@@ -195,7 +207,10 @@ export const manaConcealment = new Card({
     `ATK+${atk}. DEF+${def}. Receive Priority+1 and additional 50% Pierce on attacks for next turn.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [1, 2],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} conceals ${character.cosmetic.pronouns.possessive} presence.`,
@@ -253,7 +268,10 @@ export const spellToCreateManaButterflies = new Card({
   },
   emoji: CardEmoji.FERN_CARD,
   effects: [6, 2],
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} conjured a field of mana butterflies.`,
@@ -307,7 +325,10 @@ export const commonDefensiveMagic = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364255159529767005/GIF_2894655091.gif?ex=68090120&is=6807afa0&hm=e81b702e207fea882babeffd4b376e8db66a1afac7b19191892b3e6e29a9772c&",
   },
-  cardAction: function (this: Card, { game, selfIndex: characterIndex, messageCache }) {
+  cardAction: function (
+    this: Card,
+    { game, selfIndex: characterIndex, messageCache }
+  ) {
     const character = game.getCharacter(characterIndex);
     messageCache.push(
       `${character.name} put up a common defensive spell.`,

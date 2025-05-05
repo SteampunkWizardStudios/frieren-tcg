@@ -112,15 +112,13 @@ export const hairBarrier = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, name, possessive, reflexive, selfStat, sendToGameroom }
+    { self, name, possessive, reflexive, selfStat, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(
       `${name} surrounded ${reflexive} in ${possessive} hair barrier!`
     );
 
-    const def = this.calculateEffectValue(this.effects[0]);
-    self.adjustStat(def, StatsEnum.DEF);
-
+    const def = calcEffect(0);
     selfStat(0, StatsEnum.DEF);
 
     self.timedEffects.push(

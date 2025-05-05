@@ -8,6 +8,8 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 
+const STILLE_REFLECT_SCALE = 0.75;
+
 const stilleStats = new Stats({
   [StatsEnum.HP]: 20.0,
   [StatsEnum.ATK]: 1.0,
@@ -35,7 +37,7 @@ export const Stille = new CharacterData({
     abilityName: "High-speed Escape",
     abilityEffectString: `When the opponent attacks, roll a D100. 
         If the result is less than the character's SPD minus the opponent's SPD, ignore the attack.
-        Afterwards, attack the opponent with DMG equivalent to (opponent's ATK + opponent's move DMG).
+        Afterwards, attack the opponent with DMG equivalent to ${(STILLE_REFLECT_SCALE * 100).toFixed(0)}% of (opponent's ATK + opponent's move DMG).
         
         **Sub-Ability: Birdwatching** - Both characters don't have access to default card options (Discard/Wait).`,
     abilityStartOfTurnEffect: (
@@ -91,7 +93,8 @@ export const Stille = new CharacterData({
         );
         game.attack({
           attackerIndex: characterIndex,
-          damage: opponent.stats.stats.ATK + attackDamage,
+          damage:
+            STILLE_REFLECT_SCALE * (opponent.stats.stats.ATK + attackDamage),
           isTimedEffectAttack: false,
         });
       }

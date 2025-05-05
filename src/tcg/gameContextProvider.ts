@@ -23,7 +23,7 @@ const calculateEffectValue = (baseValue: number, empowerLevel: number) => {
  * @param {number} characterIndex - The index of the character using the card or effect
  * @returns The GameContext object with context-specific methods and properties for use in game actions
  */
-export default function gameContextProvider(
+export function gameContextProvider(
   this: Card,
   game: Game,
   characterIndex: number
@@ -172,8 +172,16 @@ export function gameAndMessageContext(
   messageCache: MessageCache,
   characterIndex: number
 ) {
+  /**
+   * Takes a new card and recreate the context bound to the new card
+   * @param {Card} newCard - The new card to use for the context
+   */
+  const duplicateContext = (newCard: Card) =>
+    gameAndMessageContext.call(newCard, game, messageCache, characterIndex);
+
   return {
     ...gameContextProvider.call(this, game, characterIndex),
     ...messageContext(messageCache),
+    duplicateContext,
   };
 }

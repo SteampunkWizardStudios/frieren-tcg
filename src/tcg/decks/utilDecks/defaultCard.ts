@@ -72,7 +72,7 @@ export default class DefaultCards {
     effects: [],
     printEmpower: false,
     emoji: CardEmoji.RANDOM,
-	priority: 99,
+    priority: 99,
     cardAction: ({ game, selfIndex: characterIndex, name, sendToGameroom }) => {
       sendToGameroom(`${name} forfeited the game!`);
       game.additionalMetadata.forfeited[characterIndex] = true;
