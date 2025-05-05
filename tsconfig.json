@@ -115,6 +115,8 @@
     "paths": {
       "@src/*": ["./src/*"],
       "@tcg/*": ["./src/tcg/*"],
+      "@character/*": ["./src/tcg/characters/characterData/characters/*"],
+      "@deck/*": ["./src/tcg/deck/*"],
       "@prismaClient": ["./prisma/client"]
     }
   }

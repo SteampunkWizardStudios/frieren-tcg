@@ -1,10 +1,10 @@
-import Pronouns from "../../pronoun";
-import { CharacterName } from "../metadata/CharacterName";
-import { Ability } from "../../ability";
-import Stats from "../../stats";
-import Card from "../../card";
-import { CharacterAdditionalMetadata } from "../../additionalMetadata/characterAdditionalMetadata";
-import { CharacterEmoji } from "../../formatting/emojis";
+import Pronouns from "@tcg/pronoun";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import { Ability } from "@tcg/ability";
+import Stats from "@tcg/stats";
+import Card from "@tcg/card";
+import { CharacterAdditionalMetadata } from "@tcg/additionalMetadata/characterAdditionalMetadata";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
 
 export interface CharacterCosmetic {
   pronouns: Pronouns;
