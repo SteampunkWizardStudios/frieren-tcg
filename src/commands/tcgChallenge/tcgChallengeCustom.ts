@@ -4,7 +4,7 @@ import {
   MessageFlags,
   InteractionContextType,
 } from "discord.js";
-import type { Command } from "../../types/command";
+import type { Command } from "@src/types/command";
 import { initiateChallengeRequest } from "./gameHandler/initiateChallengeRequest";
 import { MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
 

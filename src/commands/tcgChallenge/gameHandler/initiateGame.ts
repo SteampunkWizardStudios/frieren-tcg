@@ -10,7 +10,7 @@ import {
   User,
 } from "discord.js";
 import { GameMode, GameSettings } from "./gameSettings";
-import { tcgMain } from "../../../tcgMain";
+import { tcgMain } from "@src/tcgMain";
 import { handleDatabaseOperationsWithResultEmbedSideEffect } from "./handleDatabaseOperations";
 import { CHARACTER_MAP } from "@tcg/characters/characterList";
 

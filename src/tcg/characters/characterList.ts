@@ -1,17 +1,17 @@
-import { Frieren } from "@character/Frieren";
-import { Sense } from "@character/Sense";
-import { Stille } from "@character/Stille";
-import { Serie } from "@character/Serie";
-import { Linie } from "@character/Linie";
-import { Sein } from "@character/Sein";
-import { Stark } from "@character/Stark";
-import { Laufen } from "@character/Laufen";
+import { Frieren } from "@characters/Frieren";
+import { Sense } from "@characters/Sense";
+import { Stille } from "@characters/Stille";
+import { Serie } from "@characters/Serie";
+import { Linie } from "@characters/Linie";
+import { Sein } from "@characters/Sein";
+import { Stark } from "@characters/Stark";
+import { Laufen } from "@characters/Laufen";
 import { CharacterData } from "@tcg/characters/characterData/characterData";
-import { Denken } from "@character/Denken";
-import { Himmel } from "@character/Himmel";
-import { Ubel } from "@character/Ubel";
+import { Denken } from "@characters/Denken";
+import { Himmel } from "@characters/Himmel";
+import { Ubel } from "@characters/Ubel";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
-import { Fern } from "@character/Fern";
+import { Fern } from "@characters/Fern";
 
 export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
   [CharacterName.Frieren]: Frieren,

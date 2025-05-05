@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
-import { statDetails } from "../../../tcg/formatting/emojis";
+import { statDetails } from "@tcg/formatting/emojis";
 import { sendInfoMessage } from "./util/sendInfoMessage";
 
 export async function showGameHowToPlay(

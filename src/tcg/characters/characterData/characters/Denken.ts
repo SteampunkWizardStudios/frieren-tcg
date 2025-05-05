@@ -1,8 +1,7 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
+import Stats, { StatsEnum } from "@tcg/stats";
 import { CharacterName } from "../../metadata/CharacterName";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import { CharacterEmoji } from "@tcg//formatting/emojis";
 import { denkenDeck } from "@tcg/decks/DenkenDeck";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import Pronouns from "@tcg/pronoun";

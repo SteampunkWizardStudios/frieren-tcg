@@ -1,7 +1,6 @@
 import { CharacterData } from "../characterData";
 import { serieDeck } from "../../../decks/SerieDeck";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
+import Stats, { StatsEnum } from "@tcg/stats";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";

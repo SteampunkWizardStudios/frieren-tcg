@@ -1,8 +1,7 @@
 import { CharacterData } from "../characterData";
 import { UbelHit } from "../../../additionalMetadata/characterAdditionalMetadata";
 import { ubelDeck, empathyFailureName } from "../../../decks/UbelDeck";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
+import Stats, { StatsEnum } from "@tcg/stats";
 import Game from "../../../game";
 import Card, { Nature } from "../../../card";
 import Rolls from "../../../util/rolls";

@@ -1,6 +1,5 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
+import Stats, { StatsEnum } from "@tcg/stats";
 import { seinDeck } from "../../../decks/SeinDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";

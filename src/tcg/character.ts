@@ -1,12 +1,12 @@
-import Stats, { StatsEnum } from "./stats";
-import Deck from "./deck";
-import Card from "./card";
-import TimedEffect from "./timedEffect";
-import { Ability } from "./ability";
-import { statDetails } from "./formatting/emojis";
-import Rolls from "./util/rolls";
-import { CharacterAdditionalMetadata } from "./additionalMetadata/characterAdditionalMetadata";
-import DefaultCards from "./decks/utilDecks/defaultCard";
+import Stats, { StatsEnum } from "@tcg/stats";
+import Deck from "@tcg/deck";
+import Card from "@tcg/card";
+import TimedEffect from "@tcg/timedEffect";
+import { Ability } from "@tcg/ability";
+import { statDetails } from "@tcg/formatting/emojis";
+import Rolls from "@tcg/util/rolls";
+import { CharacterAdditionalMetadata } from "@tcg/additionalMetadata/characterAdditionalMetadata";
+import DefaultCards from "@decks/utilDecks/defaultCard";
 import {
   CharacterCosmetic,
   CharacterData,

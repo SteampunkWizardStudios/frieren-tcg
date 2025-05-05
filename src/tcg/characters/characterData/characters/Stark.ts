@@ -1,9 +1,9 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
+import Stats, { StatsEnum } from "@tcg/stats";
 import { starkDeck } from "../../../decks/StarkDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import Pronouns from "@src/tcg/pronoun";
 
 const starkStats = new Stats({
   [StatsEnum.HP]: 120.0,
@@ -16,7 +16,7 @@ const starkStats = new Stats({
 export const Stark = new CharacterData({
   name: CharacterName.Stark,
   cosmetic: {
-    pronouns: Pronouns.Masculine
+    pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.STARK,
     color: 0xb30c0c,
     imageUrl:

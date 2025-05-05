@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
-import { statDetails } from "../../../tcg/formatting/emojis";
+import { statDetails } from "@tcg/formatting/emojis";
 import { sendInfoMessage } from "./util/sendInfoMessage";
 import {
   serie_offensiveMagic_common,
@@ -7,10 +7,10 @@ import {
   serie_offensiveMagic_unusual,
   serie_utilityMagic_recovery,
   serie_utilityMagic_tactics,
-} from "../../../tcg/decks/utilDecks/serieMagic";
-import { SIGNATURE_MOVES_LIST } from "../../../tcg/decks/utilDecks/signatureMoves";
-import Card from "../../../tcg/card";
-import { characterNameToEmoji } from "../../../tcg/formatting/emojis";
+} from "@decks/utilDecks/serieMagic";
+import { SIGNATURE_MOVES_LIST } from "@decks/utilDecks/signatureMoves";
+import Card from "@tcg/card";
+import { characterNameToEmoji } from "@tcg/formatting/emojis";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 
 export enum AdvancedRulesSection {

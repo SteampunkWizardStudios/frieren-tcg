@@ -1,8 +1,7 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
+import Stats, { StatsEnum } from "@tcg/stats";
 import { CharacterName } from "../../metadata/CharacterName";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
 import { fernDeck } from "@tcg/decks/FernDeck";
 import Pronouns from "@tcg/pronoun";
 
