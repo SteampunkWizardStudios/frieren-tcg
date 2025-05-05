@@ -2,6 +2,7 @@ import { StringSelectMenuBuilder, ActionRowBuilder } from "discord.js";
 import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 
 export default function characterSelect({
+  characterList = CHARACTER_LIST,
   includeRandom = false,
   includeOverview = false,
   customId = "character-select",
@@ -21,7 +22,7 @@ export default function characterSelect({
     .setCustomId(customId)
     .setPlaceholder("Select a Character")
     .addOptions(
-      CHARACTER_LIST.map((char, i) => ({
+      characterList.map((char, i) => ({
         label: char.name,
         value: nameValues ? char.name : `${i}`,
         emoji: char.cosmetic.emoji,
