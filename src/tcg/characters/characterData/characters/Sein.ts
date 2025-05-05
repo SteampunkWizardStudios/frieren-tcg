@@ -1,6 +1,6 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import { seinDeck } from "@decks/SeinDeck";
+import seinDeck from "@decks/SeinDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";

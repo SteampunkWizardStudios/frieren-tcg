@@ -689,7 +689,7 @@ export const a_realHeroSwing = new Card({
   },
 });
 
-export const himmelDeck = [
+const himmelDeck = [
   { card: a_FrierenNow, count: 1 },
   { card: a_FrierenStrikeTheirWeakpoint, count: 1 },
   { card: a_FrierenBackMeUp, count: 1 },
@@ -704,3 +704,5 @@ export const himmelDeck = [
   { card: a_extremeSpeed, count: 2 },
   { card: a_realHeroSwing, count: 1 },
 ];
+
+export default himmelDeck;

@@ -211,7 +211,7 @@ export const a_geisel = new Card({
   },
 });
 
-export const stilleDeck = [
+const stilleDeck = [
   { card: a_peck, count: 2 },
   { card: a_ironFeather, count: 3 },
   { card: hide, count: 2 },
@@ -220,3 +220,5 @@ export const stilleDeck = [
   { card: flyAway, count: 3 },
   { card: a_geisel, count: 2 },
 ];
+
+export default stilleDeck;

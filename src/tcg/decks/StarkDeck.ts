@@ -422,7 +422,7 @@ export const a_lightningStrike = new Card({
   },
 });
 
-export const starkDeck = [
+const starkDeck = [
   { card: a_axeSwipe, count: 2 },
   { card: offensiveStance, count: 2 },
   { card: defensiveStance, count: 2 },
@@ -434,3 +434,5 @@ export const starkDeck = [
   { card: a_eisensAxeCleave, count: 1 },
   { card: a_lightningStrike, count: 1 },
 ];
+
+export default starkDeck;

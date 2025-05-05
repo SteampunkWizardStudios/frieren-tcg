@@ -367,7 +367,7 @@ export const empathy = new Card({
   },
 });
 
-export const ubelDeck = [
+const ubelDeck = [
   { card: a_reelseiden, count: 3 },
   { card: a_cleave, count: 2 },
   { card: a_dismantle, count: 2 },
@@ -378,3 +378,5 @@ export const ubelDeck = [
   { card: sorganeil, count: 1 },
   { card: empathy, count: 1 },
 ];
+
+export default ubelDeck;

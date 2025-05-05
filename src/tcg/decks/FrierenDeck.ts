@@ -246,7 +246,7 @@ export const a_theHeightOfMagic = new Card({
   },
 });
 
-export const frierenDeck = [
+const frierenDeck = [
   { card: a_zoltraak, count: 2 },
   { card: a_judradjim, count: 2 },
   { card: a_vollzanbel, count: 2 },
@@ -256,3 +256,5 @@ export const frierenDeck = [
   { card: fieldOfFlower, count: 2 },
   { card: a_theHeightOfMagic, count: 1 },
 ];
+
+export default frierenDeck;

@@ -361,7 +361,7 @@ export const commonDefensiveMagic = new Card({
   },
 });
 
-export const fernDeck = [
+const fernDeck = [
   { card: a_fernZoltraak, count: 3 },
   { card: a_fernBarrage, count: 2 },
   { card: a_fernConcentratedZoltraakSnipe, count: 2 },
@@ -371,3 +371,5 @@ export const fernDeck = [
   { card: commonDefensiveMagic, count: 2 },
   { card: spellToCreateManaButterflies, count: 2 },
 ];
+
+export default fernDeck;

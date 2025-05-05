@@ -300,7 +300,7 @@ export const a_erfassenKnife = new Card({
   },
 });
 
-export const linieDeck = [
+const linieDeck = [
   { card: imitate, count: 2 },
   { card: adapt, count: 2 },
   { card: manaDetection, count: 2 },
@@ -310,3 +310,5 @@ export const linieDeck = [
   { card: a_erfassenSword, count: 2 },
   { card: a_erfassenKnife, count: 2 },
 ];
+
+export default linieDeck;

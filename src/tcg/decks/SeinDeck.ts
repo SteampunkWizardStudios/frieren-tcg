@@ -375,7 +375,7 @@ export const a_threeSpearsOfTheGoddess = new Card({
   },
 });
 
-export const seinDeck = [
+const seinDeck = [
   { card: a_trustInYourAllyFrierensZoltraak, count: 2 },
   { card: a_trustInYourAllyStarksLightningStrike, count: 2 },
   { card: a_trustInYourAllyFernsBarrage, count: 2 },
@@ -386,3 +386,5 @@ export const seinDeck = [
   { card: braceYourself, count: 2 },
   { card: a_threeSpearsOfTheGoddess, count: 1 },
 ];
+
+export default seinDeck;

@@ -217,7 +217,7 @@ export const a_piercingDrill = new Card({
   },
 });
 
-export const senseDeck = [
+const senseDeck = [
   { card: a_hairWhip, count: 2 },
   { card: sharpen, count: 2 },
   { card: rest, count: 1 },
@@ -227,3 +227,5 @@ export const senseDeck = [
   { card: teaParty, count: 2 },
   { card: a_piercingDrill, count: 2 },
 ];
+
+export default senseDeck;

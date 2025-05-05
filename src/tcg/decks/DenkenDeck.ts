@@ -516,7 +516,7 @@ export const thisIsNoPlaceToGiveUp = new Card({
   },
 });
 
-export const denkenDeck = [
+const denkenDeck = [
   { card: a_jab, count: 2 },
   { card: a_hook, count: 2 },
   { card: a_uppercut, count: 2 },
@@ -528,3 +528,5 @@ export const denkenDeck = [
   { card: a_concentratedOffensiveMagicZoltraak, count: 2 },
   { card: thisIsNoPlaceToGiveUp, count: 1 },
 ];
+
+export default denkenDeck;

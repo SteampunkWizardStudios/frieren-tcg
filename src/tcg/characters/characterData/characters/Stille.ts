@@ -1,5 +1,5 @@
 import { CharacterData } from "../characterData";
-import { stilleDeck } from "@decks/StilleDeck";
+import stilleDeck from "@decks/StilleDeck";
 import Stats, { StatsEnum } from "@tcg/stats";
 import Rolls from "@tcg/util/rolls";
 import { CharacterName } from "../../metadata/CharacterName";

@@ -1,6 +1,6 @@
 import { CharacterData } from "../characterData";
 import { UbelHit } from "@tcg/additionalMetadata/characterAdditionalMetadata";
-import { ubelDeck, empathyFailureName } from "@decks/UbelDeck";
+import ubelDeck, { empathyFailureName } from "@decks/UbelDeck";
 import Stats, { StatsEnum } from "@tcg/stats";
 import Game from "@tcg/game";
 import Card, { Nature } from "@tcg/card";

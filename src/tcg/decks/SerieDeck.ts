@@ -242,7 +242,7 @@ export const unbreakableBarrier = new Card({
   },
 });
 
-export const serieDeck = [
+const serieDeck = [
   { card: a_livingGrimoireOffenseCommon, count: 3 },
   { card: a_livingGrimoireOffenseRare, count: 2 },
   { card: a_livingGrimoireOffenseUnusual, count: 1 },
@@ -254,3 +254,5 @@ export const serieDeck = [
   { card: unbreakableBarrier, count: 2 },
   { card: ancientBarrierMagic, count: 1 },
 ];
+
+export default serieDeck;

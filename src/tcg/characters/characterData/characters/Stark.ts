@@ -1,6 +1,6 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import { starkDeck } from "@decks/StarkDeck";
+import starkDeck from "@decks/StarkDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@src/tcg/pronoun";

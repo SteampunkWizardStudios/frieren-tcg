@@ -296,7 +296,7 @@ export const jilwer = new Card({
   },
 });
 
-export const laufenDeck = [
+const laufenDeck = [
   { card: a_staffStrike, count: 2 },
   { card: a_staffBash, count: 2 },
   { card: a_whip, count: 2 },
@@ -306,3 +306,5 @@ export const laufenDeck = [
   { card: parry, count: 2 },
   { card: jilwer, count: 2 },
 ];
+
+export default laufenDeck;

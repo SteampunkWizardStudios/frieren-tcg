@@ -1,6 +1,6 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import { frierenDeck } from "@decks/FrierenDeck";
+import frierenDeck from "@decks/FrierenDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import TimedEffect from "@tcg/timedEffect";
 import Game from "@tcg/game";
