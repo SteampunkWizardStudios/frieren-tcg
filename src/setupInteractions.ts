@@ -1,9 +1,4 @@
-import {
-  Client,
-  CommandInteraction,
-  MessageFlags,
-  Events,
-} from "discord.js";
+import { Client, CommandInteraction, MessageFlags, Events } from "discord.js";
 import { Command } from "@src/types/command";
 import { Middleware, NextMiddleware } from "@src/types/middleware";
 

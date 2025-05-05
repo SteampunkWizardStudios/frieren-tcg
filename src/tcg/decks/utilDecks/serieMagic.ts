@@ -41,7 +41,12 @@ import {
   sharpen,
   rest,
 } from "@decks/SenseDeck";
-import { a_cleave, a_dismantle, a_reelseiden, sorganeil } from "@decks/UbelDeck";
+import {
+  a_cleave,
+  a_dismantle,
+  a_reelseiden,
+  sorganeil,
+} from "@decks/UbelDeck";
 import { a_malevolentShrine } from "./ubelSignature";
 
 export const serie_offensiveMagic_common = [

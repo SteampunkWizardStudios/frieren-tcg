@@ -12,7 +12,7 @@ import {
 import { GameMode, GameSettings } from "./gameSettings";
 import { tcgMain } from "@src/tcgMain";
 import { handleDatabaseOperationsWithResultEmbedSideEffect } from "./handleDatabaseOperations";
-import { CHARACTER_MAP } from "@tcg/characters/characterList";
+import { charWithEmoji } from "@tcg/formatting/emojis";
 
 export const initiateGame = async (
   interaction: ChatInputCommandInteraction,
@@ -82,12 +82,12 @@ export const initiateGame = async (
         opponentThread.members.remove(opponent.id),
       ]);
 
-      const challengerEmoji = challengerCharacter
-        ? `${CHARACTER_MAP[challengerCharacter].cosmetic.emoji} `
-        : "";
-      const opponentEmoji = opponentCharacter
-        ? `${CHARACTER_MAP[opponentCharacter].cosmetic.emoji} `
-        : "";
+      const challengerCharFormatted = challengerCharacter
+        ? charWithEmoji(challengerCharacter)
+        : "Unselected";
+      const opponentCharFormatted = opponentCharacter
+        ? charWithEmoji(opponentCharacter)
+        : "Unselected";
 
       let resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
@@ -96,7 +96,7 @@ export const initiateGame = async (
         )
         .setFields({
           name: "Characters",
-          value: `${challenger} as ${challengerEmoji}${challengerCharacter}\n${opponent} as ${opponentEmoji}${opponentCharacter}`,
+          value: `${challenger} as ${challengerCharFormatted}\n${opponent} as ${opponentCharFormatted}`,
         })
         .setFooter({
           text: `Game ID: ${gameId}`,
