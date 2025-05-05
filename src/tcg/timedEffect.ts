@@ -9,7 +9,7 @@ export interface TimedEffectProps {
   executeEndOfTimedEffectActionOnRemoval?: boolean;
   priority?: number;
   tags?: Record<string, number>;
-  metadata?: Partial<TimedEffectMetadata>;
+  metadata?: TimedEffectMetadata;
   // TODO: change to a GameContext arg
   endOfTurnAction?: (
     game: Game,
