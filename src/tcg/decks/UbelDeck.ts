@@ -246,7 +246,7 @@ export const defend = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         turnDuration: 1,
         priority: -1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -292,7 +292,7 @@ export const sorganeil = new Card({
 
     const newTimedEffects: TimedEffect[] = [];
     opponent.timedEffects.map((timedEffect) => {
-      if (!timedEffect.removableBySorganeil) {
+      if (!timedEffect.metadata.removableBySorganeil) {
         newTimedEffects.push(timedEffect);
       }
       if (
@@ -314,7 +314,7 @@ export const sorganeil = new Card({
         description: `Cannot miss next turn's attack`,
         turnDuration: 2,
         priority: -1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze. ${opponent.name} got free from ${character.name}'s Sorganeil.`,
