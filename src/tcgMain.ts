@@ -142,12 +142,18 @@ export const tcgMain = async (
 
   [challengerSelection, opponentSelection].forEach((selection, i) => {
     const username = i === 0 ? challenger.displayName : opponent.displayName;
-    let message = `## ${username} selected ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
-    if (selection.selectionType === CharacterSelectionType.Random) {
-      message = `## ${username} rolled the dice and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
-    }
-    if (selection.selectionType === CharacterSelectionType.FavouriteRandom) {
-      message = `## ${username} rolled the dice from their favourite characters and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+    let message: string;
+
+    switch (selection.selectionType) {
+      case CharacterSelectionType.Random:
+        message = `## ${username} rolled the dice and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+        break;
+      case CharacterSelectionType.FavouriteRandom:
+        message = `## ${username} rolled the dice from their favourite characters and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+        break;
+      default:
+        message = `## ${username} selected ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+        break;
     }
 
     messageCache.push(message, TCGThread.Gameroom);

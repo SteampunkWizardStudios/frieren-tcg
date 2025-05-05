@@ -104,7 +104,9 @@ export const getPlayerCharacter = async (
                   );
 
                   const favSelectedCharacter = favouriteCharacters[favIndex];
-                  index = findIndex(CHARACTER_LIST, favSelectedCharacter);
+                  const isCharacter = (c: CharacterData) =>
+                    c.name === favSelectedCharacter.name;
+                  index = CHARACTER_LIST.findIndex(isCharacter);
                   selectionType = CharacterSelectionType.FavouriteRandom;
                 }
               } else {
@@ -187,12 +189,3 @@ export const getPlayerCharacter = async (
     }
   });
 };
-
-function findIndex<T>(arr: T[], val: T) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === val) {
-      return i;
-    }
-  }
-  return -1;
-}
