@@ -1,5 +1,5 @@
-import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
-import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import { characterNameToEmoji } from "@tcg/formatting/emojis";
 import { ColorResolvable, EmbedBuilder } from "discord.js";
 import { rankEmotes } from "@src/util/formatting/statsEmotes";
 

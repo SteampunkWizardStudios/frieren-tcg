@@ -1,6 +1,6 @@
 import prismaClient from "@prismaClient";
-import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
-import type { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { CHARACTER_MAP } from "@tcg/characters/characterList";
+import type { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { findCharacterByName } from "@src/util/db/getCharacter";
 import {
   addFavouriteCharacter,

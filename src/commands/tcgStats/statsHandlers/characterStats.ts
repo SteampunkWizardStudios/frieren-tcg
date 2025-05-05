@@ -1,8 +1,8 @@
 import { ComponentType, EmbedBuilder, RepliableInteraction } from "discord.js";
 import prismaClient from "@prismaClient";
-import { characterNameToEmoji } from "@src/tcg/formatting/emojis";
-import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
-import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { characterNameToEmoji } from "@tcg/formatting/emojis";
+import { CHARACTER_MAP } from "@tcg/characters/characterList";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { getWinrate } from "@src/util/utils";
 import characterSelect from "@src/util/messageComponents/characterSelect";
 

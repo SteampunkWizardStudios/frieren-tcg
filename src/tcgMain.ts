@@ -20,7 +20,7 @@ import { printCharacter } from "./tcgChatInteractions/printCharacter";
 import TimedEffect from "./tcg/timedEffect";
 import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
 import { CharacterName } from "./tcg/characters/metadata/CharacterName";
-import { gameAndMessageContext } from "@src/tcg/gameContextProvider";
+import { gameAndMessageContext } from "@tcg/gameContextProvider";
 
 const TURN_LIMIT = 50;
 

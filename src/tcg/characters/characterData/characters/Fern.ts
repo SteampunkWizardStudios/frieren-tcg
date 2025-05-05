@@ -3,8 +3,8 @@ import Stats from "../../../stats";
 import { StatsEnum } from "../../../stats";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
-import { fernDeck } from "@src/tcg/decks/FernDeck";
-import Pronouns from "@src/tcg/pronoun";
+import { fernDeck } from "@tcg/decks/FernDeck";
+import Pronouns from "@tcg/pronoun";
 
 const imageUrl: Record<string, string> = {
   icon: "https://static.wikia.nocookie.net/frieren/images/6/65/Fern_anime_portrait.png/revision/latest?cb=20231017083448",

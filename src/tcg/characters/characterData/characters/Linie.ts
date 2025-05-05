@@ -6,7 +6,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
-import Pronouns from "@src/tcg/pronoun";
+import Pronouns from "@tcg/pronoun";
 
 const LINIE_CHAIN_BONUS = 0.07;
 

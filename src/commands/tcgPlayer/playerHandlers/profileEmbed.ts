@@ -7,7 +7,7 @@ import {
   getTotalCharacterPlayers,
 } from "./getRelativeRank";
 import { getRank } from "@src/commands/tcgChallenge/gameHandler/rankScoresToRankTitleMapping";
-import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import { CHARACTER_LIST } from "@tcg/characters/characterList";
 import { capitalizeFirstLetter } from "@src/util/utils";
 import prismaClient from "@prismaClient";
 

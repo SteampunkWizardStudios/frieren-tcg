@@ -6,8 +6,8 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import Game from "@src/tcg/game";
-import Pronouns from "@src/tcg/pronoun";
+import Game from "@tcg/game";
+import Pronouns from "@tcg/pronoun";
 
 const SERIE_TOYING_DAMAGE_BONUS = 0.3;
 

@@ -4,7 +4,7 @@ import CommonCardAction from "../util/commonCardActions";
 import TimedEffect from "../timedEffect";
 import { CardEmoji } from "../formatting/emojis";
 import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
-import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { MessageCache } from "@tcgChatInteractions/messageCache";
 import Game from "../game";
 import { CharacterName } from "../characters/metadata/CharacterName";
 

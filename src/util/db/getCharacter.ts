@@ -1,4 +1,4 @@
-import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import prismaClient from "../../../prisma/client";
 import type { Character } from "@prisma/client";
 

@@ -7,8 +7,8 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
-import Game from "@src/tcg/game";
-import Pronouns from "@src/tcg/pronoun";
+import Game from "@tcg/game";
+import Pronouns from "@tcg/pronoun";
 
 const laufenStats = new Stats({
   [StatsEnum.HP]: 90.0,

@@ -9,8 +9,8 @@ import {
   LazyPaginatedMessage,
   PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
-import { charWithEmoji } from "@src/tcg/formatting/emojis";
-import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { charWithEmoji } from "@tcg/formatting/emojis";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { buildThreadLink } from "@src/util/formatting/links";
 
 const PAGE_SIZE = 10;

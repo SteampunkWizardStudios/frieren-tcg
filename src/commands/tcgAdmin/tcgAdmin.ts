@@ -13,7 +13,7 @@ import {
 import type { Command } from "../../types/command";
 import handleAchievementAutocomplete from "./achievementHandler/handleAchievementAutocomplete";
 import handleGrantAchievement from "./achievementHandler/handleGrantAchievement";
-import { ProgressBarBuilder } from "@src/tcg/formatting/percentBar";
+import { ProgressBarBuilder } from "@tcg/formatting/percentBar";
 import config from "@src/config";
 import { isTextChannel } from "@sapphire/discord.js-utilities";
 import {

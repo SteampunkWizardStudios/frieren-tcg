@@ -4,7 +4,7 @@ import {
   TextDisplayBuilder,
   SeparatorBuilder,
 } from "discord.js";
-import { CharacterEmoji, CardEmoji } from "@src/tcg/formatting/emojis";
+import { CharacterEmoji, CardEmoji } from "@tcg/formatting/emojis";
 
 export default async function showEmojiList(
   interaction: ChatInputCommandInteraction

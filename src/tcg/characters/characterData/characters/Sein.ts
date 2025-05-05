@@ -6,7 +6,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
-import Pronouns from "@src/tcg/pronoun";
+import Pronouns from "@tcg/pronoun";
 
 const SEIN_BASE_HEALING = 2;
 const SEIN_HEALING_RAMP = 0.1;

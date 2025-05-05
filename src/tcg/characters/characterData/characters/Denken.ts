@@ -3,9 +3,9 @@ import Stats from "../../../stats";
 import { StatsEnum } from "../../../stats";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
-import { denkenDeck } from "@src/tcg/decks/DenkenDeck";
+import { denkenDeck } from "@tcg/decks/DenkenDeck";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
-import Pronouns from "@src/tcg/pronoun";
+import Pronouns from "@tcg/pronoun";
 
 const DENKEN_PRESERVERANCE_COUNT = 3;
 export const DENKEN_DEATH_HP = -50;

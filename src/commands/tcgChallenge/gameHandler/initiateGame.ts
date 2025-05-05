@@ -12,7 +12,7 @@ import {
 import { GameMode, GameSettings } from "./gameSettings";
 import { tcgMain } from "../../../tcgMain";
 import { handleDatabaseOperationsWithResultEmbedSideEffect } from "./handleDatabaseOperations";
-import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
+import { CHARACTER_MAP } from "@tcg/characters/characterList";
 
 export const initiateGame = async (
   interaction: ChatInputCommandInteraction,

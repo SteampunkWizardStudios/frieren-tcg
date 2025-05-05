@@ -114,6 +114,7 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "paths": {
       "@src/*": ["./src/*"],
+      "@tcg/*": ["./src/tcg/*"],
       "@prismaClient": ["./prisma/client"]
     }
   }

@@ -9,7 +9,7 @@ import Card from "../../../card";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
-import Pronouns from "@src/tcg/pronoun";
+import Pronouns from "@tcg/pronoun";
 
 const ANALYSIS_BOOST = 0.05;
 const ANALYSIS_STACK_CAP = 20;

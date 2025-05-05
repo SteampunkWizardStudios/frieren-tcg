@@ -11,7 +11,7 @@ import {
 import { SIGNATURE_MOVES_LIST } from "../../../tcg/decks/utilDecks/signatureMoves";
 import Card from "../../../tcg/card";
 import { characterNameToEmoji } from "../../../tcg/formatting/emojis";
-import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 
 export enum AdvancedRulesSection {
   EmpowermentAndEffectCalculation = "Empowerment and Effect Calculation",

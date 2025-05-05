@@ -11,8 +11,8 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
-import { GameMessageContext } from "@src/tcg/gameContextProvider";
-import Pronouns from "@src/tcg/pronoun";
+import { GameMessageContext } from "@tcg/gameContextProvider";
+import Pronouns from "@tcg/pronoun";
 
 const PIERCE_FACTOR = 1.0;
 

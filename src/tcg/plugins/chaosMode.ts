@@ -1,4 +1,4 @@
-import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { TCGThread } from "@tcgChatInteractions/sendGameMessage";
 import { GamePlugin } from "../gamePlugin";
 
 export const EmpoweredMode: GamePlugin = {
