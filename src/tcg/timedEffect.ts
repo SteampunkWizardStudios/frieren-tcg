@@ -31,11 +31,11 @@ export interface TimedEffectProps {
 }
 
 type TimedEffectMetadata = {
-  removableBySorganeil: boolean;
-};
-
-const defaultMetadata: TimedEffectMetadata = {
-  removableBySorganeil: true,
+  removableBySorganeil?: boolean;
+  waldgoseDamage?: number;
+  barrage?: number
+  partyMember?: "Frieren" | "Eisen" | "Heiter",
+  ubelSpeedModifiers?: number;
 };
 
 export default class TimedEffect {
@@ -78,7 +78,7 @@ export default class TimedEffect {
       props.activateEndOfTurnActionThisTurn ?? true;
     this.executeEndOfTimedEffectActionOnRemoval =
       props.executeEndOfTimedEffectActionOnRemoval ?? false;
-    this.metadata = { ...defaultMetadata, ...props.metadata };
+    this.metadata = props.metadata ?? {};
     this.tags = props.tags ?? {};
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
