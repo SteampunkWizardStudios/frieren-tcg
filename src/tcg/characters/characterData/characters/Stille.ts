@@ -7,6 +7,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import Pronouns from "@src/tcg/pronoun";
 
 const STILLE_REFLECT_SCALE = 0.75;
 
@@ -21,11 +22,7 @@ const stilleStats = new Stats({
 export const Stille = new CharacterData({
   name: CharacterName.Stille,
   cosmetic: {
-    pronouns: {
-      personal: "it",
-      possessive: "its",
-      reflexive: "itself",
-    },
+    pronouns: Pronouns.Impersonal,
     emoji: CharacterEmoji.STILLE,
     color: 0xe74c3c,
     imageUrl:

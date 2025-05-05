@@ -8,6 +8,7 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import Game from "@src/tcg/game";
+import Pronouns from "@src/tcg/pronoun";
 
 const laufenStats = new Stats({
   [StatsEnum.HP]: 90.0,
@@ -20,11 +21,7 @@ const laufenStats = new Stats({
 export const Laufen = new CharacterData({
   name: CharacterName.Laufen,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.LAUFEN,
     color: 0xcf7457,
     imageUrl:

@@ -4,6 +4,7 @@ import { StatsEnum } from "../../../stats";
 import { himmelDeck } from "../../../decks/HimmelDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import Pronouns from "@src/tcg/pronoun";
 
 const HIMMEL_HERO_PARTY_DAMAGE_BONUS = 0.15;
 
@@ -22,11 +23,7 @@ const himmelStats = new Stats({
 export const Himmel = new CharacterData({
   name: CharacterName.Himmel,
   cosmetic: {
-    pronouns: {
-      personal: "he",
-      possessive: "his",
-      reflexive: "himself",
-    },
+    pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.HIMMEL,
     color: 0xb4c9e7,
     imageUrl: imageUrl.icon,

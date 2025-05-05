@@ -6,6 +6,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
+import Pronouns from "@src/tcg/pronoun";
 // import config from "@src/config";
 
 // config module not found for some reason
@@ -25,11 +26,7 @@ const senseStats = new Stats({
 export const Sense = new CharacterData({
   name: CharacterName.Sense,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.SENSE,
     color: 0xb6a493,
     imageUrl:

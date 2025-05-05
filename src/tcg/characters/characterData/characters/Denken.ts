@@ -5,6 +5,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import { denkenDeck } from "@src/tcg/decks/DenkenDeck";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import Pronouns from "@src/tcg/pronoun";
 
 const DENKEN_PRESERVERANCE_COUNT = 3;
 export const DENKEN_DEATH_HP = -50;
@@ -20,11 +21,7 @@ const denkenStats = new Stats({
 export const Denken = new CharacterData({
   name: CharacterName.Denken,
   cosmetic: {
-    pronouns: {
-      personal: "he",
-      possessive: "his",
-      reflexive: "himself",
-    },
+    pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.DENKEN,
     color: 0x82574f,
     imageUrl:

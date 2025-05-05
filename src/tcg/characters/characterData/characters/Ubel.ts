@@ -12,6 +12,7 @@ import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import { GameMessageContext } from "@src/tcg/gameContextProvider";
+import Pronouns from "@src/tcg/pronoun";
 
 const PIERCE_FACTOR = 1.0;
 
@@ -119,11 +120,7 @@ function wrapEmpathizedCard(
 export const Ubel = new CharacterData({
   name: CharacterName.Ubel,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.UBEL,
     color: 0x3c5502,
     imageUrl:

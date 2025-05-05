@@ -6,6 +6,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import Pronouns from "@src/tcg/pronoun";
 
 const SEIN_BASE_HEALING = 2;
 const SEIN_HEALING_RAMP = 0.1;
@@ -27,11 +28,7 @@ const seinStats = new Stats({
 export const Sein = new CharacterData({
   name: CharacterName.Sein,
   cosmetic: {
-    pronouns: {
-      personal: "he",
-      possessive: "his",
-      reflexive: "himself",
-    },
+    pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.SEIN,
     color: 0xa3caca,
     imageUrl: imageUrl.vangerisuCardVer,

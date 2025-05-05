@@ -9,6 +9,7 @@ import Card from "../../../card";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import Pronouns from "@src/tcg/pronoun";
 
 const ANALYSIS_BOOST = 0.05;
 const ANALYSIS_STACK_CAP = 20;
@@ -39,11 +40,7 @@ const afterAttackEffect = function (
 export const Frieren = new CharacterData({
   name: CharacterName.Frieren,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FRIEREN,
     color: 0xc5c3cc,
     imageUrl: imageUrl.vangerisuCardVer,

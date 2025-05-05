@@ -4,6 +4,7 @@ import { StatsEnum } from "../../../stats";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "../../../formatting/emojis";
 import { fernDeck } from "@src/tcg/decks/FernDeck";
+import Pronouns from "@src/tcg/pronoun";
 
 const imageUrl: Record<string, string> = {
   icon: "https://static.wikia.nocookie.net/frieren/images/6/65/Fern_anime_portrait.png/revision/latest?cb=20231017083448",
@@ -20,11 +21,7 @@ const fernStats = new Stats({
 export const Fern = new CharacterData({
   name: CharacterName.Fern,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FERN,
     color: 0x8e528e,
     imageUrl: imageUrl.icon,

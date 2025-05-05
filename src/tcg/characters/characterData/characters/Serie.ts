@@ -7,6 +7,7 @@ import { CharacterEmoji } from "../../../formatting/emojis";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import Game from "@src/tcg/game";
+import Pronouns from "@src/tcg/pronoun";
 
 const SERIE_TOYING_DAMAGE_BONUS = 0.3;
 
@@ -38,11 +39,7 @@ const afterAttackEffect = function (
 export const Serie = new CharacterData({
   name: CharacterName.Serie,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.SERIE,
     color: 0xe8b961,
     imageUrl: imageUrl.vangerisuCardVer,

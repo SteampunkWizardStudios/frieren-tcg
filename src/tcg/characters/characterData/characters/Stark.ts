@@ -16,11 +16,7 @@ const starkStats = new Stats({
 export const Stark = new CharacterData({
   name: CharacterName.Stark,
   cosmetic: {
-    pronouns: {
-      personal: "he",
-      possessive: "his",
-      reflexive: "himself",
-    },
+    pronouns: Pronouns.Masculine
     emoji: CharacterEmoji.STARK,
     color: 0xb30c0c,
     imageUrl:

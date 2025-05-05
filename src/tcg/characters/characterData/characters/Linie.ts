@@ -6,6 +6,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
 import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "../../../formatting/emojis";
+import Pronouns from "@src/tcg/pronoun";
 
 const LINIE_CHAIN_BONUS = 0.07;
 
@@ -20,11 +21,7 @@ const linieStats = new Stats({
 export const Linie = new CharacterData({
   name: CharacterName.Linie,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.LINIE,
     color: 0xf7c1b1,
     imageUrl:
