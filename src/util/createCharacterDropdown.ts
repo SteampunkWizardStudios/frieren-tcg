@@ -46,18 +46,15 @@ export const createCharacterDropdown = async (
       playerPreferrences.favouriteCharacters.map((fav) => fav.name)
     );
 
-    const favouritedOnly = [];
-    const nonFavouritedOnly = [];
+    sortedCharacters = CHARACTER_LIST.slice().sort((a, b) => {
+      const [isBfav, isAfav] = [a, b].map(({ name }) => favouritedCharacterNames.has(name));
 
-    for (const character of CHARACTER_LIST) {
-      if (favouritedCharacterNames.has(character.name)) {
-        favouritedOnly.push(character);
-      } else {
-        nonFavouritedOnly.push(character);
-      }
-    }
+      // Sort by favourited characters first, then alpabetically
+      if (isAfav && !isBfav) return -1;
+      if (!isAfav && isBfav) return 1;
 
-    sortedCharacters = favouritedOnly.concat(nonFavouritedOnly);
+      return a.name.localeCompare(b.name);
+    });
   }
 
   // Create the initial embed showing all characters
