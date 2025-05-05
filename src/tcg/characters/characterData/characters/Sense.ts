@@ -1,10 +1,10 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import { senseDeck } from "../../../decks/SenseDeck";
+import { senseDeck } from "@decks/SenseDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import { CharacterEmoji } from "../../../formatting/emojis";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import Pronouns from "@tcg/pronoun";
 // import config from "@src/config";
 

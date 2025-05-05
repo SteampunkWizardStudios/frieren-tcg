@@ -1,11 +1,11 @@
 import { CharacterData } from "../characterData";
-import { stilleDeck } from "../../../decks/StilleDeck";
+import { stilleDeck } from "@decks/StilleDeck";
 import Stats, { StatsEnum } from "@tcg/stats";
-import Rolls from "../../../util/rolls";
+import Rolls from "@tcg/util/rolls";
 import { CharacterName } from "../../metadata/CharacterName";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
 
 const STILLE_REFLECT_SCALE = 0.75;

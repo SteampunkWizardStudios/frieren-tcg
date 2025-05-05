@@ -1,10 +1,10 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import { linieDeck } from "../../../decks/LinieDeck";
+import { linieDeck } from "@decks/LinieDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
 
 const LINIE_CHAIN_BONUS = 0.07;

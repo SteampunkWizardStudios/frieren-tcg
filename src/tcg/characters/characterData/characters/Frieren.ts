@@ -1,13 +1,13 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import { frierenDeck } from "../../../decks/FrierenDeck";
+import { frierenDeck } from "@decks/FrierenDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import TimedEffect from "../../../timedEffect";
-import Game from "../../../game";
-import Card from "../../../card";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import TimedEffect from "@tcg/timedEffect";
+import Game from "@tcg/game";
+import Card from "@tcg/card";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
 
 const ANALYSIS_BOOST = 0.05;

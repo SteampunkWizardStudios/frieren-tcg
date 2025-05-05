@@ -2,7 +2,7 @@ import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
-import { fernDeck } from "@tcg/decks/FernDeck";
+import { fernDeck } from "@decks/FernDeck";
 import Pronouns from "@tcg/pronoun";
 
 const imageUrl: Record<string, string> = {

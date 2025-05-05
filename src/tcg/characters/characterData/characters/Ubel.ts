@@ -1,15 +1,15 @@
 import { CharacterData } from "../characterData";
-import { UbelHit } from "../../../additionalMetadata/characterAdditionalMetadata";
-import { ubelDeck, empathyFailureName } from "../../../decks/UbelDeck";
+import { UbelHit } from "@tcg/additionalMetadata/characterAdditionalMetadata";
+import { ubelDeck, empathyFailureName } from "@decks/UbelDeck";
 import Stats, { StatsEnum } from "@tcg/stats";
-import Game from "../../../game";
-import Card, { Nature } from "../../../card";
-import Rolls from "../../../util/rolls";
-import Character from "../../../character";
+import Game from "@tcg/game";
+import Card, { Nature } from "@tcg/card";
+import Rolls from "@tcg/util/rolls";
+import Character from "@tcg/character";
 import { CharacterName } from "../../metadata/CharacterName";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
 import { GameMessageContext } from "@tcg/gameContextProvider";
 import Pronouns from "@tcg/pronoun";
 

@@ -2,7 +2,7 @@ import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "@tcg//formatting/emojis";
-import { denkenDeck } from "@tcg/decks/DenkenDeck";
+import { denkenDeck } from "@decks/DenkenDeck";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import Pronouns from "@tcg/pronoun";
 

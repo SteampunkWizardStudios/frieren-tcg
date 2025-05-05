@@ -1,8 +1,8 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import { himmelDeck } from "../../../decks/HimmelDeck";
+import { himmelDeck } from "@decks/HimmelDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
 
 const HIMMEL_HERO_PARTY_DAMAGE_BONUS = 0.15;
