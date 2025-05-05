@@ -286,7 +286,7 @@ export const sorganeil = new Card({
     const opponentOriginalSpeed = opponent.stats.stats.SPD;
     opponent.setStat(1, StatsEnum.SPD);
     messageCache.push(
-      `${character.name} traps ${opponent.name} in ${character.name}'s gaze!`,
+      `${character.name} traps ${opponent.name} in ${character.cosmetic.pronouns.possessive} gaze!`,
       TCGThread.Gameroom
     );
 
