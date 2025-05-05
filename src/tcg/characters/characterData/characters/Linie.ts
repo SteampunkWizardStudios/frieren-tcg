@@ -17,7 +17,7 @@ const linieStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Linie = new CharacterData({
+const Linie = new CharacterData({
   name: CharacterName.Linie,
   cosmetic: {
     pronouns: Pronouns.Feminine,
@@ -63,3 +63,5 @@ export const Linie = new CharacterData({
     },
   },
 });
+
+export default Linie;

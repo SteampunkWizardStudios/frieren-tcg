@@ -18,7 +18,7 @@ const stilleStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Stille = new CharacterData({
+const Stille = new CharacterData({
   name: CharacterName.Stille,
   cosmetic: {
     pronouns: Pronouns.Impersonal,
@@ -100,3 +100,5 @@ export const Stille = new CharacterData({
     accessToDefaultCardOptions: false,
   },
 });
+
+export default Stille;

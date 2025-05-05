@@ -17,7 +17,7 @@ const fernStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Fern = new CharacterData({
+const Fern = new CharacterData({
   name: CharacterName.Fern,
   cosmetic: {
     pronouns: Pronouns.Feminine,
@@ -58,3 +58,5 @@ export const Fern = new CharacterData({
     fernBarrage: 0,
   },
 });
+
+export default Fern;

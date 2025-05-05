@@ -36,7 +36,7 @@ const afterAttackEffect = function (
   character.setStat(0, StatsEnum.Ability);
 };
 
-export const Frieren = new CharacterData({
+const Frieren = new CharacterData({
   name: CharacterName.Frieren,
   cosmetic: {
     pronouns: Pronouns.Feminine,
@@ -123,3 +123,5 @@ export const Frieren = new CharacterData({
     defenderDamageScaling: 1,
   },
 });
+
+export default Frieren;

@@ -35,7 +35,7 @@ const afterAttackEffect = function (
   }
 };
 
-export const Serie = new CharacterData({
+const Serie = new CharacterData({
   name: CharacterName.Serie,
   cosmetic: {
     pronouns: Pronouns.Feminine,
@@ -92,3 +92,5 @@ export const Serie = new CharacterData({
     serieToyingTurn: false,
   },
 });
+
+export default Serie;

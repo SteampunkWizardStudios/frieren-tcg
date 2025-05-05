@@ -19,7 +19,7 @@ const himmelStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Himmel = new CharacterData({
+const Himmel = new CharacterData({
   name: CharacterName.Himmel,
   cosmetic: {
     pronouns: Pronouns.Masculine,
@@ -53,3 +53,5 @@ export const Himmel = new CharacterData({
     },
   },
 });
+
+export default Himmel;

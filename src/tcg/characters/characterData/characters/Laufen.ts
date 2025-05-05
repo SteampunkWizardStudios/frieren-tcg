@@ -17,7 +17,7 @@ const laufenStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Laufen = new CharacterData({
+const Laufen = new CharacterData({
   name: CharacterName.Laufen,
   cosmetic: {
     pronouns: Pronouns.Feminine,
@@ -81,3 +81,5 @@ export const Laufen = new CharacterData({
     },
   },
 });
+
+export default Laufen;

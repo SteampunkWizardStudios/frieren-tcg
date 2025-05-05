@@ -13,7 +13,7 @@ const starkStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Stark = new CharacterData({
+const Stark = new CharacterData({
   name: CharacterName.Stark,
   cosmetic: {
     pronouns: Pronouns.Masculine,
@@ -52,3 +52,5 @@ export const Stark = new CharacterData({
     },
   },
 });
+
+export default Stark;

@@ -22,7 +22,7 @@ const senseStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Sense = new CharacterData({
+const Sense = new CharacterData({
   name: CharacterName.Sense,
   cosmetic: {
     pronouns: Pronouns.Feminine,
@@ -99,3 +99,5 @@ export const Sense = new CharacterData({
     senseTeaTimeStacks: 0,
   },
 });
+
+export default Sense;

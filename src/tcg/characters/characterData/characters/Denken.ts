@@ -17,7 +17,7 @@ const denkenStats = new Stats({
   [StatsEnum.Ability]: DENKEN_PRESERVERANCE_COUNT,
 });
 
-export const Denken = new CharacterData({
+const Denken = new CharacterData({
   name: CharacterName.Denken,
   cosmetic: {
     pronouns: Pronouns.Masculine,
@@ -59,3 +59,5 @@ export const Denken = new CharacterData({
     },
   },
 });
+
+export default Denken;

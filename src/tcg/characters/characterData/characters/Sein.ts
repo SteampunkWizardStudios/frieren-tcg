@@ -24,7 +24,7 @@ const seinStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Sein = new CharacterData({
+const Sein = new CharacterData({
   name: CharacterName.Sein,
   cosmetic: {
     pronouns: Pronouns.Masculine,
@@ -68,3 +68,5 @@ export const Sein = new CharacterData({
     overheal: true,
   },
 });
+
+export default Sein;

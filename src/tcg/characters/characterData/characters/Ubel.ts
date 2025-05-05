@@ -116,7 +116,7 @@ function wrapEmpathizedCard(
   );
 }
 
-export const Ubel = new CharacterData({
+const Ubel = new CharacterData({
   name: CharacterName.Ubel,
   cosmetic: {
     pronouns: Pronouns.Feminine,
@@ -246,3 +246,5 @@ export const Ubel = new CharacterData({
     ubelSureHit: UbelHit.Regular,
   },
 });
+
+export default Ubel;
