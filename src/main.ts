@@ -27,6 +27,19 @@ async function main() {
     // Log in
     client.on(Events.ClientReady, () => {
       console.log(`Logged in as ${client.user?.tag}!`);
+
+      process.on("unhandledRejection", (reason, p) => {
+        console.warn(" [antiCrash] :: Unhandled Rejection/Catch");
+        console.error(reason, p);
+      });
+      process.on("uncaughtException", (err, origin) => {
+        console.warn(" [antiCrash] :: Uncaught Exception/Catch");
+        console.error(err, origin);
+      });
+      process.on("uncaughtExceptionMonitor", (err, origin) => {
+        console.warn(" [antiCrash] :: Uncaught Exception/Catch (MONITOR)");
+        console.error(err, origin);
+      });
     });
     await client.login(token);
   } catch (error) {
