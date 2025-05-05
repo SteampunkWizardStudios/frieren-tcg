@@ -85,6 +85,19 @@ export const command: Command<ChatInputCommandInteraction> = {
                 .addChoices(CHAR_OPTIONS)
             )
         )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName("restrict-random-to-favourites")
+            .setDescription("Restrict random character selection to favourites")
+            .addBooleanOption((option) =>
+              option
+                .setName("value")
+                .setDescription(
+                  "Restrict random character selection to favourites"
+                )
+                .setRequired(true)
+            )
+        )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {

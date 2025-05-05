@@ -1,4 +1,3 @@
-import prismaClient from "@prismaClient";
 import { CHARACTER_MAP } from "@tcg/characters/characterList";
 import type { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { findCharacterByName } from "@src/util/db/getCharacter";
@@ -6,23 +5,17 @@ import {
   addFavouriteCharacter,
   getOrCreatePlayerPreferences,
   removeFavouriteCharacter,
+  setRistrictRandomToFavourites,
   updateTcgTextSpeed,
 } from "@src/util/db/preferences";
 import { EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
+import { getPlayer } from "@src/util/db/getPlayer";
 
 export async function handlePlayerPreferences(
   interaction: ChatInputCommandInteraction
 ) {
   const preferenceAction = interaction.options.getSubcommand();
-  const player = await prismaClient.player.upsert({
-    where: {
-      discordId: interaction.user.id,
-    },
-    update: {},
-    create: {
-      discordId: interaction.user.id,
-    },
-  });
+  const player = await getPlayer(interaction.user.id);
 
   const playerId = player.id;
 
@@ -34,13 +27,15 @@ export async function handlePlayerPreferences(
           (char) => CHARACTER_MAP[char.name as CharacterName]
         );
         let response = "";
-        response += `Text Speed: ${preferences.tcgTextSpeed} ms\n`;
+        response += `Text Speed: \`${preferences.tcgTextSpeed} ms\`\n`;
 
         if (preferences.favouriteCharacters.length > 0) {
           response += `Favourite Characters: ${favouriteCharacterData.map((char) => `${char.cosmetic.emoji} ${char.name}`).join(", ")}\n`;
         } else {
           response += `Favourite Characters: None\n`;
         }
+
+        response += `Restrict Random to Favourites: \`${preferences.restrictRandomToFavourites ? "Yes" : "No"}\`\n`;
 
         await interaction.editReply({
           embeds: [
@@ -96,6 +91,14 @@ export async function handlePlayerPreferences(
         }
         break;
       }
+      case "restrict-random-to-favourites": {
+        const value = interaction.options.getBoolean("value", true);
+        await setRistrictRandomToFavourites(playerId, value);
+        await interaction.editReply({
+          content: `Your random character selection preference has been set to ${value ? "" : "not "}restricted to your favourite characters.`,
+        });
+        break;
+      }
 
       default:
         await interaction.editReply({
@@ -104,7 +107,6 @@ export async function handlePlayerPreferences(
     }
   } catch (error) {
     console.error("Error handling player preferences:", error);
-    // Use editReply since deferReply was already called
     await interaction.editReply({
       content: "An error occurred while managing your preferences.",
     });

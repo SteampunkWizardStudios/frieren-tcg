@@ -6,7 +6,10 @@ import {
 } from "discord.js";
 import { GameSettings } from "./commands/tcgChallenge/gameHandler/gameSettings";
 import Character from "@tcg/character";
-import { getPlayerCharacter } from "./tcgChatInteractions/getPlayerCharacter";
+import {
+  CharacterSelectionType,
+  getPlayerCharacter,
+} from "./tcgChatInteractions/getPlayerCharacter";
 import Game from "@tcg/game";
 import { MessageCache } from "./tcgChatInteractions/messageCache";
 import {
@@ -139,9 +142,14 @@ export const tcgMain = async (
 
   [challengerSelection, opponentSelection].forEach((selection, i) => {
     const username = i === 0 ? challenger.displayName : opponent.displayName;
-    const message = selection.wasRandom
-      ? `## ${username} rolled the dice and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`
-      : `## ${username} selected ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+    let message = `## ${username} selected ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+    if (selection.selectionType === CharacterSelectionType.Random) {
+      message = `## ${username} rolled the dice and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+    }
+    if (selection.selectionType === CharacterSelectionType.FavouriteRandom) {
+      message = `## ${username} rolled the dice from their favourite characters and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+    }
+
     messageCache.push(message, TCGThread.Gameroom);
   });
 

@@ -1,5 +1,7 @@
 import { PlayerPreferences, Character } from "@prisma/client";
 import prismaClient from "@prismaClient";
+import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
+import type { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 
 /**
  * Gets a player's preferences, including their favourite characters.
@@ -171,6 +173,119 @@ export async function removeFavouriteCharacter(
   } catch (error) {
     console.error(
       `Error removing favourite character ${characterId} for player ${playerId}:`,
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param playerId The ID of the player.
+ * @param characterIds The IDs of the characters to allow.
+ * @returns The updated {@link PlayerPreferences} object.
+ */
+export async function setAllowedRandomCharacters(
+  playerId: number,
+  characterIds: number[]
+) {
+  try {
+    const preferences = await prismaClient.playerPreferences.upsert({
+      where: { playerId },
+      update: {},
+      create: {
+        playerId,
+        allowedRandomCharacters: {
+          connect: characterIds.map((id) => ({ id })),
+        },
+      },
+    });
+
+    return preferences;
+  } catch (error) {
+    console.error(
+      `Error setting allowed random characters for player ${playerId}:`,
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param playerId The ID of the player.
+ * @returns {@link CharacterData[]} for the player's allowed random characters.
+ */
+export async function getAllowedRandomCharacters(playerId: number) {
+  try {
+    const preferences = await prismaClient.playerPreferences.findUnique({
+      where: { playerId },
+      select: {
+        allowedRandomCharacters: {
+          select: { name: true },
+        },
+      },
+    });
+
+    const chars = preferences?.allowedRandomCharacters ?? [];
+    return chars.map((char) => CHARACTER_MAP[char.name as CharacterName]);
+  } catch (error) {
+    console.error(
+      `Error getting allowed random characters for player ${playerId}:`,
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param playerId The ID of the player.
+ * @param newVal The new value for the restrictRandomToFavourites preference.
+ * @returns The updated {@link PlayerPreferences} object.
+ */
+export async function setRistrictRandomToFavourites(
+  playerId: number,
+  newVal: boolean
+) {
+  try {
+    const preferences = await prismaClient.playerPreferences.upsert({
+      where: { playerId },
+      update: { restrictRandomToFavourites: newVal },
+      create: {
+        playerId,
+        restrictRandomToFavourites: newVal,
+      },
+    });
+
+    return preferences;
+  } catch (error) {
+    console.error(
+      `Error setting restrict random to favourites for player ${playerId}:`,
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param playerId The ID of the player.
+ * @returns {@link PlayerPreferences} object for the player.
+ */
+export async function getRestrictRandomToFavourites(playerId: number) {
+  try {
+    const preferences = await prismaClient.playerPreferences.findUnique({
+      where: { playerId },
+      select: {
+        restrictRandomToFavourites: true,
+      },
+    });
+
+    return preferences?.restrictRandomToFavourites ?? false;
+  } catch (error) {
+    console.error(
+      `Error getting restrict random to favourites for player ${playerId}:`,
       error
     );
     throw error;
