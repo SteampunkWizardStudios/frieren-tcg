@@ -52,13 +52,4 @@ export const Himmel = new CharacterData({
         1 + HIMMEL_HERO_PARTY_DAMAGE_BONUS * character.timedEffects.length;
     },
   },
-  additionalMetadata: {
-    attackedThisTurn: false,
-    timedEffectAttackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    himmelEisenReadyToCounter: false,
-    defenderDamageScaling: 1,
-  },
 });

@@ -6,6 +6,15 @@ import Card from "@tcg/card";
 import { CharacterAdditionalMetadata } from "@tcg/additionalMetadata/characterAdditionalMetadata";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
 
+const defaultMetadata: CharacterAdditionalMetadata = {
+  manaSuppressed: false,
+  ignoreManaSuppressed: false,
+  attackedThisTurn: false,
+  timedEffectAttackedThisTurn: false,
+  accessToDefaultCardOptions: true,
+  defenderDamageScaling: 1,
+};
+
 export interface CharacterCosmetic {
   pronouns: Pronouns;
   emoji: CharacterEmoji;
@@ -19,7 +28,7 @@ export interface CharacterDataProps {
   stats: Stats;
   cards: { card: Card; count: number }[];
   ability: Ability;
-  additionalMetadata: CharacterAdditionalMetadata;
+  additionalMetadata?: Partial<CharacterAdditionalMetadata>;
 }
 
 export class CharacterData {
@@ -37,7 +46,10 @@ export class CharacterData {
     this.stats = characterDataProps.stats;
     this.cards = characterDataProps.cards;
     this.ability = characterDataProps.ability;
-    this.additionalMetadata = characterDataProps.additionalMetadata;
+    this.additionalMetadata = {
+      ...defaultMetadata,
+      ...characterDataProps.additionalMetadata,
+    };
   }
 
   clone(): CharacterData {

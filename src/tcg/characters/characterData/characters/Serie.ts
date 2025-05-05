@@ -88,10 +88,6 @@ export const Serie = new CharacterData({
   additionalMetadata: {
     manaSuppressed: true,
     ignoreManaSuppressed: true,
-    attackedThisTurn: false,
-    timedEffectAttackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    defenderDamageScaling: 1,
     serieToyingNextTurn: false,
     serieToyingTurn: false,
   },

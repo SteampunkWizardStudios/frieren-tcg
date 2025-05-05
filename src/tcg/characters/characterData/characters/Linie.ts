@@ -62,12 +62,4 @@ export const Linie = new CharacterData({
       }
     },
   },
-  additionalMetadata: {
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    attackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    timedEffectAttackedThisTurn: false,
-    defenderDamageScaling: 1,
-  },
 });

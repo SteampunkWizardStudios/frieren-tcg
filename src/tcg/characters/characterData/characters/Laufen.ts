@@ -80,12 +80,4 @@ export const Laufen = new CharacterData({
         (1 - grazeReduction) * evasionReduction;
     },
   },
-  additionalMetadata: {
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    attackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    timedEffectAttackedThisTurn: false,
-    defenderDamageScaling: 1,
-  },
 });

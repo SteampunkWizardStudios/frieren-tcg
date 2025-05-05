@@ -97,11 +97,6 @@ export const Stille = new CharacterData({
     },
   },
   additionalMetadata: {
-    attackedThisTurn: false,
-    timedEffectAttackedThisTurn: false,
     accessToDefaultCardOptions: false,
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    defenderDamageScaling: 1,
   },
 });

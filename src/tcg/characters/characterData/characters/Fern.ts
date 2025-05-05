@@ -55,10 +55,6 @@ export const Fern = new CharacterData({
   additionalMetadata: {
     manaSuppressed: true,
     ignoreManaSuppressed: true,
-    attackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    timedEffectAttackedThisTurn: false,
-    defenderDamageScaling: 1,
     fernBarrage: 0,
   },
 });
