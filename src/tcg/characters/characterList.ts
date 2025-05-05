@@ -1,31 +1,31 @@
+import { CharacterData } from "@tcg/characters/characterData/characterData";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import { Denken } from "@characters/Denken";
+import { Fern } from "@characters/Fern";
 import { Frieren } from "@characters/Frieren";
-import { Sense } from "@characters/Sense";
-import { Stille } from "@characters/Stille";
-import { Serie } from "@characters/Serie";
+import { Himmel } from "@characters/Himmel";
+import { Laufen } from "@characters/Laufen";
 import { Linie } from "@characters/Linie";
 import { Sein } from "@characters/Sein";
+import { Sense } from "@characters/Sense";
+import { Serie } from "@characters/Serie";
 import { Stark } from "@characters/Stark";
-import { Laufen } from "@characters/Laufen";
-import { CharacterData } from "@tcg/characters/characterData/characterData";
-import { Denken } from "@characters/Denken";
-import { Himmel } from "@characters/Himmel";
+import { Stille } from "@characters/Stille";
 import { Ubel } from "@characters/Ubel";
-import { CharacterName } from "@tcg/characters/metadata/CharacterName";
-import { Fern } from "@characters/Fern";
 
 export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
+  [CharacterName.Denken]: Denken,
+  [CharacterName.Fern]: Fern,
   [CharacterName.Frieren]: Frieren,
-  [CharacterName.Sense]: Sense,
-  [CharacterName.Stille]: Stille,
-  [CharacterName.Serie]: Serie,
+  [CharacterName.Himmel]: Himmel,
+  [CharacterName.Laufen]: Laufen,
   [CharacterName.Linie]: Linie,
   [CharacterName.Sein]: Sein,
+  [CharacterName.Sense]: Sense,
+  [CharacterName.Serie]: Serie,
   [CharacterName.Stark]: Stark,
-  [CharacterName.Laufen]: Laufen,
-  [CharacterName.Denken]: Denken,
-  [CharacterName.Himmel]: Himmel,
+  [CharacterName.Stille]: Stille,
   [CharacterName.Ubel]: Ubel,
-  [CharacterName.Fern]: Fern,
 } as const;
 
 export const CHARACTER_LIST: CharacterData[] = Object.values(CHARACTER_MAP);
