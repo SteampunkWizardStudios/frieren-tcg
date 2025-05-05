@@ -1,6 +1,6 @@
-import Game from "../game";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
+import Game from "@tcg/game";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
 
 export default class CommonCardAction {
   // common attack function that returns the attack's damage

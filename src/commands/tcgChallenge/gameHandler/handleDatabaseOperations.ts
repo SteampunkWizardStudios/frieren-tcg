@@ -6,7 +6,7 @@ import { getOrCreateCharacters } from "@src/util/db/getCharacter";
 import { getCharacterMasteries } from "@src/util/db/getCharacterMastery";
 import { getLadderRanks } from "@src/util/db/getLadderRank";
 import { getRank } from "./rankScoresToRankTitleMapping";
-import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { createMatch } from "@src/util/db/createMatch";
 import { getLatestLadderReset } from "@src/util/db/getLatestLadderReset";
 

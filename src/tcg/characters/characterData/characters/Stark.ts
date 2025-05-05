@@ -1,9 +1,9 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
-import { starkDeck } from "../../../decks/StarkDeck";
+import Stats, { StatsEnum } from "@tcg/stats";
+import starkDeck from "@decks/StarkDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import Pronouns from "@src/tcg/pronoun";
 
 const starkStats = new Stats({
   [StatsEnum.HP]: 120.0,
@@ -13,14 +13,10 @@ const starkStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Stark = new CharacterData({
+const Stark = new CharacterData({
   name: CharacterName.Stark,
   cosmetic: {
-    pronouns: {
-      personal: "he",
-      possessive: "his",
-      reflexive: "himself",
-    },
+    pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.STARK,
     color: 0xb30c0c,
     imageUrl:
@@ -55,12 +51,6 @@ export const Stark = new CharacterData({
       }
     },
   },
-  additionalMetadata: {
-    attackedThisTurn: false,
-    timedEffectAttackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    defenderDamageScaling: 1,
-  },
 });
+
+export default Stark;

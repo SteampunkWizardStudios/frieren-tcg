@@ -1,10 +1,10 @@
-import Card, { Nature } from "../card";
-import CommonCardAction from "../util/commonCardActions";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
-import Rolls from "../util/rolls";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
+import Rolls from "@tcg/util/rolls";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const a_peck = new Card({
   title: "Peck",
@@ -211,7 +211,7 @@ export const a_geisel = new Card({
   },
 });
 
-export const stilleDeck = [
+const stilleDeck = [
   { card: a_peck, count: 2 },
   { card: a_ironFeather, count: 3 },
   { card: hide, count: 2 },
@@ -220,3 +220,5 @@ export const stilleDeck = [
   { card: flyAway, count: 3 },
   { card: a_geisel, count: 2 },
 ];
+
+export default stilleDeck;

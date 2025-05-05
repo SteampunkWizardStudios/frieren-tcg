@@ -1,8 +1,8 @@
-import Card, { Nature } from "../card";
-import TimedEffect from "../timedEffect";
-import { StatsEnum } from "../stats";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import TimedEffect from "@tcg/timedEffect";
+import { StatsEnum } from "@tcg/stats";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 export const a_zoltraak = new Card({
   title: "Offensive Magic Analysis: Zoltraak",
@@ -246,7 +246,7 @@ export const a_theHeightOfMagic = new Card({
   },
 });
 
-export const frierenDeck = [
+const frierenDeck = [
   { card: a_zoltraak, count: 2 },
   { card: a_judradjim, count: 2 },
   { card: a_vollzanbel, count: 2 },
@@ -256,3 +256,5 @@ export const frierenDeck = [
   { card: fieldOfFlower, count: 2 },
   { card: a_theHeightOfMagic, count: 1 },
 ];
+
+export default frierenDeck;

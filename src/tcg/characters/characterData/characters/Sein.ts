@@ -1,11 +1,11 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
-import { seinDeck } from "../../../decks/SeinDeck";
+import Stats, { StatsEnum } from "@tcg/stats";
+import seinDeck from "@decks/SeinDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import Pronouns from "@tcg/pronoun";
 
 const SEIN_BASE_HEALING = 2;
 const SEIN_HEALING_RAMP = 0.1;
@@ -24,14 +24,10 @@ const seinStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Sein = new CharacterData({
+const Sein = new CharacterData({
   name: CharacterName.Sein,
   cosmetic: {
-    pronouns: {
-      personal: "he",
-      possessive: "his",
-      reflexive: "himself",
-    },
+    pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.SEIN,
     color: 0xa3caca,
     imageUrl: imageUrl.vangerisuCardVer,
@@ -69,12 +65,8 @@ export const Sein = new CharacterData({
     },
   },
   additionalMetadata: {
-    attackedThisTurn: false,
-    timedEffectAttackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
     overheal: true,
-    defenderDamageScaling: 1,
   },
 });
+
+export default Sein;

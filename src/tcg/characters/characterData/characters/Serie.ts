@@ -1,12 +1,12 @@
 import { CharacterData } from "../characterData";
-import { serieDeck } from "../../../decks/SerieDeck";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
+import serieDeck from "@decks/SerieDeck";
+import Stats, { StatsEnum } from "@tcg/stats";
 import { CharacterName } from "../../metadata/CharacterName";
-import { CharacterEmoji } from "../../../formatting/emojis";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import Game from "@src/tcg/game";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import Game from "@tcg/game";
+import Pronouns from "@tcg/pronoun";
 
 const SERIE_TOYING_DAMAGE_BONUS = 0.3;
 
@@ -35,14 +35,10 @@ const afterAttackEffect = function (
   }
 };
 
-export const Serie = new CharacterData({
+const Serie = new CharacterData({
   name: CharacterName.Serie,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.SERIE,
     color: 0xe8b961,
     imageUrl: imageUrl.vangerisuCardVer,
@@ -92,11 +88,9 @@ export const Serie = new CharacterData({
   additionalMetadata: {
     manaSuppressed: true,
     ignoreManaSuppressed: true,
-    attackedThisTurn: false,
-    timedEffectAttackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    defenderDamageScaling: 1,
     serieToyingNextTurn: false,
     serieToyingTurn: false,
   },
 });
+
+export default Serie;

@@ -1,7 +1,7 @@
-import Card, { Nature } from "../../card";
-import CommonCardAction from "../../util/commonCardActions";
-import { CardEmoji } from "../../formatting/emojis";
-import { TCGThread } from "../../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 export const a_malevolentShrine = new Card({
   title: "Reelseiden: Malevolent Shrine",

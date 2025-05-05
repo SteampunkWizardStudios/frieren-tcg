@@ -1,9 +1,9 @@
-import Card, { Nature } from "../card";
-import CommonCardAction from "../util/commonCardActions";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const a_staffStrike = new Card({
   title: "Staff Strike",
@@ -296,7 +296,7 @@ export const jilwer = new Card({
   },
 });
 
-export const laufenDeck = [
+const laufenDeck = [
   { card: a_staffStrike, count: 2 },
   { card: a_staffBash, count: 2 },
   { card: a_whip, count: 2 },
@@ -306,3 +306,5 @@ export const laufenDeck = [
   { card: parry, count: 2 },
   { card: jilwer, count: 2 },
 ];
+
+export default laufenDeck;

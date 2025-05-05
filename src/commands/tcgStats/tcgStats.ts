@@ -4,7 +4,7 @@ import {
   MessageFlags,
   InteractionContextType,
 } from "discord.js";
-import type { Command } from "../../types/command";
+import type { Command } from "@src/types/command";
 import { GAME_SETTINGS } from "../tcgChallenge/gameHandler/gameSettings";
 import { handleGlobalStats } from "./statsHandlers/globalStats";
 import { handleCharacterGlobalStats } from "./statsHandlers/characterLeaderboard";

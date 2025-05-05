@@ -1,8 +1,8 @@
-import Card, { Nature } from "../card";
-import TimedEffect from "../timedEffect";
-import { StatsEnum } from "../stats";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import TimedEffect from "@tcg/timedEffect";
+import { StatsEnum } from "@tcg/stats";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 export const a_hairWhip = new Card({
   title: "Hair Whip",
@@ -217,7 +217,7 @@ export const a_piercingDrill = new Card({
   },
 });
 
-export const senseDeck = [
+const senseDeck = [
   { card: a_hairWhip, count: 2 },
   { card: sharpen, count: 2 },
   { card: rest, count: 1 },
@@ -227,3 +227,5 @@ export const senseDeck = [
   { card: teaParty, count: 2 },
   { card: a_piercingDrill, count: 2 },
 ];
+
+export default senseDeck;

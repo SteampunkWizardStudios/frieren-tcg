@@ -1,10 +1,10 @@
-import Card, { Nature } from "../card";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
-import CommonCardAction from "../util/commonCardActions";
-import { CharacterName } from "../characters/metadata/CharacterName";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const a_axeSwipe = new Card({
   title: "Axe Swipe",
@@ -422,7 +422,7 @@ export const a_lightningStrike = new Card({
   },
 });
 
-export const starkDeck = [
+const starkDeck = [
   { card: a_axeSwipe, count: 2 },
   { card: offensiveStance, count: 2 },
   { card: defensiveStance, count: 2 },
@@ -434,3 +434,5 @@ export const starkDeck = [
   { card: a_eisensAxeCleave, count: 1 },
   { card: a_lightningStrike, count: 1 },
 ];
+
+export default starkDeck;

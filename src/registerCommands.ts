@@ -1,5 +1,5 @@
 import { CommandInteraction, REST, Routes } from "discord.js";
-import { Command } from "./types/command";
+import { Command } from "@src/types/command";
 
 export const registerCommands = async (
   token: string,

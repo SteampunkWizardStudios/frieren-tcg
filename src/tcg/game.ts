@@ -1,11 +1,11 @@
-import Card from "./card";
-import Character from "./character";
-import { GameAdditionalMetadata } from "./additionalMetadata/gameAdditionalMetadata";
-import { MessageCache } from "../tcgChatInteractions/messageCache";
-import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
-import { CharacterName } from "./characters/metadata/CharacterName";
-import type { GamePlugin } from "./gamePlugin";
-import { DENKEN_DEATH_HP } from "./characters/characterData/characters/Denken";
+import Card from "@tcg/card";
+import Character from "@tcg/character";
+import { GameAdditionalMetadata } from "@tcg/additionalMetadata/gameAdditionalMetadata";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import type { GamePlugin } from "@tcg/gamePlugin";
+import { DENKEN_DEATH_HP } from "@tcg/characters/characterData/characters/Denken";
 
 export default class Game {
   characters: [Character, Character];

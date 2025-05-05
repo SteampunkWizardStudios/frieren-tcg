@@ -6,7 +6,7 @@ import {
 } from "discord.js";
 import { createCountdownTimestamp } from "./utils";
 import { CharacterData } from "../tcg/characters/characterData/characterData";
-import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import { CHARACTER_LIST } from "@tcg/characters/characterList";
 import characterSelect from "./messageComponents/characterSelect";
 import prismaClient from "@prismaClient";
 import { getPlayerPreferences } from "./db/preferences";

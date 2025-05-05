@@ -1,9 +1,9 @@
-import Card, { Nature } from "../card";
-import { StatsEnum } from "../stats";
-import CommonCardAction from "../util/commonCardActions";
-import TimedEffect from "../timedEffect";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import { StatsEnum } from "@tcg/stats";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import TimedEffect from "@tcg/timedEffect";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const a_jab = new Card({
   title: "Jab",
@@ -516,7 +516,7 @@ export const thisIsNoPlaceToGiveUp = new Card({
   },
 });
 
-export const denkenDeck = [
+const denkenDeck = [
   { card: a_jab, count: 2 },
   { card: a_hook, count: 2 },
   { card: a_uppercut, count: 2 },
@@ -528,3 +528,5 @@ export const denkenDeck = [
   { card: a_concentratedOffensiveMagicZoltraak, count: 2 },
   { card: thisIsNoPlaceToGiveUp, count: 1 },
 ];
+
+export default denkenDeck;

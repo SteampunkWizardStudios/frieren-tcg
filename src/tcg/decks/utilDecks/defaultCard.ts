@@ -1,6 +1,6 @@
-import Card, { Nature } from "../../card";
-import { CardEmoji } from "../../formatting/emojis";
-import { StatsEnum } from "../../stats";
+import Card, { Nature } from "@tcg/card";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { StatsEnum } from "@tcg/stats";
 
 export default class DefaultCards {
   static readonly discardCard: Card = new Card({
