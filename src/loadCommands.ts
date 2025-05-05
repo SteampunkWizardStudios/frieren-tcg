@@ -1,5 +1,5 @@
 import { CommandInteraction } from "discord.js";
-import { Command } from "./types/command";
+import { Command } from "@src/types/command";
 import * as fs from "fs";
 import * as path from "path";
 

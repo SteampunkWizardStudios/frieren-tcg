@@ -1,8 +1,8 @@
-import Card, { Nature } from "../card";
-import TimedEffect from "../timedEffect";
-import { StatsEnum } from "../stats";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import TimedEffect from "@tcg/timedEffect";
+import { StatsEnum } from "@tcg/stats";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 export const a_hairWhip = new Card({
   title: "Hair Whip",

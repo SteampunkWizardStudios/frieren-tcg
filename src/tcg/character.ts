@@ -11,8 +11,8 @@ import {
   CharacterCosmetic,
   CharacterData,
 } from "./characters/characterData/characterData";
-import { MessageCache } from "../tcgChatInteractions/messageCache";
-import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { User } from "discord.js";
 import Game from "./game";
 import { CharacterName } from "./characters/metadata/CharacterName";

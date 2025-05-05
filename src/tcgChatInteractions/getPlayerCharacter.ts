@@ -6,8 +6,8 @@ import {
   ThreadChannel,
   User,
 } from "discord.js";
-import { createCharacterDropdown } from "../util/createCharacterDropdown";
-import { CharacterData } from "../tcg/characters/characterData/characterData";
+import { createCharacterDropdown } from "@src/util/createCharacterDropdown";
+import { CharacterData } from "@tcg/characters/characterData/characterData";
 import { CHARACTER_LIST } from "@tcg/characters/characterList";
 
 export const getPlayerCharacter = async (

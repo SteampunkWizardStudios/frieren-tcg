@@ -1,5 +1,5 @@
-import { MessageCache } from "../tcgChatInteractions/messageCache";
-import Game from "./game";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import Game from "@tcg/game";
 
 export interface TimedEffectProps {
   name: string;

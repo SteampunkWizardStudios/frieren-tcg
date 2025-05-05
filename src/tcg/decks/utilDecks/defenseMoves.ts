@@ -1,16 +1,16 @@
-import { CharacterName } from "../../characters/metadata/CharacterName";
-import Card from "../../card";
-import { ordinaryDefensiveMagic } from "../FrierenDeck";
-import { basicDefensiveMagic } from "../SerieDeck";
-import { bareHandedBlock, elementaryDefensiveMagic } from "../DenkenDeck";
-import { quickBlock } from "../HimmelDeck";
-import { parry } from "../LaufenDeck";
-import { braceYourself } from "../SeinDeck";
-import { hairBarrier } from "../SenseDeck";
-import { block } from "../StarkDeck";
-import { deflect } from "../StilleDeck";
-import { defend } from "../UbelDeck";
-import { commonDefensiveMagic } from "../FernDeck";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import Card from "@tcg/card";
+import { ordinaryDefensiveMagic } from "@decks/FrierenDeck";
+import { basicDefensiveMagic } from "@decks/SerieDeck";
+import { bareHandedBlock, elementaryDefensiveMagic } from "@decks/DenkenDeck";
+import { quickBlock } from "@decks/HimmelDeck";
+import { parry } from "@decks/LaufenDeck";
+import { braceYourself } from "@decks/SeinDeck";
+import { hairBarrier } from "@decks/SenseDeck";
+import { block } from "@decks/StarkDeck";
+import { deflect } from "@decks/StilleDeck";
+import { defend } from "@decks/UbelDeck";
+import { commonDefensiveMagic } from "@decks/FernDeck";
 
 export const defenseMoves: Record<CharacterName, Card[]> = {
   [CharacterName.Frieren]: [ordinaryDefensiveMagic],

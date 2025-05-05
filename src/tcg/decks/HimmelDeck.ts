@@ -1,12 +1,12 @@
-import Card, { Nature } from "../card";
-import { StatsEnum } from "../stats";
-import CommonCardAction from "../util/commonCardActions";
-import TimedEffect from "../timedEffect";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
-import { MessageCache } from "@tcgChatInteractions/messageCache";
-import Game from "../game";
-import { CharacterName } from "../characters/metadata/CharacterName";
+import Card, { Nature } from "@tcg/card";
+import { StatsEnum } from "@tcg/stats";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import TimedEffect from "@tcg/timedEffect";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import Game from "@tcg/game";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 
 const a_FrierenStrikeTheirWeakpoint = new Card({
   title: "Frieren! Strike Their Weakpoint!",

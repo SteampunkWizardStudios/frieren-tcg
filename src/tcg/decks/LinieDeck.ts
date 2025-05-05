@@ -1,10 +1,10 @@
-import Card, { Nature } from "../card";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
-import CommonCardAction from "../util/commonCardActions";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
-import { GameMessageContext } from "../gameContextProvider";
+import Card, { Nature } from "@tcg/card";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { GameMessageContext } from "@tcg/gameContextProvider";
 
 export const imitate = new Card({
   title: "Imitate",

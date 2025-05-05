@@ -3,13 +3,13 @@ import {
   a_concentratedOffensiveMagicZoltraak,
   a_daosdorgBase,
   a_waldgoseBase,
-} from "../DenkenDeck";
+} from "@decks/DenkenDeck";
 import {
   a_fernBarrage,
   a_fernZoltraak,
   manaConcealment,
   spellToCreateManaButterflies,
-} from "../FernDeck";
+} from "@decks/FernDeck";
 import {
   a_judradjim,
   a_vollzanbel,
@@ -17,8 +17,8 @@ import {
   barrierMagicAnalysis,
   demonMagicAnalysis,
   fieldOfFlower,
-} from "../FrierenDeck";
-import { a_supersonicStrike, a_whip, hide } from "../LaufenDeck";
+} from "@decks/FrierenDeck";
+import { a_supersonicStrike, a_whip, hide } from "@decks/LaufenDeck";
 import {
   a_erfassenAxe,
   a_erfassenKnife,
@@ -26,22 +26,22 @@ import {
   a_erfassenJavelin,
   adapt,
   manaDetection,
-} from "../LinieDeck";
-import { a_killingMagic, solitude } from "../monsterDecks/CosmicTonDeck";
+} from "@decks/LinieDeck";
+import { a_killingMagic, solitude } from "@decks/monsterDecks/CosmicTonDeck";
 import {
   a_trustInYourAllyFernsBarrage,
   a_trustInYourAllyFrierensZoltraak,
   awakening,
   poisonCure,
-} from "../SeinDeck";
+} from "@decks/SeinDeck";
 import {
   a_hairWhip,
   a_pierce,
   a_piercingDrill,
   sharpen,
   rest,
-} from "../SenseDeck";
-import { a_cleave, a_dismantle, a_reelseiden, sorganeil } from "../UbelDeck";
+} from "@decks/SenseDeck";
+import { a_cleave, a_dismantle, a_reelseiden, sorganeil } from "@decks/UbelDeck";
 import { a_malevolentShrine } from "./ubelSignature";
 
 export const serie_offensiveMagic_common = [

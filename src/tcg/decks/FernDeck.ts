@@ -1,9 +1,9 @@
-import Card, { Nature } from "../card";
-import TimedEffect from "../timedEffect";
-import { StatsEnum } from "../stats";
-import CommonCardAction from "../util/commonCardActions";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import TimedEffect from "@tcg/timedEffect";
+import { StatsEnum } from "@tcg/stats";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { manaDetection } from "./LinieDeck";
 
 export const a_fernZoltraak = new Card({

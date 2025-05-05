@@ -1,9 +1,9 @@
-import Card, { Nature } from "../card";
-import CommonCardAction from "../util/commonCardActions";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { signatureMoves } from "./utilDecks/signatureMoves";
 import { a_malevolentShrine } from "./utilDecks/ubelSignature";
 

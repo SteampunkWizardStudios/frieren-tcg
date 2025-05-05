@@ -1,6 +1,6 @@
-import { CharacterName } from "./characters/metadata/CharacterName";
-import { CardEmoji } from "./formatting/emojis";
-import Game from "./game";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import Game from "@tcg/game";
 import { GameMessageContext } from "@tcg/gameContextProvider";
 
 export interface CardCosmetic {

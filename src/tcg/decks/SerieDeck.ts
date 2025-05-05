@@ -1,4 +1,4 @@
-import Card, { Nature } from "../card";
+import Card, { Nature } from "@tcg/card";
 import {
   serie_offensiveMagic_common,
   serie_offensiveMagic_rare,
@@ -6,12 +6,12 @@ import {
   serie_utilityMagic_recovery,
   serie_utilityMagic_tactics,
 } from "./utilDecks/serieMagic";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
 import { fieldOfFlower } from "./FrierenDeck";
-import { CardEmoji } from "../formatting/emojis";
+import { CardEmoji } from "@tcg/formatting/emojis";
 import { ancientBarrierMagic } from "./utilDecks/serieSignature";
-import { GameMessageContext } from "../gameContextProvider";
+import { GameMessageContext } from "@tcg/gameContextProvider";
 
 const useRandomCard = function (props: {
   cardPool: Card[];

@@ -1,5 +1,5 @@
-import { CharacterName } from "../characters/metadata/CharacterName";
-import { StatsEnum } from "../stats";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import { StatsEnum } from "@tcg/stats";
 
 type StatInfo = {
   emoji: string;

@@ -3,10 +3,9 @@ import {
   CommandInteraction,
   MessageFlags,
   Events,
-  Interaction,
 } from "discord.js";
-import { Command } from "./types/command";
-import { Middleware, NextMiddleware } from "./types/middleware";
+import { Command } from "@src/types/command";
+import { Middleware, NextMiddleware } from "@src/types/middleware";
 
 import logInteractionMiddleware from "./middlewares/logInteractionMiddleware";
 import textSpeedMiddleware from "./middlewares/textSpeedMiddleware";
