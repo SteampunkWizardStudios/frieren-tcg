@@ -116,10 +116,21 @@ const mental_fog = new Card({
   },
 });
 
+const clear_mind = new Card({
+  title: "Clear Mind",
+  cardMetadata: { nature: Nature.Util },
+  emoji: CardEmoji.EDEL_CARD,
+  description: () => `Heal 10HP. SPD +2. Eye Contact next 1 turn. Both players Discard their entire hand and draw 6 new cards.`,
+  effects: [],
+  cardAction: () => {
+  }
+});
+
 const edelDeck = [
   { card: telekinesis, count: 4 },
-  { card: one_step_ahead, count: 8 },
+  { card: one_step_ahead, count: 4 },
   { card: mental_fog, count: 4 },
+  { card: clear_mind, count: 4 },
 ];
 
 export default edelDeck;
