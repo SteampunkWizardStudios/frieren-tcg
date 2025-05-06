@@ -1,7 +1,7 @@
 import { Interaction } from "discord.js";
 import { Middleware, NextMiddleware } from "@src/types/middleware";
 import { updateTcgTextSpeed } from "@src/util/db/preferences";
-import prismaClient from "@prismaClient";
+import { getPlayer } from "@src/util/db/getPlayer";
 
 /**
  * Middleware to update the player's TCG text speed preference
@@ -15,15 +15,7 @@ const textSpeedMiddleware: Middleware = async (
     try {
       const speed = interaction.options.getInteger("text_speed_ms");
       if (speed) {
-        const player = await prismaClient.player.upsert({
-          where: {
-            discordId: interaction.user.id,
-          },
-          update: {},
-          create: {
-            discordId: interaction.user.id,
-          },
-        });
+        const player = await getPlayer(interaction.user.id);
 
         updateTcgTextSpeed(player.id, speed);
       }

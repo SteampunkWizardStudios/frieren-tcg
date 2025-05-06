@@ -1,6 +1,9 @@
 import { PlayerPreferences, Character } from "@prisma/client";
 import prismaClient from "@prismaClient";
-import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
+import {
+  CHARACTER_LIST,
+  CHARACTER_MAP,
+} from "@src/tcg/characters/characterList";
 import type { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 
 /**
@@ -290,4 +293,33 @@ export async function getRestrictRandomToFavourites(playerId: number) {
     );
     throw error;
   }
+}
+
+export async function getSortedCharactersForPlayer(playerId: number) {
+  let sortedCharacters = CHARACTER_LIST;
+  const playerPreferrences = await getPlayerPreferences(playerId);
+  if (
+    playerPreferrences &&
+    playerPreferrences.favouriteCharacters &&
+    playerPreferrences.favouriteCharacters.length > 0
+  ) {
+    const favouritedCharacterNames = new Set(
+      playerPreferrences.favouriteCharacters.map((fav) => fav.name)
+    );
+
+    const favouritedOnly = [];
+    const nonFavouritedOnly = [];
+
+    for (const character of CHARACTER_LIST) {
+      if (favouritedCharacterNames.has(character.name)) {
+        favouritedOnly.push(character);
+      } else {
+        nonFavouritedOnly.push(character);
+      }
+    }
+
+    sortedCharacters = favouritedOnly.concat(nonFavouritedOnly);
+  }
+
+  return sortedCharacters;
 }

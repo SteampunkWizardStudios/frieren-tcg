@@ -6,10 +6,7 @@ import {
 } from "discord.js";
 import { GameSettings } from "./commands/tcgChallenge/gameHandler/gameSettings";
 import Character from "@tcg/character";
-import {
-  CharacterSelectionType,
-  getPlayerCharacter,
-} from "./tcgChatInteractions/getPlayerCharacter";
+import { getPlayerCharacter } from "./tcgChatInteractions/getPlayerCharacter";
 import Game from "@tcg/game";
 import { MessageCache } from "./tcgChatInteractions/messageCache";
 import {
@@ -24,6 +21,7 @@ import TimedEffect from "@tcg/timedEffect";
 import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { gameAndMessageContext } from "@tcg/gameContextProvider";
+import { CharacterSelectionType } from "./tcgChatInteractions/handleCharacterSelection";
 
 const TURN_LIMIT = 50;
 

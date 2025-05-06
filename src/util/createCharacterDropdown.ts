@@ -6,10 +6,9 @@ import {
 } from "discord.js";
 import { createCountdownTimestamp } from "./utils";
 import { CharacterData } from "../tcg/characters/characterData/characterData";
-import { CHARACTER_LIST } from "@tcg/characters/characterList";
 import characterSelect from "./messageComponents/characterSelect";
-import prismaClient from "@prismaClient";
-import { getPlayerPreferences } from "./db/preferences";
+import { getSortedCharactersForPlayer } from "./db/preferences";
+import { getPlayer } from "./db/getPlayer";
 
 export const createCharacterDropdown = async (
   user: User,
@@ -25,40 +24,9 @@ export const createCharacterDropdown = async (
     timeLimitString = createCountdownTimestamp(timeLimitSeconds);
   }
 
-  const player = await prismaClient.player.upsert({
-    where: {
-      discordId: user.id,
-    },
-    create: {
-      discordId: user.id,
-    },
-    update: {},
-  });
+  const player = await getPlayer(user.id);
 
-  let sortedCharacters = CHARACTER_LIST;
-  const playerPreferrences = await getPlayerPreferences(player.id);
-  if (
-    playerPreferrences &&
-    playerPreferrences.favouriteCharacters &&
-    playerPreferrences.favouriteCharacters.length > 0
-  ) {
-    const favouritedCharacterNames = new Set(
-      playerPreferrences.favouriteCharacters.map((fav) => fav.name)
-    );
-
-    const favouritedOnly = [];
-    const nonFavouritedOnly = [];
-
-    for (const character of CHARACTER_LIST) {
-      if (favouritedCharacterNames.has(character.name)) {
-        favouritedOnly.push(character);
-      } else {
-        nonFavouritedOnly.push(character);
-      }
-    }
-
-    sortedCharacters = favouritedOnly.concat(nonFavouritedOnly);
-  }
+  const sortedCharacters = await getSortedCharactersForPlayer(player.id);
 
   // Create the initial embed showing all characters
   const embed = new EmbedBuilder()

@@ -8,16 +8,12 @@ import {
 } from "discord.js";
 import { createCharacterDropdown } from "@src/util/createCharacterDropdown";
 import { CharacterData } from "@tcg/characters/characterData/characterData";
-import { CHARACTER_LIST, CHARACTER_MAP } from "@tcg/characters/characterList";
 import { getPlayerPreferences } from "@src/util/db/preferences";
 import { getPlayer } from "@src/util/db/getPlayer";
-import type { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
-
-export enum CharacterSelectionType {
-  Selection,
-  Random,
-  FavouriteRandom,
-}
+import {
+  handleCharacterSelection,
+  CharacterSelectionType,
+} from "@src/tcgChatInteractions/handleCharacterSelection";
 
 export const getPlayerCharacter = async (
   player: User,
@@ -81,49 +77,17 @@ export const getPlayerCharacter = async (
               }
               collector.stop("Character selected");
 
-              const characterList = CHARACTER_LIST;
-              const selection = i.values[0];
-              let selectionType = CharacterSelectionType.Selection;
-
-              let selectedCharacter: CharacterData;
               const player = await getPlayer(i.user.id);
               const preferences = await getPlayerPreferences(player.id);
-
-              if (selection === "random") {
-                selectionType = CharacterSelectionType.Random;
-                const index = Math.floor(Math.random() * characterList.length);
-                selectedCharacter = characterList[index];
-              } else if (selection === "favourite-random") {
-                if (preferences && preferences.favouriteCharacters.length > 0) {
-                  selectionType = CharacterSelectionType.FavouriteRandom;
-
-                  const favouriteCharacters = preferences.favouriteCharacters;
-                  const randomFavouriteCharacter =
-                    favouriteCharacters[
-                      Math.floor(Math.random() * favouriteCharacters.length)
-                    ];
-
-                  selectedCharacter =
-                    CHARACTER_MAP[
-                      randomFavouriteCharacter.name as CharacterName
-                    ];
-                } else {
-                  const index = Math.floor(
-                    Math.random() * characterList.length
-                  );
-                  selectedCharacter = characterList[index];
-                }
-              } else {
-                const index = Math.floor(Math.random() * characterList.length);
-                selectedCharacter = characterList[index];
-              }
+              const { selectedCharacter, selectionType } =
+                await handleCharacterSelection(i, preferences);
 
               // Error message if player tried to pick random favourite character when they have no favourited characters
               const errorMessage = `You have no favourite characters. Please add some by using the \`/tcg-preferences toggle-favourite-character\` command.`;
               const shouldSendErrorMessage =
                 preferences &&
                 preferences.favouriteCharacters.length === 0 &&
-                selection === "favourite-random";
+                selectionType === CharacterSelectionType.FavouriteRandom;
 
               const characterSelectedEmbed = new EmbedBuilder()
                 .setTitle(
