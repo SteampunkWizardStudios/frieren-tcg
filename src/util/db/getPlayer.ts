@@ -19,3 +19,15 @@ export const getOrCreatePlayers = async (
     );
   });
 };
+
+export async function getPlayer(discordId: string) {
+  return prismaClient.player.upsert({
+    where: {
+      discordId: discordId,
+    },
+    update: {},
+    create: {
+      discordId: discordId,
+    },
+  });
+}
