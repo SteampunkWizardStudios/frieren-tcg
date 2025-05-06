@@ -4,7 +4,7 @@ import {
   MessageFlags,
   InteractionContextType,
 } from "discord.js";
-import type { Command } from "../../types/command";
+import type { Command } from "@src/types/command";
 import { showGameHowToPlay } from "./info/gameHowToPlay";
 import {
   AdvancedRulesSection,

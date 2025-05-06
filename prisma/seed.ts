@@ -1,6 +1,6 @@
 import { GameMode } from "@src/commands/tcgChallenge/gameHandler/gameSettings";
 import prismaClient from "./client";
-import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import { CHARACTER_LIST } from "@tcg/characters/characterList";
 
 async function main() {
   await prismaClient.$transaction(async (tx) => {

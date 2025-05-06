@@ -1,7 +1,7 @@
-import { MessageCache } from "../tcgChatInteractions/messageCache";
-import Card from "./card";
-import Game from "./game";
-import { GameMessageContext } from "./gameContextProvider";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import Card from "@tcg/card";
+import Game from "@tcg/game";
+import { GameMessageContext } from "@tcg/gameContextProvider";
 
 export type Ability = {
   abilityName: string;

@@ -1,4 +1,4 @@
-import { CHARACTER_LIST } from "./tcg/characters/characterList";
+import { CHARACTER_LIST } from "@tcg/characters/characterList";
 
 export const FRIEREN_DISCORD_SERVER_AUBERST_CHANNEL_ID = "738445835234181211";
 

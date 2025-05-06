@@ -1,9 +1,9 @@
-import Game from "@src/tcg/game";
+import Game from "@tcg/game";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
-import { StatsEnum } from "@src/tcg/stats";
-import Character from "@src/tcg/character";
-import Card from "@src/tcg/card";
+import { StatsEnum } from "@tcg/stats";
+import Character from "@tcg/character";
+import Card from "@tcg/card";
 import CommonCardAction from "./util/commonCardActions";
 
 export type GameContext = ReturnType<typeof gameContextProvider>;

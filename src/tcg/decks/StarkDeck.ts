@@ -1,10 +1,10 @@
-import Card, { Nature } from "../card";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
-import CommonCardAction from "../util/commonCardActions";
-import { CharacterName } from "../characters/metadata/CharacterName";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const a_axeSwipe = new Card({
   title: "Axe Swipe",
@@ -67,7 +67,7 @@ const offensiveStance = new Card({
         name: "Offensive Stance",
         description: `DEF-2 for 2 turns.`,
         turnDuration: 2,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} shifts ${character.cosmetic.pronouns.possessive} stance.`,
@@ -110,7 +110,7 @@ const defensiveStance = new Card({
         name: "Defensive Stance",
         description: `ATK-2 for 2 turns.`,
         turnDuration: 2,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
             `${character.name} shifts ${character.cosmetic.pronouns.possessive} stance.`,
@@ -157,7 +157,7 @@ const jumboBerrySpecialBreak = new Card({
         name: "Jumbo Berry Special Break",
         description: `SPD-2 for 2 turns. DEF+${defChange} for 2 turns.`,
         turnDuration: 2,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (game, characterIndex, messageCache) => {
           messageCache.push(
             `The break is over. ${character.name} recomposes ${character.cosmetic.pronouns.reflexive}.`,
@@ -205,7 +205,7 @@ export const block = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -374,7 +374,7 @@ export const a_lightningStrike = new Card({
           name: "Opening",
           description: `DEF-5 and SPD-5.`,
           turnDuration: 2,
-          removableBySorganeil: false,
+          metadata: { removableBySorganeil: false },
           endOfTimedEffectAction: (game, characterIndex) => {
             game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
             game.characters[characterIndex].adjustStat(5, StatsEnum.SPD);
@@ -408,7 +408,7 @@ export const a_lightningStrike = new Card({
           description: `HP cannot fall below 1 this turn.`,
           turnDuration: 1,
           priority: -1,
-          removableBySorganeil: false,
+          metadata: { removableBySorganeil: false },
           endOfTimedEffectAction: (_game, _characterIndex) => {
             messageCache.push(
               `${character.name} let out all ${character.cosmetic.pronouns.personal} has. ${character.name} is no longer Sturdy.`,
@@ -422,7 +422,7 @@ export const a_lightningStrike = new Card({
   },
 });
 
-export const starkDeck = [
+const starkDeck = [
   { card: a_axeSwipe, count: 2 },
   { card: offensiveStance, count: 2 },
   { card: defensiveStance, count: 2 },
@@ -434,3 +434,5 @@ export const starkDeck = [
   { card: a_eisensAxeCleave, count: 1 },
   { card: a_lightningStrike, count: 1 },
 ];
+
+export default starkDeck;

@@ -7,11 +7,11 @@ import {
   ComponentType,
   MessageFlags,
 } from "discord.js";
-import { CHARACTER_LIST } from "../../../tcg/characters/characterList";
+import { CHARACTER_LIST } from "@tcg/characters/characterList";
 import { sendInfoMessage } from "./util/sendInfoMessage";
-import { statDetails } from "../../../tcg/formatting/emojis";
-import { createCharacterDropdown } from "../../../util/createCharacterDropdown";
-import Card from "../../../tcg/card";
+import { statDetails } from "@tcg/formatting/emojis";
+import { createCharacterDropdown } from "@src/util/createCharacterDropdown";
+import Card from "@tcg/card";
 
 export async function showCharacterInfo(
   interaction: ChatInputCommandInteraction

@@ -1,17 +1,17 @@
 import { CharacterData } from "../characterData";
-import { UbelHit } from "../../../additionalMetadata/characterAdditionalMetadata";
-import { ubelDeck, empathyFailureName } from "../../../decks/UbelDeck";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
-import Game from "../../../game";
-import Card, { Nature } from "../../../card";
-import Rolls from "../../../util/rolls";
-import Character from "../../../character";
+import { UbelHit } from "@tcg/additionalMetadata/characterAdditionalMetadata";
+import ubelDeck, { empathyFailureName } from "@decks/UbelDeck";
+import Stats, { StatsEnum } from "@tcg/stats";
+import Game from "@tcg/game";
+import Card, { Nature } from "@tcg/card";
+import Rolls from "@tcg/util/rolls";
+import Character from "@tcg/character";
 import { CharacterName } from "../../metadata/CharacterName";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import { CharacterEmoji } from "../../../formatting/emojis";
-import { GameMessageContext } from "@src/tcg/gameContextProvider";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import { GameMessageContext } from "@tcg/gameContextProvider";
+import Pronouns from "@tcg/pronoun";
 
 const PIERCE_FACTOR = 1.0;
 
@@ -116,14 +116,10 @@ function wrapEmpathizedCard(
   );
 }
 
-export const Ubel = new CharacterData({
+const Ubel = new CharacterData({
   name: CharacterName.Ubel,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.UBEL,
     color: 0x3c5502,
     imageUrl:
@@ -246,13 +242,9 @@ export const Ubel = new CharacterData({
     },
   },
   additionalMetadata: {
-    attackedThisTurn: false,
-    timedEffectAttackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    defenderDamageScaling: 1,
     pierceFactor: PIERCE_FACTOR,
     ubelSureHit: UbelHit.Regular,
   },
 });
+
+export default Ubel;

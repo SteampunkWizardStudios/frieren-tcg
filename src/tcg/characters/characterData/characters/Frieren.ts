@@ -1,14 +1,14 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
-import { frierenDeck } from "../../../decks/FrierenDeck";
+import Stats, { StatsEnum } from "@tcg/stats";
+import frierenDeck from "@decks/FrierenDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import TimedEffect from "../../../timedEffect";
-import Game from "../../../game";
-import Card from "../../../card";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import TimedEffect from "@tcg/timedEffect";
+import Game from "@tcg/game";
+import Card from "@tcg/card";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import Pronouns from "@tcg/pronoun";
 
 const ANALYSIS_BOOST = 0.05;
 const ANALYSIS_STACK_CAP = 20;
@@ -36,14 +36,10 @@ const afterAttackEffect = function (
   character.setStat(0, StatsEnum.Ability);
 };
 
-export const Frieren = new CharacterData({
+const Frieren = new CharacterData({
   name: CharacterName.Frieren,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FRIEREN,
     color: 0xc5c3cc,
     imageUrl: imageUrl.vangerisuCardVer,
@@ -80,7 +76,7 @@ export const Frieren = new CharacterData({
             name: "Post Analysis",
             description: `At this turn's resolution, gain ${card.tags["PostAnalysis"]} Analysis stack.`,
             turnDuration: 1,
-            removableBySorganeil: false,
+            metadata: { removableBySorganeil: false },
             endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
               messageCache.push(
                 "Frieren performed her analysis.",
@@ -124,9 +120,8 @@ export const Frieren = new CharacterData({
   additionalMetadata: {
     manaSuppressed: true,
     ignoreManaSuppressed: true,
-    attackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    timedEffectAttackedThisTurn: false,
     defenderDamageScaling: 1,
   },
 });
+
+export default Frieren;

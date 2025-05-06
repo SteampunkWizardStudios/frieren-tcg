@@ -1,5 +1,5 @@
 import { Interaction } from "discord.js";
-import { Middleware, NextMiddleware } from "../types/middleware";
+import { Middleware, NextMiddleware } from "@src/types/middleware";
 import config from "@src/config";
 import logInteraction from "@src/logInteractions";
 

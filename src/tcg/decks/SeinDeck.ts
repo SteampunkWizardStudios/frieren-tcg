@@ -1,10 +1,10 @@
-import Card, { Nature } from "../card";
-import { StatsEnum } from "../stats";
-import CommonCardAction from "../util/commonCardActions";
-import { CharacterName } from "../characters/metadata/CharacterName";
-import TimedEffect from "../timedEffect";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import { StatsEnum } from "@tcg/stats";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import TimedEffect from "@tcg/timedEffect";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 export const a_trustInYourAllyFrierensZoltraak = new Card({
   title: "Trust in Your Ally: Frieren's Zoltraak",
@@ -315,7 +315,7 @@ export const braceYourself = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -375,7 +375,7 @@ export const a_threeSpearsOfTheGoddess = new Card({
   },
 });
 
-export const seinDeck = [
+const seinDeck = [
   { card: a_trustInYourAllyFrierensZoltraak, count: 2 },
   { card: a_trustInYourAllyStarksLightningStrike, count: 2 },
   { card: a_trustInYourAllyFernsBarrage, count: 2 },
@@ -386,3 +386,5 @@ export const seinDeck = [
   { card: braceYourself, count: 2 },
   { card: a_threeSpearsOfTheGoddess, count: 1 },
 ];
+
+export default seinDeck;

@@ -1,12 +1,12 @@
-import Card, { Nature } from "../card";
-import { StatsEnum } from "../stats";
-import CommonCardAction from "../util/commonCardActions";
-import TimedEffect from "../timedEffect";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import { StatsEnum } from "@tcg/stats";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import TimedEffect from "@tcg/timedEffect";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
-import Game from "../game";
-import { CharacterName } from "../characters/metadata/CharacterName";
+import Game from "@tcg/game";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 
 const a_FrierenStrikeTheirWeakpoint = new Card({
   title: "Frieren! Strike Their Weakpoint!",
@@ -588,7 +588,7 @@ export const quickBlock = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-def, StatsEnum.DEF);
         },
@@ -689,7 +689,7 @@ export const a_realHeroSwing = new Card({
   },
 });
 
-export const himmelDeck = [
+const himmelDeck = [
   { card: a_FrierenNow, count: 1 },
   { card: a_FrierenStrikeTheirWeakpoint, count: 1 },
   { card: a_FrierenBackMeUp, count: 1 },
@@ -704,3 +704,5 @@ export const himmelDeck = [
   { card: a_extremeSpeed, count: 2 },
   { card: a_realHeroSwing, count: 1 },
 ];
+
+export default himmelDeck;

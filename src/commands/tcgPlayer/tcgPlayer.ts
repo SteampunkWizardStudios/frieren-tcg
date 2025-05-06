@@ -8,7 +8,6 @@ import type { Command } from "@src/types/command";
 import handlePlayerProfile from "./playerHandlers/profileHandler";
 import handleMatchHistory from "./playerHandlers/matchHandler";
 import { handlePlayerPreferences } from "./playerHandlers/preferencesHandler";
-import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 import { CHAR_OPTIONS, MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
 
 export const command: Command<ChatInputCommandInteraction> = {

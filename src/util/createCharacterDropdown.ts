@@ -6,8 +6,10 @@ import {
 } from "discord.js";
 import { createCountdownTimestamp } from "./utils";
 import { CharacterData } from "../tcg/characters/characterData/characterData";
-import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import { CHARACTER_LIST } from "@tcg/characters/characterList";
 import characterSelect from "./messageComponents/characterSelect";
+import prismaClient from "@prismaClient";
+import { getPlayerPreferences } from "./db/preferences";
 
 export const createCharacterDropdown = async (
   user: User,
@@ -23,6 +25,38 @@ export const createCharacterDropdown = async (
     timeLimitString = createCountdownTimestamp(timeLimitSeconds);
   }
 
+  const player = await prismaClient.player.upsert({
+    where: {
+      discordId: user.id,
+    },
+    create: {
+      discordId: user.id,
+    },
+    update: {},
+  });
+
+  let sortedCharacters = CHARACTER_LIST;
+  const playerPreferrences = await getPlayerPreferences(player.id);
+  if (
+    playerPreferrences &&
+    playerPreferrences.favouriteCharacters &&
+    playerPreferrences.favouriteCharacters.length > 0
+  ) {
+    const favouritedCharacterNames = new Set(
+      playerPreferrences.favouriteCharacters.map((fav) => fav.name)
+    );
+
+    sortedCharacters = CHARACTER_LIST.slice().sort((a, b) => {
+      const [isAfav, isBfav] = [a, b].map(({ name }) => favouritedCharacterNames.has(name));
+
+      // Sort by favourited characters first, then alpabetically
+      if (isAfav && !isBfav) return -1;
+      if (!isAfav && isBfav) return 1;
+
+      return a.name.localeCompare(b.name);
+    });
+  }
+
   // Create the initial embed showing all characters
   const embed = new EmbedBuilder()
     .setColor(0xc5c3cc)
@@ -33,34 +67,15 @@ export const createCharacterDropdown = async (
     .addFields({
       name: "Available Characters",
       value: [
-        ...CHARACTER_LIST.map(
+        ...sortedCharacters.map(
           (char: CharacterData) => `1. ${char.cosmetic.emoji} ${char.name}`
         ),
         "?. 🎲 Random Character",
       ].join("\n"),
     });
 
-  // Create the dropdown menu
-  const selectMenu = new StringSelectMenuBuilder()
-    .setCustomId(customId)
-    .setPlaceholder("Select a Character")
-    .addOptions(
-      CHARACTER_LIST.map((char, index) => ({
-        label: `${char.name}`,
-        value: `${index}`,
-        emoji: char.cosmetic.emoji,
-      }))
-    )
-    .addOptions({
-      label: "Random Character",
-      value: "random",
-      emoji: "🎲",
-    });
-
-  const dropdown =
-    new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(selectMenu);
-
   const { charSelect, charSelectActionRow } = characterSelect({
+    characterList: sortedCharacters,
     includeRandom: true,
     customId,
   });

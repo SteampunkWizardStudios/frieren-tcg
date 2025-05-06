@@ -1,5 +1,5 @@
-import { StatsEnum } from "./stats";
-import Character from "./character";
+import { StatsEnum } from "@tcg/stats";
+import Character from "@tcg/character";
 
 export type CardAction = {
   name: string;

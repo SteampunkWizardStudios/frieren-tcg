@@ -1,8 +1,8 @@
-import Card, { Nature } from "../card";
-import TimedEffect from "../timedEffect";
-import { StatsEnum } from "../stats";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import TimedEffect from "@tcg/timedEffect";
+import { StatsEnum } from "@tcg/stats";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 export const a_hairWhip = new Card({
   title: "Hair Whip",
@@ -68,7 +68,7 @@ export const rest = new Card({
         name: "Rest",
         description: `DEF-2 for 2 turns`,
         turnDuration: 2,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (game, characterIndex, messageCache) => {
           messageCache.push(`${name} had a good rest.`, TCGThread.Gameroom);
           game.characters[characterIndex].adjustStat(2, StatsEnum.DEF);
@@ -127,7 +127,7 @@ export const hairBarrier = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
           self.adjustStat(-1 * def, StatsEnum.DEF);
         },
@@ -217,7 +217,7 @@ export const a_piercingDrill = new Card({
   },
 });
 
-export const senseDeck = [
+const senseDeck = [
   { card: a_hairWhip, count: 2 },
   { card: sharpen, count: 2 },
   { card: rest, count: 1 },
@@ -227,3 +227,5 @@ export const senseDeck = [
   { card: teaParty, count: 2 },
   { card: a_piercingDrill, count: 2 },
 ];
+
+export default senseDeck;

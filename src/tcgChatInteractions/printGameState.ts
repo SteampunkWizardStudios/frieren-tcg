@@ -1,5 +1,5 @@
-import Character from "../tcg/character";
-import Game from "../tcg/game";
+import Character from "@tcg/character";
+import Game from "@tcg/game";
 import { MessageCache } from "./messageCache";
 import { printCharacter } from "./printCharacter";
 import { TCGThread } from "./sendGameMessage";

@@ -1,7 +1,7 @@
-import Character from "../tcg/character";
-import { statDetails } from "../tcg/formatting/emojis";
-import { ProgressBarBuilder } from "../tcg/formatting/percentBar";
-import { StatsEnum } from "../tcg/stats";
+import Character from "@tcg/character";
+import { statDetails } from "@tcg/formatting/emojis";
+import { ProgressBarBuilder } from "@tcg/formatting/percentBar";
+import { StatsEnum } from "@tcg/stats";
 
 export const printCharacter = (
   character: Character,

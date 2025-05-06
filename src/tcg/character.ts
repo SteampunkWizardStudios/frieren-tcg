@@ -1,18 +1,18 @@
-import Stats, { StatsEnum } from "./stats";
-import Deck from "./deck";
-import Card from "./card";
-import TimedEffect from "./timedEffect";
-import { Ability } from "./ability";
-import { statDetails } from "./formatting/emojis";
-import Rolls from "./util/rolls";
-import { CharacterAdditionalMetadata } from "./additionalMetadata/characterAdditionalMetadata";
-import DefaultCards from "./decks/utilDecks/defaultCard";
+import Stats, { StatsEnum } from "@tcg/stats";
+import Deck from "@tcg/deck";
+import Card from "@tcg/card";
+import TimedEffect from "@tcg/timedEffect";
+import { Ability } from "@tcg/ability";
+import { statDetails } from "@tcg/formatting/emojis";
+import Rolls from "@tcg/util/rolls";
+import { CharacterAdditionalMetadata } from "@tcg/additionalMetadata/characterAdditionalMetadata";
+import DefaultCards from "@decks/utilDecks/defaultCard";
 import {
   CharacterCosmetic,
   CharacterData,
 } from "./characters/characterData/characterData";
-import { MessageCache } from "../tcgChatInteractions/messageCache";
-import { TCGThread } from "../tcgChatInteractions/sendGameMessage";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { User } from "discord.js";
 import Game from "./game";
 import { CharacterName } from "./characters/metadata/CharacterName";

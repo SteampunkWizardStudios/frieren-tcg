@@ -1,30 +1,30 @@
-import { Frieren } from "./characterData/characters/Frieren";
-import { Sense } from "./characterData/characters/Sense";
-import { Stille } from "./characterData/characters/Stille";
-import { Serie } from "./characterData/characters/Serie";
-import { Linie } from "./characterData/characters/Linie";
-import { Sein } from "./characterData/characters/Sein";
-import { Stark } from "./characterData/characters/Stark";
-import { Laufen } from "./characterData/characters/Laufen";
-import { CharacterData } from "./characterData/characterData";
-import { Denken } from "./characterData/characters/Denken";
-import { Himmel } from "./characterData/characters/Himmel";
-import { Ubel } from "./characterData/characters/Ubel";
-import { CharacterName } from "./metadata/CharacterName";
-import { Fern } from "./characterData/characters/Fern";
-import Edel from "@tcg/characters/characterData/characters/Edel";
+import { CharacterData } from "@tcg/characters/characterData/characterData";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import Denken from "@characters/Denken";
+import Fern from "@characters/Fern";
+import Frieren from "@characters/Frieren";
+import Himmel from "@characters/Himmel";
+import Laufen from "@characters/Laufen";
+import Linie from "@characters/Linie";
+import Sein from "@characters/Sein";
+import Sense from "@characters/Sense";
+import Serie from "@characters/Serie";
+import Stark from "@characters/Stark";
+import Stille from "@characters/Stille";
+import Ubel from "@characters/Ubel";
 
 export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
+  [CharacterName.Denken]: Denken,
+  [CharacterName.Fern]: Fern,
   [CharacterName.Frieren]: Frieren,
-  [CharacterName.Sense]: Sense,
-  [CharacterName.Stille]: Stille,
-  [CharacterName.Serie]: Serie,
+  [CharacterName.Himmel]: Himmel,
+  [CharacterName.Laufen]: Laufen,
   [CharacterName.Linie]: Linie,
   [CharacterName.Sein]: Sein,
+  [CharacterName.Sense]: Sense,
+  [CharacterName.Serie]: Serie,
   [CharacterName.Stark]: Stark,
-  [CharacterName.Laufen]: Laufen,
-  [CharacterName.Denken]: Denken,
-  [CharacterName.Himmel]: Himmel,
+  [CharacterName.Stille]: Stille,
   [CharacterName.Ubel]: Ubel,
   [CharacterName.Fern]: Fern,
   [CharacterName.Edel]: Edel,
