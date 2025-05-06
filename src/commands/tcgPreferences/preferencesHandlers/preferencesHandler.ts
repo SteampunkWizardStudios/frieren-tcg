@@ -1,4 +1,3 @@
-import prismaClient from "@prismaClient";
 import { CHARACTER_MAP } from "@tcg/characters/characterList";
 import type { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { findCharacterByName } from "@src/util/db/getCharacter";
@@ -9,20 +8,13 @@ import {
   updateTcgTextSpeed,
 } from "@src/util/db/preferences";
 import { EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
+import { getPlayer } from "@src/util/db/getPlayer";
 
 export async function handlePlayerPreferences(
   interaction: ChatInputCommandInteraction
 ) {
   const preferenceAction = interaction.options.getSubcommand();
-  const player = await prismaClient.player.upsert({
-    where: {
-      discordId: interaction.user.id,
-    },
-    update: {},
-    create: {
-      discordId: interaction.user.id,
-    },
-  });
+  const player = await getPlayer(interaction.user.id);
 
   const playerId = player.id;
 
@@ -34,7 +26,7 @@ export async function handlePlayerPreferences(
           (char) => CHARACTER_MAP[char.name as CharacterName]
         );
         let response = "";
-        response += `Text Speed: ${preferences.tcgTextSpeed} ms\n`;
+        response += `Text Speed: \`${preferences.tcgTextSpeed} ms\`\n`;
 
         if (preferences.favouriteCharacters.length > 0) {
           response += `Favourite Characters: ${favouriteCharacterData.map((char) => `${char.cosmetic.emoji} ${char.name}`).join(", ")}\n`;
@@ -62,7 +54,7 @@ export async function handlePlayerPreferences(
         break;
       }
 
-      case "toggle-favorite-character": {
+      case "favorite-character": {
         const characterName = interaction.options.getString(
           "character-name",
           true
@@ -104,7 +96,6 @@ export async function handlePlayerPreferences(
     }
   } catch (error) {
     console.error("Error handling player preferences:", error);
-    // Use editReply since deferReply was already called
     await interaction.editReply({
       content: "An error occurred while managing your preferences.",
     });

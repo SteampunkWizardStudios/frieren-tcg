@@ -30,11 +30,18 @@ export default function characterSelect({
     );
 
   if (includeRandom) {
-    charSelect.addOptions({
-      label: "Random Character",
-      value: "random",
-      emoji: "🎲",
-    });
+    charSelect.addOptions(
+      {
+        label: "Random Character",
+        value: "random",
+        emoji: "🎲",
+      },
+      {
+        label: "Random Favourite Character",
+        value: "random-favourite",
+        emoji: "✨",
+      }
+    );
   }
 
   const charSelectActionRow =

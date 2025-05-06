@@ -1,5 +1,6 @@
 import { PlayerPreferences, Character } from "@prisma/client";
 import prismaClient from "@prismaClient";
+import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 
 /**
  * Gets a player's preferences, including their favourite characters.
@@ -175,4 +176,33 @@ export async function removeFavouriteCharacter(
     );
     throw error;
   }
+}
+
+export async function getSortedCharactersForPlayer(playerId: number) {
+  let sortedCharacters = CHARACTER_LIST;
+  const playerPreferrences = await getPlayerPreferences(playerId);
+  if (
+    playerPreferrences &&
+    playerPreferrences.favouriteCharacters &&
+    playerPreferrences.favouriteCharacters.length > 0
+  ) {
+    const favouritedCharacterNames = new Set(
+      playerPreferrences.favouriteCharacters.map((fav) => fav.name)
+    );
+
+    const favouritedOnly = [];
+    const nonFavouritedOnly = [];
+
+    for (const character of CHARACTER_LIST) {
+      if (favouritedCharacterNames.has(character.name)) {
+        favouritedOnly.push(character);
+      } else {
+        nonFavouritedOnly.push(character);
+      }
+    }
+
+    sortedCharacters = favouritedOnly.concat(nonFavouritedOnly);
+  }
+
+  return sortedCharacters;
 }
