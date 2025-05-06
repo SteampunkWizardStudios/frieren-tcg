@@ -183,7 +183,7 @@ export const basicDefensiveMagic = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
           self.adjustStat(-def, StatsEnum.DEF);
         },

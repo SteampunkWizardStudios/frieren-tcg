@@ -68,7 +68,7 @@ export const rest = new Card({
         name: "Rest",
         description: `DEF-2 for 2 turns`,
         turnDuration: 2,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (game, characterIndex, messageCache) => {
           messageCache.push(`${name} had a good rest.`, TCGThread.Gameroom);
           game.characters[characterIndex].adjustStat(2, StatsEnum.DEF);
@@ -127,7 +127,7 @@ export const hairBarrier = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
           self.adjustStat(-1 * def, StatsEnum.DEF);
         },

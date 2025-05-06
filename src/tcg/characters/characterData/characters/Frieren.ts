@@ -76,7 +76,7 @@ const Frieren = new CharacterData({
             name: "Post Analysis",
             description: `At this turn's resolution, gain ${card.tags["PostAnalysis"]} Analysis stack.`,
             turnDuration: 1,
-            removableBySorganeil: false,
+            metadata: { removableBySorganeil: false },
             endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
               messageCache.push(
                 "Frieren performed her analysis.",

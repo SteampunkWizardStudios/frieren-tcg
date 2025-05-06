@@ -83,7 +83,7 @@ const roost = new Card({
         name: "Roost",
         description: `DEF-3 for 2 turns.`,
         turnDuration: 2,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(`${name} opened its wings.`, TCGThread.Gameroom);
           self.adjustStat(3, StatsEnum.DEF);
@@ -96,7 +96,7 @@ const roost = new Card({
         name: "Roost",
         description: `SPD-5 for 3 turns.`,
         turnDuration: 3,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(`${name} took flight again!`, TCGThread.Gameroom);
           self.adjustStat(5, StatsEnum.SPD);
@@ -129,7 +129,7 @@ export const deflect = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         turnDuration: 1,
         priority: -1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           self.adjustStat(-def, StatsEnum.DEF);
         },
@@ -164,7 +164,7 @@ const flyAway = new Card({
         description: `Increases SPD by ${spd} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           self.adjustStat(-spd, StatsEnum.SPD);
         },
