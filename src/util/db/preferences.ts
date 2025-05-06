@@ -178,6 +178,41 @@ export async function removeFavouriteCharacter(
   }
 }
 
+export async function setFavouriteCharacters(
+  playerId: number,
+  favouriteCharacters: Character[]
+) {
+  try {
+    const preferences = await getOrCreatePlayerPreferences(playerId);
+    preferences.favouriteCharacters = favouriteCharacters;
+    const updatedPreferences = await prismaClient.playerPreferences.upsert({
+      where: { id: preferences.id },
+      create: {
+        playerId: playerId,
+        favouriteCharacters: {
+          connect: favouriteCharacters,
+        },
+      },
+      update: {
+        favouriteCharacters: {
+          set: favouriteCharacters,
+        },
+      },
+      select: {
+        favouriteCharacters: true,
+      },
+    });
+
+    return updatedPreferences;
+  } catch (error) {
+    console.error(
+      `Error setting favourite characters for player ${playerId}:`,
+      error
+    );
+    throw error;
+  }
+}
+
 export async function getSortedCharactersForPlayer(playerId: number) {
   let sortedCharacters = CHARACTER_LIST;
   const playerPreferrences = await getPlayerPreferences(playerId);

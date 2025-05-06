@@ -6,7 +6,7 @@ import {
 } from "discord.js";
 import type { Command } from "@src/types/command";
 import { handlePlayerPreferences } from "./preferencesHandlers/preferencesHandler";
-import { CHAR_OPTIONS, MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
+import { MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -38,13 +38,6 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setDescription(
           "Add or remove a character from your list of favourite characters"
         )
-        .addStringOption((option) =>
-          option
-            .setName("character-name")
-            .setDescription("The name of the character to toggle as favourite")
-            .setRequired(true)
-            .addChoices(CHAR_OPTIONS)
-        )
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -55,6 +48,7 @@ export const command: Command<ChatInputCommandInteraction> = {
   async execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply({
       flags: MessageFlags.Ephemeral,
+      withResponse: true,
     });
 
     try {
