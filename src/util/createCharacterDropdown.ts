@@ -38,7 +38,10 @@ export const createCharacterDropdown = async (
     .addFields({
       name: "Available Characters",
       value: [
-        ...sortedCharacters.map(
+        ...sortedCharacters.favoritedCharacter.map(
+          (char: CharacterData) => `1. ⭐ ${char.cosmetic.emoji} ${char.name}`
+        ),
+        ...sortedCharacters.nonFavoritedCharacter.map(
           (char: CharacterData) => `1. ${char.cosmetic.emoji} ${char.name}`
         ),
         "?. 🎲 Random Character",
@@ -47,7 +50,9 @@ export const createCharacterDropdown = async (
     });
 
   const { charSelect, charSelectActionRow } = characterSelect({
-    characterList: sortedCharacters,
+    characterList: sortedCharacters.favoritedCharacter.concat(
+      sortedCharacters.nonFavoritedCharacter
+    ),
     includeRandom: true,
     customId,
   });

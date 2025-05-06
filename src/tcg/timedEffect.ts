@@ -33,8 +33,8 @@ export interface TimedEffectProps {
 type TimedEffectMetadata = {
   removableBySorganeil?: boolean;
   waldgoseDamage?: number;
-  barrage?: number
-  partyMember?: "Frieren" | "Eisen" | "Heiter",
+  barrage?: number;
+  partyMember?: "Frieren" | "Eisen" | "Heiter";
   ubelSpeedModifiers?: number;
 };
 
