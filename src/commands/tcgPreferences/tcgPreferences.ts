@@ -34,7 +34,7 @@ export const command: Command<ChatInputCommandInteraction> = {
     )
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("toggle-favorite-character")
+        .setName("favorite-character")
         .setDescription(
           "Add or remove a character from your list of favourite characters"
         )

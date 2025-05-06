@@ -5,7 +5,6 @@ import {
   addFavouriteCharacter,
   getOrCreatePlayerPreferences,
   removeFavouriteCharacter,
-  setRistrictRandomToFavourites,
   updateTcgTextSpeed,
 } from "@src/util/db/preferences";
 import { EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
@@ -35,8 +34,6 @@ export async function handlePlayerPreferences(
           response += `Favourite Characters: None\n`;
         }
 
-        response += `Restrict Random to Favourites: \`${preferences.restrictRandomToFavourites ? "Yes" : "No"}\`\n`;
-
         await interaction.editReply({
           embeds: [
             new EmbedBuilder()
@@ -57,7 +54,7 @@ export async function handlePlayerPreferences(
         break;
       }
 
-      case "toggle-favorite-character": {
+      case "favorite-character": {
         const characterName = interaction.options.getString(
           "character-name",
           true
@@ -89,14 +86,6 @@ export async function handlePlayerPreferences(
             content: `${characterData.cosmetic.emoji}"${character.name}" has been added to your favourite characters.`,
           });
         }
-        break;
-      }
-      case "restrict-random-to-favourites": {
-        const value = interaction.options.getBoolean("value", true);
-        await setRistrictRandomToFavourites(playerId, value);
-        await interaction.editReply({
-          content: `Your random character selection preference has been set to ${value ? "" : "not "}restricted to your favourite characters.`,
-        });
         break;
       }
 

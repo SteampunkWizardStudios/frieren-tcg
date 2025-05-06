@@ -37,8 +37,8 @@ export default function characterSelect({
         emoji: "🎲",
       },
       {
-        label: "Favourite Random Character",
-        value: "favourite-random",
+        label: "Random Favourite Character",
+        value: "random-favourite",
         emoji: "✨",
       }
     );

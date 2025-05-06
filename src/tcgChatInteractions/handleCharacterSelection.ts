@@ -18,7 +18,7 @@ export async function handleCharacterSelection(
   const selection = interaction.values[0] as
     | `${number}`
     | "random"
-    | "favourite-random";
+    | "random-favourite";
 
   let selectionType: CharacterSelectionType;
   let selectedCharacter: CharacterData;
@@ -30,7 +30,7 @@ export async function handleCharacterSelection(
     selectionType = CharacterSelectionType.Random;
     const index = Math.floor(Math.random() * characterList.length);
     selectedCharacter = characterList[index];
-  } else if (selection === "favourite-random") {
+  } else if (selection === "random-favourite") {
     if (preferences && preferences.favouriteCharacters.length > 0) {
       selectionType = CharacterSelectionType.FavouriteRandom;
       const favouriteCharacters = preferences.favouriteCharacters;
