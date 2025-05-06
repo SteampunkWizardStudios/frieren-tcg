@@ -74,6 +74,7 @@ export const createCharacterDropdown = async (
           (char: CharacterData) => `1. ${char.cosmetic.emoji} ${char.name}`
         ),
         "?. 🎲 Random Character",
+        "?. ✨ Favourite Random Character",
       ].join("\n"),
     });
 

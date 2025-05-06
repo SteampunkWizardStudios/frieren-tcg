@@ -85,34 +85,46 @@ export const getPlayerCharacter = async (
               const selection = i.values[0];
               let selectionType = CharacterSelectionType.Selection;
 
-              let index;
+              let selectedCharacter: CharacterData;
               const player = await getPlayer(i.user.id);
+              const preferences = await getPlayerPreferences(player.id);
 
               if (selection === "random") {
-                const preferences = await getPlayerPreferences(player.id);
-                index = parseInt(selection) ?? 0;
                 selectionType = CharacterSelectionType.Random;
-
-                if (preferences && preferences.restrictRandomToFavourites) {
-                  const favouriteCharacters =
-                    preferences.favouriteCharacters.map(
-                      (char) => CHARACTER_MAP[char.name as CharacterName]
-                    );
-
-                  const favIndex = Math.floor(
-                    Math.random() * favouriteCharacters.length
-                  );
-
-                  const favSelectedCharacter = favouriteCharacters[favIndex];
-                  const isCharacter = (c: CharacterData) =>
-                    c.name === favSelectedCharacter.name;
-                  index = CHARACTER_LIST.findIndex(isCharacter);
+                const index = Math.floor(Math.random() * characterList.length);
+                selectedCharacter = characterList[index];
+              } else if (selection === "favourite-random") {
+                if (preferences && preferences.favouriteCharacters.length > 0) {
                   selectionType = CharacterSelectionType.FavouriteRandom;
+
+                  const favouriteCharacters = preferences.favouriteCharacters;
+                  const randomFavouriteCharacter =
+                    favouriteCharacters[
+                      Math.floor(Math.random() * favouriteCharacters.length)
+                    ];
+
+                  selectedCharacter =
+                    CHARACTER_MAP[
+                      randomFavouriteCharacter.name as CharacterName
+                    ];
+                } else {
+                  const index = Math.floor(
+                    Math.random() * characterList.length
+                  );
+                  selectedCharacter = characterList[index];
                 }
               } else {
-                index = parseInt(selection) ?? 0;
+                const index = Math.floor(Math.random() * characterList.length);
+                selectedCharacter = characterList[index];
               }
-              const selectedCharacter = characterList[index].clone();
+
+              // Error message if player tried to pick random favourite character when they have no favourited characters
+              const errorMessage = `You have no favourite characters. Please add some by using the \`/tcg-preferences toggle-favourite-character\` command.`;
+              const shouldSendErrorMessage =
+                preferences &&
+                preferences.favouriteCharacters.length === 0 &&
+                selection === "favourite-random";
+
               const characterSelectedEmbed = new EmbedBuilder()
                 .setTitle(
                   `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.name}**`
@@ -121,7 +133,7 @@ export const getPlayerCharacter = async (
                 .setImage(selectedCharacter.cosmetic.imageUrl);
 
               await i.editReply({
-                content: `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.name}**`,
+                content: `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.name}**\n\n${shouldSendErrorMessage ? errorMessage : ""}`,
                 embeds: [characterSelectedEmbed],
                 components: [],
               });
