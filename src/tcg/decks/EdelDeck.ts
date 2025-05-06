@@ -60,7 +60,7 @@ const one_step_ahead = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (game, characterIndex) => {
           game.characters[characterIndex].adjustStat(-def, StatsEnum.DEF);
         },

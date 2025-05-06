@@ -3,6 +3,7 @@ import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { CharacterData } from "@tcg/characters/characterData/characterData";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
 import edelDeck from "@tcg/decks/EdelDeck";
+import Pronouns from "@src/tcg/pronoun";
 
 const edelStats = new Stats({
   [StatsEnum.HP]: 70,
@@ -15,11 +16,7 @@ const edelStats = new Stats({
 const Edel = new CharacterData({
   name: CharacterName.Edel,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.EDEL,
     color: 0xae9292,
     imageUrl:
@@ -33,14 +30,6 @@ const Edel = new CharacterData({
 
 	**Sub-Ability: A Superior Opponent** - While you make Eye Contact with the opponent, all their moves have Priority-1.
 	`,
-  },
-  additionalMetadata: {
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    attackedThisTurn: false,
-    timedEffectAttackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    defenderDamageScaling: 1,
   },
 });
 
