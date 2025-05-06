@@ -1,5 +1,6 @@
 import { PlayerPreferences, Character } from "@prisma/client";
 import prismaClient from "@prismaClient";
+import { CharacterData } from "@src/tcg/characters/characterData/characterData";
 import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 
 /**
@@ -178,8 +179,10 @@ export async function removeFavouriteCharacter(
   }
 }
 
-export async function getSortedCharactersForPlayer(playerId: number) {
-  let sortedCharacters = CHARACTER_LIST;
+export async function getSortedCharactersForPlayer(playerId: number): Promise<{
+  favoritedCharacter: CharacterData[];
+  nonFavoritedCharacter: CharacterData[];
+}> {
   const playerPreferrences = await getPlayerPreferences(playerId);
   if (
     playerPreferrences &&
@@ -201,8 +204,14 @@ export async function getSortedCharactersForPlayer(playerId: number) {
       }
     }
 
-    sortedCharacters = favouritedOnly.concat(nonFavouritedOnly);
+    return {
+      favoritedCharacter: favouritedOnly,
+      nonFavoritedCharacter: nonFavouritedOnly,
+    };
+  } else {
+    return {
+      favoritedCharacter: [],
+      nonFavoritedCharacter: CHARACTER_LIST,
+    };
   }
-
-  return sortedCharacters;
 }
