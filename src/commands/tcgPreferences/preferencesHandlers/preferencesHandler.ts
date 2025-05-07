@@ -16,6 +16,7 @@ import {
   type StringSelectMenuInteraction,
 } from "discord.js";
 import { getPlayer } from "@src/util/db/getPlayer";
+import { charWithEmoji } from "@src/tcg/formatting/emojis";
 
 export async function handlePlayerPreferences(
   interaction: ChatInputCommandInteraction
@@ -63,10 +64,6 @@ export async function handlePlayerPreferences(
 
       case "favorite-character": {
         const preferences = await getPlayerPreferences(playerId);
-        const favouriteCharacterData =
-          preferences?.favouriteCharacters.map(
-            (char) => CHARACTER_MAP[char.name as CharacterName]
-          ) ?? [];
         const options: SelectMenuComponentOptionData[] = CHARACTER_LIST.map(
           (char) => {
             return {
@@ -84,7 +81,6 @@ export async function handlePlayerPreferences(
         const favouriteCharactersSelectMenu = new StringSelectMenuBuilder()
           .setCustomId(CUSTOM_ID)
           .setPlaceholder("Select a character")
-          .setMinValues(1)
           .setMaxValues(CHARACTER_LIST.length)
           .setOptions(options);
 
@@ -95,8 +91,8 @@ export async function handlePlayerPreferences(
           .addFields({
             name: "Favourite Characters",
             value:
-              favouriteCharacterData
-                .map((char) => `${char.cosmetic.emoji} ${char.name}`)
+              preferences?.favouriteCharacters
+                .map((char) => charWithEmoji(char.name as CharacterName))
                 .join(", ") || "None",
           });
 
@@ -117,13 +113,10 @@ export async function handlePlayerPreferences(
           try {
             await i.deferUpdate();
             const newFavouriteCharacterNames = i.values;
-            const newFavouriteCharacters = newFavouriteCharacterNames.map(
-              (name) => CHARACTER_MAP[name as CharacterName]
-            );
 
-            const promiseDbCharacters = newFavouriteCharacters.map(
-              async (char) => {
-                const dbChar = await findCharacterByName(char.name);
+            const promiseDbCharacters = newFavouriteCharacterNames.map(
+              async (name) => {
+                const dbChar = await findCharacterByName(name);
                 return dbChar;
               }
             );
@@ -139,8 +132,8 @@ export async function handlePlayerPreferences(
             const updatedEmbed = new EmbedBuilder(embed.data).setFields({
               name: "Favourite Characters",
               value:
-                newFavouriteCharacters
-                  .map((char) => `${char.cosmetic.emoji} ${char.name}`)
+                newFavouriteCharacterNames
+                  .map((name) => charWithEmoji(name as CharacterName))
                   .join(", ") || "None",
             });
 
