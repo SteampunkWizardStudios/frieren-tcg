@@ -24,7 +24,6 @@ export const a_fernZoltraak = new Card({
     messageCache.push(`${character.name} fired Zoltraak!`, TCGThread.Gameroom);
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     character.additionalMetadata.fernBarrage =
       (character.additionalMetadata.fernBarrage ?? 0) + 1;
     messageCache.push(
@@ -35,7 +34,6 @@ export const a_fernZoltraak = new Card({
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
       hpCost: 4,
-      pierceFactor,
     });
   },
 });
@@ -62,7 +60,6 @@ export const a_fernBarrage = new Card({
 
     const damage = this.calculateEffectValue(this.effects[0]);
     const newBarrageCount = (character.additionalMetadata.fernBarrage ?? 0) + 1;
-    const basePierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     character.additionalMetadata.fernBarrage = newBarrageCount;
     messageCache.push(
       `${character.name} gained 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
@@ -72,7 +69,7 @@ export const a_fernBarrage = new Card({
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
       hpCost: 4,
-      pierceFactor: 0.25 + basePierceFactor,
+      additionalPierceFactor: 0.25,
     });
 
     CommonCardAction.replaceOrAddNewTimedEffect(
@@ -106,12 +103,10 @@ export const a_fernBarrage = new Card({
               `${character.name} lost 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
               TCGThread.Gameroom
             );
-            const currPierceFactor =
-              (character.additionalMetadata.pierceFactor ??= 0);
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
               hpCost: 4,
-              pierceFactor: 0.25 + currPierceFactor,
+              additionalPierceFactor: 0.25,
             });
           } else {
             messageCache.push(
@@ -151,13 +146,12 @@ const a_fernConcentratedZoltraakSnipe = new Card({
 
     const baseDamage = this.calculateEffectValue(this.effects[0]);
     const singleBarrageDamage = this.calculateEffectValue(this.effects[1]);
-    const basePierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage:
         baseDamage +
         singleBarrageDamage * (character.additionalMetadata.fernBarrage ??= 0),
       hpCost: this.hpCost,
-      pierceFactor: 0.5 + basePierceFactor,
+      additionalPierceFactor: 0.5,
     });
 
     character.additionalMetadata.fernBarrage = 0;

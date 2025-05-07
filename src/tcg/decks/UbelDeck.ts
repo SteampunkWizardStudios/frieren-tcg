@@ -27,7 +27,6 @@ export const a_shallowSlash = new Card({
   ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
       `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
@@ -36,7 +35,6 @@ export const a_shallowSlash = new Card({
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
-      pierceFactor: pierceFactor,
     });
   },
 });
@@ -57,14 +55,11 @@ export const a_cleave = new Card({
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
   ) {
-    const character = game.getCharacter(characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(`A brutal slash!`, TCGThread.Gameroom);
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
-      pierceFactor: pierceFactor,
     });
   },
 });
@@ -87,7 +82,6 @@ export const a_dismantle = new Card({
   ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
       `${character.name} tries to cut ${opponent.name} into pieces!`,
       TCGThread.Gameroom
@@ -96,7 +90,6 @@ export const a_dismantle = new Card({
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
-      pierceFactor: pierceFactor,
     });
   },
 });

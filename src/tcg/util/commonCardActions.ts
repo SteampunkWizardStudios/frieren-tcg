@@ -11,20 +11,22 @@ export default class CommonCardAction {
       damage: number;
       hpCost: number;
       isTimedEffectAttack?: boolean;
-      pierceFactor?: number;
+      additionalPierceFactor?: number;
     }
   ): number {
     const isTimedEffectAttack = option.isTimedEffectAttack ?? false;
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
+    const pierceFactor =
+      (character.additionalMetadata.pierceFactor ??= 0) +
+      (option.additionalPierceFactor ?? 0);
     if (
       option.hpCost === 0 ||
       character.adjustStat(-option.hpCost, StatsEnum.HP)
     ) {
       const actualDamage = game.attack({
         attackerIndex: characterIndex,
-        damage:
-          option.damage + (option.pierceFactor ?? 0) * opponent.stats.stats.DEF,
+        damage: option.damage + pierceFactor * opponent.stats.stats.DEF,
         isTimedEffectAttack,
       });
       return actualDamage;

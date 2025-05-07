@@ -19,8 +19,6 @@ export const a_malevolentShrine = new Card({
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
   ) {
-    const character = game.getCharacter(characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
       `# ጠ ል ረ ቿ ሀ ዐ ረ ቿ ክ ፕ    ነ ዘ ዪ ጎ ክ ቿ!`,
       TCGThread.Gameroom
@@ -29,7 +27,6 @@ export const a_malevolentShrine = new Card({
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
-      pierceFactor: pierceFactor,
     });
   },
 });
