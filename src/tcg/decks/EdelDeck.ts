@@ -18,7 +18,7 @@ export const telekinesis = new Card({
     cardGif:
       "https://media.discordapp.net/attachments/1367328754795286599/1368285080606347444/Stone_hurling_spell_EP24.gif?ex=6817aa48&is=681658c8&hm=b41474c8c6b45cfcf6d65a0d1f5586e9633d1d064f0ee1ab4facd0d9b3699a84",
   },
-  description: ([dmg]) => `HP-8. The opponent redraws 2 cards. DMG ${dmg}.`,
+  description: ([dmg]) => `HP-8. Your opponent redraws 2 cards. DMG ${dmg}.`,
   effects: [14],
   cardAction: ({ name, opponent, sendToGameroom, basicAttack }) => {
     sendToGameroom(`${name} used a telekinetic attack!`);
@@ -120,17 +120,79 @@ const clear_mind = new Card({
   title: "Clear Mind",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
-  description: () => `Heal 10HP. SPD +2. Eye Contact next 1 turn. Both players Discard their entire hand and draw 6 new cards.`,
+  description: ([hp, spd]) =>
+    `Heal ${hp} HP. SPD+${spd}. Eye Contact next turn. Both players redraw their hand.`,
+  effects: [10, 2],
+  cardAction: ({
+    name,
+    possessive,
+    sendToGameroom,
+    selfStat,
+    self,
+    opponent,
+  }) => {
+    sendToGameroom(`${name} focuses and clears ${possessive} mind.`);
+
+    selfStat(0, StatsEnum.HP);
+    selfStat(1, StatsEnum.SPD);
+
+    [opponent, self].forEach(({ hand }) => {
+      hand.forEach((_, index) => {
+        self.discardCard(index);
+      });
+    });
+  },
+});
+
+const hypnosis_sleep = new Card({
+  title: "Hypnosis: *Sleep*",
+  cardMetadata: { nature: Nature.Util },
+  emoji: CardEmoji.EDEL_CARD,
+  description: () =>
+    `Eye Contact next 2 turns. Replace a card in your opponent's hand with Sleepy.`,
   effects: [],
-  cardAction: () => {
-  }
+  cardAction: () => {},
+});
+
+const hypnosis_mesmerize = new Card({
+  title: "Hypnosis: *Mesmerize*",
+  cardMetadata: { nature: Nature.Util },
+  emoji: CardEmoji.EDEL_CARD,
+  description: () =>
+    `Eye Contact next 2 turns. Replace the highest empowered card in your opponent's hand with Mesmerized.`,
+  effects: [],
+  cardAction: () => {},
+});
+
+const hypnosis_weaken = new Card({
+  title: "Hypnosis: *Weaken*",
+  cardMetadata: { nature: Nature.Util },
+  emoji: CardEmoji.EDEL_CARD,
+  description: ([debuff]) =>
+    `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Replace a card in your opponent's hand with Weakened at this empower.`,
+  effects: [2],
+  cardAction: () => {},
+});
+
+const kneel = new Card({
+  title: "*Kneel!*",
+  cardMetadata: { nature: Nature.Attack },
+  emoji: CardEmoji.EDEL_CARD,
+  description: ([dmg]) =>
+    `HP-10. DMG ${dmg} + 3 per each card discarded this match by your opponent. Ignores defense. At the end of the turn, if your opponent has discarded more than 10 cards this match, and they have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
+  effects: [10],
+  cardAction: () => {},
 });
 
 const edelDeck = [
-  { card: telekinesis, count: 4 },
-  { card: one_step_ahead, count: 4 },
-  { card: mental_fog, count: 4 },
-  { card: clear_mind, count: 4 },
+  { card: telekinesis, count: 2 },
+  { card: one_step_ahead, count: 2 },
+  { card: mental_fog, count: 2 },
+  { card: clear_mind, count: 2 },
+  { card: hypnosis_sleep, count: 2 },
+  { card: hypnosis_mesmerize, count: 2 },
+  { card: hypnosis_weaken, count: 2 },
+  { card: kneel, count: 2 },
 ];
 
 export default edelDeck;
