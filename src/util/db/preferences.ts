@@ -184,10 +184,8 @@ export async function setFavouriteCharacters(
   favouriteCharacters: Character[]
 ) {
   try {
-    const preferences = await getOrCreatePlayerPreferences(playerId);
-    preferences.favouriteCharacters = favouriteCharacters;
     const updatedPreferences = await prismaClient.playerPreferences.upsert({
-      where: { id: preferences.id },
+      where: { playerId: playerId },
       create: {
         playerId: playerId,
         favouriteCharacters: {
