@@ -213,8 +213,8 @@ export async function setFavouriteCharacters(
 }
 
 export async function getSortedCharactersForPlayer(playerId: number): Promise<{
-  favoritedCharacter: CharacterData[];
-  nonFavoritedCharacter: CharacterData[];
+  favouritedCharacter: CharacterData[];
+  nonFavouritedCharacter: CharacterData[];
 }> {
   const playerPreferrences = await getPlayerPreferences(playerId);
   if (
@@ -238,13 +238,13 @@ export async function getSortedCharactersForPlayer(playerId: number): Promise<{
     }
 
     return {
-      favoritedCharacter: favouritedOnly,
-      nonFavoritedCharacter: nonFavouritedOnly,
+      favouritedCharacter: favouritedOnly,
+      nonFavouritedCharacter: nonFavouritedOnly,
     };
   } else {
     return {
-      favoritedCharacter: [],
-      nonFavoritedCharacter: CHARACTER_LIST,
+      favouritedCharacter: [],
+      nonFavouritedCharacter: CHARACTER_LIST,
     };
   }
 }

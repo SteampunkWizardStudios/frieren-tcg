@@ -62,7 +62,7 @@ export async function handlePlayerPreferences(
         break;
       }
 
-      case "favorite-character": {
+      case "favourite-character": {
         const preferences = await getPlayerPreferences(playerId);
         const options: SelectMenuComponentOptionData[] = CHARACTER_LIST.map(
           (char) => {

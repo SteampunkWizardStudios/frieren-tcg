@@ -25,8 +25,8 @@ export async function handleCharacterSelection(
 
   const player = await getPlayer(interaction.user.id);
   const characters = await getSortedCharactersForPlayer(player.id);
-  const characterList = characters.favoritedCharacter.concat(
-    characters.nonFavoritedCharacter
+  const characterList = characters.favouritedCharacter.concat(
+    characters.nonFavouritedCharacter
   );
 
   if (selection === "random") {

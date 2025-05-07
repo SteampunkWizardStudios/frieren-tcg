@@ -9,7 +9,7 @@ import { a_malevolentShrine } from "./utilDecks/ubelSignature";
 
 export const empathyFailureName = "Stalking";
 
-export const a_reelseiden = new Card({
+export const a_shallowSlash = new Card({
   title: "Shallow Slash",
   description: ([dmg, atkSpd]) =>
     `HP-4. DMG ${dmg}. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
@@ -368,14 +368,14 @@ export const empathy = new Card({
 });
 
 const ubelDeck = [
-  { card: a_reelseiden, count: 3 },
+  { card: a_shallowSlash, count: 100 },
   { card: a_cleave, count: 2 },
   { card: a_dismantle, count: 2 },
   { card: a_malevolentShrine, count: 1 },
   { card: rushdown, count: 2 },
   { card: defend, count: 2 },
   { card: slowdown, count: 2 },
-  { card: sorganeil, count: 1 },
+  { card: sorganeil, count: 100 },
   { card: empathy, count: 1 },
 ];
 

@@ -38,20 +38,20 @@ export const createCharacterDropdown = async (
     .addFields({
       name: "Available Characters",
       value: [
-        ...sortedCharacters.favoritedCharacter.map(
+        ...sortedCharacters.favouritedCharacter.map(
           (char: CharacterData) => `1. ⭐ ${char.cosmetic.emoji} ${char.name}`
         ),
-        ...sortedCharacters.nonFavoritedCharacter.map(
+        ...sortedCharacters.nonFavouritedCharacter.map(
           (char: CharacterData) => `1. ${char.cosmetic.emoji} ${char.name}`
         ),
         "?. 🎲 Random Character",
-        "?. ✨ Favourite Random Character",
+        "?. ✨ Random Favourite Character",
       ].join("\n"),
     });
 
   const { charSelect, charSelectActionRow } = characterSelect({
-    characterList: sortedCharacters.favoritedCharacter.concat(
-      sortedCharacters.nonFavoritedCharacter
+    characterList: sortedCharacters.favouritedCharacter.concat(
+      sortedCharacters.nonFavouritedCharacter
     ),
     includeRandom: true,
     customId,
