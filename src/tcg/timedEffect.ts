@@ -38,6 +38,10 @@ type TimedEffectMetadata = {
   ubelSpeedModifiers?: number;
 };
 
+const defaultMetadata: TimedEffectMetadata = {
+  removableBySorganeil: true,
+};
+
 export default class TimedEffect {
   name: string;
   description: string;
@@ -78,7 +82,10 @@ export default class TimedEffect {
       props.activateEndOfTurnActionThisTurn ?? true;
     this.executeEndOfTimedEffectActionOnRemoval =
       props.executeEndOfTimedEffectActionOnRemoval ?? false;
-    this.metadata = props.metadata ?? {};
+    this.metadata = {
+      ...defaultMetadata,
+      ...props.metadata,
+    };
     this.tags = props.tags ?? {};
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
