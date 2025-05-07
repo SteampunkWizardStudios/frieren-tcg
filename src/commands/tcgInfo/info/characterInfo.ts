@@ -60,6 +60,10 @@ export async function showCharacterInfo(
           );
 
           // Create new embed for the selected character
+          const deckSize = char.cards.reduce(
+            (sum, { count }) => sum + count,
+            0
+          );
           const characterEmbed = new EmbedBuilder()
             .setColor(char.cosmetic.color)
             .setTitle(`${char.cosmetic.emoji} ${char.name}`)
@@ -80,7 +84,7 @@ export async function showCharacterInfo(
                 value: `${char.ability.abilityEffectString}`,
               },
               {
-                name: `Deck: 16 Cards`,
+                name: `Deck: ${deckSize} Cards`,
                 value: "",
               }
             )
