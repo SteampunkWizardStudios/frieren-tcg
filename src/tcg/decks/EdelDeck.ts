@@ -160,7 +160,7 @@ const hypnosis_sleep = new Card({
     `Eye Contact next 2 turns. Add Sleepy to your opponent's deck, they redraw a card.`,
   effects: [],
   cardAction: ({name, sendToGameroom, opponent }) => {
-	sendToGameroom(`${name} stares right at ${opponent.name}.\n### *Sleep*`);
+	sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
 
 	opponent.hand.push(sleepy.clone());
   },
@@ -175,7 +175,7 @@ const hypnosis_mesmerize = new Card({
     `Eye Contact next 2 turns. Add Mesmerize to your opponent's deck, they redraw a card.`,
   effects: [],
   cardAction: ({name, sendToGameroom, opponent }) => {
-	sendToGameroom(`${name} stares right at ${opponent.name}.\n### *Look into my eyes*`);
+	sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Look into my eyes*`);
 
 	opponent.hand.push(mesmerized.clone());
   },
@@ -189,7 +189,7 @@ const hypnosis_weaken = new Card({
     `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's deck.`,
   effects: [2],
   cardAction: ({name, sendToGameroom, opponent }) => {
-	sendToGameroom(`${name} stares right at ${opponent.name}.\n### *You are feeling weak*`);
+	sendToGameroom(`${name} stares right at ${opponent.name}.\n> *You are feeling weak*`);
 
 	opponent.hand.push(weakened.clone());
   },

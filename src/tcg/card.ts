@@ -28,6 +28,8 @@ type CardMetadata = {
   resolve?: number;
   signatureMoveOf?: CharacterName;
   ubelFailureRate?: number;
+  empathized?: boolean;
+  imitated?: boolean;
 };
 
 export type CardProps = {
@@ -42,6 +44,9 @@ export type CardProps = {
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
   empowerLevel?: number;
   priority?: number;
+    /**
+   * @deprecated Use {@link Card.cardMetadata} instead
+   */
   imitated?: boolean;
   /**
    * @deprecated Use {@link Card.cardMetadata} instead
@@ -49,6 +54,9 @@ export type CardProps = {
   tags?: Record<string, number>;
   printEmpower?: boolean;
   hpCost?: number;
+  /**
+   * @deprecated Use {@link Card.cardMetadata} instead
+   */
   empathized?: boolean;
 };
 

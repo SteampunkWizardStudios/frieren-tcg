@@ -4,6 +4,7 @@ import { CharacterData } from "@tcg/characters/characterData/characterData";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
 import edelDeck from "@tcg/decks/EdelDeck";
 import Pronouns from "@src/tcg/pronoun";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const edelStats = new Stats({
   [StatsEnum.HP]: 70,
@@ -30,6 +31,26 @@ const Edel = new CharacterData({
 
 	**Sub-Ability: A Superior Opponent** - While you make Eye Contact with the opponent, all their moves have Priority-1.
 	`,
+    abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
+		console.log("Edel ability start of turn effect");
+      const self = game.getCharacter(characterIndex);
+      const opponent = game.getCharacter(1 - characterIndex);
+
+      const randomCard =
+        opponent.hand[Math.floor(Math.random() * opponent.hand.length)];
+
+      randomCard.empowerLevel = Math.max(0, randomCard.empowerLevel - 1);
+
+      const selfThread =
+        characterIndex === 0
+          ? TCGThread.ChallengerThread
+          : TCGThread.OpponentThread;
+      messageCache.push(
+        `${self.name} pictured a card from ${opponent.name}'s hand.`,
+        selfThread
+      );
+      messageCache.push(`${randomCard.printCard()}`, selfThread);
+    },
   },
 });
 
