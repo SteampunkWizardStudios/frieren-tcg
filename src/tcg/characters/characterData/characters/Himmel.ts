@@ -1,9 +1,9 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
-import { himmelDeck } from "../../../decks/HimmelDeck";
+import Stats, { StatsEnum } from "@tcg/stats";
+import himmelDeck from "@decks/HimmelDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import Pronouns from "@tcg/pronoun";
 
 const HIMMEL_HERO_PARTY_DAMAGE_BONUS = 0.15;
 
@@ -19,14 +19,10 @@ const himmelStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Himmel = new CharacterData({
+const Himmel = new CharacterData({
   name: CharacterName.Himmel,
   cosmetic: {
-    pronouns: {
-      personal: "he",
-      possessive: "his",
-      reflexive: "himself",
-    },
+    pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.HIMMEL,
     color: 0xb4c9e7,
     imageUrl: imageUrl.icon,
@@ -56,13 +52,6 @@ export const Himmel = new CharacterData({
         1 + HIMMEL_HERO_PARTY_DAMAGE_BONUS * character.timedEffects.length;
     },
   },
-  additionalMetadata: {
-    attackedThisTurn: false,
-    timedEffectAttackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    himmelEisenReadyToCounter: false,
-    defenderDamageScaling: 1,
-  },
 });
+
+export default Himmel;

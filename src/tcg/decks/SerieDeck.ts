@@ -1,4 +1,4 @@
-import Card, { Nature } from "../card";
+import Card, { Nature } from "@tcg/card";
 import {
   serie_offensiveMagic_common,
   serie_offensiveMagic_rare,
@@ -6,12 +6,12 @@ import {
   serie_utilityMagic_recovery,
   serie_utilityMagic_tactics,
 } from "./utilDecks/serieMagic";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
 import { fieldOfFlower } from "./FrierenDeck";
-import { CardEmoji } from "../formatting/emojis";
+import { CardEmoji } from "@tcg/formatting/emojis";
 import { ancientBarrierMagic } from "./utilDecks/serieSignature";
-import { GameMessageContext } from "../gameContextProvider";
+import { GameMessageContext } from "@tcg/gameContextProvider";
 
 const useRandomCard = function (props: {
   cardPool: Card[];
@@ -49,7 +49,7 @@ export const a_livingGrimoireOffenseCommon = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(context);
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -69,7 +69,7 @@ export const a_livingGrimoireOffenseRare = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(context);
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -89,7 +89,7 @@ export const a_livingGrimoireOffenseUnusual = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(context);
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -109,7 +109,7 @@ export const a_livingGrimoireUtilityTactics = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(context);
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -129,7 +129,7 @@ export const a_livingGrimoireUtilityRecovery = new Card({
       empowerLevel: this.empowerLevel,
       context,
     });
-    newCard.cardAction(context);
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -183,7 +183,7 @@ export const basicDefensiveMagic = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
           self.adjustStat(-def, StatsEnum.DEF);
         },
@@ -242,7 +242,7 @@ export const unbreakableBarrier = new Card({
   },
 });
 
-export const serieDeck = [
+const serieDeck = [
   { card: a_livingGrimoireOffenseCommon, count: 3 },
   { card: a_livingGrimoireOffenseRare, count: 2 },
   { card: a_livingGrimoireOffenseUnusual, count: 1 },
@@ -254,3 +254,5 @@ export const serieDeck = [
   { card: unbreakableBarrier, count: 2 },
   { card: ancientBarrierMagic, count: 1 },
 ];
+
+export default serieDeck;

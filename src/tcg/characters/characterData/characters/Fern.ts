@@ -1,9 +1,9 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
+import Stats, { StatsEnum } from "@tcg/stats";
 import { CharacterName } from "../../metadata/CharacterName";
-import { CharacterEmoji } from "../../../formatting/emojis";
-import { fernDeck } from "@src/tcg/decks/FernDeck";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import fernDeck from "@decks/FernDeck";
+import Pronouns from "@tcg/pronoun";
 
 const imageUrl: Record<string, string> = {
   icon: "https://static.wikia.nocookie.net/frieren/images/6/65/Fern_anime_portrait.png/revision/latest?cb=20231017083448",
@@ -17,14 +17,10 @@ const fernStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Fern = new CharacterData({
+const Fern = new CharacterData({
   name: CharacterName.Fern,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FERN,
     color: 0x8e528e,
     imageUrl: imageUrl.icon,
@@ -59,10 +55,8 @@ export const Fern = new CharacterData({
   additionalMetadata: {
     manaSuppressed: true,
     ignoreManaSuppressed: true,
-    attackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    timedEffectAttackedThisTurn: false,
-    defenderDamageScaling: 1,
     fernBarrage: 0,
   },
 });
+
+export default Fern;

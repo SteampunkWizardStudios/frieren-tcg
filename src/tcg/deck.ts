@@ -1,4 +1,4 @@
-import Card from "./card";
+import Card from "@tcg/card";
 
 export default class Deck {
   activePile: Card[];

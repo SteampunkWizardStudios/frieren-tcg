@@ -1,13 +1,13 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
-import { laufenDeck } from "../../../decks/LaufenDeck";
-import Rolls from "../../../util/rolls";
+import Stats, { StatsEnum } from "@tcg/stats";
+import laufenDeck from "@decks/LaufenDeck";
+import Rolls from "@tcg/util/rolls";
 import { CharacterName } from "../../metadata/CharacterName";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import { CharacterEmoji } from "../../../formatting/emojis";
-import Game from "@src/tcg/game";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import Game from "@tcg/game";
+import Pronouns from "@tcg/pronoun";
 
 const laufenStats = new Stats({
   [StatsEnum.HP]: 90.0,
@@ -17,14 +17,10 @@ const laufenStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Laufen = new CharacterData({
+const Laufen = new CharacterData({
   name: CharacterName.Laufen,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.LAUFEN,
     color: 0xcf7457,
     imageUrl:
@@ -84,12 +80,6 @@ export const Laufen = new CharacterData({
         (1 - grazeReduction) * evasionReduction;
     },
   },
-  additionalMetadata: {
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    attackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    timedEffectAttackedThisTurn: false,
-    defenderDamageScaling: 1,
-  },
 });
+
+export default Laufen;

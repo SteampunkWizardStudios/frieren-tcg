@@ -7,12 +7,12 @@ import {
 } from "discord.js";
 import { Prisma } from "@prisma/client";
 import leaderboardEmbed from "./leaderboardEmbed";
-import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import {
   LazyPaginatedMessage,
   PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
-import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
+import { CHARACTER_MAP } from "@tcg/characters/characterList";
 
 const PAGE_SIZE = 12;
 

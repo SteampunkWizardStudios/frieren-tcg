@@ -1,10 +1,10 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
+import Stats, { StatsEnum } from "@tcg/stats";
 import { CharacterName } from "../../metadata/CharacterName";
-import { CharacterEmoji } from "../../../formatting/emojis";
-import { denkenDeck } from "@src/tcg/decks/DenkenDeck";
+import { CharacterEmoji } from "@tcg//formatting/emojis";
+import denkenDeck from "@decks/DenkenDeck";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import Pronouns from "@tcg/pronoun";
 
 const DENKEN_PRESERVERANCE_COUNT = 3;
 export const DENKEN_DEATH_HP = -50;
@@ -17,14 +17,10 @@ const denkenStats = new Stats({
   [StatsEnum.Ability]: DENKEN_PRESERVERANCE_COUNT,
 });
 
-export const Denken = new CharacterData({
+const Denken = new CharacterData({
   name: CharacterName.Denken,
   cosmetic: {
-    pronouns: {
-      personal: "he",
-      possessive: "his",
-      reflexive: "himself",
-    },
+    pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.DENKEN,
     color: 0x82574f,
     imageUrl:
@@ -62,12 +58,6 @@ export const Denken = new CharacterData({
       }
     },
   },
-  additionalMetadata: {
-    attackedThisTurn: false,
-    timedEffectAttackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    defenderDamageScaling: 1,
-  },
 });
+
+export default Denken;

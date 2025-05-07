@@ -1,9 +1,9 @@
-import Game from "@src/tcg/game";
+import Game from "@tcg/game";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
-import { StatsEnum } from "@src/tcg/stats";
-import Character from "@src/tcg/character";
-import Card from "@src/tcg/card";
+import { StatsEnum } from "@tcg/stats";
+import Character from "@tcg/character";
+import Card from "@tcg/card";
 import CommonCardAction from "./util/commonCardActions";
 
 export type GameContext = ReturnType<typeof gameContextProvider>;
@@ -23,7 +23,7 @@ const calculateEffectValue = (baseValue: number, empowerLevel: number) => {
  * @param {number} characterIndex - The index of the character using the card or effect
  * @returns The GameContext object with context-specific methods and properties for use in game actions
  */
-export default function gameContextProvider(
+export function gameContextProvider(
   this: Card,
   game: Game,
   characterIndex: number
@@ -68,12 +68,12 @@ export default function gameContextProvider(
   const flatAttack = (
     damage: number,
     hpCost: number,
-    pierceFactor?: number
+    additionalPierceFactor?: number
   ) => {
     return CommonCardAction.commonAttack(game, characterIndex, {
       damage,
       hpCost,
-      pierceFactor,
+      additionalPierceFactor,
     });
   };
 
@@ -85,13 +85,13 @@ export default function gameContextProvider(
   const basicAttack = (
     effectIndex: number,
     hpCost: number,
-    pierceFactor?: number
+    additionalPierceFactor?: number
   ) => {
     const damage = calculateEffectValue(
       this.effects[effectIndex],
       this.empowerLevel
     );
-    flatAttack(damage, hpCost, pierceFactor);
+    flatAttack(damage, hpCost, additionalPierceFactor);
     return damage;
   };
 
@@ -172,8 +172,16 @@ export function gameAndMessageContext(
   messageCache: MessageCache,
   characterIndex: number
 ) {
+  /**
+   * Takes a new card and recreate the context bound to the new card
+   * @param {Card} newCard - The new card to use for the context
+   */
+  const duplicateContext = (newCard: Card) =>
+    gameAndMessageContext.call(newCard, game, messageCache, characterIndex);
+
   return {
     ...gameContextProvider.call(this, game, characterIndex),
     ...messageContext(messageCache),
+    duplicateContext,
   };
 }

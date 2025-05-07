@@ -1,9 +1,9 @@
-import Card, { Nature } from "../card";
-import CommonCardAction from "../util/commonCardActions";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const a_staffStrike = new Card({
   title: "Staff Strike",
@@ -200,7 +200,7 @@ const quickDodge = new Card({
         description: `Increases SPD by ${spdIncreaseTemp} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-1 * spdIncreaseTemp, StatsEnum.SPD);
         },
@@ -240,7 +240,7 @@ export const parry = new Card({
         description: `Increases DEF by ${defIncrease} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           character.adjustStat(-1 * defIncrease, StatsEnum.DEF);
         },
@@ -296,7 +296,7 @@ export const jilwer = new Card({
   },
 });
 
-export const laufenDeck = [
+const laufenDeck = [
   { card: a_staffStrike, count: 2 },
   { card: a_staffBash, count: 2 },
   { card: a_whip, count: 2 },
@@ -306,3 +306,5 @@ export const laufenDeck = [
   { card: parry, count: 2 },
   { card: jilwer, count: 2 },
 ];
+
+export default laufenDeck;

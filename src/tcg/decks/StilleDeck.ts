@@ -1,10 +1,10 @@
-import Card, { Nature } from "../card";
-import CommonCardAction from "../util/commonCardActions";
-import { StatsEnum } from "../stats";
-import TimedEffect from "../timedEffect";
-import Rolls from "../util/rolls";
-import { CardEmoji } from "../formatting/emojis";
-import { TCGThread } from "../../tcgChatInteractions/sendGameMessage";
+import Card, { Nature } from "@tcg/card";
+import CommonCardAction from "@tcg/util/commonCardActions";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
+import Rolls from "@tcg/util/rolls";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const a_peck = new Card({
   title: "Peck",
@@ -83,7 +83,7 @@ const roost = new Card({
         name: "Roost",
         description: `DEF-3 for 2 turns.`,
         turnDuration: 2,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(`${name} opened its wings.`, TCGThread.Gameroom);
           self.adjustStat(3, StatsEnum.DEF);
@@ -96,7 +96,7 @@ const roost = new Card({
         name: "Roost",
         description: `SPD-5 for 3 turns.`,
         turnDuration: 3,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(`${name} took flight again!`, TCGThread.Gameroom);
           self.adjustStat(5, StatsEnum.SPD);
@@ -129,7 +129,7 @@ export const deflect = new Card({
         description: `Increases DEF by ${def} until the end of the turn.`,
         turnDuration: 1,
         priority: -1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           self.adjustStat(-def, StatsEnum.DEF);
         },
@@ -164,7 +164,7 @@ const flyAway = new Card({
         description: `Increases SPD by ${spd} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
-        removableBySorganeil: false,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           self.adjustStat(-spd, StatsEnum.SPD);
         },
@@ -211,7 +211,7 @@ export const a_geisel = new Card({
   },
 });
 
-export const stilleDeck = [
+const stilleDeck = [
   { card: a_peck, count: 2 },
   { card: a_ironFeather, count: 3 },
   { card: hide, count: 2 },
@@ -220,3 +220,5 @@ export const stilleDeck = [
   { card: flyAway, count: 3 },
   { card: a_geisel, count: 2 },
 ];
+
+export default stilleDeck;

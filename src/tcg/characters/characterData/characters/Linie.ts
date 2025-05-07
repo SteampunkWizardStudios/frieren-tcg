@@ -1,11 +1,11 @@
 import { CharacterData } from "../characterData";
-import Stats from "../../../stats";
-import { StatsEnum } from "../../../stats";
-import { linieDeck } from "../../../decks/LinieDeck";
+import Stats, { StatsEnum } from "@tcg/stats";
+import linieDeck from "@decks/LinieDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import { MessageCache } from "../../../../tcgChatInteractions/messageCache";
-import { TCGThread } from "../../../../tcgChatInteractions/sendGameMessage";
-import { CharacterEmoji } from "../../../formatting/emojis";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import Pronouns from "@tcg/pronoun";
 
 const LINIE_CHAIN_BONUS = 0.07;
 
@@ -17,14 +17,10 @@ const linieStats = new Stats({
   [StatsEnum.Ability]: 0.0,
 });
 
-export const Linie = new CharacterData({
+const Linie = new CharacterData({
   name: CharacterName.Linie,
   cosmetic: {
-    pronouns: {
-      personal: "she",
-      possessive: "her",
-      reflexive: "herself",
-    },
+    pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.LINIE,
     color: 0xf7c1b1,
     imageUrl:
@@ -66,12 +62,6 @@ export const Linie = new CharacterData({
       }
     },
   },
-  additionalMetadata: {
-    manaSuppressed: false,
-    ignoreManaSuppressed: false,
-    attackedThisTurn: false,
-    accessToDefaultCardOptions: true,
-    timedEffectAttackedThisTurn: false,
-    defenderDamageScaling: 1,
-  },
 });
+
+export default Linie;

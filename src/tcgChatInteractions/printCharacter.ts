@@ -1,7 +1,7 @@
-import Character from "../tcg/character";
-import { statDetails } from "../tcg/formatting/emojis";
-import { ProgressBarBuilder } from "../tcg/formatting/percentBar";
-import { StatsEnum } from "../tcg/stats";
+import Character from "@tcg/character";
+import { statDetails } from "@tcg/formatting/emojis";
+import { ProgressBarBuilder } from "@tcg/formatting/percentBar";
+import { StatsEnum } from "@tcg/stats";
 
 export const printCharacter = (
   character: Character,
@@ -20,6 +20,8 @@ export const printCharacter = (
       .build();
     hpInfo = `${charStat.HP}/${character.initialStats.stats.HP} ${healthbar.barString}`;
   }
+  const activePileCount = character.deck.activePile.length;
+  const discardPileCount = character.deck.discardPile.length;
   const lines = [
     `# ${character.name} (${character.characterUser.displayName}) [⠀](${character.cosmetic.imageUrl})`,
     `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
@@ -28,6 +30,7 @@ export const printCharacter = (
     `- ${statDetails[StatsEnum.SPD].emoji} **SPD**: ${charStat.SPD}`,
     `- ${statDetails[StatsEnum.Ability].emoji} **Ability**: ${character.ability.abilityName} - ${charStat.Ability}`,
     `  - ${character.ability.abilityEffectString}`,
+    `**Active Pile:** ${activePileCount} Card${activePileCount > 1 ? "s" : ""}     **Discard Pile:** ${discardPileCount} Card${discardPileCount > 1 ? "s" : ""}`,
   ];
   printStack.push(lines.join("\n"));
   if (character.additionalMetadata.manaSuppressed) {

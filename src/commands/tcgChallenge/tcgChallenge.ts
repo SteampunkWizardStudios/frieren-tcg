@@ -4,7 +4,7 @@ import {
   MessageFlags,
   InteractionContextType,
 } from "discord.js";
-import type { Command } from "../../types/command";
+import type { Command } from "@src/types/command";
 import { initiateChallengeRequest } from "./gameHandler/initiateChallengeRequest";
 import { GAME_SETTINGS, GameMode } from "./gameHandler/gameSettings";
 import { MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
@@ -50,8 +50,7 @@ export const command: Command<ChatInputCommandInteraction> = {
         (interaction.options.getString("gamemode") as GameMode) ??
         GameMode.CLASSIC;
       const gameSettings = GAME_SETTINGS[gamemode];
-      const textSpeedMs =
-        interaction.options.getInteger("text_speed_ms") ?? 1500;
+      const textSpeedMs = interaction.options.getInteger("text_speed_ms");
 
       initiateChallengeRequest({
         interaction,

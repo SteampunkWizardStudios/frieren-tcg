@@ -3,12 +3,15 @@ import { GameMode, GameSettings } from "./gameSettings";
 import { handleOpponent } from "./utils/handleOpponent";
 import { buildChallengeButtonRespond } from "./utils/buildChallengeButtonRespond";
 import config from "@src/config";
+import { getPlayerPreferences } from "@src/util/db/preferences";
+import { DEFAULT_TEXT_SPEED } from "@src/constants";
+import { getPlayer } from "@src/util/db/getPlayer";
 
 export async function initiateChallengeRequest(prop: {
   interaction: ChatInputCommandInteraction;
   gameSettings: GameSettings;
   ranked: boolean;
-  textSpeedMs: number;
+  textSpeedMs: number | null;
   gamemode?: GameMode;
 }): Promise<void> {
   const { interaction, gameSettings, ranked, gamemode, textSpeedMs } = prop;
@@ -19,6 +22,15 @@ export async function initiateChallengeRequest(prop: {
       flags: MessageFlags.Ephemeral,
     });
     return;
+  }
+
+  let preferredTextSpeed = textSpeedMs;
+  if (!preferredTextSpeed) {
+    const player = await getPlayer(interaction.user.id);
+    const playerPreferences = await getPlayerPreferences(player.id);
+    preferredTextSpeed = playerPreferences
+      ? playerPreferences.tcgTextSpeed
+      : DEFAULT_TEXT_SPEED;
   }
 
   await interaction.deferReply();
@@ -36,7 +48,7 @@ export async function initiateChallengeRequest(prop: {
     opponent,
     gameSettings,
     ranked,
-    textSpeedMs,
+    preferredTextSpeed,
     gamemode
   );
 }

@@ -7,9 +7,9 @@ import {
   ThreadChannel,
   User,
 } from "discord.js";
-import Character from "../tcg/character";
-import Card from "../tcg/card";
-import { createCountdownTimestamp } from "../util/utils";
+import Character from "@tcg/character";
+import Card from "@tcg/card";
+import { createCountdownTimestamp } from "@src/util/utils";
 
 // handle card selection and play the card
 // returns the card played

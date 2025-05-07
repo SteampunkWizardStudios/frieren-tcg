@@ -4,7 +4,7 @@ import {
   MessageFlags,
   InteractionContextType,
 } from "discord.js";
-import type { Command } from "../../types/command";
+import type { Command } from "@src/types/command";
 import { initiateChallengeRequest } from "./gameHandler/initiateChallengeRequest";
 import { MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
 
@@ -59,8 +59,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       const revealHand = interaction.options.getBoolean("reveal-hand") ?? false;
       const revealDraw =
         interaction.options.getBoolean("reveal-active-card") ?? false;
-      const textSpeedMs =
-        interaction.options.getInteger("text_speed_ms") ?? 1500;
+      const textSpeedMs = interaction.options.getInteger("text_speed_ms");
 
       initiateChallengeRequest({
         interaction,

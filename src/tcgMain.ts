@@ -5,9 +5,9 @@ import {
   ThreadChannel,
 } from "discord.js";
 import { GameSettings } from "./commands/tcgChallenge/gameHandler/gameSettings";
-import Character from "./tcg/character";
+import Character from "@tcg/character";
 import { getPlayerCharacter } from "./tcgChatInteractions/getPlayerCharacter";
-import Game from "./tcg/game";
+import Game from "@tcg/game";
 import { MessageCache } from "./tcgChatInteractions/messageCache";
 import {
   sendToThread,
@@ -15,12 +15,13 @@ import {
   TCGThreads,
 } from "./tcgChatInteractions/sendGameMessage";
 import { printGameState } from "./tcgChatInteractions/printGameState";
-import Card from "./tcg/card";
+import Card from "@tcg/card";
 import { printCharacter } from "./tcgChatInteractions/printCharacter";
-import TimedEffect from "./tcg/timedEffect";
+import TimedEffect from "@tcg/timedEffect";
 import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
-import { CharacterName } from "./tcg/characters/metadata/CharacterName";
-import { gameAndMessageContext } from "@src/tcg/gameContextProvider";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import { gameAndMessageContext } from "@tcg/gameContextProvider";
+import { CharacterSelectionType } from "./tcgChatInteractions/handleCharacterSelection";
 
 const TURN_LIMIT = 50;
 
@@ -139,9 +140,20 @@ export const tcgMain = async (
 
   [challengerSelection, opponentSelection].forEach((selection, i) => {
     const username = i === 0 ? challenger.displayName : opponent.displayName;
-    const message = selection.wasRandom
-      ? `## ${username} rolled the dice and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`
-      : `## ${username} selected ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+    let message: string;
+
+    switch (selection.selectionType) {
+      case CharacterSelectionType.Random:
+        message = `## ${username} rolled the dice and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+        break;
+      case CharacterSelectionType.FavouriteRandom:
+        message = `## ${username} rolled the dice from their favourite characters and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+        break;
+      default:
+        message = `## ${username} selected ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+        break;
+    }
+
     messageCache.push(message, TCGThread.Gameroom);
   });
 

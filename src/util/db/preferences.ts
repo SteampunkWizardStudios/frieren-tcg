@@ -1,5 +1,7 @@
 import { PlayerPreferences, Character } from "@prisma/client";
 import prismaClient from "@prismaClient";
+import { CharacterData } from "@src/tcg/characters/characterData/characterData";
+import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
 
 /**
  * Gets a player's preferences, including their favourite characters.
@@ -174,5 +176,75 @@ export async function removeFavouriteCharacter(
       error
     );
     throw error;
+  }
+}
+
+export async function setFavouriteCharacters(
+  playerId: number,
+  favouriteCharacters: Character[]
+) {
+  try {
+    const updatedPreferences = await prismaClient.playerPreferences.upsert({
+      where: { playerId: playerId },
+      create: {
+        playerId: playerId,
+        favouriteCharacters: {
+          connect: favouriteCharacters,
+        },
+      },
+      update: {
+        favouriteCharacters: {
+          set: favouriteCharacters,
+        },
+      },
+      select: {
+        favouriteCharacters: true,
+      },
+    });
+
+    return updatedPreferences;
+  } catch (error) {
+    console.error(
+      `Error setting favourite characters for player ${playerId}:`,
+      error
+    );
+    throw error;
+  }
+}
+
+export async function getSortedCharactersForPlayer(playerId: number): Promise<{
+  favouritedCharacter: CharacterData[];
+  nonFavouritedCharacter: CharacterData[];
+}> {
+  const playerPreferrences = await getPlayerPreferences(playerId);
+  if (
+    playerPreferrences &&
+    playerPreferrences.favouriteCharacters &&
+    playerPreferrences.favouriteCharacters.length > 0
+  ) {
+    const favouritedCharacterNames = new Set(
+      playerPreferrences.favouriteCharacters.map((fav) => fav.name)
+    );
+
+    const favouritedOnly = [];
+    const nonFavouritedOnly = [];
+
+    for (const character of CHARACTER_LIST) {
+      if (favouritedCharacterNames.has(character.name)) {
+        favouritedOnly.push(character);
+      } else {
+        nonFavouritedOnly.push(character);
+      }
+    }
+
+    return {
+      favouritedCharacter: favouritedOnly,
+      nonFavouritedCharacter: nonFavouritedOnly,
+    };
+  } else {
+    return {
+      favouritedCharacter: [],
+      nonFavouritedCharacter: CHARACTER_LIST,
+    };
   }
 }
