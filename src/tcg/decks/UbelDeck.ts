@@ -283,8 +283,8 @@ export const sorganeil = new Card({
     }
 
     opponent.skipTurn = true;
-    const opponentOriginalSpeed = opponent.stats.stats.SPD;
-    opponent.setStat(1, StatsEnum.SPD);
+    const opponentOriginalSpeedDiff = opponent.stats.stats.SPD - 1;
+    opponent.adjustStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD);
     messageCache.push(
       `${character.name} traps ${opponent.name} in ${character.cosmetic.pronouns.possessive} gaze!`,
       TCGThread.Gameroom
@@ -320,7 +320,7 @@ export const sorganeil = new Card({
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze. ${opponent.name} got free from ${character.name}'s Sorganeil.`,
             TCGThread.Gameroom
           );
-          opponent.setStat(opponentOriginalSpeed, StatsEnum.SPD);
+          opponent.adjustStat(opponentOriginalSpeedDiff, StatsEnum.SPD);
         },
       })
     );
