@@ -1,6 +1,5 @@
 import { CHARACTER_LIST, CHARACTER_MAP } from "@tcg/characters/characterList";
 import type { CharacterName } from "@tcg/characters/metadata/CharacterName";
-import { findCharacterByName } from "@src/util/db/getCharacter";
 import {
   getOrCreatePlayerPreferences,
   getPlayerPreferences,
@@ -17,6 +16,7 @@ import {
 } from "discord.js";
 import { getPlayer } from "@src/util/db/getPlayer";
 import { charWithEmoji } from "@src/tcg/formatting/emojis";
+import prismaClient from "@prismaClient";
 
 export async function handlePlayerPreferences(
   interaction: ChatInputCommandInteraction
@@ -114,12 +114,11 @@ export async function handlePlayerPreferences(
             await i.deferUpdate();
             const newFavouriteCharacterNames = i.values;
 
-            const promiseDbCharacters = newFavouriteCharacterNames.map(
-              async (name) => {
-                const dbChar = await findCharacterByName(name);
-                return dbChar;
-              }
-            );
+            const promiseDbCharacters = await prismaClient.character.findMany({
+              where: {
+                name: { in: newFavouriteCharacterNames },
+              },
+            });
 
             const dbCharacters = await Promise.all(promiseDbCharacters);
 
