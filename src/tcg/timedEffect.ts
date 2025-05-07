@@ -9,7 +9,7 @@ export interface TimedEffectProps {
   executeEndOfTimedEffectActionOnRemoval?: boolean;
   priority?: number;
   tags?: Record<string, number>;
-  metadata?: Partial<TimedEffectMetadata>;
+  metadata?: TimedEffectMetadata;
   // TODO: change to a GameContext arg
   endOfTurnAction?: (
     game: Game,
@@ -36,6 +36,10 @@ type TimedEffectMetadata = {
   barrage?: number;
   partyMember?: "Frieren" | "Eisen" | "Heiter";
   ubelSpeedModifiers?: number;
+};
+
+const defaultMetadata: TimedEffectMetadata = {
+  removableBySorganeil: true,
 };
 
 export default class TimedEffect {
@@ -78,7 +82,10 @@ export default class TimedEffect {
       props.activateEndOfTurnActionThisTurn ?? true;
     this.executeEndOfTimedEffectActionOnRemoval =
       props.executeEndOfTimedEffectActionOnRemoval ?? false;
-    this.metadata = props.metadata ?? {};
+    this.metadata = {
+      ...defaultMetadata,
+      ...props.metadata,
+    };
     this.tags = props.tags ?? {};
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
