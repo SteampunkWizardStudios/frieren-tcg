@@ -114,13 +114,11 @@ export async function handlePlayerPreferences(
             await i.deferUpdate();
             const newFavouriteCharacterNames = i.values;
 
-            const promiseDbCharacters = await prismaClient.character.findMany({
+            const dbCharacters = await prismaClient.character.findMany({
               where: {
                 name: { in: newFavouriteCharacterNames },
               },
             });
-
-            const dbCharacters = await Promise.all(promiseDbCharacters);
 
             const validDbCharacters = dbCharacters.filter(
               (dbChar) => dbChar !== null
