@@ -9,7 +9,7 @@ import { a_malevolentShrine } from "./utilDecks/ubelSignature";
 
 export const empathyFailureName = "Stalking";
 
-export const a_reelseiden = new Card({
+export const a_shallowSlash = new Card({
   title: "Shallow Slash",
   description: ([dmg, atkSpd]) =>
     `HP-4. DMG ${dmg}. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
@@ -283,8 +283,8 @@ export const sorganeil = new Card({
     }
 
     opponent.skipTurn = true;
-    const opponentOriginalSpeed = opponent.stats.stats.SPD;
-    opponent.setStat(1, StatsEnum.SPD);
+    const opponentOriginalSpeedDiff = opponent.stats.stats.SPD - 1;
+    opponent.adjustStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD);
     messageCache.push(
       `${character.name} traps ${opponent.name} in ${character.cosmetic.pronouns.possessive} gaze!`,
       TCGThread.Gameroom
@@ -320,7 +320,7 @@ export const sorganeil = new Card({
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze. ${opponent.name} got free from ${character.name}'s Sorganeil.`,
             TCGThread.Gameroom
           );
-          opponent.setStat(opponentOriginalSpeed, StatsEnum.SPD);
+          opponent.adjustStat(opponentOriginalSpeedDiff, StatsEnum.SPD);
         },
       })
     );
@@ -368,7 +368,7 @@ export const empathy = new Card({
 });
 
 const ubelDeck = [
-  { card: a_reelseiden, count: 3 },
+  { card: a_shallowSlash, count: 3 },
   { card: a_cleave, count: 2 },
   { card: a_dismantle, count: 2 },
   { card: a_malevolentShrine, count: 1 },

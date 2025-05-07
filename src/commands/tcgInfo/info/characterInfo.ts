@@ -7,11 +7,13 @@ import {
   ComponentType,
   MessageFlags,
 } from "discord.js";
-import { CHARACTER_LIST } from "@tcg/characters/characterList";
 import { sendInfoMessage } from "./util/sendInfoMessage";
 import { statDetails } from "@tcg/formatting/emojis";
 import { createCharacterDropdown } from "@src/util/createCharacterDropdown";
 import Card from "@tcg/card";
+import { handleCharacterSelection } from "@src/tcgChatInteractions/handleCharacterSelection";
+import { getPlayer } from "@src/util/db/getPlayer";
+import { getPlayerPreferences } from "@src/util/db/preferences";
 
 export async function showCharacterInfo(
   interaction: ChatInputCommandInteraction
@@ -48,16 +50,20 @@ export async function showCharacterInfo(
             });
             return;
           }
-          const selection = i.values[0];
-          let index;
-          if (selection === "random") {
-            index = Math.floor(Math.random() * CHARACTER_LIST.length);
-          } else {
-            index = parseInt(selection) ?? 0;
-          }
-          const char = CHARACTER_LIST[index];
+
+          const player = await getPlayer(i.user.id);
+          const preferences = await getPlayerPreferences(player.id);
+
+          const { selectedCharacter: char } = await handleCharacterSelection(
+            i,
+            preferences
+          );
 
           // Create new embed for the selected character
+          const deckSize = char.cards.reduce(
+            (sum, { count }) => sum + count,
+            0
+          );
           const characterEmbed = new EmbedBuilder()
             .setColor(char.cosmetic.color)
             .setTitle(`${char.cosmetic.emoji} ${char.name}`)
@@ -78,7 +84,7 @@ export async function showCharacterInfo(
                 value: `${char.ability.abilityEffectString}`,
               },
               {
-                name: `Deck: 16 Cards`,
+                name: `Deck: ${deckSize} Cards`,
                 value: "",
               }
             )

@@ -3,9 +3,9 @@ import { GameMode, GameSettings } from "./gameSettings";
 import { handleOpponent } from "./utils/handleOpponent";
 import { buildChallengeButtonRespond } from "./utils/buildChallengeButtonRespond";
 import config from "@src/config";
-import prismaClient from "@prismaClient";
 import { getPlayerPreferences } from "@src/util/db/preferences";
 import { DEFAULT_TEXT_SPEED } from "@src/constants";
+import { getPlayer } from "@src/util/db/getPlayer";
 
 export async function initiateChallengeRequest(prop: {
   interaction: ChatInputCommandInteraction;
@@ -26,15 +26,7 @@ export async function initiateChallengeRequest(prop: {
 
   let preferredTextSpeed = textSpeedMs;
   if (!preferredTextSpeed) {
-    const player = await prismaClient.player.upsert({
-      where: {
-        discordId: interaction.user.id,
-      },
-      update: {},
-      create: {
-        discordId: interaction.user.id,
-      },
-    });
+    const player = await getPlayer(interaction.user.id);
     const playerPreferences = await getPlayerPreferences(player.id);
     preferredTextSpeed = playerPreferences
       ? playerPreferences.tcgTextSpeed
