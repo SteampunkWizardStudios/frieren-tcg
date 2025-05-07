@@ -2,7 +2,8 @@ import Card, { Nature } from "@tcg/card";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import Character from "@tcg/character";
 import { StatsEnum } from "@tcg/stats";
-import TimedEffect from "../timedEffect";
+import TimedEffect from "@tcg/timedEffect";
+import { sleepy, mesmerized, weakened } from "@decks/utilDecks/edelStatuses";
 
 const redrawRandom = (opponent: Character) => {
   const randomIndex = Math.floor(Math.random() * opponent.hand.length);
@@ -136,10 +137,16 @@ const clear_mind = new Card({
     selfStat(0, StatsEnum.HP);
     selfStat(1, StatsEnum.SPD);
 
-    [opponent, self].forEach(({ hand }) => {
-      hand.forEach((_, index) => {
-        self.discardCard(index);
-      });
+    [opponent, self].forEach((player) => {
+      const initialHandSize = player.hand.length;
+      for (let i = 0; i < initialHandSize; i++) {
+        if (player.hand.length > 0) {
+          player.discardCard(0);
+          player.drawCard();
+        } else {
+          break;
+        }
+      }
     });
   },
 });
@@ -150,9 +157,13 @@ const hypnosis_sleep = new Card({
   emoji: CardEmoji.EDEL_CARD,
   printEmpower: false,
   description: () =>
-    `Eye Contact next 2 turns. Replace a card in your opponent's hand with Sleepy.`,
+    `Eye Contact next 2 turns. Add Sleepy to your opponent's deck, they redraw a card.`,
   effects: [],
-  cardAction: () => {},
+  cardAction: ({name, sendToGameroom, opponent }) => {
+	sendToGameroom(`${name} stares right at ${opponent.name}.\n### *Sleep*`);
+
+	opponent.hand.push(sleepy.clone());
+  },
 });
 
 const hypnosis_mesmerize = new Card({
@@ -161,9 +172,13 @@ const hypnosis_mesmerize = new Card({
   printEmpower: false,
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
-    `Eye Contact next 2 turns. Replace the highest empowered card in your opponent's hand with Mesmerized.`,
+    `Eye Contact next 2 turns. Add Mesmerize to your opponent's deck, they redraw a card.`,
   effects: [],
-  cardAction: () => {},
+  cardAction: ({name, sendToGameroom, opponent }) => {
+	sendToGameroom(`${name} stares right at ${opponent.name}.\n### *Look into my eyes*`);
+
+	opponent.hand.push(mesmerized.clone());
+  },
 });
 
 const hypnosis_weaken = new Card({
@@ -171,9 +186,13 @@ const hypnosis_weaken = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
   description: ([debuff]) =>
-    `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Replace a card in your opponent's hand with Weakened at this empower.`,
+    `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's deck.`,
   effects: [2],
-  cardAction: () => {},
+  cardAction: ({name, sendToGameroom, opponent }) => {
+	sendToGameroom(`${name} stares right at ${opponent.name}.\n### *You are feeling weak*`);
+
+	opponent.hand.push(weakened.clone());
+  },
 });
 
 const kneel = new Card({
