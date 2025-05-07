@@ -566,9 +566,9 @@ export const quickBlock = new Card({
   title: "Quick Block",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+3. Increases DEF by ${def} until the end of the turn.`,
+    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  priority: 3,
+  priority: 2,
   effects: [20],
   cardAction: function (
     this: Card,

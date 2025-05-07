@@ -13,6 +13,7 @@ export enum Nature {
   Defense = "Defense",
   Default = "Default",
   Util = "Util",
+  None = "None",
 }
 
 type CardMetadata = {

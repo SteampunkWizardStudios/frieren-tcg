@@ -148,6 +148,7 @@ const hypnosis_sleep = new Card({
   title: "Hypnosis: *Sleep*",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
+  printEmpower: false,
   description: () =>
     `Eye Contact next 2 turns. Replace a card in your opponent's hand with Sleepy.`,
   effects: [],
@@ -157,6 +158,7 @@ const hypnosis_sleep = new Card({
 const hypnosis_mesmerize = new Card({
   title: "Hypnosis: *Mesmerize*",
   cardMetadata: { nature: Nature.Util },
+  printEmpower: false,
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
     `Eye Contact next 2 turns. Replace the highest empowered card in your opponent's hand with Mesmerized.`,
