@@ -23,5 +23,6 @@ export type CharacterAdditionalMetadata = {
   serieToyingTurn?: boolean;
   himmelEisenReadyToCounter?: boolean;
   ubelSureHit?: UbelHit;
+  ubelSlashMovesPierceFactor?: number;
   fernBarrage?: number;
 };

@@ -242,8 +242,8 @@ const Ubel = new CharacterData({
     },
   },
   additionalMetadata: {
-    pierceFactor: PIERCE_FACTOR,
     ubelSureHit: UbelHit.Regular,
+    ubelSlashMovesPierceFactor: PIERCE_FACTOR,
   },
 });
 

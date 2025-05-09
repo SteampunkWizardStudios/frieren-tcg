@@ -35,6 +35,8 @@ export const a_shallowSlash = new Card({
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
+      additionalPierceFactor:
+        character.additionalMetadata.ubelSlashMovesPierceFactor,
     });
   },
 });
@@ -55,11 +57,14 @@ export const a_cleave = new Card({
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
   ) {
+    const character = game.getCharacter(characterIndex);
     messageCache.push(`A brutal slash!`, TCGThread.Gameroom);
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
+      additionalPierceFactor:
+        character.additionalMetadata.ubelSlashMovesPierceFactor,
     });
   },
 });
@@ -90,6 +95,8 @@ export const a_dismantle = new Card({
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
       hpCost: this.hpCost,
+      additionalPierceFactor:
+        character.additionalMetadata.ubelSlashMovesPierceFactor,
     });
   },
 });
