@@ -233,6 +233,8 @@ export const a_theHeightOfMagic = new Card({
     if (character.stats.stats.HP > 25) {
       return new Card({
         ...fieldOfFlower,
+        description: ([hp, endHp]) =>
+          `This card is treated as "The Height of Magic" if your HP is <= 25. Heal ${hp} HP. At the next 3 turn ends, heal ${endHp}.`,
         empowerLevel: this.empowerLevel,
         priority: 0,
       });
