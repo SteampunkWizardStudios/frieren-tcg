@@ -11,6 +11,7 @@ import { handleCharacterGlobalStats } from "./statsHandlers/characterLeaderboard
 import { handleCharacterStats } from "./statsHandlers/characterStats";
 import handleAchievementLeaderboard from "./statsHandlers/achievementLeaderboard";
 import { CHAR_OPTIONS } from "@src/constants";
+import handleUsageStats from "./statsHandlers/handleUsageStats";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -78,6 +79,9 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setRequired(false)
             .addChoices(CHAR_OPTIONS)
         )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand.setName("usage").setDescription("Usage stats for characters")
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -104,6 +108,10 @@ export const command: Command<ChatInputCommandInteraction> = {
         case "character": {
           const character = interaction.options.getString("character");
           await handleCharacterStats(interaction, character);
+          break;
+        }
+        case "usage": {
+          await handleUsageStats(interaction);
           break;
         }
         default:
