@@ -1,6 +1,6 @@
 import { ComponentType, EmbedBuilder, RepliableInteraction } from "discord.js";
 import prismaClient from "@prismaClient";
-import { characterNameToEmoji } from "@tcg/formatting/emojis";
+import { characterNameToEmoji, charWithEmoji } from "@tcg/formatting/emojis";
 import { CHARACTER_MAP } from "@tcg/characters/characterList";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { getWinrate } from "@src/util/utils";
@@ -128,11 +128,9 @@ async function overviewCase(): Promise<EmbedBuilder> {
   const description = sortedCharacters.map((char) => {
     const { name, winnerMatches, loserMatches } = char;
     const { winrate } = getWinrate(winnerMatches.length, loserMatches.length);
-    const emoji =
-      characterNameToEmoji[name as keyof typeof characterNameToEmoji];
-    const formattedEmoji = emoji ? `${emoji} ` : "";
+    const nameWithEmoji = charWithEmoji(name as CharacterName);
 
-    return `${formattedEmoji}${name}: ${winnerMatches.length} Wins, ${loserMatches.length} Losses, Winrate: ${winrate}%`;
+    return `${nameWithEmoji}: ${winnerMatches.length} Wins, ${loserMatches.length} Losses, Winrate: ${winrate}%`;
   });
 
   const embed = new EmbedBuilder()
