@@ -123,7 +123,7 @@ export const command: Command<ChatInputCommandInteraction> = {
     } catch (error) {
       console.log(error);
       await interaction.editReply({
-        content: "tcg-ranked failed",
+        content: "tcg-stats failed",
       });
     }
   },

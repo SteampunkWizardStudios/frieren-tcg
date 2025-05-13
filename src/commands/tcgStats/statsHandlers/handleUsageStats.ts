@@ -73,10 +73,10 @@ function makeComponent(
     .addTextDisplayComponents(
       Object.entries(usage).map(([name, stats]) => {
         const { wins, losses } = stats;
-        const usage = Math.round(((wins + losses) / totalMatches) * 1000) / 10;
+        const usage = totalMatches > 0 ? Math.round((wins + losses / totalMatches) * 1000) / 10 : 0;
 
         return new TextDisplayBuilder().setContent(
-          `${charWithEmoji(name as CharacterName)} matches: ${wins + losses}, usage: ${usage}%`
+          `${charWithEmoji(name as CharacterName)} - ${wins + losses} matches, ${usage}% usage`
         );
       })
     );
