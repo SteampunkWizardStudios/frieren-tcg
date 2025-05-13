@@ -59,24 +59,39 @@ export default async function handleUsageStats(
 function makeComponent(
   usage: Record<CharacterName, { wins: number; losses: number }>
 ) {
-  const totalMatches = Object.values(usage).reduce(
+  const totalSelections = Object.values(usage).reduce(
     (acc, stats) => acc + stats.wins + stats.losses,
     0
   );
 
+  const sortedUsage = Object.entries(usage).sort(
+    ([, a], [, b]) => b.wins + b.losses - (a.wins + a.losses)
+  );
+
+  const charCount = Object.entries(usage).length;
+  const expectedUsage =
+    charCount > 0 ? Math.round((100 / charCount) * 10) / 10 : 0;
+
   return new ContainerBuilder()
     .addTextDisplayComponents(
       new TextDisplayBuilder().setContent("## Usage stats"),
-      new TextDisplayBuilder().setContent(`### Total matches: ${totalMatches}`)
+      new TextDisplayBuilder().setContent(
+        `### Total matches: ${totalSelections / 2}`
+      ),
+      new TextDisplayBuilder().setContent(`Expected usage: ${expectedUsage}%`)
     )
     .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
     .addTextDisplayComponents(
-      Object.entries(usage).map(([name, stats]) => {
+      sortedUsage.map(([name, stats]) => {
         const { wins, losses } = stats;
-        const usage = totalMatches > 0 ? Math.round((wins + losses / totalMatches) * 1000) / 10 : 0;
+        const characterMatches = wins + losses;
+        const usagePercent =
+          totalSelections > 0
+            ? Math.round((characterMatches / totalSelections) * 1000) / 10
+            : 0;
 
         return new TextDisplayBuilder().setContent(
-          `${charWithEmoji(name as CharacterName)} - ${wins + losses} matches, ${usage}% usage`
+          `${charWithEmoji(name as CharacterName)} - ${characterMatches} picks, ${usagePercent}% usage`
         );
       })
     );
