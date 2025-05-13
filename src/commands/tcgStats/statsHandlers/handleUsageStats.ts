@@ -2,6 +2,7 @@ import {
   ChatInputCommandInteraction,
   ContainerBuilder,
   TextDisplayBuilder,
+  SeparatorBuilder,
 } from "discord.js";
 import { CHARACTER_MAP } from "@tcg/characters/characterList";
 import prismaClient from "@prismaClient";
@@ -63,16 +64,20 @@ function makeComponent(
     0
   );
 
-  return new ContainerBuilder().addTextDisplayComponents(
-    new TextDisplayBuilder().setContent("## Usage stats"),
-    new TextDisplayBuilder().setContent(`### Total matches: ${totalMatches}`),
-    ...Object.entries(usage).map(([name, stats]) => {
-      const { wins, losses } = stats;
-      const usage = Math.round(((wins + losses) / totalMatches) * 1000) / 10;
+  return new ContainerBuilder()
+    .addTextDisplayComponents(
+      new TextDisplayBuilder().setContent("## Usage stats"),
+      new TextDisplayBuilder().setContent(`### Total matches: ${totalMatches}`)
+    )
+    .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
+    .addTextDisplayComponents(
+      Object.entries(usage).map(([name, stats]) => {
+        const { wins, losses } = stats;
+        const usage = Math.round(((wins + losses) / totalMatches) * 1000) / 10;
 
-      return new TextDisplayBuilder().setContent(
-        `${charWithEmoji(name as CharacterName)} matches: ${wins + losses}, usage: ${usage}%`
-      );
-    })
-  );
+        return new TextDisplayBuilder().setContent(
+          `${charWithEmoji(name as CharacterName)} matches: ${wins + losses}, usage: ${usage}%`
+        );
+      })
+    );
 }
