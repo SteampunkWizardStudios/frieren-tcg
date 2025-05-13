@@ -1,7 +1,12 @@
-import { ChatInputCommandInteraction, ContainerBuilder } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  ContainerBuilder,
+  TextDisplayBuilder,
+} from "discord.js";
 import { CHARACTER_MAP } from "@tcg/characters/characterList";
 import prismaClient from "@prismaClient";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { charWithEmoji } from "@src/tcg/formatting/emojis";
 
 export default async function handleUsageStats(
   interaction: ChatInputCommandInteraction
@@ -26,19 +31,23 @@ export default async function handleUsageStats(
     },
   });
 
-  const usageMap = Object.entries(CHARACTER_MAP).forEach(([, character]) => {
-    usageMap[character.name] = {
-      wins: 0,
-      losses: 0,
-    };
-  }, {} as Record<CharacterName, { wins: number; losses: number }>);;
+  const usageMap = Object.entries(CHARACTER_MAP).reduce(
+    (map, [, character]) => {
+      map[character.name] = {
+        wins: 0,
+        losses: 0,
+      };
+      return map;
+    },
+    {} as Record<string, { wins: number; losses: number }>
+  );
 
   data.forEach((match) => {
     usageMap[match.winnerCharacter.name].wins++;
     usageMap[match.loserCharacter.name].losses++;
   });
 
-  const component = makeComponent();
+  const component = makeComponent(usageMap);
 
   await interaction.editReply({
     components: [component],
@@ -46,6 +55,24 @@ export default async function handleUsageStats(
   });
 }
 
-function makeComponent() {
-  return new ContainerBuilder();
+function makeComponent(
+  usage: Record<CharacterName, { wins: number; losses: number }>
+) {
+  const totalMatches = Object.values(usage).reduce(
+    (acc, stats) => acc + stats.wins + stats.losses,
+    0
+  );
+
+  return new ContainerBuilder().addTextDisplayComponents(
+    new TextDisplayBuilder().setContent("## Usage stats"),
+    new TextDisplayBuilder().setContent(`### Total matches: ${totalMatches}`),
+    ...Object.entries(usage).map(([name, stats]) => {
+      const { wins, losses } = stats;
+      const usage = Math.round(((wins + losses) / totalMatches) * 1000) / 10;
+
+      return new TextDisplayBuilder().setContent(
+        `${charWithEmoji(name as CharacterName)} matches: ${wins + losses}, usage: ${usage}%`
+      );
+    })
+  );
 }
