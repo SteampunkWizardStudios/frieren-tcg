@@ -12,6 +12,8 @@ import { handleCharacterStats } from "./statsHandlers/characterStats";
 import handleAchievementLeaderboard from "./statsHandlers/achievementLeaderboard";
 import { CHAR_OPTIONS } from "@src/constants";
 import handleUsageStats from "./statsHandlers/handleUsageStats";
+import getTables from "@src/util/db/getTables";
+import exportTable from "./statsHandlers/exportTable";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -82,6 +84,18 @@ export const command: Command<ChatInputCommandInteraction> = {
     )
     .addSubcommand((subcommand) =>
       subcommand.setName("usage").setDescription("Usage stats for characters")
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("export")
+        .setDescription("Export a table from the database")
+        .addStringOption((option) =>
+          option
+            .setName("table")
+            .setDescription("The table to export")
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -114,6 +128,10 @@ export const command: Command<ChatInputCommandInteraction> = {
           await handleUsageStats(interaction);
           break;
         }
+        case "export": {
+          await exportTable(interaction);
+          break;
+        }
         default:
           await interaction.editReply({
             content: "Invalid subcommand",
@@ -125,6 +143,30 @@ export const command: Command<ChatInputCommandInteraction> = {
       await interaction.editReply({
         content: "tcg-stats failed",
       });
+    }
+  },
+
+  async autocomplete(interaction) {
+    const subcommand = interaction.options.getSubcommand();
+    const focusedValue = interaction.options.getFocused();
+
+    switch (subcommand) {
+      case "export": {
+        const tables = await getTables();
+        const filtered = tables
+          .filter((table) =>
+            table.toLowerCase().startsWith(focusedValue.toLowerCase())
+          )
+          .slice(0, 25);
+        await interaction.respond(
+          filtered.map((table) => ({ name: table, value: table }))
+        );
+        break;
+      }
+      default: {
+        await interaction.respond([]);
+        break;
+      }
     }
   },
 };
