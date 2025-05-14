@@ -106,7 +106,7 @@ function winRateLine(wins: number, losses: number) {
   return `(${wins}W / ${losses}L / WR: ${(winRate * 100).toFixed(1)}%)`;
 }
 
-async function countPlayerMatches(
+export async function countPlayerMatches(
   id: number,
   ladderResetId: number
 ): Promise<{ wins: number; losses: number }> {
