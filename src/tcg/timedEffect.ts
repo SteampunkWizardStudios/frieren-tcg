@@ -28,6 +28,11 @@ export interface TimedEffectProps {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  executeAfterCardRolls: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache
+  ) => void;
 }
 
 type TimedEffectMetadata = {
@@ -72,6 +77,11 @@ export default class TimedEffect {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  executeAfterCardRolls: (
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache
+  ) => void;
 
   constructor(props: TimedEffectProps) {
     this.name = props.name;
@@ -82,6 +92,7 @@ export default class TimedEffect {
       props.activateEndOfTurnActionThisTurn ?? true;
     this.executeEndOfTimedEffectActionOnRemoval =
       props.executeEndOfTimedEffectActionOnRemoval ?? false;
+      
     this.metadata = {
       ...defaultMetadata,
       ...props.metadata,
@@ -90,6 +101,7 @@ export default class TimedEffect {
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
     this.replacedAction = props.replacedAction;
+    this.executeAfterCardRolls = props.executeAfterCardRolls;
   }
 
   passTurn() {

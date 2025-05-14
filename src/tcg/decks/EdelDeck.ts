@@ -11,6 +11,12 @@ const redrawRandom = (opponent: Character) => {
   opponent.drawCard();
 };
 
+const getHighestEmpower = (self: Character) => {
+  return self.hand.reduce((highest, card) => {
+    return card.empowerLevel > highest.empowerLevel ? card : highest;
+  }, self.hand[0]);
+}
+
 export const telekinesis = new Card({
   title: "Telekinesis",
   cardMetadata: { nature: Nature.Attack },
@@ -110,8 +116,13 @@ const mental_fog = new Card({
     opponent.timedEffects.push(
       new TimedEffect({
         name: "Mental Fog",
-        description: `Your highest empowered card will cost ${cost} additional HP for the next 5 turns.`,
+        description: `The highest empowered card you draw will cost ${cost} additional HP for the next 5 turns.`,
         turnDuration: 5,
+        executeAfterCardRolls: () => {
+          const highestEmpoweredCard = getHighestEmpower(self);
+          highestEmpoweredCard.hpCost += cost;
+          console.log(`${highestEmpoweredCard.printCard} cost increased by ${cost}`);
+        }
       })
     );
   },
@@ -159,10 +170,10 @@ const hypnosis_sleep = new Card({
   description: () =>
     `Eye Contact next 2 turns. Add Sleepy to your opponent's deck, they redraw a card.`,
   effects: [],
-  cardAction: ({name, sendToGameroom, opponent }) => {
-	sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
+  cardAction: ({ name, sendToGameroom, opponent }) => {
+    sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
 
-	opponent.hand.push(sleepy.clone());
+    opponent.hand.push(sleepy.clone());
   },
 });
 
@@ -174,10 +185,10 @@ const hypnosis_mesmerize = new Card({
   description: () =>
     `Eye Contact next 2 turns. Add Mesmerize to your opponent's deck, they redraw a card.`,
   effects: [],
-  cardAction: ({name, sendToGameroom, opponent }) => {
-	sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Look into my eyes*`);
+  cardAction: ({ name, sendToGameroom, opponent }) => {
+    sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Look into my eyes*`);
 
-	opponent.hand.push(mesmerized.clone());
+    opponent.hand.push(mesmerized.clone());
   },
 });
 
@@ -188,10 +199,10 @@ const hypnosis_weaken = new Card({
   description: ([debuff]) =>
     `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's deck.`,
   effects: [2],
-  cardAction: ({name, sendToGameroom, opponent }) => {
-	sendToGameroom(`${name} stares right at ${opponent.name}.\n> *You are feeling weak*`);
+  cardAction: ({ name, sendToGameroom, opponent }) => {
+    sendToGameroom(`${name} stares right at ${opponent.name}.\n> *You are feeling weak*`);
 
-	opponent.hand.push(weakened.clone());
+    opponent.hand.push(weakened.clone());
   },
 });
 
@@ -202,7 +213,7 @@ const kneel = new Card({
   description: ([dmg]) =>
     `HP-10. DMG ${dmg} + 3 per each card discarded this match by your opponent. Ignores defense. At the end of the turn, if your opponent has discarded more than 10 cards this match, and they have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
   effects: [10],
-  cardAction: () => {},
+  cardAction: () => { },
 });
 
 const edelDeck = [
