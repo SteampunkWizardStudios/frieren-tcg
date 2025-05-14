@@ -1,5 +1,6 @@
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import Game from "@tcg/game";
+import { TimedEffectContext } from "./gameContextProvider";
 
 export interface TimedEffectProps {
   name: string;
@@ -28,10 +29,8 @@ export interface TimedEffectProps {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
-  executeAfterCardRolls: (
-    game: Game,
-    characterIndex: number,
-    messageCache: MessageCache
+  executeAfterCardRolls?: (
+    context: TimedEffectContext
   ) => void;
 }
 
@@ -77,10 +76,8 @@ export default class TimedEffect {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
-  executeAfterCardRolls: (
-    game: Game,
-    characterIndex: number,
-    messageCache: MessageCache
+  executeAfterCardRolls?: (
+    context: TimedEffectContext
   ) => void;
 
   constructor(props: TimedEffectProps) {
@@ -92,7 +89,7 @@ export default class TimedEffect {
       props.activateEndOfTurnActionThisTurn ?? true;
     this.executeEndOfTimedEffectActionOnRemoval =
       props.executeEndOfTimedEffectActionOnRemoval ?? false;
-      
+
     this.metadata = {
       ...defaultMetadata,
       ...props.metadata,

@@ -118,7 +118,7 @@ const mental_fog = new Card({
         name: "Mental Fog",
         description: `The highest empowered card you draw will cost ${cost} additional HP for the next 5 turns.`,
         turnDuration: 5,
-        executeAfterCardRolls: () => {
+        executeAfterCardRolls: ({ self }) => {
           const highestEmpoweredCard = getHighestEmpower(self);
           highestEmpoweredCard.hpCost += cost;
           console.log(`${highestEmpoweredCard.printCard} cost increased by ${cost}`);

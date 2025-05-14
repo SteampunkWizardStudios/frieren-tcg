@@ -164,9 +164,11 @@ export function timedEffectContext(
 ) {
   return {
     ...messageContext(messageCache),
+    ...characterBasedContext(game, characterIndex),
   };
 }
 
 // Types
 export type GameContext = ReturnType<typeof gameContextProvider>;
 export type GameMessageContext = ReturnType<typeof gameAndMessageContext>;
+export type TimedEffectContext = ReturnType<typeof timedEffectContext>;
