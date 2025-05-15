@@ -133,8 +133,7 @@ export const manaDetection = new Card({
 const parry = new Card({
   title: "Parry",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [20],
   priority: 2,

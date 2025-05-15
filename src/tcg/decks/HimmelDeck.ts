@@ -565,8 +565,7 @@ const heiterTrustYou = new Card({
 export const quickBlock = new Card({
   title: "Quick Block",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+3. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 3,
   effects: [20],
@@ -636,7 +635,7 @@ const rally = new Card({
 export const a_extremeSpeed = new Card({
   title: "Extreme Speed",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `Priority+1. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 1,
   effects: [12],

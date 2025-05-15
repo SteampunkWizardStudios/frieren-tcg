@@ -107,7 +107,7 @@ export const bareHandedBlock = new Card({
   title: "Bare-handed Block",
   cardMetadata: { nature: Nature.Defense },
   description: ([def, tempDef]) =>
-    `Priority+2. DEF+${def}. Increases DEF by an additional ${tempDef} until the end of the turn.`,
+    `DEF+${def}. Increases DEF by an additional ${tempDef} until the end of the turn.`,
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [2, 8],
@@ -393,7 +393,7 @@ const elementaryDefensiveMagicBase = new Card({
   title: "Elementary Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
+    `Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [20],
@@ -429,7 +429,7 @@ export const elementaryDefensiveMagic = new Card({
   title: "Elementary Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
+    `Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [20],

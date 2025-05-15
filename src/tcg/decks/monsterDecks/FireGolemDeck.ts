@@ -56,8 +56,7 @@ const a_burn = new Card({
 const extinguish = new Card({
   title: "Extinguish",
   cardMetadata: { nature: Nature.Util },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} for 2 turns. ATK-10.`,
+  description: ([def]) => `Increases DEF by ${def} for 2 turns. ATK-10.`,
   emoji: CardEmoji.SHIELD,
   priority: 2,
   effects: [50],

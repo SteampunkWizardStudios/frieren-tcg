@@ -51,8 +51,7 @@ const earPiercingScream = new Card({
 const hide = new Card({
   title: "Hide",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SHIELD,
   effects: [20],
   priority: 2,

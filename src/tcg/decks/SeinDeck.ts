@@ -106,7 +106,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
 const a_trustInYourAllyStarksLightningStrike = new Card({
   title: "Trust in Your Ally: Stark's Lightning Strike",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `Priority-1. DMG ${dmg}+HP/7.`,
+  description: ([dmg]) => `DMG ${dmg}+HP/7.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -279,8 +279,7 @@ export const poisonCure = new Card({
 export const braceYourself = new Card({
   title: "Brace Yourself",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:

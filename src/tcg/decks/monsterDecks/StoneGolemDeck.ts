@@ -35,7 +35,7 @@ const crystalize = new Card({
   title: "Crystalize",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} for 2 turns. ATK-15 for 2 turns.`,
+    `Increases DEF by ${def} for 2 turns. ATK-15 for 2 turns.`,
   emoji: CardEmoji.SHIELD,
   priority: 2,
   effects: [30],
