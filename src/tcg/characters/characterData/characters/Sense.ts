@@ -36,8 +36,13 @@ const Sense = new CharacterData({
   ability: {
     abilityName: "Proctor",
     abilityEffectString: `Every turn this character doesn't attack, gain 1 observation. Every turn this character attacks, lose ${PROCTOR_STACK_ATTACK_DEDUCTION} observation. (min 0)
-	This character wins when the test is over after ${PROCTOR_STACK_COUNT} observations.
-	\n**Sub-Ability: Tea Time** - When this character has ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks, skip the turn for both characters and eat ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks.`,
+	This character wins when the test is over after ${PROCTOR_STACK_COUNT} observations.`,
+    subAbilities: [
+      {
+        name: "Tea Time",
+        description: `When this character has ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks, skip the turn for both characters and eat ${TEA_TIME_STACK_TURN_SKIP} Tea Time Snacks.`,
+      },
+    ],
     abilityAfterOwnCardUse: function (
       game,
       characterIndex,

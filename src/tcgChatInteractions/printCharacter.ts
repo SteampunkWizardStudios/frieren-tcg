@@ -1,3 +1,4 @@
+import { formatAbility } from "@src/tcg/ability";
 import Character from "@tcg/character";
 import { statDetails } from "@tcg/formatting/emojis";
 import { ProgressBarBuilder } from "@tcg/formatting/percentBar";
@@ -29,7 +30,7 @@ export const printCharacter = (
     `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${charStat.DEF}`,
     `- ${statDetails[StatsEnum.SPD].emoji} **SPD**: ${charStat.SPD}`,
     `- ${statDetails[StatsEnum.Ability].emoji} **Ability**: ${character.ability.abilityName} - ${charStat.Ability}`,
-    `  - ${character.ability.abilityEffectString}`,
+    `  - ${formatAbility(character.ability)}`,
     `**Active Pile:** ${activePileCount} Card${activePileCount > 1 ? "s" : ""}     **Discard Pile:** ${discardPileCount} Card${discardPileCount > 1 ? "s" : ""}`,
   ];
   printStack.push(lines.join("\n"));

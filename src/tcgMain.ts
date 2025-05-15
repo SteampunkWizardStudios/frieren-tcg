@@ -22,6 +22,7 @@ import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { gameAndMessageContext } from "@tcg/gameContextProvider";
 import { CharacterSelectionType } from "./tcgChatInteractions/handleCharacterSelection";
+import goddessDeck from "@decks/utilDecks/goddessDeck";
 
 const TURN_LIMIT = 50;
 
@@ -110,16 +111,28 @@ export const tcgMain = async (
     [TCGThread.OpponentThread]: opponentThread,
   };
 
+  if (gameSettings.goddessMode) {
+    [challengerSelection, opponentSelection].forEach((selection) => {
+      selection.char.cards = goddessDeck.map((card) => ({
+        card: card.clone(),
+        count: 1,
+      }));
+    });
+  }
+
+  const challengerChar = challengerSelection.char.clone();
+  const opponentChar = opponentSelection.char.clone();
+
   const game = new Game(
     [
       new Character({
-        characterData: challengerSelection.char.clone(),
+        characterData: challengerChar,
         messageCache: messageCache,
         characterUser: challenger,
         characterThread: TCGThread.ChallengerThread,
       }),
       new Character({
-        characterData: opponentSelection.char.clone(),
+        characterData: opponentChar,
         messageCache: messageCache,
         characterUser: opponent,
         characterThread: TCGThread.OpponentThread,
