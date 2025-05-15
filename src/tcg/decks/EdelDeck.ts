@@ -220,7 +220,9 @@ const hypnosis_weaken = new Card({
 
     selfStats.Ability += 2;
 
-    opponent.hand.push(weakened.clone());
+    const clone = weakened.clone()
+    clone.empowerLevel = this.empowerLevel;
+    opponent.hand.push(clone);
   },
 });
 

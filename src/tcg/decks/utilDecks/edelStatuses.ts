@@ -1,3 +1,4 @@
+import { StatsEnum } from "@src/tcg/stats";
 import Card, { Nature } from "@tcg/card";
 import { CardEmoji } from "@tcg/formatting/emojis";
 
@@ -9,12 +10,14 @@ export const sleepy = new Card({
   description: () =>
     "If you do not play this card, skip next turn. This card is removed from your deck after it becomes playable, regardless of it was played.",
   effects: [],
-  cardAction: ({ name, sendToGameroom }) => {
+  cardAction: function (this: Card, { name, self, sendToGameroom }) {
     sendToGameroom(`${name} was falling asleep but woke up!`);
+
+    self.discardCard(self.hand.indexOf(this));
   },
-  onTurnEnd: function (this: Card, _context) {
-    // if played, remove from deck
-    this.cardMetadata.temporary &&= false;
+  onNotPlayed: function (this: Card, { self }) {
+    self.discardCard(self.hand.indexOf(this));
+    self.skipTurn = true;
   }
 });
 
@@ -26,15 +29,21 @@ export const mesmerized = new Card({
   description: () =>
     "If you play this card on the first turn it is playable, it is removed from your deck, otherwise, this card cannot be removed from your deck.",
   effects: [],
-  cardAction: function (this: Card, { name, opponent, sendToGameroom }) {
+  cardAction: function (this: Card, { self, name, opponent, sendToGameroom }) {
     if (this.cardMetadata.temporary) {
       sendToGameroom(
         `${name} was mesmerized by ${opponent.name}'s eyes but snapped out of it!`
       );
+      self.discardCard(self.hand.indexOf(this));
     } else {
-      sendToGameroom(`Card became permanent`);
+      sendToGameroom(`${name} was mesmerized by ${opponent.name}'s eyes!`);
     }
   },
+  onNotPlayed: function (this: Card, { self }) {
+    if (this.cardMetadata.temporary) {
+      self.discardCard(self.hand.indexOf(this));
+    }
+  }
 });
 
 export const weakened = new Card({
@@ -44,9 +53,17 @@ export const weakened = new Card({
   description: ([debuff]) =>
     `If you do not play this card, reduce ATK, DEF, SPD by ${debuff}. This card is removed from your deck after it becomes playable, regardless of it was played.`,
   effects: [2],
-  cardAction: ({ name, opponent, sendToGameroom }) => {
+  cardAction: function (this: Card, { name, self, opponent, sendToGameroom }) {
     sendToGameroom(
-      `${name} was mesmerized by ${opponent.name}'s eyes but snapped out of it!`
+      `${name} felt compelled by ${opponent.name} to surrender but didn't give in!`
     );
+    self.discardCard(self.hand.indexOf(this));
   },
+  onNotPlayed: function (this: Card, { self, selfStat }) {
+    self.discardCard(self.hand.indexOf(this));
+
+    [StatsEnum.ATK, StatsEnum.DEF, StatsEnum.SPD].forEach((stat) => {
+      selfStat(0, stat, -1);
+    });
+  }
 });

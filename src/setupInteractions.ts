@@ -60,14 +60,14 @@ export const setupInteractions = async (
           }
         } else if (interaction.isAutocomplete()) {
           const command = commands[interaction.commandName];
-          if (!command || typeof command.execute !== "function") {
+          if (!command || typeof command.autocomplete !== "function") {
             console.error(
               `Autocomplete requested for command not found or missing execute: ${interaction.commandName}`
             );
             return await interaction.respond([]);
           }
           try {
-            await command.execute(interaction);
+            await command.autocomplete(interaction);
           } catch (error) {
             console.error(
               `Error handling autocomplete for command ${interaction.commandName}:`,

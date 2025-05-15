@@ -43,7 +43,7 @@ export type CardProps = {
   cardAction: (context: GameMessageContext) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
-  onTurnEnd?: (context: GameContext) => void;
+  onNotPlayed?: (context: GameContext) => void;
   empowerLevel?: number;
   priority?: number;
     /**
@@ -73,7 +73,7 @@ export default class Card implements CardProps {
   cardAction: (context: GameMessageContext) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
-  onTurnEnd?: (context: GameContext) => void;
+  onNotPlayed?: (context: GameContext) => void;
   empowerLevel: number;
   priority: number;
   imitated: boolean;
@@ -89,7 +89,7 @@ export default class Card implements CardProps {
     this.effects = cardProps.effects;
     this.cardAction = cardProps.cardAction;
     this.conditionalTreatAsEffect = cardProps.conditionalTreatAsEffect;
-    this.onTurnEnd = cardProps.onTurnEnd;
+    this.onNotPlayed = cardProps.onNotPlayed;
     this.empowerLevel = cardProps.empowerLevel ?? 0;
     this.priority = cardProps.priority ?? 0;
     this.imitated = cardProps.imitated ?? false;
