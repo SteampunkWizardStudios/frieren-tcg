@@ -94,12 +94,17 @@ export default class Card implements CardProps {
       (effect) => `**${this.calculateEffectValue(effect).toFixed(2)}**`
     );
 
-    const initialDescription = this.description(empoweredEffects);
+    let description = this.description(empoweredEffects);
+
     if (this.hpCost) {
-      return `HP-${this.hpCost}. ${initialDescription}`;
-    } else {
-      return initialDescription;
+      description = `HP-${this.hpCost}. ${description}`;
     }
+    if (this.priority) {
+      const prioritySign = this.priority < 0 ? "-" : "+";
+      description = `Priority${prioritySign}${Math.abs(this.priority)}. ${description}`;
+    }
+
+    return description;
   }
 
   getTitle(): string {
