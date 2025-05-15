@@ -62,7 +62,7 @@ const a_hook = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
-      hpCost: 0,
+      hpCost: this.hpCost,
     });
   },
 });
@@ -98,7 +98,7 @@ const a_uppercut = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: 0,
+      hpCost: this.hpCost,
     });
   },
 });
@@ -149,6 +149,7 @@ export const a_waldgoseBase = new Card({
     `DMG ${dmg}. At the next 3 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [6, 2],
+  hpCost: 7,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364217876323500123/GIF_0112106003.gif?ex=6808de67&is=68078ce7&hm=53339631d41657c84bff7858a0d4ca127e5dd726db694b68d34f5d833a75c8ba&",
@@ -175,7 +176,7 @@ export const a_waldgoseBase = new Card({
       const initialDamage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: initialDamage,
-        hpCost: 7,
+        hpCost: this.hpCost,
       });
 
       const multiDamage = this.calculateEffectValue(this.effects[1]);
@@ -235,6 +236,7 @@ export const a_daosdorgBase = new Card({
     `DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus} and reduce Opponent's DEF by ${oppDefDebuff}. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [12, 3, 1],
+  hpCost: 9,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364218009102581871/GIF_4214490964.gif?ex=6808de87&is=68078d07&hm=dedf596f960aafe344c5eedec122d4dbd54c3b5c6f8b002b3cae75da891fdedf&",
@@ -260,7 +262,7 @@ export const a_daosdorgBase = new Card({
 
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: this.calculateEffectValue(this.effects[0]),
-        hpCost: 9,
+        hpCost: this.hpCost,
       });
 
       let hasWaldgose: boolean = false;
@@ -316,6 +318,7 @@ export const a_catastraviaBase = new Card({
     `DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [9, 3],
+  hpCost: 15,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364218121669316608/GIF_1295476803.gif?ex=6808dea2&is=68078d22&hm=bdc2fd9b990ddf12a7cb0d6ad7b24dca2a24203773cd3896f0c53681dad85ed9&",
@@ -342,7 +345,7 @@ export const a_catastraviaBase = new Card({
       const initialDamage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: initialDamage,
-        hpCost: 15,
+        hpCost: this.hpCost,
       });
 
       const multiDamage = this.calculateEffectValue(this.effects[1]);
@@ -458,6 +461,7 @@ export const a_concentratedOffensiveMagicZoltraak = new Card({
   description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [14],
+  hpCost: 8,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -470,7 +474,7 @@ export const a_concentratedOffensiveMagicZoltraak = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 8,
+      hpCost: this.hpCost,
     });
   },
 });
