@@ -170,6 +170,7 @@ export const a_erfassenAxe = new Card({
   emoji: CardEmoji.LINIE_CARD,
   cardMetadata: { nature: Nature.Attack },
   effects: [12],
+  hpCost: 4,
   cosmetic: {
     cardGif: "https://c.tenor.com/eUCHN11H4B4AAAAd/tenor.gif",
   },
@@ -184,7 +185,10 @@ export const a_erfassenAxe = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: this.hpCost,
+    });
   },
 });
 
@@ -194,6 +198,7 @@ export const a_erfassenJavelin = new Card({
   emoji: CardEmoji.LINIE_CARD,
   cardMetadata: { nature: Nature.Attack },
   effects: [5],
+  hpCost: 3,
   cosmetic: {
     cardGif: "https://c.tenor.com/zd9mOGFjT3IAAAAd/tenor.gif",
   },
@@ -208,7 +213,10 @@ export const a_erfassenJavelin = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: this.hpCost,
+    });
 
     character.timedEffects.push(
       new TimedEffect({
@@ -238,6 +246,7 @@ export const a_erfassenSword = new Card({
   description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [8],
+  hpCost: 2,
   cosmetic: {
     cardGif: "https://c.tenor.com/f4-8FBCgXg4AAAAd/tenor.gif",
   },
@@ -252,7 +261,10 @@ export const a_erfassenSword = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 2 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: this.hpCost,
+    });
   },
 });
 
@@ -263,6 +275,7 @@ export const a_erfassenKnife = new Card({
     `DMG ${dmg}. At the end of the next 2 turns, deal ${dmg}.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [2],
+  hpCost: 1,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -274,7 +287,10 @@ export const a_erfassenKnife = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 1 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: this.hpCost,
+    });
 
     character.timedEffects.push(
       new TimedEffect({
