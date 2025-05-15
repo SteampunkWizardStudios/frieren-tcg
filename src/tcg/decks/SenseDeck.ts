@@ -45,7 +45,7 @@ export const sharpen = new Card({
   ) {
     sendToGameroom(`${name} sharpened ${possessive} hair drills!`);
 
-    if (self.adjustStat(-this.hpCost, StatsEnum.HP)) {
+    if (self.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
       selfStat(0, StatsEnum.DEF);
       selfStat(1, StatsEnum.ATK);
     }
