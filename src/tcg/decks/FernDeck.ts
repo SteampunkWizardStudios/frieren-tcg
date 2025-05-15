@@ -12,6 +12,7 @@ export const a_fernZoltraak = new Card({
   description: ([dmg]) => `DMG ${dmg}. Gain 1 Barrage count.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [7],
+  hpCost: 4,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364355690780557404/GIF_4110295150.gif?ex=680a0781&is=6808b601&hm=4aa279af5d5b3ae167099775570328a51c55d8572aac6369a9748565b950f8a1&",
@@ -33,7 +34,7 @@ export const a_fernZoltraak = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: 4,
+      hpCost: this.hpCost,
     });
   },
 });
@@ -45,6 +46,7 @@ export const a_fernBarrage = new Card({
     `DMG ${dmg} with 25% Pierce. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG with 25% Pierce, until Barrage count reaches 0.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [5],
+  hpCost: 4,
   cosmetic: {
     cardGif: "https://c.tenor.com/2RAJbNpiLI4AAAAd/tenor.gif",
   },
@@ -68,7 +70,7 @@ export const a_fernBarrage = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: 4,
+      hpCost: this.hpCost,
       additionalPierceFactor: 0.25,
     });
 
