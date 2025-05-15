@@ -13,10 +13,10 @@ export const sleepy = new Card({
   cardAction: function (this: Card, { name, self, sendToGameroom }) {
     sendToGameroom(`${name} was falling asleep but woke up!`);
 
-    self.discardCard(self.hand.indexOf(this));
+    self.deck.removeCard(this);
   },
   onNotPlayed: function (this: Card, { self }) {
-    self.discardCard(self.hand.indexOf(this));
+    self.deck.removeCard(this);
     self.skipTurn = true;
   }
 });
@@ -34,14 +34,14 @@ export const mesmerized = new Card({
       sendToGameroom(
         `${name} was mesmerized by ${opponent.name}'s eyes but snapped out of it!`
       );
-      self.discardCard(self.hand.indexOf(this));
+      self.deck.removeCard(this);
     } else {
       sendToGameroom(`${name} was mesmerized by ${opponent.name}'s eyes!`);
     }
   },
   onNotPlayed: function (this: Card, { self }) {
     if (this.cardMetadata.temporary) {
-      self.discardCard(self.hand.indexOf(this));
+      self.deck.removeCard(this);
     }
   }
 });
@@ -57,10 +57,10 @@ export const weakened = new Card({
     sendToGameroom(
       `${name} felt compelled by ${opponent.name} to surrender but didn't give in!`
     );
-    self.discardCard(self.hand.indexOf(this));
+    self.deck.removeCard(this);
   },
   onNotPlayed: function (this: Card, { self, selfStat }) {
-    self.discardCard(self.hand.indexOf(this));
+    self.deck.removeCard(this);
 
     [StatsEnum.ATK, StatsEnum.DEF, StatsEnum.SPD].forEach((stat) => {
       selfStat(0, stat, -1);
