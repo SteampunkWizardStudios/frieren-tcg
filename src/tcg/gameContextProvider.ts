@@ -60,6 +60,7 @@ function characterBasedContext(game: Game, characterIndex: number) {
 
     // Opponent properties
     opponent,
+    opponentIndex: 1 - characterIndex,
     opponentStats: opponent.stats.stats,
 
     // Opponent stat

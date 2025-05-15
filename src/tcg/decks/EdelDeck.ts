@@ -199,10 +199,12 @@ const hypnosis_weaken = new Card({
   description: ([debuff]) =>
     `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's deck.`,
   effects: [2],
-  cardAction: ({ name, sendToGameroom, opponent }) => {
+  cardAction: function (this: Card, { name, sendToGameroom, opponent }) {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *You are feeling weak*`);
 
-    opponent.hand.push(weakened.clone());
+    const clone = weakened.clone()
+    clone.empowerLevel = this.empowerLevel;
+    opponent.hand.push(clone);
   },
 });
 
@@ -213,8 +215,26 @@ const kneel = new Card({
   description: ([dmg]) =>
     `HP-10. DMG ${dmg} + 3 per each card discarded this match by your opponent. Ignores defense. At the end of the turn, if your opponent has discarded more than 10 cards this match, and they have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
   effects: [10],
-  cardAction: () => { },
-});
+  cardAction: ({ name, sendToGameroom, opponent, opponentIndex, calcEffect, flatAttack, game }) => {
+    sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Kneel!*`);
+
+    const discards = opponent.additionalMetadata.discardsThisGame ?? 0;
+
+    const dmg = calcEffect(0) + 3 * discards;
+    flatAttack(dmg, 10);
+
+    const winCon = ["Sleepy", "Mesmerized", "Weakened"].every(
+      (status) => opponent.hand.some((card) => card.title === status)
+    ) && discards > 10;
+    if (winCon) {
+      sendToGameroom(
+        `${opponent.name}'s mind has been invaded by ${name}!`
+      );
+      game.additionalMetadata.forfeited[opponentIndex] = true;
+    }
+
+  }
+})
 
 const edelDeck = [
   { card: telekinesis, count: 2 },

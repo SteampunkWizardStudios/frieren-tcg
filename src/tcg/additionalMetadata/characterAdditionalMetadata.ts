@@ -17,6 +17,7 @@ export type CharacterAdditionalMetadata = {
   pierceFactor?: number;
   overheal?: boolean;
   selectedCard?: Card
+  discardsThisGame?: number;
 
   senseTeaTimeStacks?: number;
   serieToyingNextTurn?: boolean;
