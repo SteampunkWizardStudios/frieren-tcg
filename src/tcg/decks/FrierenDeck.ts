@@ -16,11 +16,12 @@ export const a_zoltraak = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364283548789379163/GIF_2604048789.gif?ex=68091b91&is=6807ca11&hm=a7fd85473cc4a8c441193bd990c6517e95d5cc6789023f530c27f4d21e5e70dc&",
   },
+  hpCost: 5,
   tags: { PostAnalysis: 1 },
   effects: [8],
   cardAction: function (this: Card, { sendToGameroom, name, basicAttack }) {
     sendToGameroom(`${name} fired Zoltraak!`);
-    basicAttack(0, 5);
+    basicAttack(0, this.hpCost);
   },
 });
 
@@ -82,9 +83,10 @@ export const a_judradjim = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364225378952020029/GIF_1668382682.gif?ex=6808e564&is=680793e4&hm=2c769b1580a0639d7e83a046cad25ff641b839f91ab7c035b0ae844aae3b551c&",
   },
   effects: [13],
+  hpCost: 7,
   cardAction: function (this: Card, { name, sendToGameroom, basicAttack }) {
     sendToGameroom(`${name} sent forth Judradjim!`);
-    basicAttack(0, 7);
+    basicAttack(0, this.hpCost);
   },
 });
 
@@ -100,6 +102,7 @@ export const a_vollzanbel = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364225342218309674/GIF_1142333080.gif?ex=6808e55b&is=680793db&hm=11bd4be532ecf85eab598b0533e6c5b747d9bb8483c74ec2a86f3ede0fb352aa&",
   },
   effects: [18],
+  hpCost: 10,
   cardAction: function (this: Card, { name, sendToGameroom, basicAttack }) {
     sendToGameroom(`${name} summoned Vollzanbel!`);
     basicAttack(0, 10);
