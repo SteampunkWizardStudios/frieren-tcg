@@ -167,7 +167,7 @@ const parry = new Card({
 
 export const a_erfassenAxe = new Card({
   title: "Erfassen: Axe",
-  description: ([dmg]) => `HP-4. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   cardMetadata: { nature: Nature.Attack },
   effects: [12],
@@ -191,8 +191,7 @@ export const a_erfassenAxe = new Card({
 
 export const a_erfassenJavelin = new Card({
   title: "Erfassen: Javelin",
-  description: ([dmg]) =>
-    `HP-3. DMG ${dmg}. Deal ${dmg} at the end of next turn.`,
+  description: ([dmg]) => `DMG ${dmg}. Deal ${dmg} at the end of next turn.`,
   emoji: CardEmoji.LINIE_CARD,
   cardMetadata: { nature: Nature.Attack },
   effects: [5],
@@ -237,7 +236,7 @@ export const a_erfassenJavelin = new Card({
 export const a_erfassenSword = new Card({
   title: "Erfassen: Sword",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-2. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [8],
   cosmetic: {
@@ -262,7 +261,7 @@ export const a_erfassenKnife = new Card({
   title: "Erfassen: Knife",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-1. DMG ${dmg}. At the end of the next 2 turns, deal ${dmg}.`,
+    `DMG ${dmg}. At the end of the next 2 turns, deal ${dmg}.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [2],
   cardAction: function (

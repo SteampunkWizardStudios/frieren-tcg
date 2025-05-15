@@ -46,7 +46,7 @@ const omNomNomNom = new Card({
   title: "Om Nom Nom Nom",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-5. DMG ${dmg}. Restores HP by half of the move's dealt damage.`,
+    `DMG ${dmg}. Restores HP by half of the move's dealt damage.`,
   emoji: CardEmoji.ENERGY,
   effects: [5],
   cardAction: function (

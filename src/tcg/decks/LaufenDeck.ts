@@ -110,7 +110,7 @@ export const a_whip = new Card({
 
 export const a_supersonicStrike = new Card({
   title: "Supersonic Strike",
-  description: ([dmg]) => `HP-5, DMG ${dmg}+SPD/4`,
+  description: ([dmg]) => `DMG ${dmg}+SPD/4`,
   emoji: CardEmoji.LAUFEN_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [10],

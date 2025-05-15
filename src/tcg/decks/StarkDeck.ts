@@ -9,7 +9,7 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 const a_axeSwipe = new Card({
   title: "Axe Swipe",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-5. DMG ${dmg}. Uses 0 Resolve.`,
+  description: ([dmg]) => `DMG ${dmg}. Uses 0 Resolve.`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: 0 },
   effects: [9],
@@ -243,7 +243,7 @@ const concentration = new Card({
 const a_ordensSlashTechnique = new Card({
   title: "Orden's Slash Technique",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-8. DMG ${dmg}. Uses 1 Resolve.`,
+  description: ([dmg]) => `DMG ${dmg}. Uses 1 Resolve.`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -1 },
   effects: [14],
@@ -309,7 +309,7 @@ const fearBroughtMeThisFar = new Card({
 const a_eisensAxeCleave = new Card({
   title: "Eisen's Axe Cleave",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-11. DMG ${dmg}. Uses up 2 Resolve stack.`,
+  description: ([dmg]) => `DMG ${dmg}. Uses up 2 Resolve stack.`,
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: -2 },
   effects: [19],
@@ -346,7 +346,7 @@ const a_eisensAxeCleave = new Card({
 export const a_lightningStrike = new Card({
   title: "Lightning Strike",
   description: ([dmg]) =>
-    `HP-14. DEF-5 and SPD-5 for 2 turns. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack. Stark's HP cannot drop below 1 until the end of the turn after this move is used.`,
+    `DEF-5 and SPD-5 for 2 turns. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack. Stark's HP cannot drop below 1 until the end of the turn after this move is used.`,
   emoji: CardEmoji.STARK_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   tags: { Resolve: -2 },

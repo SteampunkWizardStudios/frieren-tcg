@@ -8,7 +8,7 @@ export const a_zoltraak = new Card({
   title: "Offensive Magic Analysis: Zoltraak",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-5. DMG ${dmg}. 1 Analysis stacks will be gained after attack.`,
+    `DMG ${dmg}. 1 Analysis stacks will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -73,7 +73,7 @@ export const fieldOfFlower = new Card({
 export const a_judradjim = new Card({
   title: "Destructive Lightning: Judradjim",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-7. DMG ${dmg}.`,
+  description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -91,7 +91,7 @@ export const a_judradjim = new Card({
 export const a_vollzanbel = new Card({
   title: "Hellfire Summoning: Vollzanbel",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-10. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl:

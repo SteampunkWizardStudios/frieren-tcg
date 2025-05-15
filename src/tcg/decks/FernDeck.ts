@@ -9,7 +9,7 @@ import { manaDetection } from "./LinieDeck";
 export const a_fernZoltraak = new Card({
   title: "Zoltraak",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-4. DMG ${dmg}. Gain 1 Barrage count.`,
+  description: ([dmg]) => `DMG ${dmg}. Gain 1 Barrage count.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [7],
   cosmetic: {
@@ -42,7 +42,7 @@ export const a_fernBarrage = new Card({
   title: "Barrage",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-4. DMG ${dmg} with 25% Pierce. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG with 25% Pierce, until Barrage count reaches 0.`,
+    `DMG ${dmg} with 25% Pierce. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG with 25% Pierce, until Barrage count reaches 0.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [5],
   cosmetic: {
@@ -78,7 +78,7 @@ export const a_fernBarrage = new Card({
       "Barrage",
       new TimedEffect({
         name: "Barrage",
-        description: `HP-4. Deal ${damage} DMG.`,
+        description: `Deal ${damage} DMG.`,
         turnDuration: newBarrageCount,
         tags: { Barrage: 1 },
         endOfTurnAction: function (
@@ -126,7 +126,7 @@ const a_fernConcentratedZoltraakSnipe = new Card({
   title: "Concentrated Zoltraak Snipe",
   cardMetadata: { nature: Nature.Attack },
   description: ([baseDmg, dmg]) =>
-    `HP-12. Deal ${baseDmg} + ${dmg} DMG x Barrage count, with 50% Pierce. Reset Barrage count to 0.`,
+    `Deal ${baseDmg} + ${dmg} DMG x Barrage count, with 50% Pierce. Reset Barrage count to 0.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [6, 2],
   hpCost: 12,

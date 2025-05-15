@@ -9,7 +9,7 @@ import { a_curse } from "./CosmicTonDeck";
 const a_shadowImpalement = new Card({
   title: "Shadow Impalement",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-5. DMG ${dmg}.`,
+  description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
   cardAction: function (
@@ -69,7 +69,7 @@ const camouflage = new Card({
 
 export const a_dragonfire = new Card({
   title: `Dragon Fire`,
-  description: ([dmg]) => `HP-10. DMG ${dmg}. Reduces the opponent's DEF to 1.`,
+  description: ([dmg]) => `DMG ${dmg}. Reduces the opponent's DEF to 1.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
   cardMetadata: { nature: Nature.Attack, signature: true },

@@ -6,7 +6,7 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 export const a_malevolentShrine = new Card({
   title: "Reelseiden: Malevolent Shrine",
   description: ([dmg, atkSpd]) =>
-    `HP-11. DMG ${dmg}. If used by Übel, has a 80% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
+    `DMG ${dmg}. If used by Übel, has a 80% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   cosmetic: {
     cardGif:
       "https://media.discordapp.net/attachments/1338831179981262943/1363264315272073406/malevolent-shrine-ubel.gif?ex=68060f14&is=6804bd94&hm=300b3e5578f56a069ea858f0f660ce855be6a3f6f32f246b434066ea770da58e&=&width=400&height=225",

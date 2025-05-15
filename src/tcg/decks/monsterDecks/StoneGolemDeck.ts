@@ -9,7 +9,7 @@ import { a_roomCollapse } from "./StoneGeiselDeck";
 export const a_rockTomb = new Card({
   title: "Rock Tomb",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, spd]) => `HP-3. DMG ${dmg}. Opponent's SPD-${spd}`,
+  description: ([dmg, spd]) => `DMG ${dmg}. Opponent's SPD-${spd}`,
   emoji: CardEmoji.PUNCH,
   effects: [10, 5],
   cardAction: function (
@@ -75,7 +75,7 @@ const crystalize = new Card({
 const a_crusher = new Card({
   title: "Crusher",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, spd]) => `HP-5. DMG ${dmg}. Opponent's SPD-${spd}.`,
+  description: ([dmg, spd]) => `DMG ${dmg}. Opponent's SPD-${spd}.`,
   emoji: CardEmoji.PUNCH,
   effects: [15, 7],
   cardAction: function (

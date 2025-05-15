@@ -8,7 +8,7 @@ import CommonCardAction from "../../util/commonCardActions";
 export const a_charge = new Card({
   title: "Charge",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-5. DMG ${dmg}.`,
+  description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
   cardAction: function (
@@ -26,7 +26,7 @@ export const a_charge = new Card({
 const earPiercingScream = new Card({
   title: "Ear Piercing Scream",
   cardMetadata: { nature: Nature.Util },
-  description: ([def]) => `HP-2. Opponent's DEF-${def}.`,
+  description: ([def]) => `Opponent's DEF-${def}.`,
   emoji: CardEmoji.ENERGY,
   effects: [5],
   cardAction: function (

@@ -146,7 +146,7 @@ export const a_waldgoseBase = new Card({
   title: "Tornado Winds: Waldgose",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg, multiDmg]) =>
-    `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
+    `DMG ${dmg}. At the next 3 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [6, 2],
   cosmetic: {
@@ -232,7 +232,7 @@ export const a_daosdorgBase = new Card({
   title: "Hellfire: Daosdorg",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg, waldgoseDmgBonus, oppDefDebuff]) =>
-    `HP-9. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus} and reduce Opponent's DEF by ${oppDefDebuff}. Treat this card as "Hook" if the user's HP is <= 0.`,
+    `DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus} and reduce Opponent's DEF by ${oppDefDebuff}. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [12, 3, 1],
   cosmetic: {
@@ -313,7 +313,7 @@ export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
   cardMetadata: { nature: Nature.Attack, signature: true },
   description: ([dmg, multiDmg]) =>
-    `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
+    `DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [9, 3],
   cosmetic: {
@@ -455,7 +455,7 @@ export const elementaryDefensiveMagic = new Card({
 export const a_concentratedOffensiveMagicZoltraak = new Card({
   title: "Concentrated Offensive Magic: Zoltraak",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-8. DMG ${dmg}.`,
+  description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [14],
   cardAction: function (

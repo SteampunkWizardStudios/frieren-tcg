@@ -636,7 +636,7 @@ const rally = new Card({
 export const a_extremeSpeed = new Card({
   title: "Extreme Speed",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `Priority+1. HP-8. DMG ${dmg}`,
+  description: ([dmg]) => `Priority+1. DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 1,
   effects: [12],
@@ -665,7 +665,7 @@ export const a_extremeSpeed = new Card({
 
 export const a_realHeroSwing = new Card({
   title: "A Real Hero's Swing",
-  description: ([dmg]) => `HP-12. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [18],

@@ -12,7 +12,7 @@ export const empathyFailureName = "Stalking";
 export const a_shallowSlash = new Card({
   title: "Shallow Slash",
   description: ([dmg, atkSpd]) =>
-    `HP-4. DMG ${dmg}. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
+    `DMG ${dmg}. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [8, 2],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 20 },
@@ -44,7 +44,7 @@ export const a_shallowSlash = new Card({
 export const a_cleave = new Card({
   title: "Cleave",
   description: ([dmg, atkSpd]) =>
-    `HP-6. DMG ${dmg}. If used by Übel,has a 40% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
+    `DMG ${dmg}. If used by Übel,has a 40% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [12, 3],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 40 },
@@ -72,7 +72,7 @@ export const a_cleave = new Card({
 export const a_dismantle = new Card({
   title: "Dismantle",
   description: ([dmg, atkSpd]) =>
-    `HP-8. DMG ${dmg}. If used by Übel, has a 60% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
+    `DMG ${dmg}. If used by Übel, has a 60% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [16, 4],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 60 },

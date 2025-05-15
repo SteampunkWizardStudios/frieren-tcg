@@ -9,7 +9,7 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 export const a_trustInYourAllyFrierensZoltraak = new Card({
   title: "Trust in Your Ally: Frieren's Zoltraak",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-5. DMG ${dmg} + HP/9`,
+  description: ([dmg]) => `DMG ${dmg} + HP/9`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -46,7 +46,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
   title: "Trust in Your Ally: Fern's Barrage",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-7. DMG ${dmg}+HP/10 DMG. Next turn, deal ${dmg}+HP/10 DMG at turn end.`,
+    `DMG ${dmg}+HP/10 DMG. Next turn, deal ${dmg}+HP/10 DMG at turn end.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -106,7 +106,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
 const a_trustInYourAllyStarksLightningStrike = new Card({
   title: "Trust in Your Ally: Stark's Lightning Strike",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `Priority-1. HP-9. DMG ${dmg}+HP/7.`,
+  description: ([dmg]) => `Priority-1. DMG ${dmg}+HP/7.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -179,7 +179,7 @@ export const mugOfBeer = new Card({
 export const smokeBreak = new Card({
   title: "Smoke Break",
   cardMetadata: { nature: Nature.Util },
-  description: ([atk, def, spd]) => `HP-5. ATK+${atk}. DEF+${def}. SPD+${spd}.`,
+  description: ([atk, def, spd]) => `ATK+${atk}. DEF+${def}. SPD+${spd}.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -326,8 +326,7 @@ export const braceYourself = new Card({
 
 export const a_threeSpearsOfTheGoddess = new Card({
   title: "Three Spears of the Goddess",
-  description: ([dmg]) =>
-    `HP-15. At the next 3 turn ends, deal ${dmg}+HP/10 DMG.`,
+  description: ([dmg]) => `At the next 3 turn ends, deal ${dmg}+HP/10 DMG.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:

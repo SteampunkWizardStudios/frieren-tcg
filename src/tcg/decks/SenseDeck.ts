@@ -35,7 +35,7 @@ export const a_hairWhip = new Card({
 export const sharpen = new Card({
   title: "Sharpen",
   cardMetadata: { nature: Nature.Util },
-  description: ([def, atk]) => `HP-1. DEF+${def}. ATK+${atk}.`,
+  description: ([def, atk]) => `DEF+${def}. ATK+${atk}.`,
   effects: [2, 2],
   emoji: CardEmoji.PUNCH,
   cardAction: function (
@@ -82,7 +82,7 @@ export const a_pierce = new Card({
   title: "Pierce",
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
-    `HP-7. DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
+    `DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
   effects: [2, 10],
   emoji: CardEmoji.PUNCH,
   cardAction: function (
@@ -199,7 +199,7 @@ export const teaParty = new Card({
 export const a_piercingDrill = new Card({
   title: "Piercing Drill",
   description: ([dmg]) =>
-    `HP-12. DMG ${dmg} + DEF/3. Pierces through 1/3 of the opponent's defense.`,
+    `DMG ${dmg} + DEF/3. Pierces through 1/3 of the opponent's defense.`,
   effects: [14],
   emoji: CardEmoji.PUNCH,
   cardMetadata: { nature: Nature.Attack, signature: true },

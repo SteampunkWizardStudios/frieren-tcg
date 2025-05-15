@@ -8,7 +8,7 @@ import CommonCardAction from "../../util/commonCardActions";
 const a_flame = new Card({
   title: "Flame",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-5. DMG ${dmg}.`,
+  description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [12],
   cardAction: function (
@@ -29,7 +29,7 @@ const a_flame = new Card({
 const a_burn = new Card({
   title: "Burn",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, def]) => `HP-4. DMG ${dmg}. Opponent's DEF-${def}.`,
+  description: ([dmg, def]) => `DMG ${dmg}. Opponent's DEF-${def}.`,
   emoji: CardEmoji.ENERGY,
   effects: [10, 3],
   cardAction: function (
