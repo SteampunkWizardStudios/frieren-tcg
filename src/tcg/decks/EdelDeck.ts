@@ -213,7 +213,7 @@ const hypnosis_weaken = new Card({
   description: ([debuff]) =>
     `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's deck.`,
   effects: [2],
-  cardAction: ({ name, sendToGameroom, opponent, selfStats }) => {
+  cardAction: function (this: Card, { name, sendToGameroom, opponent, selfStats }) {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *You are feeling weak*`
     );
