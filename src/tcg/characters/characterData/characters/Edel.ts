@@ -5,7 +5,6 @@ import { CharacterEmoji } from "@tcg/formatting/emojis";
 import edelDeck from "@tcg/decks/EdelDeck";
 import Pronouns from "@src/tcg/pronoun";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
-import TimedEffect from "@tcg/timedEffect";
 
 const edelStats = new Stats({
   [StatsEnum.HP]: 70,
@@ -55,21 +54,16 @@ const Edel = new CharacterData({
       if (self.stats.stats.Ability > 0) {
         self.stats.stats.Ability--;
 
-        const eyeContactEffect = opponent.timedEffects.find(
-          (effect) => effect.name === "A Superior Opponent"
-        );
-
-        if (!eyeContactEffect) {
-          opponent.timedEffects.push(
-            new TimedEffect({
-              name: "A Superior Opponent",
-              description: `${self.name} is making eye contact. Your moves have Priority-1`,
-              turnDuration: 1,
-            })
-          );
-        } else {
-          eyeContactEffect.turnDuration = self.stats.stats.Ability;
+        opponent.ability.abilitySelectedMoveModifierEffect = (
+          _game,
+          _characterIndex,
+          _messageCache,
+          card,
+        ) => {
+          card.priority -= 1;
         }
+      } else {
+        opponent.ability.abilitySelectedMoveModifierEffect = undefined;
       }
     },
   },
