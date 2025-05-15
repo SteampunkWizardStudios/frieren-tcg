@@ -25,8 +25,9 @@ export const telekinesis = new Card({
     cardGif:
       "https://media.discordapp.net/attachments/1367328754795286599/1368285080606347444/Stone_hurling_spell_EP24.gif?ex=6817aa48&is=681658c8&hm=b41474c8c6b45cfcf6d65a0d1f5586e9633d1d064f0ee1ab4facd0d9b3699a84",
   },
-  description: ([dmg]) => `HP-8. Your opponent redraws 2 cards. DMG ${dmg}.`,
+  description: ([dmg]) => `Your opponent redraws 2 cards. DMG ${dmg}.`,
   effects: [14],
+  hpCost: 8,
   cardAction: ({ name, opponent, sendToGameroom, basicAttack }) => {
     sendToGameroom(`${name} used a telekinetic attack!`);
 
@@ -43,7 +44,7 @@ const one_step_ahead = new Card({
   cardMetadata: { nature: Nature.Defense },
   emoji: CardEmoji.EDEL_CARD,
   description: ([def, spd, dmg]) =>
-    `Priority+3. DEF+${def} for 1 turn. If this card is played the same turn your opponent plays a defensive card, their SPD-${spd}, they redraw 1 card, and attack with DMG ${dmg} ignoring all defense.`,
+    `DEF+${def} for 1 turn. If this card is played the same turn your opponent plays a defensive card, their SPD-${spd}, they redraw 1 card, and attack with DMG ${dmg} ignoring all defense.`,
   effects: [20, 2, 10],
   priority: 3,
   cardAction: ({
@@ -95,8 +96,9 @@ const mental_fog = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
   description: ([spd, cost]) =>
-    `HP-10. Eye Contact next turn. Opponent's SPD-${spd} and they redraw a card. Their highest empowered card they draw will cost ${cost} additional HP for the next 5 turns.`,
+    `Eye Contact next turn. Opponent's SPD-${spd} and they redraw a card. Their highest empowered card they draw will cost ${cost} additional HP for the next 5 turns.`,
   effects: [2, 7],
+  hpCost: 10,
   cardAction: ({
     name,
     opponent,
@@ -231,8 +233,9 @@ const kneel = new Card({
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
   description: ([dmg]) =>
-    `HP-10. DMG ${dmg} + 3 per each card discarded this match by your opponent. Ignores defense. At the end of the turn, if your opponent has discarded more than 10 cards this match, and they have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
+    `DMG ${dmg} + 3 per each card discarded this match by your opponent. Ignores defense. At the end of the turn, if your opponent has discarded more than 10 cards this match, and they have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
   effects: [10],
+  hpCost: 10,
   cardAction: () => {},
 });
 
