@@ -67,7 +67,7 @@ export default class DefaultCards {
 
   static readonly forfeitCard: Card = new Card({
     title: "Forfeit",
-    cardMetadata: { nature: Nature.Default },
+    cardMetadata: { nature: Nature.Default, hidePriority: true },
     description: () => "Forfeits the game.",
     effects: [],
     printEmpower: false,

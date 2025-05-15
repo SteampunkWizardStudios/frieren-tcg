@@ -27,6 +27,9 @@ type CardMetadata = {
   resolve?: number;
   signatureMoveOf?: CharacterName;
   ubelFailureRate?: number;
+  hidePriority?: boolean;
+  hideHpCost?: boolean;
+  hideEmpower?: boolean;
 };
 
 export type CardProps = {
@@ -96,10 +99,10 @@ export default class Card implements CardProps {
 
     let description = this.description(empoweredEffects);
 
-    if (this.hpCost) {
+    if (this.hpCost && !this.cardMetadata.hideHpCost) {
       description = `HP-${this.hpCost}. ${description}`;
     }
-    if (this.priority) {
+    if (this.priority && !this.cardMetadata.hidePriority) {
       const prioritySign = this.priority < 0 ? "-" : "+";
       description = `Priority${prioritySign}${Math.abs(this.priority)}. ${description}`;
     }
