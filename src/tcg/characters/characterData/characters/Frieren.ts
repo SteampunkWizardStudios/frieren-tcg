@@ -52,10 +52,17 @@ const Frieren = new CharacterData({
         Whenever an "Analysis" move is used, gain 2 Analysis stacks.
         When an attack is used, its damage is increased by ${(ANALYSIS_BOOST * 100).toFixed(2)}% * the number of Analysis stacks.
         After an attack is used, Analysis stacks is reset to 0.
-        A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.
-
-        **Sub-Ability: Mana Suppression** - Hide the amount of HP this character has.
-        **Sub-Ability: Flamme's Teachings** - See past the opponent's Mana Suppression.`,
+        A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.`,
+    subAbilities: [
+      {
+        name: "Mana Suppression",
+        description: "Hide the amount of HP this character has.",
+      },
+      {
+        name: "Flamme's Teachings",
+        description: "See past the opponent's Mana Suppression.",
+      },
+    ],
     abilityAfterOwnCardUse: function (
       game: Game,
       characterIndex: number,
