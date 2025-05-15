@@ -14,6 +14,7 @@ import {
   LazyPaginatedMessage,
   type PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
+import { countPlayerMatches } from "@src/commands/tcgPlayer/playerHandlers/profileEmbed";
 
 const PAGE_SIZE = 12;
 
@@ -57,10 +58,29 @@ export async function handleGlobalStats(
     return;
   }
 
-  const idsToPoints = top100.map(({ player, rankPoints }) => ({
-    id: player.discordId,
-    points: rankPoints,
-  }));
+  const currLadderReset = await getLatestLadderReset({ gamemode });
+  if (!currLadderReset) {
+    await interaction.editReply({
+      content: "Failed to fetch current ladder reset.",
+    });
+    return;
+  }
+
+  const idsToPoints = await Promise.all(
+    top100.map(async (entry) => {
+      const { wins, losses } = await countPlayerMatches(
+        entry.player.id,
+        currLadderReset.id
+      );
+
+      return {
+        id: entry.player.discordId,
+        points: entry.rankPoints,
+        wins,
+        losses,
+      };
+    })
+  );
 
   const totalPages = Math.ceil(idsToPoints.length / PAGE_SIZE);
 
