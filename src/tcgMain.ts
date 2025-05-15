@@ -337,10 +337,10 @@ export const tcgMain = async (
       characterToSelectedMoveMap[1] = opponentSelectedMove;
     }
 
-	// set the selected moves for each character to be used as metadata 
-	Object.entries(characterToSelectedMoveMap).forEach(([key, value]) => {
-		game.characters[Number(key)].additionalMetadata.selectedCard = value;
-	});
+    // set the selected moves for each character to be used as metadata 
+    Object.entries(characterToSelectedMoveMap).forEach(([key, value]) => {
+      game.characters[Number(key)].additionalMetadata.selectedCard = value;
+    });
 
     // move resolution step
     game.characters.forEach((character: Character, characterIndex: number) => {
@@ -428,6 +428,22 @@ export const tcgMain = async (
       );
     }
 
+    // run effects for unplayed playable cards
+    game.characters.forEach((_, index) => {
+      const playableCards = Object.values(characterToPlayableMoveMap[index]);
+      const selectedCard = characterToSelectedMoveMap[index];
+      playableCards.forEach((card) => {
+        if (card !== selectedCard && card.onNotPlayed) {
+          const context = gameAndMessageContext.call(
+            card,
+            game,
+            messageCache,
+            index
+          );
+          card.onNotPlayed(context);
+        }
+      });
+    });
     // end of turn resolution
     // gather timed effects
     messageCache.push(
