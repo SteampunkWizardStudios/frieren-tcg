@@ -18,6 +18,7 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361022845664104740/GIF_0907854706.gif?ex=6807cacc&is=6806794c&hm=c4c3d7908005bbcd23defb42f4c9b756135c8a5c1726330d0a52495998ec2c53&",
   },
   effects: [5],
+  hpCost: 5,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -38,7 +39,10 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
         character.stats.stats.HP / 9
       ).toFixed(2)
     );
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: this.hpCost,
+    });
   },
 });
 
@@ -55,6 +59,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361022927788834966/GIF_2294206836.gif?ex=6807cae0&is=68067960&hm=ca32887d358b3c43ad2d4c5618373b8cab1a11d0acdcc496a7203544936a9244&",
   },
   effects: [3],
+  hpCost: 7,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -72,7 +77,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
       );
     }
 
-    if (character.adjustStat(-7, StatsEnum.HP)) {
+    if (character.adjustStat(-this.hpCost, StatsEnum.HP)) {
       const damage = Number(
         (
           this.calculateEffectValue(this.effects[0]) +
@@ -113,6 +118,7 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1353035310677622845/Trust_in_your_Ally_Starks_Lightning_Strike.png?ex=67e02fd4&is=67dede54&hm=608a0bc2795f44b1512ecb7d26b29213aedada2f9f9db64b178447be0dd98476&",
   },
   effects: [7],
+  hpCost: 9,
   priority: -1,
   cardAction: function (
     this: Card,
@@ -137,7 +143,10 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
         character.stats.stats.HP / 7
       ).toFixed(2)
     );
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 9 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+      hpCost: this.hpCost,
+    });
   },
 });
 
@@ -335,6 +344,7 @@ export const a_threeSpearsOfTheGoddess = new Card({
   },
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [7],
+  hpCost: 15,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -344,7 +354,7 @@ export const a_threeSpearsOfTheGoddess = new Card({
       `${character.name} used Three Spears of the Goddess!`,
       TCGThread.Gameroom
     );
-    if (character.adjustStat(-15, StatsEnum.HP)) {
+    if (character.adjustStat(-this.hpCost, StatsEnum.HP)) {
       const damage = Number(
         (
           this.calculateEffectValue(this.effects[0]) +
