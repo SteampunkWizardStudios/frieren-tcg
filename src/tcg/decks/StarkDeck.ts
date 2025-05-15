@@ -13,6 +13,7 @@ const a_axeSwipe = new Card({
   emoji: CardEmoji.STARK_CARD,
   tags: { Resolve: 0 },
   effects: [9],
+  hpCost: 5,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361125002761605140/IMG_3109.gif?ex=680829f1&is=6806d871&hm=ae00597c479d370662a52ae4f04cb024103354b0c758c483ff09946a0c1288ec&",
@@ -28,7 +29,7 @@ const a_axeSwipe = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 5,
+      hpCost: this.hpCost,
     });
   },
 });
