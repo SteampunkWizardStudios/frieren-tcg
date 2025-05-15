@@ -93,7 +93,13 @@ export default class Card implements CardProps {
     const empoweredEffects: string[] = this.effects.map(
       (effect) => `**${this.calculateEffectValue(effect).toFixed(2)}**`
     );
-    return this.description(empoweredEffects);
+
+    const initialDescription = this.description(empoweredEffects);
+    if (this.hpCost) {
+      return `HP-${this.hpCost}. ${initialDescription}`;
+    } else {
+      return initialDescription;
+    }
   }
 
   getTitle(): string {
