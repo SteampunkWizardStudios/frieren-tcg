@@ -11,6 +11,7 @@ export interface GameSettings {
   publicChallengedThread?: boolean;
   optionName?: string;
   allowedOption?: boolean;
+  goddessMode?: boolean;
 }
 
 export const GAME_SETTINGS: Record<GameMode, GameSettings> = {
