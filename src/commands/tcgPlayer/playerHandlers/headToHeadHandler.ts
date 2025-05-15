@@ -91,7 +91,7 @@ export async function handleHeadToHead(
 
         const { winnerCharacter, loserCharacter, finishedAt, winner, loser } =
           match;
-        const won = winner.discordId === player.id;
+        const won = winner.discordId === interaction.user.id;
         const result = won ? "🏆 **Won**" : "💥 **Lost**";
         const character = charWithEmoji(
           (won ? winnerCharacter.name : loserCharacter.name) as CharacterName
