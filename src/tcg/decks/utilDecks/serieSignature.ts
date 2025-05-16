@@ -7,7 +7,7 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 export const ancientBarrierMagic = new Card({
   title: "Ancient Barrier Magic",
   description: ([atk, def, oppSpd]) =>
-    `HP-5. HP-2 at the end of the next 7 turns. ATK+${atk}, Opponent's DEF-${def} and Opponent's SPD -${oppSpd} for 7 turns.`,
+    `HP-2 at the end of the next 7 turns. ATK+${atk}, Opponent's DEF-${def} and Opponent's SPD -${oppSpd} for 7 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:

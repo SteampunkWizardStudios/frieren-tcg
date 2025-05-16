@@ -111,17 +111,17 @@ export const tcgMain = async (
     [TCGThread.OpponentThread]: opponentThread,
   };
 
+  const challengerChar = challengerSelection.char.clone();
+  const opponentChar = opponentSelection.char.clone();
+
   if (gameSettings.goddessMode) {
-    [challengerSelection, opponentSelection].forEach((selection) => {
-      selection.char.cards = goddessDeck.map((card) => ({
+    [challengerChar, opponentChar].forEach((selection) => {
+      selection.cards = goddessDeck.map((card) => ({
         card: card.clone(),
         count: 1,
       }));
     });
   }
-
-  const challengerChar = challengerSelection.char.clone();
-  const opponentChar = opponentSelection.char.clone();
 
   const game = new Game(
     [
