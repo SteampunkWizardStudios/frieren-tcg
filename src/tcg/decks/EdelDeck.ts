@@ -175,9 +175,8 @@ const clear_mind = new Card({
 
 const hypnosis_sleep = new Card({
   title: "Hypnosis: *Sleep*",
-  cardMetadata: { nature: Nature.Util },
+  cardMetadata: { nature: Nature.Util, hideEmpower: true },
   emoji: CardEmoji.EDEL_CARD,
-  printEmpower: false,
   description: () =>
     `Eye Contact next 2 turns. Add Sleepy to your opponent's deck, they redraw a card.`,
   effects: [],
@@ -192,8 +191,7 @@ const hypnosis_sleep = new Card({
 
 const hypnosis_mesmerize = new Card({
   title: "Hypnosis: *Mesmerize*",
-  cardMetadata: { nature: Nature.Util },
-  printEmpower: false,
+  cardMetadata: { nature: Nature.Util, hideEmpower: true },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
     `Eye Contact next 2 turns. Add Mesmerize to your opponent's deck, they redraw a card.`,
@@ -216,14 +214,17 @@ const hypnosis_weaken = new Card({
   description: ([debuff]) =>
     `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's deck.`,
   effects: [2],
-  cardAction: function (this: Card, { name, sendToGameroom, opponent, selfStats }) {
+  cardAction: function (
+    this: Card,
+    { name, sendToGameroom, opponent, selfStats }
+  ) {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *You are feeling weak*`
     );
 
     selfStats.Ability += 2;
 
-    const clone = weakened.clone()
+    const clone = weakened.clone();
     clone.empowerLevel = this.empowerLevel;
     opponent.hand.push(clone);
   },
@@ -237,7 +238,15 @@ const kneel = new Card({
     `DMG ${dmg} + ${discardFactor} per each card you've forced your opponent to discard this match. Ignores defense. At the end of the turn, if your opponent has forcibly discarded over 10 cards, and have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
   effects: [10, 3],
   hpCost: 10,
-  cardAction: ({ name, sendToGameroom, opponent, opponentIndex, calcEffect, flatAttack, game }) => {
+  cardAction: ({
+    name,
+    sendToGameroom,
+    opponent,
+    opponentIndex,
+    calcEffect,
+    flatAttack,
+    game,
+  }) => {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Kneel!*`);
 
     const discards = opponent.additionalMetadata.forcedDiscards ?? 0;
@@ -245,17 +254,15 @@ const kneel = new Card({
     const dmg = calcEffect(0) + calcEffect(1) * discards;
     flatAttack(dmg, 10);
 
-    const winCon = ["Sleepy", "Mesmerized", "Weakened"].every(
-      (status) => opponent.hand.some((card) => card.title === status)
-    ) && discards > 10;
+    const winCon =
+      ["Sleepy", "Mesmerized", "Weakened"].every((status) =>
+        opponent.hand.some((card) => card.title === status)
+      ) && discards > 10;
     if (winCon) {
-      sendToGameroom(
-        `${opponent.name}'s mind has been invaded by ${name}!`
-      );
+      sendToGameroom(`${opponent.name}'s mind has been invaded by ${name}!`);
       game.additionalMetadata.forfeited[opponentIndex] = true;
     }
-
-  }
+  },
 });
 
 const edelDeck = [

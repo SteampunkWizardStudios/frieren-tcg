@@ -32,7 +32,6 @@ const Edel = new CharacterData({
     **Sub-Ability: A Superior Opponent** - While you make Eye Contact with the opponent, all your moves have Priority+1.
     `,
     abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
-      console.log("Edel ability start of turn effect");
       const self = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
 
