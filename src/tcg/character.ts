@@ -86,7 +86,6 @@ export default class Character {
         this.characterThread
       );
       
-      this.additionalMetadata.discardsThisGame = (this.additionalMetadata.discardsThisGame ?? 0) + 1;
       return discardedCard;
     } else {
       throw new Error("index given greater than hand's length.");
