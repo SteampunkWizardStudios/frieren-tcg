@@ -18,5 +18,14 @@ export async function getMemberFromDiscordId(
 }
 
 export async function getDiscordServer(client: Client) {
-  return client.guilds.cache.get(FRIEREN_DISCORD_SERVER);
+  let guild = client.guilds.cache.get(FRIEREN_DISCORD_SERVER);
+  if (!guild) {
+    try {
+      guild = await client.guilds.fetch(FRIEREN_DISCORD_SERVER);
+    } catch (error) {
+      console.error(`Failed to fetch guild: ${error}`);
+      return null;
+    }
+  }
+  return guild;
 }

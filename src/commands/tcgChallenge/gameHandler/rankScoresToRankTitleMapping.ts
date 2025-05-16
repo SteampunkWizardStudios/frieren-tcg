@@ -1,5 +1,6 @@
 import { RANK_SCORE_TO_RANK_MAPPING } from "@src/constants";
-import type { Collection, GuildMember, Role } from "discord.js";
+import { getMemberFromDiscordId } from "@src/util/discord";
+import type { Client, Collection, GuildMember, Role, User } from "discord.js";
 
 export type Rank = {
   rankLevel: number;
@@ -24,6 +25,12 @@ export const getRank = (score: number): Rank => {
   }
 };
 
+/**
+ * Returns a collection of roles for a member with all rank roles removed and the new rank role added
+ * @param member The Discord guild member to update roles for
+ * @param rank The rank to assign to the member
+ * @returns A collection of roles with the updated rank role
+ */
 export async function getNewRolesForRank(
   member: GuildMember,
   rank: Rank
@@ -43,7 +50,7 @@ export async function getNewRolesForRank(
 
   if (!newRankRole) {
     console.error(
-      `Rank role with ID ${rank.rankRoleId} not found in guild cache.`
+      `Rank role with ID ${rank.rankRoleId} not found in guild ${member.guild.id} cache. This indicates a configuration issue.`
     );
     return rolesWithoutOldRanks;
   }
@@ -51,4 +58,23 @@ export async function getNewRolesForRank(
   const finalRoles = rolesWithoutOldRanks.set(newRankRole.id, newRankRole);
 
   return finalRoles;
+}
+
+export async function updateMemberRoles(
+  client: Client,
+  user: User,
+  newRank: Rank
+) {
+  try {
+    const member = await getMemberFromDiscordId(client, user.id);
+    if (!member) {
+      console.error(`Could not find Discord member for user ${user.id}`);
+      return;
+    }
+
+    const newRoles = await getNewRolesForRank(member, newRank);
+    await member.roles.set(newRoles);
+  } catch (error) {
+    console.error(`Failed to update roles for user ${user.id}:`, error);
+  }
 }

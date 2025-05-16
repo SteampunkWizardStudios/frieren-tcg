@@ -2,7 +2,7 @@ import { CHARACTER_LIST } from "@tcg/characters/characterList";
 import type { Rank } from "./commands/tcgChallenge/gameHandler/rankScoresToRankTitleMapping";
 
 export const FRIEREN_DISCORD_SERVER_AUBERST_CHANNEL_ID = "738445835234181211";
-export const FRIEREN_DISCORD_SERVER = "1358247805793210368";
+export const FRIEREN_DISCORD_SERVER = "738445835234181211";
 
 export const MAX_TEXT_SPEED = 3000;
 export const DEFAULT_TEXT_SPEED = 1500;
@@ -15,6 +15,10 @@ export const CHAR_OPTIONS = Object.entries(CHARACTER_LIST).map(
   })
 );
 
+/**
+ * Maps rank score thresholds to rank details including title and Discord role ID
+ * Players with scores at or above each threshold will be assigned the corresponding rank
+ */
 export const RANK_SCORE_TO_RANK_MAPPING: Record<number, Rank> = {
   0: {
     rankLevel: 0,

@@ -5,11 +5,10 @@ import { getOrCreatePlayers } from "@src/util/db/getPlayer";
 import { getOrCreateCharacters } from "@src/util/db/getCharacter";
 import { getCharacterMasteries } from "@src/util/db/getCharacterMastery";
 import { getLadderRanks } from "@src/util/db/getLadderRank";
-import { getNewRolesForRank, getRank } from "./rankScoresToRankTitleMapping";
+import { getRank, updateMemberRoles } from "./rankScoresToRankTitleMapping";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { createMatch } from "@src/util/db/createMatch";
 import { getLatestLadderReset } from "@src/util/db/getLatestLadderReset";
-import { getMemberFromDiscordId } from "@src/util/discord";
 
 const BASE_RANKED_POINT_GAIN = 20;
 
@@ -109,55 +108,11 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
           const loserRankedDown = loserNewRank.rankLevel < loserRank.rankLevel;
 
           if (winnerRankedUp) {
-            try {
-              const winnerMember = await getMemberFromDiscordId(
-                client,
-                winner.id
-              );
-              if (!winnerMember) {
-                console.error(
-                  `Could not find Discord member for winner ${winner.id}`
-                );
-              } else {
-                const newRoles = await getNewRolesForRank(
-                  winnerMember,
-                  winnerNewRank
-                );
-
-                winnerMember.roles.set(newRoles);
-              }
-            } catch (error) {
-              console.error(
-                `Failed to update roles for winner ${winner.id}:`,
-                error
-              );
-            }
+            await updateMemberRoles(client, winner, winnerNewRank);
           }
 
           if (loserRankedDown) {
-            try {
-              const loserMember = await getMemberFromDiscordId(
-                client,
-                loser.id
-              );
-              if (!loserMember) {
-                console.error(
-                  `Could not find Discord member for loser ${loser.id}`
-                );
-              } else {
-                const newRoles = await getNewRolesForRank(
-                  loserMember,
-                  loserNewRank
-                );
-
-                loserMember.roles.set(newRoles);
-              }
-            } catch (error) {
-              console.error(
-                `Failed to update roles for loser ${loser.id}:`,
-                error
-              );
-            }
+            await updateMemberRoles(client, loser, loserNewRank);
           }
 
           resultEmbed.addFields(
