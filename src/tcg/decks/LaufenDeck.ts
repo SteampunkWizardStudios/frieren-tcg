@@ -1,5 +1,4 @@
 import Card, { Nature } from "@tcg/card";
-import CommonCardAction from "@tcg/util/commonCardActions";
 import { StatsEnum } from "@tcg/stats";
 import TimedEffect from "@tcg/timedEffect";
 import { CardEmoji } from "@tcg/formatting/emojis";
@@ -19,24 +18,20 @@ const a_staffStrike = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    {
+      name,
+      sendToGameroom,
+      calcEffect,
+      selfStats,
+      possessive,
+      flatAttack,
+      selfStat,
+    }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} struck with ${character.cosmetic.pronouns.possessive} staff!`,
-      TCGThread.Gameroom
-    );
-
-    const spdIncrease = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(spdIncrease, StatsEnum.SPD);
-
-    const damage =
-      this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.SPD / 7;
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-      hpCost: this.hpCost,
-    });
+    sendToGameroom(`${name} struck with ${possessive} staff!`);
+    selfStat(0, StatsEnum.SPD);
+    const damage = calcEffect(1) + selfStats.SPD / 7;
+    flatAttack(damage, this.hpCost);
   },
 });
 
@@ -53,24 +48,20 @@ const a_staffBash = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    {
+      name,
+      sendToGameroom,
+      calcEffect,
+      selfStats,
+      possessive,
+      flatAttack,
+      selfStat,
+    }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} bashed ${character.cosmetic.pronouns.possessive} staff!`,
-      TCGThread.Gameroom
-    );
-
-    const spdIncrease = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(spdIncrease, StatsEnum.SPD);
-
-    const damage =
-      this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.SPD / 6;
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-      hpCost: this.hpCost,
-    });
+    sendToGameroom(`${name} bashed ${possessive} staff!`);
+    selfStat(0, StatsEnum.SPD);
+    const damage = calcEffect(1) + selfStats.SPD / 6;
+    flatAttack(damage, this.hpCost);
   },
 });
 
@@ -87,24 +78,20 @@ export const a_whip = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    {
+      sendToGameroom,
+      name,
+      possessive,
+      selfStats,
+      calcEffect,
+      selfStat,
+      flatAttack,
+    }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} turned ${character.cosmetic.pronouns.possessive} staff into a whip!`,
-      TCGThread.Gameroom
-    );
-
-    const speed = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(speed, StatsEnum.SPD);
-
-    const damage =
-      this.calculateEffectValue(this.effects[1]) +
-      character.stats.stats.SPD / 5;
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-      hpCost: this.hpCost,
-    });
+    sendToGameroom(`${name} turned ${possessive} staff into a whip!`);
+    selfStat(0, StatsEnum.SPD);
+    const damage = calcEffect(1) + selfStats.SPD / 5;
+    flatAttack(damage, this.hpCost);
   },
 });
 
@@ -121,21 +108,11 @@ export const a_supersonicStrike = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { sendToGameroom, name, calcEffect, selfStats, flatAttack }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} struck at supersonic speed!`,
-      TCGThread.Gameroom
-    );
-
-    const damage =
-      this.calculateEffectValue(this.effects[0]) +
-      character.stats.stats.SPD / 4;
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-      hpCost: this.hpCost,
-    });
+    sendToGameroom(`${name} struck at supersonic speed!`);
+    const damage = calcEffect(0) + selfStats.SPD / 4;
+    flatAttack(damage, this.hpCost);
   },
 });
 
@@ -149,24 +126,10 @@ export const hide = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1365422814097707120/GIF_3467240538.gif?ex=68108c57&is=680f3ad7&hm=afdbfcbce169548db1583e2f07027c57cf975b395500daee05e77e21a6b96b48&",
   },
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} hid behind coverings!`,
-      TCGThread.Gameroom
-    );
-
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.SPD
-    );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[1]),
-      StatsEnum.HP
-    );
+  cardAction: function (this: Card, { sendToGameroom, name, selfStat }) {
+    sendToGameroom(`${name} hid behind coverings!`);
+    selfStat(0, StatsEnum.SPD);
+    selfStat(1, StatsEnum.HP);
   },
 });
 
