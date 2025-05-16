@@ -64,11 +64,11 @@ export const buildChallengeButtonRespond = async (
         value: gameSettings.revealDraw ? "Yes" : "No",
         inline: true,
       },
-	  {
-		name: "Goddess Mode",
-		value: gameSettings.goddessMode ? "Yes" : "No",
-		inline: true,
-	  },
+      {
+        name: "Goddess Mode",
+        value: gameSettings.goddessMode ? "Yes" : "No",
+        inline: true,
+      },
       {
         name: "Text Speed",
         value: `${textSpeedMs}ms`,
