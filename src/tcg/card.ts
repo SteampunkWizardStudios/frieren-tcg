@@ -112,7 +112,7 @@ export default class Card implements CardProps {
       `${this.imitated ? "(Imitated) " : ""}` +
       `${this.empathized ? "(Learned) " : ""}` +
       `${this.title}` +
-      `${this.cardMetadata.hideEmpower === false ? ` + ${this.empowerLevel}` : ""}`
+      `${this.cardMetadata.hideEmpower !== true ? ` + ${this.empowerLevel}` : ""}`
     );
   }
 

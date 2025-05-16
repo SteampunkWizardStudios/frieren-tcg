@@ -1,44 +1,21 @@
+import { RANK_SCORE_TO_RANK_MAPPING } from "@src/constants";
+import type { Collection, GuildMember, Role } from "discord.js";
+
 export type Rank = {
   rankLevel: number;
   rankTitle: string;
-};
-
-const rankScoresToRankTitleMapping: Record<number, Rank> = {
-  0: {
-    rankLevel: 0,
-    rankTitle: "Apprentice Battle Mage",
-  },
-  100: {
-    rankLevel: 1,
-    rankTitle: "5th-class Battle Mage",
-  },
-  200: {
-    rankLevel: 2,
-    rankTitle: "4th-class Battle Mage",
-  },
-  300: {
-    rankLevel: 3,
-    rankTitle: "3rd-class Battle Mage",
-  },
-  400: {
-    rankLevel: 4,
-    rankTitle: "2nd-class Battle Mage",
-  },
-  500: {
-    rankLevel: 5,
-    rankTitle: "1st-class Battle Mage",
-  },
+  rankRoleId: string;
 };
 
 export const getRank = (score: number): Rank => {
   if (score >= 500) {
-    return rankScoresToRankTitleMapping[500];
+    return RANK_SCORE_TO_RANK_MAPPING[500];
   } else if (score <= 0) {
-    return rankScoresToRankTitleMapping[0];
+    return RANK_SCORE_TO_RANK_MAPPING[0];
   } else {
     const flooredScore = Math.floor(score / 100) * 100;
-    if (flooredScore in rankScoresToRankTitleMapping) {
-      return rankScoresToRankTitleMapping[flooredScore];
+    if (flooredScore in RANK_SCORE_TO_RANK_MAPPING) {
+      return RANK_SCORE_TO_RANK_MAPPING[flooredScore];
     } else {
       throw new Error(
         `Invalid score ${score} with floored score ${flooredScore}`
@@ -46,3 +23,34 @@ export const getRank = (score: number): Rank => {
     }
   }
 };
+
+export async function getNewRolesForRank(
+  member: GuildMember,
+  rank: Rank
+): Promise<Collection<string, Role>> {
+  console.log(member);
+  const currentRoles = member.roles.cache;
+  console.log(currentRoles);
+
+  const allRankRoleIds = Object.values(RANK_SCORE_TO_RANK_MAPPING).map(
+    (rankMapping) => rankMapping.rankRoleId
+  );
+  console.log(allRankRoleIds);
+
+  const rolesWithoutOldRanks = currentRoles.filter(
+    (role) => !allRankRoleIds.includes(role.id)
+  );
+
+  const newRankRole = member.guild.roles.cache.get(rank.rankRoleId);
+
+  if (!newRankRole) {
+    console.error(
+      `Rank role with ID ${rank.rankRoleId} not found in guild cache.`
+    );
+    return rolesWithoutOldRanks;
+  }
+
+  const finalRoles = rolesWithoutOldRanks.set(newRankRole.id, newRankRole);
+
+  return finalRoles;
+}

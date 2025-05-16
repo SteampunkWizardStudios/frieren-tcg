@@ -5,10 +5,11 @@ import { getOrCreatePlayers } from "@src/util/db/getPlayer";
 import { getOrCreateCharacters } from "@src/util/db/getCharacter";
 import { getCharacterMasteries } from "@src/util/db/getCharacterMastery";
 import { getLadderRanks } from "@src/util/db/getLadderRank";
-import { getRank } from "./rankScoresToRankTitleMapping";
+import { getNewRolesForRank, getRank } from "./rankScoresToRankTitleMapping";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { createMatch } from "@src/util/db/createMatch";
 import { getLatestLadderReset } from "@src/util/db/getLatestLadderReset";
+import { getMemberFromDiscordId } from "@src/util/discord";
 
 const BASE_RANKED_POINT_GAIN = 20;
 
@@ -32,6 +33,8 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
     resultEmbed,
     gameThread,
   } = props;
+
+  const client = gameThread.client;
 
   // get latest reset
   const currLadderReset = await getLatestLadderReset({ gamemode: gameMode });
@@ -101,14 +104,41 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
           const loserNewPoints = loserLadderRank.rankPoints - loserScoreLoss;
           const winnerNewRank = getRank(winnerNewPoints);
           const loserNewRank = getRank(loserNewPoints);
+
+          const winnerRankedUp = winnerNewRank.rankLevel > winnerRank.rankLevel;
+          const loserRankedDown = loserNewRank.rankLevel < loserRank.rankLevel;
+
+          if (winnerRankedUp) {
+            const winnerMember = await getMemberFromDiscordId(
+              client,
+              winner.id
+            );
+            const newRoles = await getNewRolesForRank(
+              winnerMember,
+              winnerNewRank
+            );
+
+            winnerMember.roles.set(newRoles);
+          }
+
+          if (loserRankedDown) {
+            const loserMember = await getMemberFromDiscordId(client, winner.id);
+            const newRoles = await getNewRolesForRank(
+              loserMember,
+              loserNewRank
+            );
+
+            loserMember.roles.set(newRoles);
+          }
+
           resultEmbed.addFields(
             {
               name: `Winner: ${winner.displayName}`,
-              value: `Rank Points: ${winnerNewPoints} (${winnerScoreGain > 0 ? `+**${winnerScoreGain}**` : "Unchanged"}) ${winnerNewRank.rankLevel > winnerRank.rankLevel ? `(Rank Up! New Rank: **${winnerNewRank.rankTitle}**)` : ""}`,
+              value: `Rank Points: ${winnerNewPoints} (${winnerScoreGain > 0 ? `+**${winnerScoreGain}**` : "Unchanged"}) ${winnerRankedUp ? `(Rank Up! New Rank: **${winnerNewRank.rankTitle}**)` : ""}`,
             },
             {
               name: `Loser: ${loser.displayName}`,
-              value: `Rank Points: ${loserNewPoints} (${loserScoreLoss > 0 ? `-**${loserScoreLoss}**` : "Unchanged"}) ${loserNewRank.rankLevel < loserRank.rankLevel ? `(Rank Down... New Rank: **${loserNewRank.rankTitle}**)` : ""}`,
+              value: `Rank Points: ${loserNewPoints} (${loserScoreLoss > 0 ? `-**${loserScoreLoss}**` : "Unchanged"}) ${loserRankedDown ? `(Rank Down... New Rank: **${loserNewRank.rankTitle}**)` : ""}`,
             }
           );
 
