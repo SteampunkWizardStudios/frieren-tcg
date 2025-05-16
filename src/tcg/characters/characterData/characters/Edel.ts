@@ -5,6 +5,7 @@ import { CharacterEmoji } from "@tcg/formatting/emojis";
 import edelDeck from "@tcg/decks/EdelDeck";
 import Pronouns from "@src/tcg/pronoun";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import mediaLinks from "@src/tcg/formatting/mediaLinks";
 
 const edelStats = new Stats({
   [StatsEnum.HP]: 70,
@@ -20,8 +21,7 @@ const Edel = new CharacterData({
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.EDEL,
     color: 0xae9292,
-    imageUrl:
-      "https://static.wikia.nocookie.net/frieren/images/a/ab/Edel_anime_portrait.png/revision/latest?cb=20240119235404",
+    imageUrl: mediaLinks.edelPortrait,
   },
   stats: edelStats,
   cards: edelDeck,

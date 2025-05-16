@@ -4,6 +4,7 @@ import Character from "@tcg/character";
 import { StatsEnum } from "@tcg/stats";
 import TimedEffect from "@tcg/timedEffect";
 import { sleepy, mesmerized, weakened } from "@decks/utilDecks/edelStatuses";
+import mediaLinks from "../formatting/mediaLinks";
 
 const redrawRandom = (opponent: Character) => {
   const randomIndex = Math.floor(Math.random() * opponent.hand.length);
@@ -23,8 +24,7 @@ export const telekinesis = new Card({
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
   cosmetic: {
-    cardGif:
-      "https://media.discordapp.net/attachments/1367328754795286599/1368285080606347444/Stone_hurling_spell_EP24.gif?ex=6817aa48&is=681658c8&hm=b41474c8c6b45cfcf6d65a0d1f5586e9633d1d064f0ee1ab4facd0d9b3699a84",
+    cardGif: mediaLinks.telekinesis_gif,
   },
   description: ([dmg]) => `Your opponent redraws 2 cards. DMG ${dmg}.`,
   effects: [14],
