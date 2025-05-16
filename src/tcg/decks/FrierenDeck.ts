@@ -9,7 +9,7 @@ export const a_zoltraak = new Card({
   title: "Offensive Magic Analysis: Zoltraak",
   cardMetadata: { nature: Nature.Attack, postAnalysis: 1 },
   description: ([dmg]) =>
-    `HP-5. DMG ${dmg}. 1 Analysis stacks will be gained after attack.`,
+    `DMG ${dmg}. 1 Analysis stacks will be gained after attack.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl: mediaLinks.zoltraak_image,
@@ -18,7 +18,7 @@ export const a_zoltraak = new Card({
   effects: [8],
   cardAction: function (this: Card, { sendToGameroom, name, basicAttack }) {
     sendToGameroom(`${name} fired Zoltraak!`);
-    basicAttack(0, 5);
+    basicAttack(0, this.hpCost);
   },
 });
 
@@ -70,29 +70,31 @@ export const fieldOfFlower = new Card({
 export const a_judradjim = new Card({
   title: "Destructive Lightning: Judradjim",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-7. DMG ${dmg}.`,
+  description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl: mediaLinks.judradjim_image,
     cardGif: mediaLinks.judradjim_gif,
   },
   effects: [13],
+  hpCost: 7,
   cardAction: function (this: Card, { name, sendToGameroom, basicAttack }) {
     sendToGameroom(`${name} sent forth Judradjim!`);
-    basicAttack(0, 7);
+    basicAttack(0, this.hpCost);
   },
 });
 
 export const a_vollzanbel = new Card({
   title: "Hellfire Summoning: Vollzanbel",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-10. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl: mediaLinks.vollzanbel_image,
     cardGif: mediaLinks.vollzanbel_gif,
   },
   effects: [18],
+  hpCost: 10,
   cardAction: function (this: Card, { name, sendToGameroom, basicAttack }) {
     sendToGameroom(`${name} summoned Vollzanbel!`);
     basicAttack(0, 10);
@@ -142,8 +144,7 @@ export const demonMagicAnalysis = new Card({
 export const ordinaryDefensiveMagic = new Card({
   title: "Ordinary Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl: mediaLinks.ordinaryDefensiveMagic_image,

@@ -9,9 +9,10 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 const a_axeSwipe = new Card({
   title: "Axe Swipe",
   cardMetadata: { nature: Nature.Attack, resolve: 0 },
-  description: ([dmg]) => `HP-5. DMG ${dmg}. Uses 0 Resolve.`,
+  description: ([dmg]) => `DMG ${dmg}. Uses 0 Resolve.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [9],
+  hpCost: 5,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361125002761605140/IMG_3109.gif?ex=680829f1&is=6806d871&hm=ae00597c479d370662a52ae4f04cb024103354b0c758c483ff09946a0c1288ec&",
@@ -27,7 +28,7 @@ const a_axeSwipe = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 5,
+      hpCost: this.hpCost,
     });
   },
 });
@@ -175,8 +176,7 @@ const jumboBerrySpecialBreak = new Card({
 export const block = new Card({
   title: "Block",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [20],
   priority: 2,
@@ -239,7 +239,7 @@ const concentration = new Card({
 const a_ordensSlashTechnique = new Card({
   title: "Orden's Slash Technique",
   cardMetadata: { nature: Nature.Attack, resolve: -1 },
-  description: ([dmg]) => `HP-8. DMG ${dmg}. Uses 1 Resolve.`,
+  description: ([dmg]) => `DMG ${dmg}. Uses 1 Resolve.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [14],
   hpCost: 8,
@@ -267,7 +267,7 @@ const a_ordensSlashTechnique = new Card({
 
 const fearBroughtMeThisFar = new Card({
   title: "Fear Brought Me This Far",
-  cardMetadata: { nature: Nature.Util, resolve: 2, },
+  cardMetadata: { nature: Nature.Util, resolve: 2 },
   description: ([atkDef, atkDefAdditional]) =>
     `Increases ATK and DEF by ${atkDef}. Increases ATK and DEF by an additional ${atkDefAdditional} if HP <=60. Gain 2 <Resolve>.`,
   emoji: CardEmoji.STARK_CARD,
@@ -303,7 +303,7 @@ const fearBroughtMeThisFar = new Card({
 const a_eisensAxeCleave = new Card({
   title: "Eisen's Axe Cleave",
   cardMetadata: { nature: Nature.Attack, resolve: -2 },
-  description: ([dmg]) => `HP-11. DMG ${dmg}. Uses up 2 Resolve stack.`,
+  description: ([dmg]) => `DMG ${dmg}. Uses up 2 Resolve stack.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [19],
   hpCost: 11,
@@ -339,7 +339,7 @@ const a_eisensAxeCleave = new Card({
 export const a_lightningStrike = new Card({
   title: "Lightning Strike",
   description: ([dmg]) =>
-    `HP-14. DEF-5 and SPD-5 for 2 turns. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack. Stark's HP cannot drop below 1 until the end of the turn after this move is used.`,
+    `DEF-5 and SPD-5 for 2 turns. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack. Stark's HP cannot drop below 1 until the end of the turn after this move is used.`,
   emoji: CardEmoji.STARK_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true, resolve: -2 },
   effects: [20],

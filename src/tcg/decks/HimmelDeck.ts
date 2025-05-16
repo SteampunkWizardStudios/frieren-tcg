@@ -565,8 +565,7 @@ const heiterTrustYou = new Card({
 export const quickBlock = new Card({
   title: "Quick Block",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+3. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 3,
   effects: [20],
@@ -636,7 +635,7 @@ const rally = new Card({
 export const a_extremeSpeed = new Card({
   title: "Extreme Speed",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `Priority+1. HP-8. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 1,
   effects: [12],
@@ -665,10 +664,11 @@ export const a_extremeSpeed = new Card({
 
 export const a_realHeroSwing = new Card({
   title: "A Real Hero's Swing",
-  description: ([dmg]) => `HP-12. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [18],
+  hpCost: 12,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361777461620248576/GIF_1092034222.gif?ex=6807e697&is=68069517&hm=853f7d8910a4ab79010685a4399cd55c0af1f343295e0b2e04c49f829b54eee7&",

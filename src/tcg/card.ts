@@ -22,7 +22,7 @@ type CardMetadata = {
   analysis?: number;
   postAnalysis?: number;
   waldgoseDamage?: number;
-  
+
   heiter?: boolean;
   eisen?: boolean;
   frieren?: boolean;
@@ -31,6 +31,9 @@ type CardMetadata = {
   resolve?: number;
   signatureMoveOf?: CharacterName;
   ubelFailureRate?: number;
+  hidePriority?: boolean;
+  hideHpCost?: boolean;
+  hideEmpower?: boolean;
 };
 
 export type CardProps = {
@@ -66,7 +69,6 @@ export default class Card implements CardProps {
   priority: number;
   imitated: boolean;
   cardMetadata: CardMetadata;
-  printEmpower: boolean;
   hpCost: number;
   empathized: boolean;
 
@@ -82,7 +84,6 @@ export default class Card implements CardProps {
     this.cardMetadata = cardProps.cardMetadata;
     this.emoji = cardProps.emoji ?? CardEmoji.GENERIC;
     this.cosmetic = cardProps.cosmetic;
-    this.printEmpower = cardProps.printEmpower ?? true;
     this.hpCost = cardProps.hpCost ?? 0;
     this.empathized = cardProps.empathized ?? false;
   }
@@ -91,7 +92,18 @@ export default class Card implements CardProps {
     const empoweredEffects: string[] = this.effects.map(
       (effect) => `**${this.calculateEffectValue(effect).toFixed(2)}**`
     );
-    return this.description(empoweredEffects);
+
+    let description = this.description(empoweredEffects);
+
+    if (this.hpCost && !this.cardMetadata.hideHpCost) {
+      description = `HP-${this.hpCost}. ${description}`;
+    }
+    if (this.priority && !this.cardMetadata.hidePriority) {
+      const prioritySign = this.priority < 0 ? "-" : "+";
+      description = `Priority${prioritySign}${Math.abs(this.priority)}. ${description}`;
+    }
+
+    return description;
   }
 
   getTitle(): string {
@@ -99,7 +111,7 @@ export default class Card implements CardProps {
       `${this.imitated ? "(Imitated) " : ""}` +
       `${this.empathized ? "(Learned) " : ""}` +
       `${this.title}` +
-      `${this.printEmpower ? ` + ${this.empowerLevel}` : ""}`
+      `${this.cardMetadata.hideEmpower !== true ? ` + ${this.empowerLevel}` : ""}`
     );
   }
 
