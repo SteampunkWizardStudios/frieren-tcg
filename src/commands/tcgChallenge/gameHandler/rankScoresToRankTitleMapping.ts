@@ -28,7 +28,7 @@ export async function getNewRolesForRank(
   member: GuildMember,
   rank: Rank
 ): Promise<Collection<string, Role>> {
-  console.log(member);
+  console.log("Member logging", member);
   const currentRoles = member.roles.cache;
   console.log(currentRoles);
 

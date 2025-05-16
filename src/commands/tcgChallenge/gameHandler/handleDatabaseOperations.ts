@@ -122,7 +122,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
           }
 
           if (loserRankedDown) {
-            const loserMember = await getMemberFromDiscordId(client, winner.id);
+            const loserMember = await getMemberFromDiscordId(client, loser.id);
             const newRoles = await getNewRolesForRank(
               loserMember,
               loserNewRank

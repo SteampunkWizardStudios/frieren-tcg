@@ -1,5 +1,5 @@
+import { FRIEREN_DISCORD_SERVER } from "@src/constants";
 import type { Client, GuildMember } from "discord.js";
-
 export async function getMemberFromDiscordId(
   client: Client,
   discordId: string
@@ -10,10 +10,9 @@ export async function getMemberFromDiscordId(
   }
 
   const member = await guild.members.fetch(discordId);
-  console.log(member.roles);
-  return await guild.members.fetch(discordId);
+  return member;
 }
 
 export async function getDiscordServer(client: Client) {
-  return client.guilds.cache.get(`1358247805793210368`); // TODO: change to constant
+  return client.guilds.cache.get(FRIEREN_DISCORD_SERVER);
 }
