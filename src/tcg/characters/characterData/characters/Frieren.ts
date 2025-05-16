@@ -14,11 +14,6 @@ import mediaLinks from "@src/tcg/formatting/mediaLinks";
 const ANALYSIS_BOOST = 0.05;
 const ANALYSIS_STACK_CAP = 20;
 
-const imageUrl: Record<string, string> = {
-  icon: mediaLinks.frierenPortrait,
-  vangerisuCardVer: mediaLinks.frierenVangerisuCard,
-};
-
 const frierenStats = new Stats({
   [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 12.0,
@@ -42,7 +37,7 @@ const Frieren = new CharacterData({
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FRIEREN,
     color: 0xc5c3cc,
-    imageUrl: imageUrl.vangerisuCardVer,
+    imageUrl: mediaLinks.frierenVangerisuCard,
   },
   stats: frierenStats,
   cards: frierenDeck,
