@@ -1,6 +1,8 @@
 import { RANK_SCORE_TO_RANK_MAPPING } from "@src/constants";
-import { getMemberFromDiscordId } from "@src/util/discord";
+import { getDiscordServer, getMemberFromDiscordId } from "@src/util/discord";
 import type { Client, Collection, GuildMember, Role, User } from "discord.js";
+import { GameMode } from "./gameSettings";
+import { getTopNPlayersInGamemode } from "@src/commands/tcgStats/statsHandlers/globalStats";
 
 export type Rank = {
   rankLevel: number;
@@ -73,8 +75,49 @@ export async function updateMemberRoles(
     }
 
     const newRoles = await getNewRolesForRank(member, newRank);
-    await member.roles.set(newRoles);
+    await member.roles.set(newRoles, "Rank sync");
   } catch (error) {
     console.error(`Failed to update roles for user ${user.id}:`, error);
+  }
+}
+
+export async function removeAllRankRoles(client: Client) {
+  const guild = await getDiscordServer(client);
+  if (!guild) {
+    throw new Error("Frieren discord server not found");
+  }
+
+  const ladderPlayers = await getTopNPlayersInGamemode(GameMode.CLASSIC, 100);
+  if (!ladderPlayers) {
+    throw new Error("Failed to get ladder players");
+  }
+
+  for (const { player } of ladderPlayers) {
+    try {
+      const member = await getMemberFromDiscordId(client, player.discordId);
+      if (!member) {
+        console.error(
+          `Could not find Discord member for user ${player.discordId}`
+        );
+        continue;
+      }
+
+      const currentRoles = member.roles.cache;
+      const rankRoleIdSet = new Set(
+        Object.values(RANK_SCORE_TO_RANK_MAPPING).map(
+          (rankMapping) => rankMapping.rankRoleId
+        )
+      );
+      const rolesWithoutRankRoles = currentRoles.filter(
+        (role) => !rankRoleIdSet.has(role.id)
+      );
+
+      await member.roles.set(rolesWithoutRankRoles, "Ladder reset");
+    } catch (error) {
+      console.error(
+        `Failed to remove rank roles for user ${player.discordId}:`,
+        error
+      );
+    }
   }
 }
