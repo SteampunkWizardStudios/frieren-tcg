@@ -11,7 +11,7 @@ import { createMatch } from "@src/util/db/createMatch";
 import { getLatestLadderReset } from "@src/util/db/getLatestLadderReset";
 import { getMemberFromDiscordId } from "@src/util/discord";
 
-const BASE_RANKED_POINT_GAIN = 100; // CHANGE THIS BEFORE PROD
+const BASE_RANKED_POINT_GAIN = 20;
 
 export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
   winner: User;
