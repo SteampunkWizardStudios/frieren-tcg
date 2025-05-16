@@ -9,8 +9,12 @@ export async function getMemberFromDiscordId(
     throw new Error("Frieren discord server not found");
   }
 
-  const member = await guild.members.fetch(discordId);
-  return member;
+  try {
+    const member = await guild.members.fetch(discordId);
+    return member;
+  } catch (error) {
+    throw new Error(`Failed to fetch member: ${error}`);
+  }
 }
 
 export async function getDiscordServer(client: Client) {

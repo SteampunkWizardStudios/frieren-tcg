@@ -28,17 +28,15 @@ export async function getNewRolesForRank(
   member: GuildMember,
   rank: Rank
 ): Promise<Collection<string, Role>> {
-  console.log("Member logging", member);
   const currentRoles = member.roles.cache;
-  console.log(currentRoles);
 
   const allRankRoleIds = Object.values(RANK_SCORE_TO_RANK_MAPPING).map(
     (rankMapping) => rankMapping.rankRoleId
   );
-  console.log(allRankRoleIds);
 
+  const rankRoleIdSet = new Set(allRankRoleIds);
   const rolesWithoutOldRanks = currentRoles.filter(
-    (role) => !allRankRoleIds.includes(role.id)
+    (role) => !rankRoleIdSet.has(role.id)
   );
 
   const newRankRole = member.guild.roles.cache.get(rank.rankRoleId);

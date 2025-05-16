@@ -24,22 +24,22 @@ export const RANK_SCORE_TO_RANK_MAPPING: Record<number, Rank> = {
   100: {
     rankLevel: 1,
     rankTitle: "5th-class Battle Mage",
-    rankRoleId: `1372922202453708900`,
+    rankRoleId: `1372948399074316338`,
   },
   200: {
     rankLevel: 2,
     rankTitle: "4th-class Battle Mage",
-    rankRoleId: `1372922202453708900`,
+    rankRoleId: `1372948364395806801`,
   },
   300: {
     rankLevel: 3,
     rankTitle: "3rd-class Battle Mage",
-    rankRoleId: `1372922202453708900`,
+    rankRoleId: `1372948340781748246`,
   },
   400: {
     rankLevel: 4,
     rankTitle: "2nd-class Battle Mage",
-    rankRoleId: `1372922202453708900`,
+    rankRoleId: `1372948305713303582`,
   },
   500: {
     rankLevel: 5,
