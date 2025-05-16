@@ -110,7 +110,7 @@ export const a_whip = new Card({
 
 export const a_supersonicStrike = new Card({
   title: "Supersonic Strike",
-  description: ([dmg]) => `HP-5, DMG ${dmg}+SPD/4`,
+  description: ([dmg]) => `DMG ${dmg}+SPD/4`,
   emoji: CardEmoji.LAUFEN_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [10],
@@ -174,7 +174,7 @@ const quickDodge = new Card({
   title: "Quick Dodge",
   cardMetadata: { nature: Nature.Util },
   description: ([spd, spdBuff]) =>
-    `Priority+2. SPD+${spd}. Increases SPD by an additional ${spdBuff} until the end of the turn.`,
+    `SPD+${spd}. Increases SPD by an additional ${spdBuff} until the end of the turn.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [3, 27],
   priority: 2,
@@ -212,8 +212,7 @@ const quickDodge = new Card({
 export const parry = new Card({
   title: "Parry",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [20],
   priority: 2,
