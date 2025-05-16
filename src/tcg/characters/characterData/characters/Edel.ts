@@ -29,7 +29,7 @@ const Edel = new CharacterData({
     abilityName: "Memory Transference Specialist",
     abilityEffectString: `At the start of each turn, see a random card from your opponent's hand, and lower its empowerment by 1
 
-    **Sub-Ability: A Superior Opponent** - While you make Eye Contact with the opponent, all their moves have Priority-1.
+    **Sub-Ability: A Superior Opponent** - While you make Eye Contact with the opponent, all your moves have Priority+1.
     `,
     abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
       console.log("Edel ability start of turn effect");
@@ -54,16 +54,16 @@ const Edel = new CharacterData({
       if (self.stats.stats.Ability > 0) {
         self.stats.stats.Ability--;
 
-        opponent.ability.abilitySelectedMoveModifierEffect = (
+        self.ability.abilitySelectedMoveModifierEffect = (
           _game,
           _characterIndex,
           _messageCache,
           card,
         ) => {
-          card.priority -= 1;
+          card.priority += 1;
         }
       } else {
-        opponent.ability.abilitySelectedMoveModifierEffect = undefined;
+        self.ability.abilitySelectedMoveModifierEffect = undefined;
       }
     },
   },

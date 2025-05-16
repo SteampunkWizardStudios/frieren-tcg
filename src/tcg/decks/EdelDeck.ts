@@ -9,6 +9,7 @@ const redrawRandom = (opponent: Character) => {
   const randomIndex = Math.floor(Math.random() * opponent.hand.length);
   opponent.discardCard(randomIndex);
   opponent.drawCard();
+  opponent.additionalMetadata.forcedDiscards++;
 };
 
 const getHighestEmpower = (self: Character) => {
@@ -232,11 +233,29 @@ const kneel = new Card({
   title: "*Kneel!*",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
-  description: ([dmg]) =>
-    `DMG ${dmg} + 3 per each card discarded this match by your opponent. Ignores defense. At the end of the turn, if your opponent has discarded more than 10 cards this match, and they have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
-  effects: [10],
+  description: ([dmg, discardFactor]) =>
+    `DMG ${dmg} + ${discardFactor} per each card you've forced your opponent to discard this match. Ignores defense. At the end of the turn, if your opponent has forcibly discarded over 10 cards, and have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
+  effects: [10, 3],
   hpCost: 10,
-  cardAction: () => {},
+  cardAction: ({ name, sendToGameroom, opponent, opponentIndex, calcEffect, flatAttack, game }) => {
+    sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Kneel!*`);
+
+    const discards = opponent.additionalMetadata.forcedDiscards ?? 0;
+
+    const dmg = calcEffect(0) + calcEffect(1) * discards;
+    flatAttack(dmg, 10);
+
+    const winCon = ["Sleepy", "Mesmerized", "Weakened"].every(
+      (status) => opponent.hand.some((card) => card.title === status)
+    ) && discards > 10;
+    if (winCon) {
+      sendToGameroom(
+        `${opponent.name}'s mind has been invaded by ${name}!`
+      );
+      game.additionalMetadata.forfeited[opponentIndex] = true;
+    }
+
+  }
 });
 
 const edelDeck = [
