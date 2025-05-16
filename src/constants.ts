@@ -2,7 +2,8 @@ import { CHARACTER_LIST } from "@tcg/characters/characterList";
 import type { Rank } from "./commands/tcgChallenge/gameHandler/rankScoresToRankTitleMapping";
 
 export const FRIEREN_DISCORD_SERVER_AUBERST_CHANNEL_ID = "738445835234181211";
-export const FRIEREN_DISCORD_SERVER = "738445835234181211";
+export const FRIEREN_DISCORD_SERVER =
+  process.env["MAIN_GUILD_ID"] || "738445835234181211";
 
 export const MAX_TEXT_SPEED = 3000;
 export const DEFAULT_TEXT_SPEED = 1500;
