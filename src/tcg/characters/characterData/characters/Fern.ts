@@ -29,10 +29,18 @@ const Fern = new CharacterData({
   cards: fernDeck,
   ability: {
     abilityName: "Prodigy",
-    abilityEffectString: `One random card in your hand gets empowered every turn.
-
-    **Sub-Ability: Mana Suppression** - Hide the amount of HP this character has.
-    **Sub-Ability: Keen Eye** - See past the opponent's Mana Suppression.`,
+    abilityEffectString:
+      "One random card in your hand gets empowered every turn.",
+    subAbilities: [
+      {
+        name: "Mana Suppression",
+        description: "Hide the amount of HP this character has.",
+      },
+      {
+        name: "Keen Eye",
+        description: "See past the opponent's Mana Suppression.",
+      },
+    ],
     abilityStartOfTurnEffect(
       game,
       characterIndex,

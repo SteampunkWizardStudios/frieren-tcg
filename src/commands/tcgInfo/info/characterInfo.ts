@@ -14,6 +14,7 @@ import Card from "@tcg/card";
 import { handleCharacterSelection } from "@src/tcgChatInteractions/handleCharacterSelection";
 import { getPlayer } from "@src/util/db/getPlayer";
 import { getPlayerPreferences } from "@src/util/db/preferences";
+import { formatAbility } from "@src/tcg/ability";
 
 export async function showCharacterInfo(
   interaction: ChatInputCommandInteraction
@@ -81,7 +82,7 @@ export async function showCharacterInfo(
               },
               {
                 name: `Ability: ${char.ability.abilityName}`,
-                value: `${char.ability.abilityEffectString}`,
+                value: formatAbility(char.ability),
               },
               {
                 name: `Deck: ${deckSize} Cards`,
