@@ -71,5 +71,5 @@ export type Ability = {
 };
 
 export function formatAbility(ability: Ability) {
-  return `${ability.abilityEffectString}\n\n${ability.subAbilities?.map((sub) => `**Sub-Ability -  ${sub.name}** - ${sub.description}`).join("\n")}`;
+  return `${ability.abilityEffectString}\n\n${ability.subAbilities?.map((sub) => `**Sub-Ability -  ${sub.name}** - ${sub.description}`).join("\n") ?? ""}`;
 }

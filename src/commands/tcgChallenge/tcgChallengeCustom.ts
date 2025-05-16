@@ -65,7 +65,8 @@ export const command: Command<ChatInputCommandInteraction> = {
       const revealDraw =
         interaction.options.getBoolean("reveal-active-card") ?? false;
       const textSpeedMs = interaction.options.getInteger("text_speed_ms");
-      const goddessMode = interaction.options.getBoolean("goddess-mode") ?? false;
+      const goddessMode =
+        interaction.options.getBoolean("goddess-mode") ?? false;
 
       initiateChallengeRequest({
         interaction,

@@ -49,7 +49,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       const gamemode =
         (interaction.options.getString("gamemode") as GameMode) ??
         GameMode.CLASSIC;
-      const gameSettings = GAME_SETTINGS[gamemode];
+      const gameSettings = { ...GAME_SETTINGS[gamemode] };
       const textSpeedMs = interaction.options.getInteger("text_speed_ms");
 
       initiateChallengeRequest({
