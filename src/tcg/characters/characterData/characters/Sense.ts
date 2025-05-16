@@ -51,10 +51,10 @@ const Sense = new CharacterData({
     ) {
       const character = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
-      if ("TeaTime" in card.tags) {
+      if (card.cardMetadata.teaTime) {
         character.additionalMetadata.senseTeaTimeStacks ??= 0;
 
-        character.additionalMetadata.senseTeaTimeStacks += card.tags["TeaTime"];
+        character.additionalMetadata.senseTeaTimeStacks += card.cardMetadata.teaTime;
         if (
           character.additionalMetadata.senseTeaTimeStacks >=
           TEA_TIME_STACK_TURN_SKIP

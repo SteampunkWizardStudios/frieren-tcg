@@ -80,7 +80,7 @@ export const a_fernBarrage = new Card({
         name: "Barrage",
         description: `HP-4. Deal ${damage} DMG.`,
         turnDuration: newBarrageCount,
-        tags: { Barrage: 1 },
+        metadata: { barrage: 1 },
         endOfTurnAction: function (
           this: TimedEffect,
           game,

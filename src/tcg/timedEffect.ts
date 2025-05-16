@@ -34,7 +34,11 @@ type TimedEffectMetadata = {
   removableBySorganeil?: boolean;
   waldgoseDamage?: number;
   barrage?: number;
-  partyMember?: "Frieren" | "Eisen" | "Heiter";
+
+  frieren?: boolean;
+  eisen?: boolean;
+  heiter?: boolean;
+
   ubelSpeedModifiers?: number;
 };
 

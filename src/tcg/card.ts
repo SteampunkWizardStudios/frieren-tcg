@@ -19,10 +19,14 @@ type CardMetadata = {
   nature: Nature;
   seriePool?: "Common" | "Rare" | "Ultra-rare";
   signature?: boolean;
-  analysis?: boolean;
-  postAnalysis?: boolean;
+  analysis?: number;
+  postAnalysis?: number;
   waldgoseDamage?: number;
-  himmelPartyMember?: "Heiter" | "Eisen" | "Frieren";
+  
+  heiter?: boolean;
+  eisen?: boolean;
+  frieren?: boolean;
+
   teaTime?: number;
   resolve?: number;
   signatureMoveOf?: CharacterName;
