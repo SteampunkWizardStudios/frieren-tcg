@@ -94,6 +94,10 @@ export async function updateMemberRoles(
       throw new Error("Missing MANAGE_ROLES permission");
     }
 
+    if (!member.manageable) {
+      throw new Error("User is not manageable");
+    }
+
     await member.roles.set(newRoles, "Rank Sync");
   } catch (error) {
     console.error(`Failed to update roles for user ${user.id}:`, error);
@@ -130,6 +134,18 @@ export async function removeAllRankRoles(client: Client) {
       const rolesWithoutRankRoles = currentRoles.filter(
         (role) => !rankRoleIdSet.has(role.id)
       );
+
+      if (
+        !member.guild.members.me?.permissions.has(
+          PermissionFlagsBits.ManageRoles
+        )
+      ) {
+        throw new Error("Missing MANAGE_ROLES permission");
+      }
+
+      if (!member.manageable) {
+        throw new Error("User is not manageable");
+      }
 
       await member.roles.set(rolesWithoutRankRoles, "Ladder reset");
     } catch (error) {
