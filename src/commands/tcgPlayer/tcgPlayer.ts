@@ -43,6 +43,13 @@ export const command: Command<ChatInputCommandInteraction> = {
               "The player to get the match history of, defaults to yourself"
             )
         )
+        .addIntegerOption((option) =>
+          option
+            .setName("page")
+            .setDescription("The page to get the match history for")
+            .setRequired(false)
+            .setMinValue(1)
+        )
     )
 
     .addSubcommand((subcommand) =>
@@ -85,9 +92,8 @@ export const command: Command<ChatInputCommandInteraction> = {
       }
     } catch (error) {
       console.log(error);
-      await interaction.reply({
+      await interaction.editReply({
         content: "Interaction failed.",
-        flags: MessageFlags.Ephemeral,
       });
     }
   },

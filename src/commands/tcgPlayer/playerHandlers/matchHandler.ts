@@ -6,6 +6,7 @@ export default async function handleMatchHistory(
   interaction: ChatInputCommandInteraction
 ) {
   const player = interaction.options.getUser("player") ?? interaction.user;
+  const page = interaction.options.getInteger("page") ?? 1;
 
   const matches = await getMatchHistory(player.id);
 
@@ -19,7 +20,8 @@ export default async function handleMatchHistory(
   const paginated = formatMatchHistoryPages(
     matches,
     player,
-    `${player.displayName}'s Match History`
+    `${player.displayName}'s Match History`,
+    { startingPage: page }
   );
 
   await paginated.run(interaction);

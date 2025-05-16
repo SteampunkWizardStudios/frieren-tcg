@@ -50,7 +50,7 @@ export async function handleHeadToHead(
     headToHeadMatches,
     player1,
     `${player1.displayName}'s Head-to-Head vs ${player2.displayName}`,
-    overallRecordSummary
+    { prependDescription: overallRecordSummary }
   );
 
   await paginated.run(interaction);

@@ -6,6 +6,7 @@ import {
 } from "discord.js";
 import {
   LazyPaginatedMessage,
+  PaginatedMessage,
   type PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
 import { charWithEmoji } from "@tcg/formatting/emojis";
@@ -15,6 +16,11 @@ import type { Match } from "@prisma/client";
 import { chunkify } from "@src/util/utils";
 
 const PAGE_SIZE = 10;
+
+type FormatMatchHistoryPageExtras = {
+  startingPage?: number;
+  prependDescription?: string;
+};
 
 /**
  * Formats a list of matches into paginated embeds for a Discord message.
@@ -29,8 +35,9 @@ export function formatMatchHistoryPages(
   matches: Match[],
   player: User,
   embedTitle: string,
-  prependDescription: string = ""
+  extras?: FormatMatchHistoryPageExtras
 ) {
+  const { startingPage = 1, prependDescription = "" } = extras ?? {};
   const chunks = chunkify(matches, PAGE_SIZE);
 
   const pages = chunks.map((chunk, pageIndex) => {
@@ -91,6 +98,14 @@ export function formatMatchHistoryPages(
       action.style = ButtonStyle.Secondary;
     }
   });
+
+  const actions = [...PaginatedMessage.defaultActions].filter(
+    (item) => item.type !== ComponentType.StringSelect
+  );
+
+  const pageIndex = Math.min(startingPage - 1, pages.length - 1);
+  paginated.setActions(actions);
+  paginated.index = pageIndex;
 
   return paginated;
 }
