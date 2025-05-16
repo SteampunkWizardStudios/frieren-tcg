@@ -48,11 +48,11 @@ export const command: Command<ChatInputCommandInteraction> = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("head-to-head")
-        .setDescription("Get a player's head to head record")
+        .setDescription("Get the head to head record against another player")
         .addUserOption((option) =>
           option
             .setName("player")
-            .setDescription("The player to get the head to head record of")
+            .setDescription("The player to get the head to head record for")
             .setRequired(true)
         )
     ),

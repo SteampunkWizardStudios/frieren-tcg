@@ -1,138 +1,57 @@
-import prismaClient from "@prismaClient";
-import {
-  LazyPaginatedMessage,
-  type PaginatedMessageMessageOptionsUnion,
-} from "@sapphire/discord.js-utilities";
-import type { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
-import { charWithEmoji } from "@src/tcg/formatting/emojis";
-import { buildThreadLink } from "@src/util/formatting/links";
-import {
-  ButtonStyle,
-  ComponentType,
-  EmbedBuilder,
-  type ChatInputCommandInteraction,
-} from "discord.js";
-
-const PAGE_SIZE = 10;
+import { ChatInputCommandInteraction } from "discord.js";
+import { formatMatchHistoryPages } from "./formatMatchHistoryPages";
+import { getWinrate } from "@src/util/utils";
+import { getMatchHistoryAgainstPlayer } from "@src/util/db/getMatchHistory";
 
 export async function handleHeadToHead(
   interaction: ChatInputCommandInteraction
 ) {
-  const player = interaction.options.getUser("player", true);
-  const matchesAgainstPlayer = await prismaClient.match.findMany({
-    where: {
-      ladderReset: {
-        endDate: null,
-      },
-      OR: [
-        {
-          winner: {
-            discordId: player.id,
-          },
-        },
-        {
-          loser: {
-            discordId: player.id,
-          },
-        },
-      ],
-    },
-    include: {
-      winnerCharacter: {
-        select: {
-          name: true,
-        },
-      },
-      loserCharacter: {
-        select: {
-          name: true,
-        },
-      },
-      winner: {
-        select: {
-          discordId: true,
-        },
-      },
-      loser: {
-        select: {
-          discordId: true,
-        },
-      },
-    },
-    orderBy: {
-      finishedAt: "desc",
-    },
-  });
+  const player1 = interaction.user;
+  const player2 = interaction.options.getUser("player", true);
 
-  if (matchesAgainstPlayer.length === 0) {
+  const headToHeadMatches = await getMatchHistoryAgainstPlayer(
+    player1.id,
+    player2.id
+  );
+
+  if (headToHeadMatches.length === 0) {
     await interaction.editReply({
-      content: `${player} has no head to head records against other players in the current ladder.`,
+      content: `There are no head-to-head records between ${player1} and ${player2} in the current ladder.`,
     });
     return;
   }
 
-  const totalMatches = matchesAgainstPlayer.length;
-  const wins = matchesAgainstPlayer.filter(
-    (match) => match.winner.discordId === interaction.user.id
+  const mirrorMatches = headToHeadMatches.filter(
+    (match) => match.winnerCharacter.name === match.loserCharacter.name
+  );
+  const player1Wins = headToHeadMatches.filter(
+    (match) => match.winner.discordId === player1.id
   ).length;
-  const losses = totalMatches - wins;
-  const winRate = totalMatches === 0 ? 0 : (wins / totalMatches) * 100;
+  const player1Losses = headToHeadMatches.length - player1Wins;
+  const overallWinrate = getWinrate(player1Wins, player1Losses);
 
-  const chunks: (typeof matchesAgainstPlayer)[] = [];
-  for (let i = 0; i < matchesAgainstPlayer.length; i += PAGE_SIZE) {
-    chunks.push(matchesAgainstPlayer.slice(i, i + PAGE_SIZE));
-  }
+  const player1MirrorWins = mirrorMatches.filter(
+    (match) => match.winner.discordId === player1.id
+  ).length;
+  const player1MirrorLosses = mirrorMatches.length - player1MirrorWins;
+  const mirrorWinrate = getWinrate(player1MirrorWins, player1MirrorLosses);
 
-  const pages = chunks.map((chunk, pageIndex) => {
-    const description = chunk
-      .map((match, matchIndex) => {
-        const globalMatchNumber =
-          matchesAgainstPlayer.length - (pageIndex * PAGE_SIZE + matchIndex);
+  const overallRecordSummary = [
+    `**Overall Head-to-Head Record:**`,
+    `- Total Matches: ${overallWinrate.total}`,
+    `- Record: ${player1Wins} wins - ${player1Losses} losses (${overallWinrate.winrate}% win rate)`,
+    `**Mirror Matches:**`,
+    `- Total Mirror Matches: ${mirrorMatches.length}`,
+    `- Record: ${player1MirrorWins} wins - ${player1MirrorLosses} losses (${mirrorWinrate.winrate}% win rate)`,
+    `\n`,
+  ].join("\n");
 
-        const { winnerCharacter, loserCharacter, finishedAt, winner, loser } =
-          match;
-        const won = winner.discordId === interaction.user.id;
-        const result = won ? "🏆 **Won**" : "💥 **Lost**";
-        const character = charWithEmoji(
-          (won ? winnerCharacter.name : loserCharacter.name) as CharacterName
-        );
-        const opponent = `<@${won ? loser.discordId : winner.discordId}>`;
-        const opponentCharacter = charWithEmoji(
-          (won ? loserCharacter.name : winnerCharacter.name) as CharacterName
-        );
-        const timestamp = `<t:${Math.floor(
-          new Date(finishedAt).getTime() / 1000
-        )}:R>`;
-        const resultText = match.threadId
-          ? `[${result}](${buildThreadLink(match.threadId)})`
-          : `${result}`;
-
-        return `${globalMatchNumber}\\. ${resultText} with ${character} ${timestamp}\n against ${opponent} as ${opponentCharacter}`;
-      })
-      .join("\n\n");
-
-    const embed = new EmbedBuilder()
-      .setTitle(`Head to Head Record against ${player.displayName}`)
-      .setDescription(
-        `**Overall Record:** ${wins} wins - ${losses} losses (${winRate.toFixed(
-          2
-        )}% win rate)\n\n${description}`
-      )
-      .setColor("Blurple");
-
-    const page: PaginatedMessageMessageOptionsUnion = {
-      embeds: [embed],
-    };
-
-    return page;
-  });
-
-  const paginated = new LazyPaginatedMessage({ pages });
-  paginated.actions.forEach((action) => {
-    if (action.type === ComponentType.Button) {
-      action.style = ButtonStyle.Secondary;
-    }
-  });
+  const paginated = formatMatchHistoryPages(
+    headToHeadMatches,
+    player1,
+    `${player1.displayName}'s Head-to-Head vs ${player2.displayName}`,
+    overallRecordSummary
+  );
 
   await paginated.run(interaction);
 }
