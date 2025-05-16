@@ -46,10 +46,6 @@ export type CardProps = {
   empowerLevel?: number;
   priority?: number;
   imitated?: boolean;
-  /**
-   * @deprecated Use {@link Card.cardMetadata} instead
-   */
-  tags?: Record<string, number>;
   printEmpower?: boolean;
   hpCost?: number;
   empathized?: boolean;
@@ -69,7 +65,6 @@ export default class Card implements CardProps {
   empowerLevel: number;
   priority: number;
   imitated: boolean;
-  tags: Record<string, number>;
   cardMetadata: CardMetadata;
   printEmpower: boolean;
   hpCost: number;
@@ -84,7 +79,6 @@ export default class Card implements CardProps {
     this.empowerLevel = cardProps.empowerLevel ?? 0;
     this.priority = cardProps.priority ?? 0;
     this.imitated = cardProps.imitated ?? false;
-    this.tags = cardProps.tags ?? {};
     this.cardMetadata = cardProps.cardMetadata;
     this.emoji = cardProps.emoji ?? CardEmoji.GENERIC;
     this.cosmetic = cardProps.cosmetic;

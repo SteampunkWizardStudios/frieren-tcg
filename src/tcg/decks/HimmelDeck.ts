@@ -45,7 +45,7 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Frieren",
+      "frieren",
       new TimedEffect({
         name: `${isHimmel ? "Frieren" : "Mage"}: Weakpoint Analysis`,
         description: `Deal ${damage} at each turn's end.`,
@@ -108,7 +108,7 @@ const a_FrierenBackMeUp = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Frieren",
+      "frieren",
       new TimedEffect({
         name: `${isHimmel ? "Frieren: " : "Mage: "}Backing Fire`,
         description: `Deal ${damage} at each turn's end.`,
@@ -170,7 +170,7 @@ export const a_FrierenNow = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Frieren",
+      "frieren",
       new TimedEffect({
         name: `${isHimmel ? "Frieren: " : "Mage: "}Strike`,
         description: `Deal ${damage}.`,
@@ -232,7 +232,7 @@ const a_EisenTheEnemysOpen = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Eisen",
+      "eisen",
       new TimedEffect({
         name: `${isHimmel ? "Eisen: " : "Warrior: "}Winding Up`,
         description: `DEF+${def}. Deal ${damage} at end of timed effect.`,
@@ -327,7 +327,7 @@ const a_EisenCoverMyBack = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Eisen",
+      "eisen",
       new TimedEffect({
         name: `${isHimmel ? "Eisen: " : "Warrior: "}On the Lookout`,
         description: `DEF+${def}. When an opponent attacks, counter for ${counterDmg} DMG`,
@@ -388,7 +388,7 @@ const eisenHoldTheLine = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Eisen",
+      "eisen",
       new TimedEffect({
         name: `${isHimmel ? "Eisen: " : "Warrior: "}Hold the Line`,
         description: `DEF+${def}.`,
@@ -432,7 +432,7 @@ const heiterEmergency = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Heiter",
+      "heiter",
       new TimedEffect({
         name: `${isHimmel ? "Heiter" : "Priest"}: First-Aid`,
         description: `Heal ${heal} at end of timed effect.`,
@@ -480,7 +480,7 @@ const a_heiterThreeSpears = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Heiter",
+      "heiter",
       new TimedEffect({
         name: `${isHimmel ? "Heiter" : "Priest"}: Three Spears of the Goddess`,
         description: `Deal ${damage} at each turn's end.`,
@@ -534,7 +534,7 @@ const heiterTrustYou = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Heiter",
+      "heiter",
       new TimedEffect({
         name: `${isHimmel ? "Heiter" : "Priest"}: Awakening`,
         description: `ATK+${atkSpd}. SPD+${atkSpd}.`,

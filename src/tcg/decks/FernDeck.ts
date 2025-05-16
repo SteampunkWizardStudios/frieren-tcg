@@ -75,7 +75,7 @@ export const a_fernBarrage = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Barrage",
+      "barrage",
       new TimedEffect({
         name: "Barrage",
         description: `HP-4. Deal ${damage} DMG.`,
