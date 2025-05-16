@@ -49,7 +49,6 @@ export type CardProps = {
    * @deprecated Use {@link Card.cardMetadata} instead
    */
   tags?: Record<string, number>;
-  printEmpower?: boolean;
   hpCost?: number;
   empathized?: boolean;
 };
@@ -70,7 +69,6 @@ export default class Card implements CardProps {
   imitated: boolean;
   tags: Record<string, number>;
   cardMetadata: CardMetadata;
-  printEmpower: boolean;
   hpCost: number;
   empathized: boolean;
 
@@ -87,7 +85,6 @@ export default class Card implements CardProps {
     this.cardMetadata = cardProps.cardMetadata;
     this.emoji = cardProps.emoji ?? CardEmoji.GENERIC;
     this.cosmetic = cardProps.cosmetic;
-    this.printEmpower = cardProps.printEmpower ?? true;
     this.hpCost = cardProps.hpCost ?? 0;
     this.empathized = cardProps.empathized ?? false;
   }
@@ -115,7 +112,7 @@ export default class Card implements CardProps {
       `${this.imitated ? "(Imitated) " : ""}` +
       `${this.empathized ? "(Learned) " : ""}` +
       `${this.title}` +
-      `${this.printEmpower ? ` + ${this.empowerLevel}` : ""}`
+      `${this.cardMetadata.hideEmpower === false ? ` + ${this.empowerLevel}` : ""}`
     );
   }
 

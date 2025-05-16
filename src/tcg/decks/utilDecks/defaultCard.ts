@@ -5,12 +5,11 @@ import { StatsEnum } from "@tcg/stats";
 export default class DefaultCards {
   static readonly discardCard: Card = new Card({
     title: "Discard",
-    cardMetadata: { nature: Nature.Default },
+    cardMetadata: { nature: Nature.Default, hideEmpower: true },
     description: () =>
       "ATK+1. DEF+1. SPD+1. Discards all of your current active cards. Draw the same number of cards you discarded. Empower all cards in your hand afterwards.",
     effects: [],
     emoji: CardEmoji.RECYCLE,
-    printEmpower: false,
     cardAction: ({ self, selfIndex, name, sendToGameroom, game }) => {
       self.adjustStat(1, StatsEnum.ATK);
       self.adjustStat(1, StatsEnum.DEF);
@@ -34,11 +33,10 @@ export default class DefaultCards {
 
   static readonly waitCard: Card = new Card({
     title: "Wait",
-    cardMetadata: { nature: Nature.Default },
+    cardMetadata: { nature: Nature.Default, hideEmpower: true },
     description: () =>
       "Heals 10 HP. Empower all cards in your hand afterwards.",
     effects: [],
-    printEmpower: false,
     emoji: CardEmoji.WAIT,
     cardAction: ({ name, self, sendToGameroom }) => {
       self.empowerHand();
@@ -53,9 +51,8 @@ export default class DefaultCards {
     title: "Do Nothing.",
     description: () =>
       "Does nothing. Empower all cards in your hand afterwards.",
-    cardMetadata: { nature: Nature.Default },
+    cardMetadata: { nature: Nature.Default, hideEmpower: true },
     effects: [],
-    printEmpower: false,
     emoji: CardEmoji.WAIT,
     cardAction: ({ self, name, sendToGameroom }) => {
       self.empowerHand();
@@ -67,10 +64,13 @@ export default class DefaultCards {
 
   static readonly forfeitCard: Card = new Card({
     title: "Forfeit",
-    cardMetadata: { nature: Nature.Default, hidePriority: true },
+    cardMetadata: {
+      nature: Nature.Default,
+      hidePriority: true,
+      hideEmpower: true,
+    },
     description: () => "Forfeits the game.",
     effects: [],
-    printEmpower: false,
     emoji: CardEmoji.RANDOM,
     priority: 99,
     cardAction: ({ game, selfIndex: characterIndex, name, sendToGameroom }) => {
