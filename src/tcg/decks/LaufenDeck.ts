@@ -147,25 +147,22 @@ const quickDodge = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, selfStat, calcEffect }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(`${character.name} dodged away!`, TCGThread.Gameroom);
+    sendToGameroom(`${name} dodged away!`);
+    selfStat(0, StatsEnum.SPD);
+    selfStat(1, StatsEnum.SPD);
+    const tempSpd = calcEffect(1);
 
-    const spdIncrease = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(spdIncrease, StatsEnum.SPD);
-    const spdIncreaseTemp = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(spdIncreaseTemp, StatsEnum.SPD);
-
-    character.timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Quick Dodge",
-        description: `Increases SPD by ${spdIncreaseTemp} until the end of the turn.`,
+        description: `Increases SPD by ${tempSpd} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-1 * spdIncreaseTemp, StatsEnum.SPD);
+          self.adjustStat(-1 * tempSpd, StatsEnum.SPD);
         },
       })
     );
@@ -186,26 +183,21 @@ export const parry = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, calcEffect, selfStat }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} switched to a parrying stance!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} switched to a parrying stance!`);
+    selfStat(0, StatsEnum.DEF);
+    const tempDef = calcEffect(1);
 
-    const defIncrease = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(defIncrease, StatsEnum.DEF);
-
-    character.timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Parry",
-        description: `Increases DEF by ${defIncrease} until the end of the turn.`,
+        description: `Increases DEF by ${tempDef} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-1 * defIncrease, StatsEnum.DEF);
+          self.adjustStat(-1 * tempDef, StatsEnum.DEF);
         },
       })
     );
@@ -225,34 +217,32 @@ export const jilwer = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, calcEffect, selfStat, reflexive, possessive }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(`${character.name} used Jilwer!`, TCGThread.Gameroom);
-
     const turnCount = 2;
-    const spdIncrease = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(spdIncrease, StatsEnum.SPD);
+    sendToGameroom(`${name} cast Jilwer!`);
+    selfStat(0, StatsEnum.SPD);
+    const tempSpd = calcEffect(1);
 
-    character.timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Jilwer",
-        description: `Increases SPD by ${spdIncrease} for ${turnCount} turns.`,
+        description: `Increases SPD by ${tempSpd} for ${turnCount} turns.`,
         turnDuration: turnCount,
         executeEndOfTimedEffectActionOnRemoval: true,
-        endOfTurnAction: (_game, _characterIndex, _messageCache) => {
+        endOfTurnAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
-            `${character.name} tires ${character.cosmetic.pronouns.reflexive} out.`,
+            `${name} tires ${reflexive} out.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(-10, StatsEnum.HP);
+          self.adjustStat(-10, StatsEnum.HP);
         },
-        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(
-            `${character.name} exits ${character.cosmetic.pronouns.possessive} Jilwer state.`,
+            `${name} exits ${possessive} Jilwer state.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
+          self.adjustStat(-1 * tempSpd, StatsEnum.SPD);
         },
       })
     );
