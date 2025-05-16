@@ -65,7 +65,7 @@ export default function logInteraction(interaction: Interaction) {
               if (valueString.length > 100) {
                 valueString = valueString.substring(0, 100) + "...";
               }
-            } catch (e) {
+            } catch {
               valueString = "Error Logging Value";
             }
           }
