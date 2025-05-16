@@ -1,6 +1,13 @@
 import { RANK_SCORE_TO_RANK_MAPPING } from "@src/constants";
 import { getDiscordServer, getMemberFromDiscordId } from "@src/util/discord";
-import type { Client, Collection, GuildMember, Role, User } from "discord.js";
+import {
+  PermissionFlagsBits,
+  type Client,
+  type Collection,
+  type GuildMember,
+  type Role,
+  type User,
+} from "discord.js";
 import { GameMode } from "./gameSettings";
 import { getTopNPlayersInGamemode } from "@src/commands/tcgStats/statsHandlers/globalStats";
 
@@ -75,7 +82,19 @@ export async function updateMemberRoles(
     }
 
     const newRoles = await getNewRolesForRank(member, newRank);
-    await member.roles.set(newRoles, "Rank sync");
+    const discordServer = await getDiscordServer(client);
+    if (!discordServer) {
+      throw new Error("Frieren discord server not found");
+    }
+    if (
+      !discordServer.members.me?.permissions.has(
+        PermissionFlagsBits.ManageRoles
+      )
+    ) {
+      throw new Error("Missing MANAGE_ROLES permission");
+    }
+
+    await member.roles.set(newRoles, "Rank Sync");
   } catch (error) {
     console.error(`Failed to update roles for user ${user.id}:`, error);
   }
