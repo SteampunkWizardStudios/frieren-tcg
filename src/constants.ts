@@ -3,7 +3,7 @@ import type { Rank } from "./commands/tcgChallenge/gameHandler/rankScoresToRankT
 
 export const FRIEREN_DISCORD_SERVER_AUBERST_CHANNEL_ID = "738445835234181211";
 export const FRIEREN_DISCORD_SERVER =
-  process.env["MAIN_GUILD_ID"] || "738445835234181211";
+  process.env["MAIN_GUILD_ID"] ?? "738445835234181211";
 
 export const MAX_TEXT_SPEED = 3000;
 export const DEFAULT_TEXT_SPEED = 1500;
