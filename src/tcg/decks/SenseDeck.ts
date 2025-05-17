@@ -8,9 +8,9 @@ export const a_hairWhip = new Card({
   title: "Hair Whip",
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
-    `DEF+${def}. Afterwards, HP-4, DMG ${dmg}+DEF/4.`, // No easy way to convey this message while keeping hpCost dynamic
+    `DEF+${def}. Afterwards, DMG ${dmg}+DEF/4.`,
   effects: [3, 7],
-  hpCost: 2,
+  hpCost: 4,
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
