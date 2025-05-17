@@ -4,7 +4,9 @@ import {
   TextDisplayBuilder,
   SeparatorBuilder,
 } from "discord.js";
-import { CHARACTER_MAP } from "@tcg/characters/characterList";
+import {
+  CHARACTER_MAP,
+} from "@tcg/characters/characterList";
 import prismaClient from "@prismaClient";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { charWithEmoji } from "@src/tcg/formatting/emojis";
@@ -32,7 +34,11 @@ export default async function handleUsageStats(
     },
   });
 
-  const usageMap = Object.entries(CHARACTER_MAP).reduce(
+  const visibleMap = Object.entries(CHARACTER_MAP).filter(
+    ([, character]) => character.additionalMetadata.hidden !== true
+  );
+
+  const usageMap = visibleMap.reduce(
     (map, [, character]) => {
       map[character.name] = {
         wins: 0,
