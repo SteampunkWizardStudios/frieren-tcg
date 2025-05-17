@@ -30,8 +30,8 @@ export const createCharacterDropdown = async (
 
   const sortedCharacters = await getSortedCharactersForPlayer(player.id);
 
-  // 5% chance to include Edel
-  if (Math.random() < 0.05) {
+  // 8% chance to include Edel
+  if (Math.random() < 0.08) {
     sortedCharacters.nonFavouritedCharacter.push(Edel);
     console.log(`${user.username} discovered Edel`);
   }
