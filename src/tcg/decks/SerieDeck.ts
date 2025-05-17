@@ -19,7 +19,7 @@ const useRandomCard = function (props: {
   context: GameMessageContext;
 }): Card {
   const { cardPool, empowerLevel, context } = props;
-  const { name, sendToGameroom } = context;
+  const { name, sendToGameroom, flatSelfStat } = context;
 
   sendToGameroom(`${name} found an interesting magic.`);
 
@@ -30,6 +30,8 @@ const useRandomCard = function (props: {
   });
 
   sendToGameroom(`${name} used **${newCard.getTitle()}**.`);
+  flatSelfStat(-newCard.hpCost, StatsEnum.HP);
+
   return newCard;
 };
 
