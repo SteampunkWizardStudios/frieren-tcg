@@ -76,7 +76,6 @@ export const a_trustInYourAllyFernsBarrage = new Card({
       );
     }
 
-    if (character.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
       const damage = Number(
         (
           this.calculateEffectValue(this.effects[0]) +
@@ -101,7 +100,6 @@ export const a_trustInYourAllyFernsBarrage = new Card({
           },
         })
       );
-    }
   },
 });
 
