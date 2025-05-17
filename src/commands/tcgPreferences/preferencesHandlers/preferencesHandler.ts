@@ -64,7 +64,7 @@ export async function handlePlayerPreferences(
 
       case "favourite-character": {
         const preferences = await getPlayerPreferences(playerId);
-        const options: SelectMenuComponentOptionData[] = CHARACTER_LIST.map(
+        const options: SelectMenuComponentOptionData[] = CHARACTER_LIST.filter((char) => char.name !== "Edel").map(
           (char) => {
             return {
               label: char.name,
