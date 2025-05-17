@@ -28,6 +28,18 @@ export const createCharacterDropdown = async (
 
   const sortedCharacters = await getSortedCharactersForPlayer(player.id);
 
+  // 2.5% to include Edel
+  if (!(Math.random() < 0.025)) {
+	sortedCharacters.favouritedCharacter = sortedCharacters.favouritedCharacter.filter(
+	  (char: CharacterData) => char.name !== "Edel"
+	);
+	sortedCharacters.nonFavouritedCharacter = sortedCharacters.nonFavouritedCharacter.filter(
+	  (char: CharacterData) => char.name !== "Edel"
+	);
+  } else {
+	console.log(`${user.username} discovered Edel`);
+  }
+
   // Create the initial embed showing all characters
   const embed = new EmbedBuilder()
     .setColor(0xc5c3cc)
