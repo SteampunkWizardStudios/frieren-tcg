@@ -4,9 +4,7 @@ import {
   TextDisplayBuilder,
   SeparatorBuilder,
 } from "discord.js";
-import {
-  CHARACTER_MAP,
-} from "@tcg/characters/characterList";
+import { CHARACTER_MAP } from "@tcg/characters/characterList";
 import prismaClient from "@prismaClient";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { charWithEmoji } from "@src/tcg/formatting/emojis";
@@ -50,8 +48,12 @@ export default async function handleUsageStats(
   );
 
   data.forEach((match) => {
-    usageMap[match.winnerCharacter.name].wins++;
-    usageMap[match.loserCharacter.name].losses++;
+    if (usageMap[match.winnerCharacter.name]) {
+      usageMap[match.winnerCharacter.name].wins++;
+    }
+    if (usageMap[match.loserCharacter.name]) {
+      usageMap[match.loserCharacter.name].losses++;
+    }
   });
 
   const component = makeComponent(usageMap);
