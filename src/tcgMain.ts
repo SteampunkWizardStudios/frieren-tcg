@@ -26,6 +26,7 @@ import {
 } from "@tcg/gameContextProvider";
 import { CharacterSelectionType } from "./tcgChatInteractions/handleCharacterSelection";
 import goddessDeck from "@decks/utilDecks/goddessDeck";
+import { StatsEnum } from "@tcg/stats";
 
 const TURN_LIMIT = 50;
 
@@ -411,6 +412,12 @@ export const tcgMain = async (
             messageCache,
             characterIndex
           );
+
+          // use hpCost
+          if (card.hpCost) {
+            character.adjustStat(-card.hpCost, StatsEnum.HP);
+          }
+
           if (character.ability.abilityOwnCardEffectWrapper) {
             character.ability.abilityOwnCardEffectWrapper(context, card);
           } else {
