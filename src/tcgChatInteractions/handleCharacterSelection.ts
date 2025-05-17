@@ -1,16 +1,13 @@
 import type { CharacterData } from "@src/tcg/characters/characterData/characterData";
 import { CHARACTER_MAP } from "@src/tcg/characters/characterList";
 import type { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
-import { getPlayer } from "@src/util/db/getPlayer";
-import {
-  getPlayerPreferences,
-  getSortedCharactersForPlayer,
-} from "@src/util/db/preferences";
+import { getPlayerPreferences } from "@src/util/db/preferences";
 import type { StringSelectMenuInteraction } from "discord.js";
 
 export async function handleCharacterSelection(
   interaction: StringSelectMenuInteraction,
-  preferences: Awaited<ReturnType<typeof getPlayerPreferences>> | null // Damn
+  preferences: Awaited<ReturnType<typeof getPlayerPreferences>> | null,
+  characterList: CharacterData[]
 ): Promise<{
   selectedCharacter: CharacterData;
   selectionType: CharacterSelectionType;
@@ -22,12 +19,6 @@ export async function handleCharacterSelection(
 
   let selectionType: CharacterSelectionType;
   let selectedCharacter: CharacterData;
-
-  const player = await getPlayer(interaction.user.id);
-  const characters = await getSortedCharactersForPlayer(player.id);
-  const characterList = characters.favouritedCharacter.concat(
-    characters.nonFavouritedCharacter
-  );
 
   if (selection === "random") {
     selectionType = CharacterSelectionType.Random;
