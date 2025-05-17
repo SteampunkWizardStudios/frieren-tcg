@@ -350,9 +350,27 @@ export const tcgMain = async (
       characterToSelectedMoveMap[1] = opponentSelectedMove;
     }
 
-    // set the selected moves for each character to be used as metadata 
+    // set the selected moves for each character to be used as metadata
     Object.entries(characterToSelectedMoveMap).forEach(([key, value]) => {
       game.characters[Number(key)].additionalMetadata.selectedCard = value;
+    });
+
+    // run effects for unplayed playable cards
+    game.characters.forEach((_, index) => {
+      const unplayedCards = Object.values(
+        characterToPlayableMoveMap[index]
+      ).filter((card) => card !== characterToSelectedMoveMap[index]);
+      unplayedCards.forEach((card) => {
+        if (card.onNotPlayed) {
+          const context = gameAndMessageContext.call(
+            card,
+            game,
+            messageCache,
+            index
+          );
+          card.onNotPlayed(context);
+        }
+      });
     });
 
     // move resolution step
