@@ -19,6 +19,7 @@ export const createCharacterDropdown = async (
   embed: EmbedBuilder;
   selectMenu: StringSelectMenuBuilder;
   dropdown: ActionRowBuilder<StringSelectMenuBuilder>;
+  characterListUsed: CharacterData[];
 }> => {
   let timeLimitString = null;
   if (timeLimitSeconds) {
@@ -30,8 +31,8 @@ export const createCharacterDropdown = async (
   const sortedCharacters = await getSortedCharactersForPlayer(player.id);
 
   // 2.5% to include Edel
-  if (Math.random() < 0.025) {
-    sortedCharacters.nonFavouritedCharacter.push(Edel)
+  if (Math.random() < 1) {
+    sortedCharacters.nonFavouritedCharacter.push(Edel);
     console.log(`${user.username} discovered Edel`);
   }
 
@@ -56,10 +57,11 @@ export const createCharacterDropdown = async (
       ].join("\n"),
     });
 
+  const characterList = sortedCharacters.favouritedCharacter.concat(
+    sortedCharacters.nonFavouritedCharacter
+  );
   const { charSelect, charSelectActionRow } = characterSelect({
-    characterList: sortedCharacters.favouritedCharacter.concat(
-      sortedCharacters.nonFavouritedCharacter
-    ),
+    characterList,
     includeRandom: true,
     customId,
   });
@@ -68,5 +70,6 @@ export const createCharacterDropdown = async (
     embed,
     selectMenu: charSelect,
     dropdown: charSelectActionRow,
+    characterListUsed: characterList,
   };
 };
