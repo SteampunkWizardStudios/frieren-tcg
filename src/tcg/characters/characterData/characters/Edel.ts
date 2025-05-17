@@ -57,14 +57,17 @@ const Edel = new CharacterData({
           _game,
           _characterIndex,
           _messageCache,
-          card,
+          card
         ) => {
           card.priority += 1;
-        }
+        };
       } else {
         self.ability.abilitySelectedMoveModifierEffect = undefined;
       }
     },
+  },
+  additionalMetadata: {
+    hidden: true,
   },
 });
 

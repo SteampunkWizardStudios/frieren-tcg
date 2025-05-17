@@ -1,7 +1,7 @@
 import { PlayerPreferences, Character } from "@prisma/client";
 import prismaClient from "@prismaClient";
 import { CharacterData } from "@src/tcg/characters/characterData/characterData";
-import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import { VISIBLE_CHARACTERS } from "@src/tcg/characters/characterList";
 
 /**
  * Gets a player's preferences, including their favourite characters.
@@ -229,7 +229,7 @@ export async function getSortedCharactersForPlayer(playerId: number): Promise<{
     const favouritedOnly = [];
     const nonFavouritedOnly = [];
 
-    for (const character of CHARACTER_LIST) {
+    for (const character of VISIBLE_CHARACTERS) {
       if (favouritedCharacterNames.has(character.name)) {
         favouritedOnly.push(character);
       } else {
@@ -244,7 +244,7 @@ export async function getSortedCharactersForPlayer(playerId: number): Promise<{
   } else {
     return {
       favouritedCharacter: [],
-      nonFavouritedCharacter: CHARACTER_LIST,
+      nonFavouritedCharacter: VISIBLE_CHARACTERS,
     };
   }
 }

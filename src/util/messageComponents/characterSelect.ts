@@ -1,8 +1,8 @@
 import { StringSelectMenuBuilder, ActionRowBuilder } from "discord.js";
-import { CHARACTER_LIST } from "@tcg/characters/characterList";
+import { VISIBLE_CHARACTERS } from "@tcg/characters/characterList";
 
 export default function characterSelect({
-  characterList = CHARACTER_LIST,
+  characterList = VISIBLE_CHARACTERS,
   includeRandom = false,
   includeOverview = false,
   customId = "character-select",

@@ -16,8 +16,9 @@ export type CharacterAdditionalMetadata = {
   minimumPossibleHp?: number | undefined; // if undefined, there is no minimum hp cap
   pierceFactor?: number;
   overheal?: boolean;
-  selectedCard?: Card
+  selectedCard?: Card;
   forcedDiscards: number;
+  hidden?: boolean;
 
   senseTeaTimeStacks?: number;
   serieToyingNextTurn?: boolean;

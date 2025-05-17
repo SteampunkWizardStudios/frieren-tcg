@@ -31,3 +31,6 @@ export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
 } as const;
 
 export const CHARACTER_LIST: CharacterData[] = Object.values(CHARACTER_MAP);
+export const VISIBLE_CHARACTERS = CHARACTER_LIST.filter(
+  (char) => char.additionalMetadata.hidden !== true
+);
