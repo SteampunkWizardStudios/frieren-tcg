@@ -186,6 +186,7 @@ export const a_FrierenNow = new Card({
     );
 
     CommonCardAction.commonAttack(game, characterIndex, { damage });
+  },
 });
 
 const a_EisenTheEnemysOpen = new Card({
@@ -651,7 +652,6 @@ export const a_extremeSpeed = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
