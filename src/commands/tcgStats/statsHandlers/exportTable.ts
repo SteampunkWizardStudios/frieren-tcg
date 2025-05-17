@@ -16,7 +16,6 @@ export default async function exportTable(
     return;
   }
 
-  // @ts-expect-error Dynamic table name
   const data = await prismaClient[table].findMany();
 
   if (!data || data.length === 0) {
@@ -26,11 +25,21 @@ export default async function exportTable(
     return;
   }
 
+  console.log(`Data for table \`${table}\`:`, data);
+
   try {
+    if (!Array.isArray(data)) {
+      throw new Error(
+        `Unexpected data format for table \`${table}\`. Expected an array.`
+      );
+    }
+
     const csvData = stringify(data, { header: true });
-    const attachment = new AttachmentBuilder(Buffer.from(csvData), {
+	console.log(`CSV data for table \`${table}\`:`, csvData);
+    const attachment = new AttachmentBuilder(Buffer.from(csvData, "utf-8"), {
       name: `${table}.csv`,
     });
+	console.log(`Attachment created for table \`${table}\`:`, attachment);	
 
     await interaction.editReply({
       content: `Data for table \`${table}\`:`,
