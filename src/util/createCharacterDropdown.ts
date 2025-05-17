@@ -9,6 +9,7 @@ import { CharacterData } from "../tcg/characters/characterData/characterData";
 import characterSelect from "./messageComponents/characterSelect";
 import { getSortedCharactersForPlayer } from "./db/preferences";
 import { getPlayer } from "./db/getPlayer";
+import Edel from "@src/tcg/characters/characterData/characters/Edel";
 
 export const createCharacterDropdown = async (
   user: User,
@@ -29,15 +30,9 @@ export const createCharacterDropdown = async (
   const sortedCharacters = await getSortedCharactersForPlayer(player.id);
 
   // 2.5% to include Edel
-  if (!(Math.random() < 0.025)) {
-	sortedCharacters.favouritedCharacter = sortedCharacters.favouritedCharacter.filter(
-	  (char: CharacterData) => char.name !== "Edel"
-	);
-	sortedCharacters.nonFavouritedCharacter = sortedCharacters.nonFavouritedCharacter.filter(
-	  (char: CharacterData) => char.name !== "Edel"
-	);
-  } else {
-	console.log(`${user.username} discovered Edel`);
+  if (Math.random() < 0.025) {
+    sortedCharacters.nonFavouritedCharacter.push(Edel)
+    console.log(`${user.username} discovered Edel`);
   }
 
   // Create the initial embed showing all characters
