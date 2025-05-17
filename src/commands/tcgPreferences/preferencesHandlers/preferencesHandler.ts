@@ -1,4 +1,7 @@
-import { CHARACTER_LIST, CHARACTER_MAP } from "@tcg/characters/characterList";
+import {
+  CHARACTER_MAP,
+  VISIBLE_CHARACTERS,
+} from "@tcg/characters/characterList";
 import type { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import {
   getOrCreatePlayerPreferences,
@@ -64,7 +67,7 @@ export async function handlePlayerPreferences(
 
       case "favourite-character": {
         const preferences = await getPlayerPreferences(playerId);
-        const options: SelectMenuComponentOptionData[] = CHARACTER_LIST.filter((char) => char.name !== "Edel").map(
+        const options: SelectMenuComponentOptionData[] = VISIBLE_CHARACTERS.map(
           (char) => {
             return {
               label: char.name,
@@ -81,7 +84,7 @@ export async function handlePlayerPreferences(
         const favouriteCharactersSelectMenu = new StringSelectMenuBuilder()
           .setCustomId(CUSTOM_ID)
           .setPlaceholder("Select a character")
-          .setMaxValues(CHARACTER_LIST.length)
+          .setMaxValues(VISIBLE_CHARACTERS.length)
           .setOptions(options);
 
         const embed = new EmbedBuilder()
