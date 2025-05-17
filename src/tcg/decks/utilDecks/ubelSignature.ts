@@ -27,7 +27,6 @@ export const a_malevolentShrine = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: this.hpCost,
       additionalPierceFactor:
         character.additionalMetadata.ubelSlashMovesPierceFactor,
     });

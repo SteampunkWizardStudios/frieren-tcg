@@ -1,6 +1,7 @@
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import Card from "@tcg/card";
 import { a_catastraviaBase } from "@decks/DenkenDeck";
+import { telekinesis } from "@decks/EdelDeck"
 import { spellToCreateManaButterflies } from "@decks/FernDeck";
 import { a_theHeightOfMagic } from "@decks/FrierenDeck";
 import { a_realHeroSwing } from "@decks/HimmelDeck";
@@ -15,6 +16,7 @@ import { a_malevolentShrine } from "./ubelSignature";
 
 export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Denken]: a_catastraviaBase,
+  [CharacterName.Edel]: telekinesis,
   [CharacterName.Fern]: spellToCreateManaButterflies,
   [CharacterName.Frieren]: a_theHeightOfMagic,
   [CharacterName.Himmel]: a_realHeroSwing,

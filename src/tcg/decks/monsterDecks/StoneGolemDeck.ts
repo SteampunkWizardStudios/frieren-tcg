@@ -24,7 +24,7 @@ export const a_rockTomb = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
 
     const spdLoss = this.calculateEffectValue(this.effects[1]);
     opponent.adjustStat(-spdLoss, StatsEnum.SPD);
@@ -90,7 +90,7 @@ const a_crusher = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
 
     opponent.adjustStat(
       -1 * this.calculateEffectValue(this.effects[1]),
