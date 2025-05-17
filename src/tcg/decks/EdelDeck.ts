@@ -149,6 +149,7 @@ const mental_fog = new Card({
         },
       })
     );
+	console.log("Mental Fog effect added to opponent's deck");
   },
 });
 
