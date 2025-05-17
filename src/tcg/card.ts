@@ -1,7 +1,7 @@
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import Game from "@tcg/game";
-import { GameContext, GameMessageContext } from "@tcg/gameContextProvider";
+import { GameMessageContext } from "@tcg/gameContextProvider";
 
 export interface CardCosmetic {
   cardImageUrl?: string;
@@ -46,7 +46,7 @@ export type CardProps = {
   cardAction: (context: GameMessageContext) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
-  onNotPlayed?: (context: GameContext) => void;
+  onNotPlayed?: (context: GameMessageContext) => void;
   empowerLevel?: number;
   priority?: number;
     /**
@@ -75,7 +75,7 @@ export default class Card implements CardProps {
   cardAction: (context: GameMessageContext) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
-  onNotPlayed?: (context: GameContext) => void;
+  onNotPlayed?: (context: GameMessageContext) => void;
   empowerLevel: number;
   priority: number;
   imitated: boolean;
