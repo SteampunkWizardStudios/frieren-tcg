@@ -10,6 +10,7 @@ export const a_hairWhip = new Card({
   description: ([def, dmg]) =>
     `DEF+${def}. Afterwards, HP-4, DMG ${dmg}+DEF/4.`, // No easy way to convey this message while keeping hpCost dynamic
   effects: [3, 7],
+  hpCost: 2,
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
@@ -41,14 +42,12 @@ export const sharpen = new Card({
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
-    { name, possessive, self, sendToGameroom, selfStat }
+    { name, possessive, sendToGameroom, selfStat }
   ) {
     sendToGameroom(`${name} sharpened ${possessive} hair drills!`);
 
-    if (self.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
-      selfStat(0, StatsEnum.DEF);
-      selfStat(1, StatsEnum.ATK);
-    }
+    selfStat(0, StatsEnum.DEF);
+    selfStat(1, StatsEnum.ATK);
   },
 });
 
