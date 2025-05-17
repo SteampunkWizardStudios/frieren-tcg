@@ -16,7 +16,8 @@ export default async function exportTable(
     return;
   }
 
-  const data = await prismaClient[table].findMany();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data = await (prismaClient as any)[table].findMany(); // Use dynamic access to the table
 
   if (!data || data.length === 0) {
     await interaction.editReply({
