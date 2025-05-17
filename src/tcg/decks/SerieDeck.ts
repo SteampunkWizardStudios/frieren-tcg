@@ -211,35 +211,33 @@ export const unbreakableBarrier = new Card({
   ) {
     sendToGameroom(`${name} deployed an unbreakable barrier.`);
 
-    if (self.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
-      const atkBuff = calcEffect(0);
-      const defBuff = calcEffect(1);
-      const spdDebuff = calcEffect(2);
+    const atkBuff = calcEffect(0);
+    const defBuff = calcEffect(1);
+    const spdDebuff = calcEffect(2);
 
-      selfStat(0, StatsEnum.ATK);
-      selfStat(1, StatsEnum.DEF);
-      opponentStat(2, StatsEnum.SPD, -1);
+    selfStat(0, StatsEnum.ATK);
+    selfStat(1, StatsEnum.DEF);
+    opponentStat(2, StatsEnum.SPD, -1);
 
-      self.timedEffects.push(
-        new TimedEffect({
-          name: "Unbreakable Barrier",
-          description: `ATK+${atkBuff}. DEF+${defBuff}, Opponent's SPD -${spdDebuff} for 5 turns.`,
-          turnDuration: 5,
-          priority: -1,
-          executeEndOfTimedEffectActionOnRemoval: true,
-          endOfTurnAction: (_game, _characterIndex) => {
-            sendToGameroom("The unbreakable barrier looms...");
-            self.adjustStat(-2, StatsEnum.HP);
-          },
-          endOfTimedEffectAction: (_game, _characterIndex) => {
-            sendToGameroom("The barrier dissipated");
-            self.adjustStat(-1 * atkBuff, StatsEnum.ATK);
-            self.adjustStat(-1 * defBuff, StatsEnum.DEF);
-            opponent.adjustStat(spdDebuff, StatsEnum.SPD);
-          },
-        })
-      );
-    }
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Unbreakable Barrier",
+        description: `ATK+${atkBuff}. DEF+${defBuff}, Opponent's SPD -${spdDebuff} for 5 turns.`,
+        turnDuration: 5,
+        priority: -1,
+        executeEndOfTimedEffectActionOnRemoval: true,
+        endOfTurnAction: (_game, _characterIndex) => {
+          sendToGameroom("The unbreakable barrier looms...");
+          self.adjustStat(-2, StatsEnum.HP);
+        },
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          sendToGameroom("The barrier dissipated");
+          self.adjustStat(-1 * atkBuff, StatsEnum.ATK);
+          self.adjustStat(-1 * defBuff, StatsEnum.DEF);
+          opponent.adjustStat(spdDebuff, StatsEnum.SPD);
+        },
+      })
+    );
   },
 });
 
