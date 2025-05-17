@@ -20,7 +20,10 @@ import { printCharacter } from "./tcgChatInteractions/printCharacter";
 import TimedEffect from "@tcg/timedEffect";
 import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
-import { gameAndMessageContext } from "@tcg/gameContextProvider";
+import {
+  gameAndMessageContext,
+  timedEffectContext,
+} from "@tcg/gameContextProvider";
 import { CharacterSelectionType } from "./tcgChatInteractions/handleCharacterSelection";
 import goddessDeck from "@decks/utilDecks/goddessDeck";
 
@@ -249,6 +252,17 @@ export const tcgMain = async (
           index
         );
         characterToPlayableMoveMap[index] = currUsableCards;
+
+        // executeAfterCardRolls, but before display to ensure the player sees the effects
+        game.characters.forEach((char, index) => {
+          char.timedEffects.forEach((timedEffect) => {
+            if (timedEffect.executeAfterCardRolls) {
+              const context = timedEffectContext(game, index, messageCache);
+              timedEffect.executeAfterCardRolls(context);
+            }
+          });
+        });
+
         await sendToThread(
           messageCache.flush(useChannel),
           useChannel,
@@ -355,24 +369,6 @@ export const tcgMain = async (
       game.characters[Number(key)].additionalMetadata.selectedCard = value;
     });
 
-    // run effects for unplayed playable cards
-    game.characters.forEach((_, index) => {
-      const unplayedCards = Object.values(
-        characterToPlayableMoveMap[index]
-      ).filter((card) => card !== characterToSelectedMoveMap[index]);
-      unplayedCards.forEach((card) => {
-        if (card.onNotPlayed) {
-          const context = gameAndMessageContext.call(
-            card,
-            game,
-            messageCache,
-            index
-          );
-          card.onNotPlayed(context);
-        }
-      });
-    });
-
     // move resolution step
     game.characters.forEach((character: Character, characterIndex: number) => {
       character.ability.abilitySelectedMoveModifierEffect?.(
@@ -475,6 +471,7 @@ export const tcgMain = async (
         }
       });
     });
+
     // end of turn resolution
     // gather timed effects
     messageCache.push(

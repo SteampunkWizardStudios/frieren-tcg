@@ -5,6 +5,7 @@ import { StatsEnum } from "@tcg/stats";
 import TimedEffect from "@tcg/timedEffect";
 import { sleepy, mesmerized, weakened } from "@decks/utilDecks/edelStatuses";
 import mediaLinks from "../formatting/mediaLinks";
+import Game from "@tcg/game";
 
 const redrawRandom = (opponent: Character) => {
   const randomIndex = Math.floor(Math.random() * opponent.hand.length);
@@ -13,10 +14,18 @@ const redrawRandom = (opponent: Character) => {
   opponent.additionalMetadata.forcedDiscards++;
 };
 
-const getHighestEmpower = (self: Character) => {
-  return self.hand.reduce((highest, card) => {
-    return card.empowerLevel > highest.empowerLevel ? card : highest;
-  }, self.hand[0]);
+const getHighestEmpower = (game: Game, characterIndex: number) => {
+  const currentDraws = game.additionalMetadata.currentDraws;
+  const possible = currentDraws[characterIndex];
+
+  return Object.entries(possible).reduce<[string, Card]>(
+    ([, highest], [key, card]) => {
+      return card.empowerLevel > highest.empowerLevel
+        ? [key, card]
+        : [key, highest];
+    },
+    Object.entries(possible)[0]
+  )[1];
 };
 
 export const telekinesis = new Card({
@@ -124,11 +133,18 @@ const mental_fog = new Card({
         name: "Mental Fog",
         description: `The highest empowered card you draw will cost ${cost} additional HP for the next 5 turns.`,
         turnDuration: 5,
-        executeAfterCardRolls: ({ self }) => {
-          const highestEmpoweredCard = getHighestEmpower(self);
+        executeAfterCardRolls: ({ game, selfIndex }) => {
+          const highestEmpoweredCard = getHighestEmpower(game, selfIndex);
           highestEmpoweredCard.hpCost += cost;
           console.log(
-            `${highestEmpoweredCard.printCard} cost increased by ${cost}`
+            `${highestEmpoweredCard.title} cost increased by ${cost}`
+          );
+        },
+        endOfTurnAction: (game, characterIndex) => {
+          const highestEmpoweredCard = getHighestEmpower(game, characterIndex);
+          highestEmpoweredCard.hpCost -= cost;
+          console.log(
+            `${highestEmpoweredCard.title} cost decreased by ${cost}`
           );
         },
       })
