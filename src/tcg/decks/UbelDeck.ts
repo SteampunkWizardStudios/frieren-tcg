@@ -34,7 +34,6 @@ export const a_shallowSlash = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: this.hpCost,
       additionalPierceFactor:
         character.additionalMetadata.ubelSlashMovesPierceFactor,
     });
@@ -62,7 +61,6 @@ export const a_cleave = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: this.hpCost,
       additionalPierceFactor:
         character.additionalMetadata.ubelSlashMovesPierceFactor,
     });
@@ -94,7 +92,6 @@ export const a_dismantle = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: this.hpCost,
       additionalPierceFactor:
         character.additionalMetadata.ubelSlashMovesPierceFactor,
     });

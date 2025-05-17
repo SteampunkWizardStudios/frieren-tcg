@@ -20,7 +20,7 @@ export const a_zoltraak = new Card({
   effects: [8],
   cardAction: function (this: Card, { sendToGameroom, name, basicAttack }) {
     sendToGameroom(`${name} fired Zoltraak!`);
-    basicAttack(0, this.hpCost);
+    basicAttack(0);
   },
 });
 
@@ -82,7 +82,7 @@ export const a_judradjim = new Card({
   hpCost: 7,
   cardAction: function (this: Card, { name, sendToGameroom, basicAttack }) {
     sendToGameroom(`${name} sent forth Judradjim!`);
-    basicAttack(0, this.hpCost);
+    basicAttack(0);
   },
 });
 
@@ -99,7 +99,7 @@ export const a_vollzanbel = new Card({
   hpCost: 10,
   cardAction: function (this: Card, { name, sendToGameroom, basicAttack }) {
     sendToGameroom(`${name} summoned Vollzanbel!`);
-    basicAttack(0, 10);
+    basicAttack(0);
   },
 });
 
@@ -204,7 +204,7 @@ export const a_theHeightOfMagicBase = new Card({
     }
 
     sendToGameroom("The Height of Magic is on display.");
-    basicAttack(0, 0);
+    basicAttack(0);
 
     self.adjustStat(-20, StatsEnum.DEF);
     self.adjustStat(-20, StatsEnum.SPD);

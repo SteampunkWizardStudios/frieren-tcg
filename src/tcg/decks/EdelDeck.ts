@@ -45,7 +45,7 @@ export const telekinesis = new Card({
       redrawRandom(opponent);
     }
 
-    basicAttack(0, 8);
+    basicAttack(0);
   },
 });
 
@@ -97,7 +97,7 @@ const one_step_ahead = new Card({
     );
     opponentStat(1, StatsEnum.SPD, -1);
     redrawRandom(opponent);
-    basicAttack(2, 0, 1);
+    basicAttack(2, 1);
   },
 });
 
@@ -269,7 +269,7 @@ const kneel = new Card({
     const discards = opponent.additionalMetadata.forcedDiscards ?? 0;
 
     const dmg = calcEffect(0) + calcEffect(1) * discards;
-    flatAttack(dmg, 10);
+    flatAttack(dmg);
 
     const winCon =
       ["Sleepy", "Mesmerized", "Weakened"].every((status) =>

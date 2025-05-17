@@ -28,7 +28,7 @@ export const a_hairWhip = new Card({
     selfStat(0, StatsEnum.DEF);
 
     const damage = calcEffect(1) + selfStats.DEF / 4;
-    flatAttack(damage, 4);
+    flatAttack(damage);
   },
 });
 
@@ -96,7 +96,7 @@ export const a_pierce = new Card({
     selfStat(0, StatsEnum.DEF);
 
     const damage = calcEffect(1) + selfStats.DEF / 4;
-    flatAttack(damage, this.hpCost, 0.25);
+    flatAttack(damage, 0.25);
   },
 });
 
@@ -215,7 +215,7 @@ export const a_piercingDrill = new Card({
   ) {
     sendToGameroom(`${name} used a piercing drill!`);
     const damage = calcEffect(0) + selfStats.DEF / 3;
-    flatAttack(damage, this.hpCost, 1 / 3);
+    flatAttack(damage, 1 / 3);
   },
 });
 

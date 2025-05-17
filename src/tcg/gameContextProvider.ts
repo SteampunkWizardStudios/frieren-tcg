@@ -33,12 +33,10 @@ function characterBasedContext(game: Game, characterIndex: number) {
 
   const flatAttack = (
     damage: number,
-    hpCost: number,
     additionalPierceFactor?: number
   ) => {
     return CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost,
       additionalPierceFactor,
     });
   };
@@ -108,14 +106,13 @@ export function gameContextProvider(
     // Attacks
     basicAttack: (
       effectIndex: number,
-      hpCost: number,
       additionalPierceFactor?: number
     ) => {
       const damage = calculateEffectValue(
         this.effects[effectIndex],
         this.empowerLevel
       );
-      flatAttack(damage, hpCost, additionalPierceFactor);
+      flatAttack(damage, additionalPierceFactor);
       return damage;
     },
 
