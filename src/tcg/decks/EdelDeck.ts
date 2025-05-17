@@ -49,7 +49,7 @@ export const telekinesis = new Card({
   },
 });
 
-const one_step_ahead = new Card({
+export const one_step_ahead = new Card({
   title: "One Step Ahead",
   cardMetadata: { nature: Nature.Defense },
   emoji: CardEmoji.EDEL_CARD,
