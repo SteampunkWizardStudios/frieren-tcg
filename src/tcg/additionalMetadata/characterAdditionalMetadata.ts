@@ -25,11 +25,7 @@ export type CharacterAdditionalMetadata = {
   ubelSureHit?: UbelHit;
   ubelSlashMovesPierceFactor?: number;
   fernBarrage?: number;
-
   forcedDiscards: number;
-  sleepyCount: number;
-  mesmerizedCount: number;
-  weakenedCount: number;
 
   hidden?: boolean;
 };

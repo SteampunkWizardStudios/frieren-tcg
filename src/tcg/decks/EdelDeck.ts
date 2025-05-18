@@ -173,7 +173,7 @@ const clear_mind = new Card({
       for (let i = 0; i < initialHandSize; i++) {
         if (player.hand.length > 0) {
           player.discardCard(0);
-		  self.additionalMetadata.forcedDiscards++;
+          self.additionalMetadata.forcedDiscards++;
           player.drawCard();
         } else {
           break;
@@ -193,12 +193,11 @@ const hypnosis_sleep = new Card({
   cardAction: ({ name, self, sendToGameroom, opponent }) => {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
 
-	self.adjustStat(2, StatsEnum.Ability);
+    self.adjustStat(2, StatsEnum.Ability);
 
     opponent.discardCard(0);
     opponent.hand.push(sleepy.clone());
     self.additionalMetadata.forcedDiscards++;
-    opponent.additionalMetadata.sleepyCount++;
   },
 });
 
@@ -219,7 +218,6 @@ const hypnosis_mesmerize = new Card({
     opponent.discardCard(0);
     opponent.hand.push(mesmerized.clone());
     self.additionalMetadata.forcedDiscards++;
-    opponent.additionalMetadata.mesmerizedCount++;
   },
 });
 
@@ -230,10 +228,7 @@ const hypnosis_weaken = new Card({
   description: () =>
     `Eye Contact next 2 turns Add Weakened at this empower to your opponent's hand, they discard a card.`,
   effects: [],
-  cardAction: function (
-    this: Card,
-    { name, self, sendToGameroom, opponent }
-  ) {
+  cardAction: function (this: Card, { name, self, sendToGameroom, opponent }) {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *You are feeling weak*`
     );
@@ -245,7 +240,6 @@ const hypnosis_weaken = new Card({
     opponent.discardCard(0);
     opponent.hand.push(clone);
     self.additionalMetadata.forcedDiscards++;
-    opponent.additionalMetadata.weakenedCount++;
   },
 });
 
@@ -274,13 +268,11 @@ const kneel = new Card({
     const dmg = calcEffect(0) + calcEffect(1) * discards;
     flatAttack(dmg);
 
-    const { sleepyCount, mesmerizedCount, weakenedCount } =
-      opponent.additionalMetadata;
-    const winCon =
-      sleepyCount > 0 &&
-      mesmerizedCount > 0 &&
-      weakenedCount > 0 &&
-      discards > 10;
+    const statusCon = ["Sleepy", "Mesmerized", "Weakened"].every((status) =>
+      opponent.hand.some((card) => card.title === status)
+    );
+
+    const winCon = statusCon && discards > 10;
 
     if (winCon) {
       sendToGameroom(`${opponent.name}'s mind has been invaded by ${name}!`);

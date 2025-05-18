@@ -13,7 +13,6 @@ export const sleepy = new Card({
     sendToGameroom(`${name} was falling asleep but woke up!`);
 
     self.deck.removeCard(this);
-	self.additionalMetadata.sleepyCount--;
   },
   onNotPlayed: function (this: Card, { self, sendToGameroom, name }) {
     sendToGameroom(`${name} fell asleep!`);
@@ -35,7 +34,6 @@ export const mesmerized = new Card({
         `${name} was mesmerized by ${opponent.name}'s eyes but snapped out of it!`
       );
       self.deck.removeCard(this);
-      self.additionalMetadata.mesmerizedCount--;
     } else {
       sendToGameroom(`${name} was mesmerized by ${opponent.name}'s eyes!`);
     }
@@ -58,12 +56,10 @@ export const weakened = new Card({
       `${name} felt compelled by ${opponent.name} to surrender but didn't give in!`
     );
     self.deck.removeCard(this);
-	self.additionalMetadata.weakenedCount--;
   },
   onNotPlayed: function (this: Card, { self, name, selfStat, sendToGameroom }) {
     sendToGameroom(`${name} felt weakened!`);
     self.deck.removeCard(this);
-	self.additionalMetadata.weakenedCount--;
 
     [StatsEnum.ATK, StatsEnum.DEF, StatsEnum.SPD].forEach((stat) => {
       selfStat(0, stat, -1);
