@@ -32,28 +32,39 @@ const Edel = new CharacterData({
     subAbilities: [
       {
         name: "Memory Transference Specialist",
-        description: `At the start of each turn, see a random card from your opponent's hand, and lower its empowerment by 1`,
+        description:
+          "At the start of each turn, see a random card from your opponent's hand, and lower its empowerment by 1",
       },
     ],
     abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
       const self = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
 
-      // Memory Transference Specialist
-      const randomCard =
-        opponent.hand[Math.floor(Math.random() * opponent.hand.length)];
-      randomCard.empowerLevel = Math.max(randomCard.empowerLevel - 1, 0);
-
       const selfThread =
         characterIndex === 0
           ? TCGThread.ChallengerThread
           : TCGThread.OpponentThread;
 
-      messageCache.push(
-        `${self.name} pictured a card from ${opponent.name}'s hand.`,
-        selfThread
+      // Memory Transference Specialist
+      const nonStatusCards = opponent.hand.filter(
+        (card) => !["Sleepy", "Mesmerized", "Weakened"].includes(card.title)
       );
-      messageCache.push(`${randomCard.printCard()}`, selfThread);
+      if (nonStatusCards.length > 0) {
+        const randomCard =
+          nonStatusCards[Math.floor(Math.random() * nonStatusCards.length)];
+        randomCard.empowerLevel = Math.max(randomCard.empowerLevel - 1, 0);
+
+        messageCache.push(
+          `${self.name} pictured the **disempowered** card from ${opponent.name}'s hand.`,
+          selfThread
+        );
+        messageCache.push(`${randomCard.printCard()}`, selfThread);
+      } else {
+        messageCache.push(
+          `The weight of ${self.name}'s hypnosis is immense. There is no non-status card to picture.`,
+          selfThread
+        );
+      }
 
       // A Superior Opponent
       if (self.stats.stats.Ability > 0) {
