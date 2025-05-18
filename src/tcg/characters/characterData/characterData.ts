@@ -16,6 +16,7 @@ const defaultMetadata: CharacterAdditionalMetadata = {
   forcedDiscards: 0,
 
   hidden: false,
+  publicDiscards: false,
 };
 
 export interface CharacterCosmetic {

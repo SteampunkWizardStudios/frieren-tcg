@@ -28,4 +28,5 @@ export type CharacterAdditionalMetadata = {
   forcedDiscards: number;
 
   hidden?: boolean;
+  publicDiscards: boolean;
 };

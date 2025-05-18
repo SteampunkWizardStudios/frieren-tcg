@@ -32,39 +32,14 @@ const Edel = new CharacterData({
     subAbilities: [
       {
         name: "Memory Transference Specialist",
-        description:
-          "At the start of each turn, see a random card from your opponent's hand, and lower its empowerment by 1",
+        description: "Your opponent's discards are visible.",
       },
     ],
     abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
       const self = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
 
-      const selfThread =
-        characterIndex === 0
-          ? TCGThread.ChallengerThread
-          : TCGThread.OpponentThread;
-
-      // Memory Transference Specialist
-      const nonStatusCards = opponent.hand.filter(
-        (card) => !["Sleepy", "Mesmerized", "Weakened"].includes(card.title)
-      );
-      if (nonStatusCards.length > 0) {
-        const randomCard =
-          nonStatusCards[Math.floor(Math.random() * nonStatusCards.length)];
-        randomCard.empowerLevel = Math.max(randomCard.empowerLevel - 1, 0);
-
-        messageCache.push(
-          `${self.name} pictured the **disempowered** card from ${opponent.name}'s hand.`,
-          selfThread
-        );
-        messageCache.push(`${randomCard.printCard()}`, selfThread);
-      } else {
-        messageCache.push(
-          `The weight of ${self.name}'s hypnosis is immense. There is no non-status card to picture.`,
-          selfThread
-        );
-      }
+      opponent.additionalMetadata.publicDiscards = true; // enables Memory Transference Specialist
 
       // A Superior Opponent
       if (self.stats.stats.Ability > 0) {
