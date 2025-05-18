@@ -116,13 +116,12 @@ const mental_fog = new Card({
     opponentStat,
     sendToGameroom,
     calcEffect,
-    selfStats,
   }) => {
     sendToGameroom(
       `${name} hypnotizes ${opponent.name} and ${opponent.cosmetic.pronouns.personal} starts to blank out.`
     );
 
-    selfStats.Ability++;
+    self.adjustStat(1, StatsEnum.Ability);
 
     opponentStat(0, StatsEnum.SPD, -1);
     redrawRandom(opponent, self);
@@ -161,11 +160,10 @@ const clear_mind = new Card({
     selfStat,
     self,
     opponent,
-    selfStats,
   }) => {
     sendToGameroom(`${name} focuses and clears ${possessive} mind.`);
 
-    selfStats.Ability++;
+    self.adjustStat(1, StatsEnum.Ability);
 
     selfStat(0, StatsEnum.HP);
     selfStat(1, StatsEnum.SPD);
@@ -175,6 +173,7 @@ const clear_mind = new Card({
       for (let i = 0; i < initialHandSize; i++) {
         if (player.hand.length > 0) {
           player.discardCard(0);
+		  self.additionalMetadata.forcedDiscards++;
           player.drawCard();
         } else {
           break;
@@ -191,10 +190,10 @@ const hypnosis_sleep = new Card({
   description: () =>
     `Eye Contact next 2 turns. Add Sleepy to your opponent's hand, they discard a card.`,
   effects: [],
-  cardAction: ({ name, self, sendToGameroom, opponent, selfStats }) => {
+  cardAction: ({ name, self, sendToGameroom, opponent }) => {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
 
-    selfStats.Ability += 2;
+	self.adjustStat(2, StatsEnum.Ability);
 
     opponent.discardCard(0);
     opponent.hand.push(sleepy.clone());
@@ -210,12 +209,12 @@ const hypnosis_mesmerize = new Card({
   description: () =>
     `Eye Contact next 2 turns. Add Mesmerize to your opponent's hand, they discard a card.`,
   effects: [],
-  cardAction: ({ name, self, sendToGameroom, opponent, selfStats }) => {
+  cardAction: ({ name, self, sendToGameroom, opponent }) => {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *Look into my eyes*`
     );
 
-    selfStats.Ability += 2;
+    self.adjustStat(2, StatsEnum.Ability);
 
     opponent.discardCard(0);
     opponent.hand.push(mesmerized.clone());
@@ -228,18 +227,18 @@ const hypnosis_weaken = new Card({
   title: "Hypnosis: *Weaken*",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
-  description: ([debuff]) =>
-    `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's hand, they discard a card.`,
-  effects: [2],
+  description: () =>
+    `Eye Contact next 2 turns Add Weakened at this empower to your opponent's hand, they discard a card.`,
+  effects: [],
   cardAction: function (
     this: Card,
-    { name, self, sendToGameroom, opponent, selfStats }
+    { name, self, sendToGameroom, opponent }
   ) {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *You are feeling weak*`
     );
 
-    selfStats.Ability += 2;
+    self.adjustStat(2, StatsEnum.Ability);
 
     const clone = weakened.clone();
     clone.empowerLevel = this.empowerLevel;
