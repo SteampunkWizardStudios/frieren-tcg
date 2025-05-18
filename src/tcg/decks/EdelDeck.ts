@@ -149,7 +149,7 @@ const mental_fog = new Card({
         },
       })
     );
-	console.log("Mental Fog effect added to opponent's deck");
+    console.log("Mental Fog effect added to opponent's deck");
   },
 });
 
@@ -203,6 +203,7 @@ const hypnosis_sleep = new Card({
     selfStats.Ability += 2;
 
     opponent.hand.push(sleepy.clone());
+    opponent.additionalMetadata.sleepyCount++;
   },
 });
 
@@ -221,6 +222,7 @@ const hypnosis_mesmerize = new Card({
     selfStats.Ability += 2;
 
     opponent.hand.push(mesmerized.clone());
+    opponent.additionalMetadata.mesmerizedCount++;
   },
 });
 
@@ -244,6 +246,7 @@ const hypnosis_weaken = new Card({
     const clone = weakened.clone();
     clone.empowerLevel = this.empowerLevel;
     opponent.hand.push(clone);
+    opponent.additionalMetadata.weakenedCount++;
   },
 });
 
@@ -271,10 +274,14 @@ const kneel = new Card({
     const dmg = calcEffect(0) + calcEffect(1) * discards;
     flatAttack(dmg);
 
+    const { sleepyCount, mesmerizedCount, weakenedCount } =
+      opponent.additionalMetadata;
     const winCon =
-      ["Sleepy", "Mesmerized", "Weakened"].every((status) =>
-        opponent.hand.some((card) => card.title === status)
-      ) && discards > 10;
+      sleepyCount > 0 &&
+      mesmerizedCount > 0 &&
+      weakenedCount > 0 &&
+      discards > 10;
+
     if (winCon) {
       sendToGameroom(`${opponent.name}'s mind has been invaded by ${name}!`);
       game.additionalMetadata.forfeited[opponentIndex] = true;

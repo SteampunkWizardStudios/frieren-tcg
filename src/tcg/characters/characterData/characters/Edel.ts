@@ -55,30 +55,8 @@ const Edel = new CharacterData({
       );
       messageCache.push(`${randomCard.printCard()}`, selfThread);
 
-      // QOL counters
-      messageCache.push(
-        `${self.name} forced ${opponent.name} to discard **${opponent.additionalMetadata.forcedDiscards}** cards.`,
-        selfThread
-      );
-      // count number of status cards in opponent's deck
-      const check = [...opponent.deck.activePile, ...opponent.deck.discardPile];
-      const [sleepyCount, mesmerizedCount, weakenedCount] = check.reduce(
-        (acc: [number, number, number], card) => {
-          switch (card.title) {
-            case "Sleepy":
-              acc[0]++;
-              break;
-            case "Mesmerized":
-              acc[1]++;
-              break;
-            case "Weakened":
-              acc[2]++;
-              break;
-          }
-          return acc;
-        },
-        [0, 0, 0]
-      );
+      const { sleepyCount, mesmerizedCount, weakenedCount } =
+        opponent.additionalMetadata;
       messageCache.push(
         `${opponent.name} has ${sleepyCount} Sleepy, ${mesmerizedCount} Mesmerized, and ${weakenedCount} Weakened in their deck.`,
         selfThread
