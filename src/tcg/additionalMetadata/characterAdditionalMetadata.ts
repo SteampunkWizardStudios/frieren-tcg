@@ -17,8 +17,6 @@ export type CharacterAdditionalMetadata = {
   pierceFactor?: number;
   overheal?: boolean;
   selectedCard?: Card;
-  forcedDiscards: number;
-  hidden?: boolean;
 
   senseTeaTimeStacks?: number;
   serieToyingNextTurn?: boolean;
@@ -27,4 +25,11 @@ export type CharacterAdditionalMetadata = {
   ubelSureHit?: UbelHit;
   ubelSlashMovesPierceFactor?: number;
   fernBarrage?: number;
+
+  forcedDiscards: number;
+  sleepyCount: number;
+  mesmerizedCount: number;
+  weakenedCount: number;
+
+  hidden?: boolean;
 };

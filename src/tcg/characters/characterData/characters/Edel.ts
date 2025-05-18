@@ -8,10 +8,10 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import mediaLinks from "@src/tcg/formatting/mediaLinks";
 
 const edelStats = new Stats({
-  [StatsEnum.HP]: 70,
-  [StatsEnum.ATK]: 7,
-  [StatsEnum.DEF]: 7,
-  [StatsEnum.SPD]: 10,
+  [StatsEnum.HP]: 80,
+  [StatsEnum.ATK]: 8,
+  [StatsEnum.DEF]: 9,
+  [StatsEnum.SPD]: 11,
   [StatsEnum.Ability]: 0,
 });
 
@@ -26,30 +26,47 @@ const Edel = new CharacterData({
   stats: edelStats,
   cards: edelDeck,
   ability: {
-    abilityName: "Memory Transference Specialist",
-    abilityEffectString: `At the start of each turn, see a random card from your opponent's hand, and lower its empowerment by 1
-
-    **Sub-Ability: A Superior Opponent** - While you make Eye Contact with the opponent, all your moves have Priority+1.
-    `,
+    abilityName: "A Superior Opponent",
+    abilityEffectString:
+      "While you make Eye Contact with the opponent, all your moves have Priority+1",
+    subAbilities: [
+      {
+        name: "Memory Transference Specialist",
+        description:
+          "At the start of each turn, see a random card from your opponent's hand, and lower its empowerment by 1",
+      },
+    ],
     abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
       const self = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
-
-      const randomCard =
-        opponent.hand[Math.floor(Math.random() * opponent.hand.length)];
 
       const selfThread =
         characterIndex === 0
           ? TCGThread.ChallengerThread
           : TCGThread.OpponentThread;
 
-      messageCache.push(
-        `${self.name} pictured a card from ${opponent.name}'s hand.`,
-        selfThread
+      // Memory Transference Specialist
+      const nonStatusCards = opponent.hand.filter(
+        (card) => !["Sleepy", "Mesmerized", "Weakened"].includes(card.title)
       );
-      messageCache.push(`${randomCard.printCard()}`, selfThread);
+      if (nonStatusCards.length > 0) {
+        const randomCard =
+          nonStatusCards[Math.floor(Math.random() * nonStatusCards.length)];
+        randomCard.empowerLevel = Math.max(randomCard.empowerLevel - 1, 0);
 
-      // Sub-Ability: A Superior Opponent
+        messageCache.push(
+          `${self.name} pictured the **disempowered** card from ${opponent.name}'s hand.`,
+          selfThread
+        );
+        messageCache.push(`${randomCard.printCard()}`, selfThread);
+      } else {
+        messageCache.push(
+          `The weight of ${self.name}'s hypnosis is immense. There is no non-status card to picture.`,
+          selfThread
+        );
+      }
+
+      // A Superior Opponent
       if (self.stats.stats.Ability > 0) {
         self.stats.stats.Ability--;
 
@@ -65,9 +82,6 @@ const Edel = new CharacterData({
         self.ability.abilitySelectedMoveModifierEffect = undefined;
       }
     },
-  },
-  additionalMetadata: {
-    hidden: true,
   },
 });
 
