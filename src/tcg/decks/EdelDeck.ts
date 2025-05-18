@@ -175,6 +175,7 @@ const clear_mind = new Card({
       for (let i = 0; i < initialHandSize; i++) {
         if (player.hand.length > 0) {
           player.discardCard(0);
+		  self.additionalMetadata.forcedDiscards++;
           player.drawCard();
         } else {
           break;
