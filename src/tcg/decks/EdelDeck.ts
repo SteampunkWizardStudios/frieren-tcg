@@ -193,7 +193,7 @@ const hypnosis_sleep = new Card({
   cardAction: ({ name, self, sendToGameroom, opponent }) => {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
 
-	self.adjustStat(1, StatsEnum.Ability);
+	self.adjustStat(2, StatsEnum.Ability);
 
     opponent.discardCard(0);
     opponent.hand.push(sleepy.clone());
