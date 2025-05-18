@@ -68,7 +68,9 @@ const Edel = new CharacterData({
 
       // A Superior Opponent
       if (self.stats.stats.Ability > 0) {
-        self.stats.stats.Ability--;
+        self.adjustStat(-1, StatsEnum.Ability);
+		messageCache.push(`${self.name} made eye contact with ${opponent.name}`, TCGThread.Gameroom);
+
 
         self.ability.abilitySelectedMoveModifierEffect = (
           _game,
