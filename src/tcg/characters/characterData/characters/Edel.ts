@@ -55,13 +55,6 @@ const Edel = new CharacterData({
       );
       messageCache.push(`${randomCard.printCard()}`, selfThread);
 
-      const { sleepyCount, mesmerizedCount, weakenedCount } =
-        opponent.additionalMetadata;
-      messageCache.push(
-        `${opponent.name} has ${sleepyCount} Sleepy, ${mesmerizedCount} Mesmerized, and ${weakenedCount} Weakened in their deck.`,
-        selfThread
-      );
-
       // A Superior Opponent
       if (self.stats.stats.Ability > 0) {
         self.stats.stats.Ability--;

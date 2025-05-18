@@ -189,16 +189,16 @@ const hypnosis_sleep = new Card({
   cardMetadata: { nature: Nature.Util, hideEmpower: true },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
-    `Eye Contact next 2 turns. Add Sleepy to your opponent's deck, they redraw a card.`,
+    `Eye Contact next 2 turns. Add Sleepy to your opponent's hand, they redraw a card.`,
   effects: [],
-  cardAction: ({ name, sendToGameroom, opponent, selfStats }) => {
+  cardAction: ({ name, self, sendToGameroom, opponent, selfStats }) => {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
 
     selfStats.Ability += 2;
 
-	opponent.discardCard(0);
+    opponent.discardCard(0);
     opponent.hand.push(sleepy.clone());
-	opponent.additionalMetadata.forcedDiscards++;
+    self.additionalMetadata.forcedDiscards++;
     opponent.additionalMetadata.sleepyCount++;
   },
 });
@@ -208,18 +208,18 @@ const hypnosis_mesmerize = new Card({
   cardMetadata: { nature: Nature.Util, hideEmpower: true },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
-    `Eye Contact next 2 turns. Add Mesmerize to your opponent's deck, they redraw a card.`,
+    `Eye Contact next 2 turns. Add Mesmerize to your opponent's hand, they redraw a card.`,
   effects: [],
-  cardAction: ({ name, sendToGameroom, opponent, selfStats }) => {
+  cardAction: ({ name, self, sendToGameroom, opponent, selfStats }) => {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *Look into my eyes*`
     );
 
     selfStats.Ability += 2;
 
-	opponent.discardCard(0);
+    opponent.discardCard(0);
     opponent.hand.push(mesmerized.clone());
-	opponent.additionalMetadata.forcedDiscards++;
+    self.additionalMetadata.forcedDiscards++;
     opponent.additionalMetadata.mesmerizedCount++;
   },
 });
@@ -229,11 +229,11 @@ const hypnosis_weaken = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
   description: ([debuff]) =>
-    `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's deck.`,
+    `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's hand.`,
   effects: [2],
   cardAction: function (
     this: Card,
-    { name, sendToGameroom, opponent, selfStats }
+    { name, self, sendToGameroom, opponent, selfStats }
   ) {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *You are feeling weak*`
@@ -243,9 +243,9 @@ const hypnosis_weaken = new Card({
 
     const clone = weakened.clone();
     clone.empowerLevel = this.empowerLevel;
-	opponent.discardCard(0);
+    opponent.discardCard(0);
     opponent.hand.push(clone);
-	opponent.additionalMetadata.forcedDiscards++;
+    self.additionalMetadata.forcedDiscards++;
     opponent.additionalMetadata.weakenedCount++;
   },
 });
