@@ -196,7 +196,9 @@ const hypnosis_sleep = new Card({
 
     selfStats.Ability += 2;
 
+	opponent.discardCard(0);
     opponent.hand.push(sleepy.clone());
+	opponent.additionalMetadata.forcedDiscards++;
     opponent.additionalMetadata.sleepyCount++;
   },
 });
@@ -215,7 +217,9 @@ const hypnosis_mesmerize = new Card({
 
     selfStats.Ability += 2;
 
+	opponent.discardCard(0);
     opponent.hand.push(mesmerized.clone());
+	opponent.additionalMetadata.forcedDiscards++;
     opponent.additionalMetadata.mesmerizedCount++;
   },
 });
@@ -239,7 +243,9 @@ const hypnosis_weaken = new Card({
 
     const clone = weakened.clone();
     clone.empowerLevel = this.empowerLevel;
+	opponent.discardCard(0);
     opponent.hand.push(clone);
+	opponent.additionalMetadata.forcedDiscards++;
     opponent.additionalMetadata.weakenedCount++;
   },
 });

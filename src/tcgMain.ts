@@ -258,9 +258,6 @@ export const tcgMain = async (
         game.characters.forEach((char, index) => {
           char.timedEffects.forEach((timedEffect) => {
             if (timedEffect.executeAfterCardRolls) {
-              console.log(
-                `Executing timed effect ${timedEffect.name} for ${char.name} after card rolls`
-              );
               const context = timedEffectContext(game, index, messageCache);
               timedEffect.executeAfterCardRolls(context);
             }
