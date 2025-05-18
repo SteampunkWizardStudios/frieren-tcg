@@ -227,9 +227,9 @@ const hypnosis_weaken = new Card({
   title: "Hypnosis: *Weaken*",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
-  description: ([_debuff]) =>
+  description: () =>
     `Eye Contact next 2 turns Add Weakened at this empower to your opponent's hand, they discard a card.`,
-  effects: [2],
+  effects: [],
   cardAction: function (
     this: Card,
     { name, self, sendToGameroom, opponent }
