@@ -137,20 +137,13 @@ const mental_fog = new Card({
         executeAfterCardRolls: ({ game, selfIndex }) => {
           const highestEmpoweredCard = getHighestEmpower(game, selfIndex);
           highestEmpoweredCard.hpCost += cost;
-          console.log(
-            `${highestEmpoweredCard.title} cost increased by ${cost}`
-          );
         },
         endOfTurnAction: (game, characterIndex) => {
           const highestEmpoweredCard = getHighestEmpower(game, characterIndex);
           highestEmpoweredCard.hpCost -= cost;
-          console.log(
-            `${highestEmpoweredCard.title} cost decreased by ${cost}`
-          );
         },
       })
     );
-    console.log("Mental Fog effect added to opponent's deck");
   },
 });
 
