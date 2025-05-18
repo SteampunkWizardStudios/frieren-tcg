@@ -42,7 +42,7 @@ const Edel = new CharacterData({
       // Memory Transference Specialist
       const randomCard =
         opponent.hand[Math.floor(Math.random() * opponent.hand.length)];
-      randomCard.empowerLevel -= 1;
+      randomCard.empowerLevel = Math.max(randomCard.empowerLevel - 1, 0);
 
       const selfThread =
         characterIndex === 0
