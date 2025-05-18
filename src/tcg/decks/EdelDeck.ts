@@ -189,7 +189,7 @@ const hypnosis_sleep = new Card({
   cardMetadata: { nature: Nature.Util, hideEmpower: true },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
-    `Eye Contact next 2 turns. Add Sleepy to your opponent's hand, they redraw a card.`,
+    `Eye Contact next 2 turns. Add Sleepy to your opponent's hand, they discard a card.`,
   effects: [],
   cardAction: ({ name, self, sendToGameroom, opponent, selfStats }) => {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
@@ -208,7 +208,7 @@ const hypnosis_mesmerize = new Card({
   cardMetadata: { nature: Nature.Util, hideEmpower: true },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
-    `Eye Contact next 2 turns. Add Mesmerize to your opponent's hand, they redraw a card.`,
+    `Eye Contact next 2 turns. Add Mesmerize to your opponent's hand, they discard a card.`,
   effects: [],
   cardAction: ({ name, self, sendToGameroom, opponent, selfStats }) => {
     sendToGameroom(
@@ -229,7 +229,7 @@ const hypnosis_weaken = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
   description: ([debuff]) =>
-    `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's hand.`,
+    `Eye Contact next 2 turns. Reduce opponent's ATK, DEF, SPD by ${debuff}. Add Weakened at this empower to your opponent's hand, they discard a card.`,
   effects: [2],
   cardAction: function (
     this: Card,
