@@ -7,11 +7,11 @@ import { sleepy, mesmerized, weakened } from "@decks/utilDecks/edelStatuses";
 import mediaLinks from "../formatting/mediaLinks";
 import Game from "@tcg/game";
 
-const redrawRandom = (opponent: Character) => {
+const redrawRandom = (opponent: Character, self: Character) => {
   const randomIndex = Math.floor(Math.random() * opponent.hand.length);
   opponent.discardCard(randomIndex);
   opponent.drawCard();
-  opponent.additionalMetadata.forcedDiscards++;
+  self.additionalMetadata.forcedDiscards++;
 };
 
 const getHighestEmpower = (game: Game, characterIndex: number) => {
@@ -38,11 +38,11 @@ export const telekinesis = new Card({
   description: ([dmg]) => `Your opponent redraws 2 cards. DMG ${dmg}.`,
   effects: [14],
   hpCost: 8,
-  cardAction: ({ name, opponent, sendToGameroom, basicAttack }) => {
+  cardAction: ({ name, self, opponent, sendToGameroom, basicAttack }) => {
     sendToGameroom(`${name} used a telekinetic attack!`);
 
     for (let i = 0; i < 2; i++) {
-      redrawRandom(opponent);
+      redrawRandom(opponent, self);
     }
 
     basicAttack(0);
@@ -96,7 +96,7 @@ export const one_step_ahead = new Card({
       `${opponent.name} is playing a defensive card. ${name} read ${opponent.cosmetic.pronouns.possessive} mind!`
     );
     opponentStat(1, StatsEnum.SPD, -1);
-    redrawRandom(opponent);
+    redrawRandom(opponent, self);
     basicAttack(2, 1);
   },
 });
@@ -111,6 +111,7 @@ const mental_fog = new Card({
   hpCost: 10,
   cardAction: ({
     name,
+    self,
     opponent,
     opponentStat,
     sendToGameroom,
@@ -124,7 +125,7 @@ const mental_fog = new Card({
     selfStats.Ability++;
 
     opponentStat(0, StatsEnum.SPD, -1);
-    redrawRandom(opponent);
+    redrawRandom(opponent, self);
 
     const cost = calcEffect(1);
 
@@ -261,6 +262,7 @@ const kneel = new Card({
   cardAction: ({
     name,
     sendToGameroom,
+    self,
     opponent,
     opponentIndex,
     calcEffect,
@@ -269,7 +271,7 @@ const kneel = new Card({
   }) => {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Kneel!*`);
 
-    const discards = opponent.additionalMetadata.forcedDiscards ?? 0;
+    const discards = self.additionalMetadata.forcedDiscards;
 
     const dmg = calcEffect(0) + calcEffect(1) * discards;
     flatAttack(dmg);

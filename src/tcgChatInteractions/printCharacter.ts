@@ -50,6 +50,11 @@ export const printCharacter = (
   ) {
     printStack.push(`**Barrage**: ${character.additionalMetadata.fernBarrage}`);
   }
+  if (character.additionalMetadata.forcedDiscards > 0) {
+    printStack.push(
+      `**Forced Discards**: ${character.additionalMetadata.forcedDiscards}`
+    );
+  }
   if (character.timedEffects.length > 0) {
     printStack.push(`**Timed effects:**`);
     character.timedEffects.forEach((effect) => {
