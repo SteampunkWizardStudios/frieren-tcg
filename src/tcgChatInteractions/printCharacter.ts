@@ -38,14 +38,23 @@ export const printCharacter = (
   printStack.push(lines.join("\n"));
 
   const statuses: string[] = [];
-  if (meta.sleepyCount > 0) {
-    statuses.push(`**Sleepy**: ${meta.sleepyCount}`);
+  const [sleepyCount, mesmerizedCount, weakenedCount] = character.hand.reduce(
+    (acc, card) => {
+      if (card.title === "Sleepy") acc[0]++;
+      else if (card.title === "Mesmerized") acc[1]++;
+      else if (card.title === "Weakened") acc[2]++;
+      return acc;
+    },
+    [0, 0, 0]
+  );
+  if (sleepyCount > 0) {
+    statuses.push(`**Sleepy**: ${sleepyCount}`);
   }
-  if (meta.mesmerizedCount > 0) {
-    statuses.push(`**Mesmerized**: ${meta.mesmerizedCount}`);
+  if (mesmerizedCount > 0) {
+    statuses.push(`**Mesmerized**: ${mesmerizedCount}`);
   }
-  if (meta.weakenedCount > 0) {
-    statuses.push(`**Weakened**: ${meta.weakenedCount}`);
+  if (weakenedCount > 0) {
+    statuses.push(`**Weakened**: ${weakenedCount}`);
   }
   if (statuses.length > 0) {
     printStack.push(statuses.join(", "));
