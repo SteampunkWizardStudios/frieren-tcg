@@ -61,7 +61,7 @@ const a_staffBash = new Card({
     sendToGameroom(`${name} bashed ${possessive} staff!`);
     selfStat(0, StatsEnum.SPD);
     const damage = calcEffect(1) + selfStats.SPD / 6;
-    flatAttack(damage, this.hpCost);
+    flatAttack(damage);
   },
 });
 
@@ -112,7 +112,7 @@ export const a_supersonicStrike = new Card({
   ) {
     sendToGameroom(`${name} struck at supersonic speed!`);
     const damage = calcEffect(0) + selfStats.SPD / 4;
-    flatAttack(damage, this.hpCost);
+    flatAttack(damage);
   },
 });
 
