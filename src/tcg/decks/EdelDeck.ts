@@ -14,6 +14,13 @@ const redrawRandom = (opponent: Character, self: Character) => {
   self.additionalMetadata.forcedDiscards++;
 };
 
+const pushStatus = (opponent: Character, self: Character, card: Card) => {
+  const clone = card.clone();
+  opponent.discardCard(0);
+  opponent.hand.push(clone);
+  self.additionalMetadata.forcedDiscards++;
+};
+
 const getHighestEmpower = (game: Game, characterIndex: number) => {
   const currentDraws = game.additionalMetadata.currentDraws;
   const possible = currentDraws[characterIndex];
@@ -35,13 +42,13 @@ export const telekinesis = new Card({
   cosmetic: {
     cardGif: mediaLinks.telekinesis_gif,
   },
-  description: ([dmg]) => `Your opponent redraws 2 cards. DMG ${dmg}.`,
+  description: ([dmg]) => `Your opponent redraws 3 cards. DMG ${dmg}.`,
   effects: [14],
   hpCost: 8,
   cardAction: ({ name, self, opponent, sendToGameroom, basicAttack }) => {
     sendToGameroom(`${name} used a telekinetic attack!`);
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       redrawRandom(opponent, self);
     }
 
@@ -106,7 +113,7 @@ const mental_fog = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
   description: ([spd, cost]) =>
-    `Eye Contact next turn. Opponent's SPD-${spd} and they redraw a card. Their highest empowered card they draw will cost ${cost} additional HP for the next 5 turns.`,
+    `Eye Contact next turn. Opponent's SPD-${spd} and they redraw two cards. Their highest empowered card they draw will cost ${cost} additional HP for the next 5 turns.`,
   effects: [2, 7],
   hpCost: 10,
   cardAction: ({
@@ -125,6 +132,7 @@ const mental_fog = new Card({
 
     opponentStat(0, StatsEnum.SPD, -1);
     redrawRandom(opponent, self);
+	redrawRandom(opponent, self);
 
     const cost = calcEffect(1);
 
@@ -168,13 +176,15 @@ const clear_mind = new Card({
     selfStat(0, StatsEnum.HP);
     selfStat(1, StatsEnum.SPD);
 
-    [opponent, self].forEach((player) => {
+    [opponent, self].forEach((player, index) => {
       const initialHandSize = player.hand.length;
       for (let i = 0; i < initialHandSize; i++) {
         if (player.hand.length > 0) {
           player.discardCard(0);
-          self.additionalMetadata.forcedDiscards++;
           player.drawCard();
+          if (index === 0) {
+            self.additionalMetadata.forcedDiscards++;
+          }
         } else {
           break;
         }
@@ -188,16 +198,15 @@ const hypnosis_sleep = new Card({
   cardMetadata: { nature: Nature.Util, hideEmpower: true },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
-    `Eye Contact next 2 turns. Add Sleepy to your opponent's hand, they discard a card.`,
+    `Eye Contact next 2 turns. Your opponent discards two cards, draws Sleepy and one other card.`,
   effects: [],
   cardAction: ({ name, self, sendToGameroom, opponent }) => {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
 
     self.adjustStat(2, StatsEnum.Ability);
 
-    opponent.discardCard(0);
-    opponent.hand.push(sleepy.clone());
-    self.additionalMetadata.forcedDiscards++;
+    pushStatus(opponent, self, sleepy);
+    redrawRandom(opponent, self);
   },
 });
 
@@ -206,7 +215,7 @@ const hypnosis_mesmerize = new Card({
   cardMetadata: { nature: Nature.Util, hideEmpower: true },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
-    `Eye Contact next 2 turns. Add Mesmerize to your opponent's hand, they discard a card.`,
+    `Eye Contact next 2 turns. Your opponent discards two cards, draws Mesmerized and one other card.`,
   effects: [],
   cardAction: ({ name, self, sendToGameroom, opponent }) => {
     sendToGameroom(
@@ -215,9 +224,8 @@ const hypnosis_mesmerize = new Card({
 
     self.adjustStat(2, StatsEnum.Ability);
 
-    opponent.discardCard(0);
-    opponent.hand.push(mesmerized.clone());
-    self.additionalMetadata.forcedDiscards++;
+    pushStatus(opponent, self, mesmerized);
+    redrawRandom(opponent, self);
   },
 });
 
@@ -226,7 +234,7 @@ const hypnosis_weaken = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
-    `Eye Contact next 2 turns Add Weakened at this empower to your opponent's hand, they discard a card.`,
+    `Eye Contact next 2 turns. Your opponent discards two cards, draws Weakened at this empower and one other card.`,
   effects: [],
   cardAction: function (this: Card, { name, self, sendToGameroom, opponent }) {
     sendToGameroom(
@@ -235,11 +243,8 @@ const hypnosis_weaken = new Card({
 
     self.adjustStat(2, StatsEnum.Ability);
 
-    const clone = weakened.clone();
-    clone.empowerLevel = this.empowerLevel;
-    opponent.discardCard(0);
-    opponent.hand.push(clone);
-    self.additionalMetadata.forcedDiscards++;
+    pushStatus(opponent, self, weakened);
+    redrawRandom(opponent, self);
   },
 });
 
@@ -247,9 +252,9 @@ const kneel = new Card({
   title: "*Kneel!*",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
-  description: ([dmg, discardFactor]) =>
-    `DMG ${dmg} + ${discardFactor} per each card you've forced your opponent to discard this match. Ignores defense. At the end of the turn, if your opponent has forcibly discarded over 10 cards, and have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
-  effects: [10, 3],
+  description: ([dmg]) =>
+    `DMG ${dmg} + three per each card you've forced your opponent to discard this match. Ignores defense. At the end of the turn, if your opponent has forcibly discarded over 10 cards, and have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
+  effects: [10],
   hpCost: 10,
   cardAction: ({
     name,
@@ -265,7 +270,7 @@ const kneel = new Card({
 
     const discards = self.additionalMetadata.forcedDiscards;
 
-    const dmg = calcEffect(0) + calcEffect(1) * discards;
+    const dmg = calcEffect(0) + 3 * discards;
     flatAttack(dmg);
 
     const statusCon = ["Sleepy", "Mesmerized", "Weakened"].every((status) =>
