@@ -20,10 +20,14 @@ type CardMetadata = {
   nature: Nature;
   seriePool?: "Common" | "Rare" | "Ultra-rare";
   signature?: boolean;
-  analysis?: boolean;
-  postAnalysis?: boolean;
+  analysis?: number;
+  postAnalysis?: number;
   waldgoseDamage?: number;
-  himmelPartyMember?: "Heiter" | "Eisen" | "Frieren";
+
+  heiter?: boolean;
+  eisen?: boolean;
+  frieren?: boolean;
+
   teaTime?: number;
   resolve?: number;
   signatureMoveOf?: CharacterName;
@@ -53,10 +57,7 @@ export type CardProps = {
    * @deprecated Use {@link Card.cardMetadata} instead
    */
   imitated?: boolean;
-  /**
-   * @deprecated Use {@link Card.cardMetadata} instead
-   */
-  tags?: Record<string, number>;
+  printEmpower?: boolean;
   hpCost?: number;
   /**
    * @deprecated Use {@link Card.cardMetadata} instead
@@ -79,7 +80,6 @@ export default class Card implements CardProps {
   empowerLevel: number;
   priority: number;
   imitated: boolean;
-  tags: Record<string, number>;
   cardMetadata: CardMetadata;
   hpCost: number;
   empathized: boolean;
@@ -94,7 +94,6 @@ export default class Card implements CardProps {
     this.empowerLevel = cardProps.empowerLevel ?? 0;
     this.priority = cardProps.priority ?? 0;
     this.imitated = cardProps.imitated ?? false;
-    this.tags = cardProps.tags ?? {};
     this.cardMetadata = cardProps.cardMetadata;
     this.emoji = cardProps.emoji ?? CardEmoji.GENERIC;
     this.cosmetic = cardProps.cosmetic;
