@@ -13,6 +13,7 @@ export enum Nature {
   Defense = "Defense",
   Default = "Default",
   Util = "Util",
+  None = "None",
 }
 
 type CardMetadata = {
@@ -31,6 +32,9 @@ type CardMetadata = {
   resolve?: number;
   signatureMoveOf?: CharacterName;
   ubelFailureRate?: number;
+  empathized?: boolean;
+  imitated?: boolean;
+  temporary?: boolean;
   hidePriority?: boolean;
   hideHpCost?: boolean;
   hideEmpower?: boolean;
@@ -46,11 +50,18 @@ export type CardProps = {
   cardAction: (context: GameMessageContext) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
+  onNotPlayed?: (context: GameMessageContext) => void;
   empowerLevel?: number;
   priority?: number;
+    /**
+   * @deprecated Use {@link Card.cardMetadata} instead
+   */
   imitated?: boolean;
   printEmpower?: boolean;
   hpCost?: number;
+  /**
+   * @deprecated Use {@link Card.cardMetadata} instead
+   */
   empathized?: boolean;
 };
 
@@ -65,6 +76,7 @@ export default class Card implements CardProps {
   cardAction: (context: GameMessageContext) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
+  onNotPlayed?: (context: GameMessageContext) => void;
   empowerLevel: number;
   priority: number;
   imitated: boolean;
@@ -78,6 +90,7 @@ export default class Card implements CardProps {
     this.effects = cardProps.effects;
     this.cardAction = cardProps.cardAction;
     this.conditionalTreatAsEffect = cardProps.conditionalTreatAsEffect;
+    this.onNotPlayed = cardProps.onNotPlayed;
     this.empowerLevel = cardProps.empowerLevel ?? 0;
     this.priority = cardProps.priority ?? 0;
     this.imitated = cardProps.imitated ?? false;

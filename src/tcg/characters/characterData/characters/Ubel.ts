@@ -49,8 +49,6 @@ function missAttack(
   } else {
     const character = game.getCharacter(characterIndex);
 
-    const hpCost = card.hpCost;
-    character.adjustStat(-hpCost, StatsEnum.HP);
     messageCache.push("The attack cannot connect!", TCGThread.Gameroom);
     messageCache.push("Yet Übel keeps rushing forward!", TCGThread.Gameroom);
 

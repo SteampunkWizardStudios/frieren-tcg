@@ -1,8 +1,11 @@
 const characterPortraits = {
   denkenPortrait:
     "https://static.wikia.nocookie.net/frieren/images/5/5c/Denken_anime_portrait.png/revision/latest?cb=20240112114340",
+  edelPortrait:
+    "https://static.wikia.nocookie.net/frieren/images/a/ab/Edel_anime_portrait.png/revision/latest?cb=20240119235404",
   fernPortrait:
     "https://static.wikia.nocookie.net/frieren/images/6/65/Fern_anime_portrait.png/revision/latest?cb=20231017083448",
+
   frierenPortrait:
     "https://media.discordapp.net/attachments/1346555621952192522/1347399695521026109/Frieren_anime_portrait.webp?ex=67dcd2c0&is=67db8140&hm=0b5f32d66153c8b41d2817170b41b7562e6ef607e9efb1abc220fe5905b7bd77&=&format=webp&width=600&height=600",
   himmelPortrait:
@@ -33,6 +36,11 @@ const vangerisuCards = {
   serieVangerisuCard:
     "https://cdn.discordapp.com/attachments/1351391350398128159/1352873013695086602/Serie_Card.png?ex=67df98ad&is=67de472d&hm=fb33f3e38ac8fe90be812b86b7f85ab8a9e95f0303eed56c18f362f6a981fe4c&",
 } as const;
+
+const edelCardLinks = {
+  telekinesis_gif:
+    "https://media.discordapp.net/attachments/1367328754795286599/1368285080606347444/Stone_hurling_spell_EP24.gif?ex=6817aa48&is=681658c8&hm=b41474c8c6b45cfcf6d65a0d1f5586e9633d1d064f0ee1ab4facd0d9b3699a84",
+};
 
 const frierenCardLinks = {
   zoltraak_image:
@@ -73,6 +81,8 @@ const frierenCardLinks = {
 const mediaLinks = {
   ...characterPortraits,
   ...vangerisuCards,
+
+  ...edelCardLinks,
   ...frierenCardLinks,
 } as const;
 

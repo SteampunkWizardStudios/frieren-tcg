@@ -114,7 +114,6 @@ export const a_curse = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -170,7 +169,7 @@ export const a_killingMagic = new Card({
     messageCache.push(randomMessage, TCGThread.Gameroom);
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 10 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 

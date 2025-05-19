@@ -8,8 +8,9 @@ export const a_hairWhip = new Card({
   title: "Hair Whip",
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
-    `DEF+${def}. Afterwards, HP-4, DMG ${dmg}+DEF/4.`, // No easy way to convey this message while keeping hpCost dynamic
+    `DEF+${def}. Afterwards, DMG ${dmg}+DEF/4.`,
   effects: [3, 7],
+  hpCost: 4,
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
@@ -28,7 +29,7 @@ export const a_hairWhip = new Card({
     selfStat(0, StatsEnum.DEF);
 
     const damage = calcEffect(1) + selfStats.DEF / 4;
-    flatAttack(damage, 4);
+    flatAttack(damage);
   },
 });
 
@@ -41,14 +42,12 @@ export const sharpen = new Card({
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
-    { name, possessive, self, sendToGameroom, selfStat }
+    { name, possessive, sendToGameroom, selfStat }
   ) {
     sendToGameroom(`${name} sharpened ${possessive} hair drills!`);
 
-    if (self.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
-      selfStat(0, StatsEnum.DEF);
-      selfStat(1, StatsEnum.ATK);
-    }
+    selfStat(0, StatsEnum.DEF);
+    selfStat(1, StatsEnum.ATK);
   },
 });
 
@@ -96,7 +95,7 @@ export const a_pierce = new Card({
     selfStat(0, StatsEnum.DEF);
 
     const damage = calcEffect(1) + selfStats.DEF / 4;
-    flatAttack(damage, this.hpCost, 0.25);
+    flatAttack(damage, 0.25);
   },
 });
 
@@ -213,7 +212,7 @@ export const a_piercingDrill = new Card({
   ) {
     sendToGameroom(`${name} used a piercing drill!`);
     const damage = calcEffect(0) + selfStats.DEF / 3;
-    flatAttack(damage, this.hpCost, 1 / 3);
+    flatAttack(damage, 1 / 3);
   },
 });
 

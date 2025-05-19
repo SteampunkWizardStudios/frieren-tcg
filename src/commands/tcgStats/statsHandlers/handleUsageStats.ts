@@ -32,7 +32,11 @@ export default async function handleUsageStats(
     },
   });
 
-  const usageMap = Object.entries(CHARACTER_MAP).reduce(
+  const visibleMap = Object.entries(CHARACTER_MAP).filter(
+    ([, character]) => character.additionalMetadata.hidden !== true
+  );
+
+  const usageMap = visibleMap.reduce(
     (map, [, character]) => {
       map[character.name] = {
         wins: 0,
@@ -44,8 +48,12 @@ export default async function handleUsageStats(
   );
 
   data.forEach((match) => {
-    usageMap[match.winnerCharacter.name].wins++;
-    usageMap[match.loserCharacter.name].losses++;
+    if (usageMap[match.winnerCharacter.name]) {
+      usageMap[match.winnerCharacter.name].wins++;
+    }
+    if (usageMap[match.loserCharacter.name]) {
+      usageMap[match.loserCharacter.name].losses++;
+    }
   });
 
   const component = makeComponent(usageMap);

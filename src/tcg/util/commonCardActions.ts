@@ -1,5 +1,4 @@
 import Game from "@tcg/game";
-import { StatsEnum } from "@tcg/stats";
 import TimedEffect from "@tcg/timedEffect";
 
 export default class CommonCardAction {
@@ -9,7 +8,6 @@ export default class CommonCardAction {
     characterIndex: number,
     option: {
       damage: number;
-      hpCost: number;
       isTimedEffectAttack?: boolean;
       additionalPierceFactor?: number;
     }
@@ -20,19 +18,13 @@ export default class CommonCardAction {
     const pierceFactor =
       (character.additionalMetadata.pierceFactor ??= 0) +
       (option.additionalPierceFactor ?? 0);
-    if (
-      option.hpCost === 0 ||
-      character.adjustStat(-option.hpCost, StatsEnum.HP)
-    ) {
-      const actualDamage = game.attack({
-        attackerIndex: characterIndex,
-        damage: option.damage + pierceFactor * opponent.stats.stats.DEF,
-        isTimedEffectAttack,
-      });
-      return actualDamage;
-    } else {
-      return 0;
-    }
+
+    const actualDamage = game.attack({
+      attackerIndex: characterIndex,
+      damage: option.damage + pierceFactor * opponent.stats.stats.DEF,
+      isTimedEffectAttack,
+    });
+    return actualDamage;
   }
 
   // function that looks up a character's timed effect and replace a timed effect with certain tag

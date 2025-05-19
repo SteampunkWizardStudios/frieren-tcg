@@ -187,7 +187,6 @@ export const a_erfassenAxe = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
@@ -215,7 +214,6 @@ export const a_erfassenJavelin = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
 
     character.timedEffects.push(
@@ -231,7 +229,6 @@ export const a_erfassenJavelin = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -263,7 +260,6 @@ export const a_erfassenSword = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
@@ -289,7 +285,6 @@ export const a_erfassenKnife = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
 
     character.timedEffects.push(
@@ -305,7 +300,6 @@ export const a_erfassenKnife = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },

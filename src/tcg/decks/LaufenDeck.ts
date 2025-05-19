@@ -31,7 +31,7 @@ const a_staffStrike = new Card({
     sendToGameroom(`${name} struck with ${possessive} staff!`);
     selfStat(0, StatsEnum.SPD);
     const damage = calcEffect(1) + selfStats.SPD / 7;
-    flatAttack(damage, this.hpCost);
+    flatAttack(damage);
   },
 });
 

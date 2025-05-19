@@ -18,6 +18,7 @@ export const createCharacterDropdown = async (
   embed: EmbedBuilder;
   selectMenu: StringSelectMenuBuilder;
   dropdown: ActionRowBuilder<StringSelectMenuBuilder>;
+  characterListUsed: CharacterData[];
 }> => {
   let timeLimitString = null;
   if (timeLimitSeconds) {
@@ -49,10 +50,11 @@ export const createCharacterDropdown = async (
       ].join("\n"),
     });
 
+  const characterList = sortedCharacters.favouritedCharacter.concat(
+    sortedCharacters.nonFavouritedCharacter
+  );
   const { charSelect, charSelectActionRow } = characterSelect({
-    characterList: sortedCharacters.favouritedCharacter.concat(
-      sortedCharacters.nonFavouritedCharacter
-    ),
+    characterList,
     includeRandom: true,
     customId,
   });
@@ -61,5 +63,6 @@ export const createCharacterDropdown = async (
     embed,
     selectMenu: charSelect,
     dropdown: charSelectActionRow,
+    characterListUsed: characterList,
   };
 };

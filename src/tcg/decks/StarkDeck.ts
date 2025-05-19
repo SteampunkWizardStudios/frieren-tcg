@@ -28,7 +28,6 @@ const a_axeSwipe = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: this.hpCost,
     });
   },
 });
@@ -260,7 +259,6 @@ const a_ordensSlashTechnique = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
@@ -331,7 +329,6 @@ const a_eisensAxeCleave = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
@@ -353,7 +350,6 @@ export const a_lightningStrike = new Card({
   ) {
     const character = game.getCharacter(characterIndex);
 
-    if (character.adjustStat(-1 * this.hpCost, StatsEnum.HP)) {
       messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
       const damage = this.calculateEffectValue(this.effects[0]);
 
@@ -387,7 +383,6 @@ export const a_lightningStrike = new Card({
             );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
-              hpCost: 0,
               isTimedEffectAttack: true,
             });
           },
@@ -410,7 +405,6 @@ export const a_lightningStrike = new Card({
           },
         })
       );
-    }
   },
 });
 

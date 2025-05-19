@@ -61,7 +61,6 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -71,7 +70,7 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
       })
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 
@@ -123,7 +122,6 @@ const a_FrierenBackMeUp = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -138,7 +136,7 @@ const a_FrierenBackMeUp = new Card({
       })
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 
@@ -187,7 +185,7 @@ export const a_FrierenNow = new Card({
       })
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 
@@ -248,7 +246,6 @@ const a_EisenTheEnemysOpen = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -303,7 +300,6 @@ const a_EisenCoverMyBack = new Card({
         );
         CommonCardAction.commonAttack(game, characterIndex, {
           damage: counterDmg,
-          hpCost: 0,
         });
         character.additionalMetadata.himmelEisenReadyToCounter = false;
       }
@@ -494,7 +490,6 @@ const a_heiterThreeSpears = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -567,7 +562,7 @@ export const quickBlock = new Card({
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  priority: 3,
+  priority: 2,
   effects: [20],
   cardAction: function (
     this: Card,
@@ -657,7 +652,6 @@ export const a_extremeSpeed = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
@@ -685,7 +679,7 @@ export const a_realHeroSwing = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 12 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 

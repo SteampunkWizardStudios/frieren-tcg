@@ -1,7 +1,10 @@
 import { ComponentType, EmbedBuilder, RepliableInteraction } from "discord.js";
 import prismaClient from "@prismaClient";
 import { characterNameToEmoji, charWithEmoji } from "@tcg/formatting/emojis";
-import { CHARACTER_MAP } from "@tcg/characters/characterList";
+import {
+  CHARACTER_MAP,
+  VISIBLE_CHARACTERS,
+} from "@tcg/characters/characterList";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { getWinrate } from "@src/util/utils";
 import characterSelect from "@src/util/messageComponents/characterSelect";
@@ -113,17 +116,21 @@ async function overviewCase(): Promise<EmbedBuilder> {
     );
   });
 
-  const sortedCharacters = characters.sort((a, b) => {
-    const winrateA = getWinrate(
-      a.winnerMatches.length,
-      a.loserMatches.length
-    ).winrate;
-    const winrateB = getWinrate(
-      b.winnerMatches.length,
-      b.loserMatches.length
-    ).winrate;
-    return winrateB - winrateA;
-  });
+  const sortedCharacters = characters
+    .sort((a, b) => {
+      const winrateA = getWinrate(
+        a.winnerMatches.length,
+        a.loserMatches.length
+      ).winrate;
+      const winrateB = getWinrate(
+        b.winnerMatches.length,
+        b.loserMatches.length
+      ).winrate;
+      return winrateB - winrateA;
+    })
+    .filter((char) =>
+      VISIBLE_CHARACTERS.some((visibleChar) => visibleChar.name === char.name)
+    );
 
   const description = sortedCharacters.map((char) => {
     const { name, winnerMatches, loserMatches } = char;
