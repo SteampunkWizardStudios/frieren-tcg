@@ -91,7 +91,7 @@ export const a_whip = new Card({
     sendToGameroom(`${name} turned ${possessive} staff into a whip!`);
     selfStat(0, StatsEnum.SPD);
     const damage = calcEffect(1) + selfStats.SPD / 5;
-    flatAttack(damage, this.hpCost);
+    flatAttack(damage);
   },
 });
 
