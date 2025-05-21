@@ -104,7 +104,7 @@ export async function updateMemberRoles(
   }
 }
 
-export async function removeAllRankRoles(client: Client) {
+export async function removeAllServerRankRoles(client: Client) {
   const guild = await getDiscordServer(client);
   if (!guild) {
     throw new Error("Frieren discord server not found");
