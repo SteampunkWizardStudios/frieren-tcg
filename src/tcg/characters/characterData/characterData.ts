@@ -14,7 +14,9 @@ const defaultMetadata: CharacterAdditionalMetadata = {
   accessToDefaultCardOptions: true,
   defenderDamageScaling: 1,
   forcedDiscards: 0,
+
   hidden: false,
+  publicDiscards: false,
 };
 
 export interface CharacterCosmetic {

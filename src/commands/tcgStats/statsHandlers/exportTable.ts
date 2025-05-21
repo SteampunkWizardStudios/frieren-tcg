@@ -16,8 +16,8 @@ export default async function exportTable(
     return;
   }
 
-  // @ts-expect-error Dynamic table name
-  const data = await prismaClient[table].findMany();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data = await (prismaClient as any)[table].findMany(); // Use dynamic access to the table
 
   if (!data || data.length === 0) {
     await interaction.editReply({
@@ -27,8 +27,14 @@ export default async function exportTable(
   }
 
   try {
+    if (!Array.isArray(data)) {
+      throw new Error(
+        `Unexpected data format for table \`${table}\`. Expected an array.`
+      );
+    }
+
     const csvData = stringify(data, { header: true });
-    const attachment = new AttachmentBuilder(Buffer.from(csvData), {
+    const attachment = new AttachmentBuilder(Buffer.from(csvData, "utf-8"), {
       name: `${table}.csv`,
     });
 

@@ -28,39 +28,37 @@ export const ancientBarrierMagic = new Card({
       TCGThread.Gameroom
     );
 
-    if (character.adjustStat(-1 * this.hpCost, StatsEnum.HP)) {
-      const opponent = game.getCharacter(1 - characterIndex);
-      const atkBuff = this.calculateEffectValue(this.effects[0]);
-      const defDebuff = this.calculateEffectValue(this.effects[1]);
-      const spdDebuff = this.calculateEffectValue(this.effects[2]);
+    const opponent = game.getCharacter(1 - characterIndex);
+    const atkBuff = this.calculateEffectValue(this.effects[0]);
+    const defDebuff = this.calculateEffectValue(this.effects[1]);
+    const spdDebuff = this.calculateEffectValue(this.effects[2]);
 
-      character.adjustStat(atkBuff, StatsEnum.ATK);
-      opponent.adjustStat(-1 * defDebuff, StatsEnum.DEF);
-      opponent.adjustStat(-1 * spdDebuff, StatsEnum.SPD);
+    character.adjustStat(atkBuff, StatsEnum.ATK);
+    opponent.adjustStat(-1 * defDebuff, StatsEnum.DEF);
+    opponent.adjustStat(-1 * spdDebuff, StatsEnum.SPD);
 
-      character.timedEffects.push(
-        new TimedEffect({
-          name: "Ancient Barrier Magic",
-          description: `ATK+${atkBuff}, Opponent's DEF-${defDebuff}, Opponent's SPD -${spdDebuff} for 5 turns.`,
-          turnDuration: 7,
-          priority: -1,
-          executeEndOfTimedEffectActionOnRemoval: true,
-          endOfTurnAction: (_game, _characterIndex) => {
-            messageCache.push(
-              `An ominous barrier envelopes the battlefield...`,
-              TCGThread.Gameroom
-            );
-            character.adjustStat(-2, StatsEnum.HP);
-          },
-          endOfTimedEffectAction: (_game, _characterIndex) => {
-            messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Ancient Barrier Magic",
+        description: `ATK+${atkBuff}, Opponent's DEF-${defDebuff}, Opponent's SPD -${spdDebuff} for 5 turns.`,
+        turnDuration: 7,
+        priority: -1,
+        executeEndOfTimedEffectActionOnRemoval: true,
+        endOfTurnAction: (_game, _characterIndex) => {
+          messageCache.push(
+            `An ominous barrier envelopes the battlefield...`,
+            TCGThread.Gameroom
+          );
+          character.adjustStat(-2, StatsEnum.HP);
+        },
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
 
-            character.adjustStat(-1 * atkBuff, StatsEnum.ATK);
-            opponent.adjustStat(defDebuff, StatsEnum.DEF);
-            opponent.adjustStat(spdDebuff, StatsEnum.SPD);
-          },
-        })
-      );
-    }
+          character.adjustStat(-1 * atkBuff, StatsEnum.ATK);
+          opponent.adjustStat(defDebuff, StatsEnum.DEF);
+          opponent.adjustStat(spdDebuff, StatsEnum.SPD);
+        },
+      })
+    );
   },
 });

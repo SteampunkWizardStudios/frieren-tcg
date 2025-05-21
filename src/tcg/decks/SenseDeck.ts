@@ -8,8 +8,9 @@ export const a_hairWhip = new Card({
   title: "Hair Whip",
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
-    `DEF+${def}. Afterwards, HP-4, DMG ${dmg}+DEF/4.`, // No easy way to convey this message while keeping hpCost dynamic
+    `DEF+${def}. Afterwards, DMG ${dmg}+DEF/4.`,
   effects: [3, 7],
+  hpCost: 4,
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
@@ -41,14 +42,12 @@ export const sharpen = new Card({
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
-    { name, possessive, self, sendToGameroom, selfStat }
+    { name, possessive, sendToGameroom, selfStat }
   ) {
     sendToGameroom(`${name} sharpened ${possessive} hair drills!`);
 
-    if (self.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
-      selfStat(0, StatsEnum.DEF);
-      selfStat(1, StatsEnum.ATK);
-    }
+    selfStat(0, StatsEnum.DEF);
+    selfStat(1, StatsEnum.ATK);
   },
 });
 
@@ -139,11 +138,10 @@ export const hairBarrier = new Card({
 
 export const teaTime = new Card({
   title: "Tea Time",
-  cardMetadata: { nature: Nature.Util },
+  cardMetadata: { nature: Nature.Util, teaTime: 1, },
   description: ([hp]) =>
     `Empower both characters' hands. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
   effects: [4],
-  tags: { TeaTime: 1 },
   emoji: CardEmoji.HEART,
   cosmetic: {
     cardGif:
@@ -168,11 +166,10 @@ export const teaTime = new Card({
 
 export const teaParty = new Card({
   title: "Tea Party",
-  cardMetadata: { nature: Nature.Util },
+  cardMetadata: { nature: Nature.Util, teaTime: 2 },
   description: ([hp]) =>
     `Empower both characters' hands twice. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
   effects: [7],
-  tags: { TeaTime: 2 },
   emoji: CardEmoji.RANDOM,
   cosmetic: {
     cardGif:

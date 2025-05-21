@@ -76,7 +76,6 @@ export const a_trustInYourAllyFernsBarrage = new Card({
       );
     }
 
-    if (character.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
       const damage = Number(
         (
           this.calculateEffectValue(this.effects[0]) +
@@ -101,7 +100,6 @@ export const a_trustInYourAllyFernsBarrage = new Card({
           },
         })
       );
-    }
   },
 });
 
@@ -350,7 +348,6 @@ export const a_threeSpearsOfTheGoddess = new Card({
       `${character.name} used Three Spears of the Goddess!`,
       TCGThread.Gameroom
     );
-    if (character.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
       const damage = Number(
         (
           this.calculateEffectValue(this.effects[0]) +
@@ -374,7 +371,6 @@ export const a_threeSpearsOfTheGoddess = new Card({
           },
         })
       );
-    }
   },
 });
 

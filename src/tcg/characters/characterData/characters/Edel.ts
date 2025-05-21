@@ -8,10 +8,10 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import mediaLinks from "@src/tcg/formatting/mediaLinks";
 
 const edelStats = new Stats({
-  [StatsEnum.HP]: 70,
-  [StatsEnum.ATK]: 7,
-  [StatsEnum.DEF]: 7,
-  [StatsEnum.SPD]: 10,
+  [StatsEnum.HP]: 80,
+  [StatsEnum.ATK]: 8,
+  [StatsEnum.DEF]: 9,
+  [StatsEnum.SPD]: 11,
   [StatsEnum.Ability]: 0,
 });
 
@@ -26,32 +26,28 @@ const Edel = new CharacterData({
   stats: edelStats,
   cards: edelDeck,
   ability: {
-    abilityName: "Memory Transference Specialist",
-    abilityEffectString: `At the start of each turn, see a random card from your opponent's hand, and lower its empowerment by 1
-
-    **Sub-Ability: A Superior Opponent** - While you make Eye Contact with the opponent, all your moves have Priority+1.
-    `,
+    abilityName: "A Superior Opponent",
+    abilityEffectString:
+      "While you make Eye Contact with the opponent, all your moves have Priority+1",
+    subAbilities: [
+      {
+        name: "Memory Transference Specialist",
+        description: "Your opponent's discards are visible.",
+      },
+    ],
     abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
       const self = game.getCharacter(characterIndex);
       const opponent = game.getCharacter(1 - characterIndex);
 
-      const randomCard =
-        opponent.hand[Math.floor(Math.random() * opponent.hand.length)];
+      opponent.additionalMetadata.publicDiscards = true; // enables Memory Transference Specialist
 
-      const selfThread =
-        characterIndex === 0
-          ? TCGThread.ChallengerThread
-          : TCGThread.OpponentThread;
-
-      messageCache.push(
-        `${self.name} pictured a card from ${opponent.name}'s hand.`,
-        selfThread
-      );
-      messageCache.push(`${randomCard.printCard()}`, selfThread);
-
-      // Sub-Ability: A Superior Opponent
+      // A Superior Opponent
       if (self.stats.stats.Ability > 0) {
-        self.stats.stats.Ability--;
+        self.adjustStat(-1, StatsEnum.Ability);
+        messageCache.push(
+          `${self.name} made eye contact with ${opponent.name}, ${self.cosmetic.pronouns.possessive} has Priority+1.`,
+          TCGThread.Gameroom
+        );
 
         self.ability.abilitySelectedMoveModifierEffect = (
           _game,
@@ -65,9 +61,6 @@ const Edel = new CharacterData({
         self.ability.abilitySelectedMoveModifierEffect = undefined;
       }
     },
-  },
-  additionalMetadata: {
-    hidden: true,
   },
 });
 

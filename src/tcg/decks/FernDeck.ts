@@ -75,12 +75,12 @@ export const a_fernBarrage = new Card({
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
-      "Barrage",
+      "barrage",
       new TimedEffect({
         name: "Barrage",
         description: `Deal ${damage} DMG.`,
         turnDuration: newBarrageCount,
-        tags: { Barrage: 1 },
+        metadata: { barrage: 1 },
         endOfTurnAction: function (
           this: TimedEffect,
           game,
