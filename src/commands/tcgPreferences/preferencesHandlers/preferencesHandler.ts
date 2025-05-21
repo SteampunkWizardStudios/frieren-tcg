@@ -1,14 +1,25 @@
-import { CHARACTER_MAP } from "@tcg/characters/characterList";
-import type { CharacterName } from "@tcg/characters/metadata/CharacterName";
-import { findCharacterByName } from "@src/util/db/getCharacter";
 import {
-  addFavouriteCharacter,
+  CHARACTER_MAP,
+  VISIBLE_CHARACTERS,
+} from "@tcg/characters/characterList";
+import type { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import {
   getOrCreatePlayerPreferences,
-  removeFavouriteCharacter,
+  getPlayerPreferences,
+  setFavouriteCharacters,
   updateTcgTextSpeed,
 } from "@src/util/db/preferences";
-import { EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
+import {
+  ActionRowBuilder,
+  EmbedBuilder,
+  StringSelectMenuBuilder,
+  type ChatInputCommandInteraction,
+  type SelectMenuComponentOptionData,
+  type StringSelectMenuInteraction,
+} from "discord.js";
 import { getPlayer } from "@src/util/db/getPlayer";
+import { charWithEmoji } from "@src/tcg/formatting/emojis";
+import prismaClient from "@prismaClient";
 
 export async function handlePlayerPreferences(
   interaction: ChatInputCommandInteraction
@@ -54,38 +65,87 @@ export async function handlePlayerPreferences(
         break;
       }
 
-      case "favorite-character": {
-        const characterName = interaction.options.getString(
-          "character-name",
-          true
-        );
-        const character = await findCharacterByName(characterName);
-
-        if (!character) {
-          await interaction.editReply({
-            content: `Character "${characterName}" not found.`,
-          });
-          return;
-        }
-
-        const characterData = CHARACTER_MAP[character.name as CharacterName];
-
-        const currentPreferences = await getOrCreatePlayerPreferences(playerId);
-        const isCurrentlyFavorite = currentPreferences.favouriteCharacters.some(
-          (char) => char.id === character.id
+      case "favourite-character": {
+        const preferences = await getPlayerPreferences(playerId);
+        const options: SelectMenuComponentOptionData[] = VISIBLE_CHARACTERS.map(
+          (char) => {
+            return {
+              label: char.name,
+              value: char.name,
+              emoji: char.cosmetic.emoji,
+              default: preferences?.favouriteCharacters.some(
+                (fav) => fav.name === char.name
+              ),
+            };
+          }
         );
 
-        if (isCurrentlyFavorite) {
-          removeFavouriteCharacter(playerId, character.id);
-          await interaction.editReply({
-            content: `${characterData.cosmetic.emoji} "${character.name}" has been removed from your favourite characters.`,
+        const CUSTOM_ID = "favourite-character-select";
+        const favouriteCharactersSelectMenu = new StringSelectMenuBuilder()
+          .setCustomId(CUSTOM_ID)
+          .setPlaceholder("Select a character")
+          .setMaxValues(VISIBLE_CHARACTERS.length)
+          .setOptions(options);
+
+        const embed = new EmbedBuilder()
+          .setColor("Blurple")
+          .setTitle("Favourite Characters")
+          .setDescription(`Select a character to add to your favourites.`)
+          .addFields({
+            name: "Favourite Characters",
+            value:
+              preferences?.favouriteCharacters
+                .map((char) => charWithEmoji(char.name as CharacterName))
+                .join(", ") || "None",
           });
-        } else {
-          addFavouriteCharacter(playerId, character.id);
-          await interaction.editReply({
-            content: `${characterData.cosmetic.emoji}"${character.name}" has been added to your favourite characters.`,
-          });
-        }
+
+        const actionRow =
+          new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+            favouriteCharactersSelectMenu
+          );
+
+        const reply = await interaction.editReply({
+          embeds: [embed],
+          components: [actionRow],
+        });
+
+        const collector = reply.createMessageComponentCollector({
+          time: 60_000,
+        });
+        collector.on("collect", async (i: StringSelectMenuInteraction) => {
+          try {
+            await i.deferUpdate();
+            const newFavouriteCharacterNames = i.values;
+
+            const dbCharacters = await prismaClient.character.findMany({
+              where: {
+                name: { in: newFavouriteCharacterNames },
+              },
+            });
+
+            const validDbCharacters = dbCharacters.filter(
+              (dbChar) => dbChar !== null
+            );
+
+            await setFavouriteCharacters(playerId, validDbCharacters);
+
+            const updatedEmbed = new EmbedBuilder(embed.data).setFields({
+              name: "Favourite Characters",
+              value:
+                newFavouriteCharacterNames
+                  .map((name) => charWithEmoji(name as CharacterName))
+                  .join(", ") || "None",
+            });
+
+            i.editReply({
+              embeds: [updatedEmbed],
+              components: [],
+            });
+          } catch (error) {
+            console.error("Error in favourite character select menu:", error);
+          }
+        });
+
         break;
       }
 

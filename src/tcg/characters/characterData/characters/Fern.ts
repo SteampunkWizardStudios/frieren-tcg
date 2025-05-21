@@ -4,10 +4,7 @@ import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
 import fernDeck from "@decks/FernDeck";
 import Pronouns from "@tcg/pronoun";
-
-const imageUrl: Record<string, string> = {
-  icon: "https://static.wikia.nocookie.net/frieren/images/6/65/Fern_anime_portrait.png/revision/latest?cb=20231017083448",
-};
+import mediaLinks from "@src/tcg/formatting/mediaLinks";
 
 const fernStats = new Stats({
   [StatsEnum.HP]: 100.0,
@@ -23,16 +20,24 @@ const Fern = new CharacterData({
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FERN,
     color: 0x8e528e,
-    imageUrl: imageUrl.icon,
+    imageUrl: mediaLinks.fernPortrait,
   },
   stats: fernStats,
   cards: fernDeck,
   ability: {
     abilityName: "Prodigy",
-    abilityEffectString: `One random card in your hand gets empowered every turn.
-
-    **Sub-Ability: Mana Suppression** - Hide the amount of HP this character has.
-    **Sub-Ability: Keen Eye** - See past the opponent's Mana Suppression.`,
+    abilityEffectString:
+      "One random card in your hand gets empowered every turn.",
+    subAbilities: [
+      {
+        name: "Mana Suppression",
+        description: "Hide the amount of HP this character has.",
+      },
+      {
+        name: "Keen Eye",
+        description: "See past the opponent's Mana Suppression.",
+      },
+    ],
     abilityStartOfTurnEffect(
       game,
       characterIndex,

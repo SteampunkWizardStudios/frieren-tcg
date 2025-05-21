@@ -46,7 +46,7 @@ const omNomNomNom = new Card({
   title: "Om Nom Nom Nom",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-5. DMG ${dmg}. Restores HP by half of the move's dealt damage.`,
+    `DMG ${dmg}. Restores HP by half of the move's dealt damage.`,
   emoji: CardEmoji.ENERGY,
   effects: [5],
   cardAction: function (
@@ -62,7 +62,6 @@ const omNomNomNom = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     const dealtDamage = CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: 5,
     });
 
     character.adjustStat(dealtDamage / 2, StatsEnum.HP);
@@ -151,7 +150,7 @@ const a_callOfCthulhu = new Card({
 
     character.setStat(1, StatsEnum.HP);
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 

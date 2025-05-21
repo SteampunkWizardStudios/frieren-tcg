@@ -58,9 +58,11 @@ export async function handleCharacterGlobalStats(
     });
     return;
   }
-  const idsToPoints = top100.map(({ player, masteryPoints }) => ({
+  const idsToPoints = top100.map(({ player, masteryPoints, wins, losses }) => ({
     id: player.discordId,
     points: masteryPoints,
+    wins,
+    losses,
   }));
 
   const totalPages = Math.ceil(idsToPoints.length / PAGE_SIZE);
@@ -70,7 +72,7 @@ export async function handleCharacterGlobalStats(
     const embed = leaderboardEmbed({
       idsToPoints: pageData,
       leaderboard: character,
-      isCharacterLeaderboard: false,
+      isCharacterLeaderboard: true,
       page: i + 1,
       pageSize: PAGE_SIZE,
       color,

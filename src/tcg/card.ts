@@ -13,20 +13,31 @@ export enum Nature {
   Defense = "Defense",
   Default = "Default",
   Util = "Util",
+  None = "None",
 }
 
 type CardMetadata = {
   nature: Nature;
   seriePool?: "Common" | "Rare" | "Ultra-rare";
   signature?: boolean;
-  analysis?: boolean;
-  postAnalysis?: boolean;
+  analysis?: number;
+  postAnalysis?: number;
   waldgoseDamage?: number;
-  himmelPartyMember?: "Heiter" | "Eisen" | "Frieren";
+
+  heiter?: boolean;
+  eisen?: boolean;
+  frieren?: boolean;
+
   teaTime?: number;
   resolve?: number;
   signatureMoveOf?: CharacterName;
   ubelFailureRate?: number;
+  empathized?: boolean;
+  imitated?: boolean;
+  temporary?: boolean;
+  hidePriority?: boolean;
+  hideHpCost?: boolean;
+  hideEmpower?: boolean;
 };
 
 export type CardProps = {
@@ -39,15 +50,18 @@ export type CardProps = {
   cardAction: (context: GameMessageContext) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
+  onNotPlayed?: (context: GameMessageContext) => void;
   empowerLevel?: number;
   priority?: number;
+    /**
+   * @deprecated Use {@link Card.cardMetadata} instead
+   */
   imitated?: boolean;
+  printEmpower?: boolean;
+  hpCost?: number;
   /**
    * @deprecated Use {@link Card.cardMetadata} instead
    */
-  tags?: Record<string, number>;
-  printEmpower?: boolean;
-  hpCost?: number;
   empathized?: boolean;
 };
 
@@ -62,12 +76,11 @@ export default class Card implements CardProps {
   cardAction: (context: GameMessageContext) => void;
   // TODO: change to a GameContext arg
   conditionalTreatAsEffect?: (game: Game, characterIndex: number) => Card;
+  onNotPlayed?: (context: GameMessageContext) => void;
   empowerLevel: number;
   priority: number;
   imitated: boolean;
-  tags: Record<string, number>;
   cardMetadata: CardMetadata;
-  printEmpower: boolean;
   hpCost: number;
   empathized: boolean;
 
@@ -77,14 +90,13 @@ export default class Card implements CardProps {
     this.effects = cardProps.effects;
     this.cardAction = cardProps.cardAction;
     this.conditionalTreatAsEffect = cardProps.conditionalTreatAsEffect;
+    this.onNotPlayed = cardProps.onNotPlayed;
     this.empowerLevel = cardProps.empowerLevel ?? 0;
     this.priority = cardProps.priority ?? 0;
     this.imitated = cardProps.imitated ?? false;
-    this.tags = cardProps.tags ?? {};
     this.cardMetadata = cardProps.cardMetadata;
     this.emoji = cardProps.emoji ?? CardEmoji.GENERIC;
     this.cosmetic = cardProps.cosmetic;
-    this.printEmpower = cardProps.printEmpower ?? true;
     this.hpCost = cardProps.hpCost ?? 0;
     this.empathized = cardProps.empathized ?? false;
   }
@@ -93,7 +105,18 @@ export default class Card implements CardProps {
     const empoweredEffects: string[] = this.effects.map(
       (effect) => `**${this.calculateEffectValue(effect).toFixed(2)}**`
     );
-    return this.description(empoweredEffects);
+
+    let description = this.description(empoweredEffects);
+
+    if (this.hpCost && !this.cardMetadata.hideHpCost) {
+      description = `HP-${this.hpCost}. ${description}`;
+    }
+    if (this.priority && !this.cardMetadata.hidePriority) {
+      const prioritySign = this.priority < 0 ? "-" : "+";
+      description = `Priority${prioritySign}${Math.abs(this.priority)}. ${description}`;
+    }
+
+    return description;
   }
 
   getTitle(): string {
@@ -101,7 +124,7 @@ export default class Card implements CardProps {
       `${this.imitated ? "(Imitated) " : ""}` +
       `${this.empathized ? "(Learned) " : ""}` +
       `${this.title}` +
-      `${this.printEmpower ? ` + ${this.empowerLevel}` : ""}`
+      `${this.cardMetadata.hideEmpower !== true ? ` + ${this.empowerLevel}` : ""}`
     );
   }
 

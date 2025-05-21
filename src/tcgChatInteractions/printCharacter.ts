@@ -1,3 +1,4 @@
+import { formatAbility } from "@src/tcg/ability";
 import Character from "@tcg/character";
 import { statDetails } from "@tcg/formatting/emojis";
 import { ProgressBarBuilder } from "@tcg/formatting/percentBar";
@@ -7,10 +8,12 @@ export const printCharacter = (
   character: Character,
   obfuscateInformation: boolean
 ): string => {
+  const meta = character.additionalMetadata;
+
   const printStack: string[] = [];
   const charStat = character.stats.stats;
   let hpInfo: string;
-  if (character.additionalMetadata.manaSuppressed && obfuscateInformation) {
+  if (meta.manaSuppressed && obfuscateInformation) {
     hpInfo = "?? / ??";
   } else {
     const healthbar = new ProgressBarBuilder()
@@ -20,6 +23,8 @@ export const printCharacter = (
       .build();
     hpInfo = `${charStat.HP}/${character.initialStats.stats.HP} ${healthbar.barString}`;
   }
+  const activePileCount = character.deck.activePile.length;
+  const discardPileCount = character.deck.discardPile.length;
   const lines = [
     `# ${character.name} (${character.characterUser.displayName}) [⠀](${character.cosmetic.imageUrl})`,
     `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
@@ -27,24 +32,47 @@ export const printCharacter = (
     `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${charStat.DEF}`,
     `- ${statDetails[StatsEnum.SPD].emoji} **SPD**: ${charStat.SPD}`,
     `- ${statDetails[StatsEnum.Ability].emoji} **Ability**: ${character.ability.abilityName} - ${charStat.Ability}`,
-    `  - ${character.ability.abilityEffectString}`,
+    `  - ${formatAbility(character.ability)}`,
+    `**Active Pile:** ${activePileCount} Card${activePileCount > 1 ? "s" : ""}     **Discard Pile:** ${discardPileCount} Card${discardPileCount > 1 ? "s" : ""}`,
   ];
   printStack.push(lines.join("\n"));
-  if (character.additionalMetadata.manaSuppressed) {
+
+  const statuses: string[] = [];
+  const [sleepyCount, mesmerizedCount, weakenedCount] = character.hand.reduce(
+    (acc, card) => {
+      if (card.title === "Sleepy") acc[0]++;
+      else if (card.title === "Mesmerized") acc[1]++;
+      else if (card.title === "Weakened") acc[2]++;
+      return acc;
+    },
+    [0, 0, 0]
+  );
+  if (sleepyCount > 0) {
+    statuses.push(`**Sleepy**: ${sleepyCount}`);
+  }
+  if (mesmerizedCount > 0) {
+    statuses.push(`**Mesmerized**: ${mesmerizedCount}`);
+  }
+  if (weakenedCount > 0) {
+    statuses.push(`**Weakened**: ${weakenedCount}`);
+  }
+  if (statuses.length > 0) {
+    printStack.push(statuses.join(", "));
+  }
+
+  if (meta.manaSuppressed) {
     printStack.push(
       `**Mana Suppression**: ${character.name} suppresses ${character.cosmetic.pronouns.possessive} mana - ${character.cosmetic.pronouns.possessive} HP is hidden.`
     );
   }
-  if (character.additionalMetadata.senseTeaTimeStacks) {
-    printStack.push(
-      `**Tea Time Snacks**: ${character.additionalMetadata.senseTeaTimeStacks}`
-    );
+  if (meta.senseTeaTimeStacks) {
+    printStack.push(`**Tea Time Snacks**: ${meta.senseTeaTimeStacks}`);
   }
-  if (
-    character.additionalMetadata.fernBarrage &&
-    character.additionalMetadata.fernBarrage > 0
-  ) {
-    printStack.push(`**Barrage**: ${character.additionalMetadata.fernBarrage}`);
+  if (meta.fernBarrage && meta.fernBarrage > 0) {
+    printStack.push(`**Barrage**: ${meta.fernBarrage}`);
+  }
+  if (meta.forcedDiscards > 0) {
+    printStack.push(`**Forced Discards**: ${meta.forcedDiscards}`);
   }
   if (character.timedEffects.length > 0) {
     printStack.push(`**Timed effects:**`);

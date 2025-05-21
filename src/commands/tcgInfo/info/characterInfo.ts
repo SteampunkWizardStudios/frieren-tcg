@@ -14,6 +14,7 @@ import Card from "@tcg/card";
 import { handleCharacterSelection } from "@src/tcgChatInteractions/handleCharacterSelection";
 import { getPlayer } from "@src/util/db/getPlayer";
 import { getPlayerPreferences } from "@src/util/db/preferences";
+import { formatAbility } from "@src/tcg/ability";
 
 export async function showCharacterInfo(
   interaction: ChatInputCommandInteraction
@@ -56,10 +57,15 @@ export async function showCharacterInfo(
 
           const { selectedCharacter: char } = await handleCharacterSelection(
             i,
-            preferences
+            preferences,
+            characterDropdown.characterListUsed
           );
 
           // Create new embed for the selected character
+          const deckSize = char.cards.reduce(
+            (sum, { count }) => sum + count,
+            0
+          );
           const characterEmbed = new EmbedBuilder()
             .setColor(char.cosmetic.color)
             .setTitle(`${char.cosmetic.emoji} ${char.name}`)
@@ -77,10 +83,10 @@ export async function showCharacterInfo(
               },
               {
                 name: `Ability: ${char.ability.abilityName}`,
-                value: `${char.ability.abilityEffectString}`,
+                value: formatAbility(char.ability),
               },
               {
-                name: `Deck: 16 Cards`,
+                name: `Deck: ${deckSize} Cards`,
                 value: "",
               }
             )

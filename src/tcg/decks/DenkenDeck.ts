@@ -31,7 +31,6 @@ const a_jab = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
-      hpCost: 0,
     });
   },
 });
@@ -62,7 +61,6 @@ const a_hook = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
-      hpCost: 0,
     });
   },
 });
@@ -98,7 +96,6 @@ const a_uppercut = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: 0,
     });
   },
 });
@@ -107,7 +104,7 @@ export const bareHandedBlock = new Card({
   title: "Bare-handed Block",
   cardMetadata: { nature: Nature.Defense },
   description: ([def, tempDef]) =>
-    `Priority+2. DEF+${def}. Increases DEF by an additional ${tempDef} until the end of the turn.`,
+    `DEF+${def}. Increases DEF by an additional ${tempDef} until the end of the turn.`,
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [2, 8],
@@ -146,9 +143,10 @@ export const a_waldgoseBase = new Card({
   title: "Tornado Winds: Waldgose",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg, multiDmg]) =>
-    `HP-7. DMG ${dmg}. At the next 3 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
+    `DMG ${dmg}. At the next 3 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [6, 2],
+  hpCost: 7,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364217876323500123/GIF_0112106003.gif?ex=6808de67&is=68078ce7&hm=53339631d41657c84bff7858a0d4ca127e5dd726db694b68d34f5d833a75c8ba&",
@@ -175,29 +173,21 @@ export const a_waldgoseBase = new Card({
       const initialDamage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: initialDamage,
-        hpCost: 7,
       });
 
       const multiDamage = this.calculateEffectValue(this.effects[1]);
+      const damage = this.cardMetadata?.waldgoseDamage ?? multiDamage;
+
       character.timedEffects.push(
         new TimedEffect({
           name: "Tornado Winds: Waldgose",
-          description: `Deal ${this.tags?.WaldgoseDamage ?? multiDamage} at each turn's end.`,
+          description: `Deal ${damage} at each turn's end.`,
           turnDuration: 3,
-          tags: { WaldgoseDamage: multiDamage },
           endOfTurnAction: function (this, game, characterIndex) {
             messageCache.push("The wind rages on!", TCGThread.Gameroom);
 
-            let waldgoseDmg: number;
-            if (this.tags?.WaldgoseDamage) {
-              waldgoseDmg = this.tags.WaldgoseDamage;
-            } else {
-              waldgoseDmg = multiDamage;
-            }
-
             CommonCardAction.commonAttack(game, characterIndex, {
-              damage: waldgoseDmg,
-              hpCost: 0,
+              damage: damage,
               isTimedEffectAttack: true,
             });
           },
@@ -232,9 +222,10 @@ export const a_daosdorgBase = new Card({
   title: "Hellfire: Daosdorg",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg, waldgoseDmgBonus, oppDefDebuff]) =>
-    `HP-9. DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus} and reduce Opponent's DEF by ${oppDefDebuff}. Treat this card as "Hook" if the user's HP is <= 0.`,
+    `DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus} and reduce Opponent's DEF by ${oppDefDebuff}. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [12, 3, 1],
+  hpCost: 9,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364218009102581871/GIF_4214490964.gif?ex=6808de87&is=68078d07&hm=dedf596f960aafe344c5eedec122d4dbd54c3b5c6f8b002b3cae75da891fdedf&",
@@ -260,14 +251,13 @@ export const a_daosdorgBase = new Card({
 
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: this.calculateEffectValue(this.effects[0]),
-        hpCost: 9,
       });
 
       let hasWaldgose: boolean = false;
 
       for (const timedEffect of character.timedEffects) {
-        if ("WaldgoseDamage" in timedEffect.tags) {
-          timedEffect.tags.WaldgoseDamage += this.calculateEffectValue(
+        if (timedEffect.metadata.waldgoseDamage) {
+          timedEffect.metadata.waldgoseDamage += this.calculateEffectValue(
             this.effects[1]
           );
           hasWaldgose = true;
@@ -313,9 +303,10 @@ export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
   cardMetadata: { nature: Nature.Attack, signature: true },
   description: ([dmg, multiDmg]) =>
-    `HP-15. DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
+    `DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [9, 3],
+  hpCost: 15,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364218121669316608/GIF_1295476803.gif?ex=6808dea2&is=68078d22&hm=bdc2fd9b990ddf12a7cb0d6ad7b24dca2a24203773cd3896f0c53681dad85ed9&",
@@ -342,7 +333,6 @@ export const a_catastraviaBase = new Card({
       const initialDamage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: initialDamage,
-        hpCost: 15,
       });
 
       const multiDamage = this.calculateEffectValue(this.effects[1]);
@@ -358,7 +348,6 @@ export const a_catastraviaBase = new Card({
             );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage: multiDamage,
-              hpCost: 0,
               isTimedEffectAttack: true,
             });
           },
@@ -393,7 +382,7 @@ const elementaryDefensiveMagicBase = new Card({
   title: "Elementary Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
+    `Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [20],
@@ -429,7 +418,7 @@ export const elementaryDefensiveMagic = new Card({
   title: "Elementary Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
+    `Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [20],
@@ -455,9 +444,10 @@ export const elementaryDefensiveMagic = new Card({
 export const a_concentratedOffensiveMagicZoltraak = new Card({
   title: "Concentrated Offensive Magic: Zoltraak",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-8. DMG ${dmg}.`,
+  description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [14],
+  hpCost: 8,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -470,7 +460,6 @@ export const a_concentratedOffensiveMagicZoltraak = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: 8,
     });
   },
 });

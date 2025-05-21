@@ -81,10 +81,20 @@ export default class Character {
     if (handIndex < this.hand.length) {
       const discardedCard = this.hand.splice(handIndex, 1)[0];
       this.deck.discardCard(discardedCard);
-      this.messageCache.push(
-        `Discarded ${discardedCard.title} + ${discardedCard.empowerLevel}`,
-        this.characterThread
-      );
+
+      const pushDiscardMessage = (message: string) => {
+        this.messageCache.push(message, this.characterThread);
+        if (this.additionalMetadata.publicDiscards) {
+          this.messageCache.push(
+            `${this.name}: ${message}`,
+            TCGThread.Gameroom
+          );
+        }
+      };
+
+      const discardMessage = `Discarded ${discardedCard.title} + ${discardedCard.empowerLevel}`;
+      pushDiscardMessage(discardMessage);
+
       return discardedCard;
     } else {
       throw new Error("index given greater than hand's length.");

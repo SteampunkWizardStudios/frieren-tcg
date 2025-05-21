@@ -2,6 +2,7 @@ import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { characterNameToEmoji } from "@tcg/formatting/emojis";
 import { ColorResolvable, EmbedBuilder } from "discord.js";
 import { rankEmotes } from "@src/util/formatting/statsEmotes";
+import { getWinrate } from "@src/util/utils";
 
 function getRankString(rank: number, id: string): string {
   const hasRankEmotes = rank in rankEmotes;
@@ -14,7 +15,7 @@ function getRankString(rank: number, id: string): string {
 }
 
 export default function leaderboardEmbed(props: {
-  idsToPoints: { id: string; points: number }[];
+  idsToPoints: { id: string; points: number; wins?: number; losses?: number }[];
   leaderboard: string;
   isCharacterLeaderboard: boolean;
   page?: number;
@@ -37,9 +38,11 @@ export default function leaderboardEmbed(props: {
   const leaderboardTitle = `${charEmoji}${leaderboard} Ranked Global Leaderboard`;
 
   const userLines = idsToPoints.map((idtoPoint, index) => {
-    const { id, points } = idtoPoint;
+    const { id, points, wins, losses } = idtoPoint;
+    const winRate = wins && losses ? getWinrate(wins, losses).winrate : null;
+    const wrLine = winRate ? ` (${winRate}% WR)` : "";
     const rank = index + 1 + (page - 1) * pageSize;
-    return `${getRankString(rank, id)}: ${points} pts`;
+    return `${getRankString(rank, id)}: ${points} pts${wrLine}`;
   });
 
   return new EmbedBuilder()

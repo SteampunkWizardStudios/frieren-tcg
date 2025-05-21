@@ -6,6 +6,7 @@ import { GameMessageContext } from "@tcg/gameContextProvider";
 export type Ability = {
   abilityName: string;
   abilityEffectString: string;
+  subAbilities?: { name: string; description: string }[];
   abilityStartOfTurnEffect?: (
     game: Game,
     characterIndex: number,
@@ -68,3 +69,14 @@ export type Ability = {
     additionalParam?: Record<any, any>
   ) => void;
 };
+
+export function formatAbility(ability: Ability) {
+  return `${ability.abilityEffectString}${
+    ability.subAbilities && ability.subAbilities.length > 0
+      ? "\n\n" +
+        ability.subAbilities
+          .map((sub) => `**Sub-Ability -  ${sub.name}** - ${sub.description}`)
+          .join("\n")
+      : ""
+  }`;
+}

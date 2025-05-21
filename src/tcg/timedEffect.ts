@@ -1,5 +1,6 @@
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import Game from "@tcg/game";
+import { TimedEffectContext } from "./gameContextProvider";
 
 export interface TimedEffectProps {
   name: string;
@@ -8,8 +9,7 @@ export interface TimedEffectProps {
   activateEndOfTurnActionThisTurn?: boolean;
   executeEndOfTimedEffectActionOnRemoval?: boolean;
   priority?: number;
-  tags?: Record<string, number>;
-  metadata?: Partial<TimedEffectMetadata>;
+  metadata?: TimedEffectMetadata;
   // TODO: change to a GameContext arg
   endOfTurnAction?: (
     game: Game,
@@ -28,14 +28,25 @@ export interface TimedEffectProps {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  executeAfterCardRolls?: (
+    context: TimedEffectContext
+  ) => void;
 }
 
 type TimedEffectMetadata = {
   removableBySorganeil?: boolean;
   waldgoseDamage?: number;
   barrage?: number;
-  partyMember?: "Frieren" | "Eisen" | "Heiter";
+
+  frieren?: boolean;
+  eisen?: boolean;
+  heiter?: boolean;
+
   ubelSpeedModifiers?: number;
+};
+
+const defaultMetadata: TimedEffectMetadata = {
+  removableBySorganeil: true,
 };
 
 export default class TimedEffect {
@@ -46,10 +57,6 @@ export default class TimedEffect {
   activateEndOfTurnActionThisTurn: boolean;
   executeEndOfTimedEffectActionOnRemoval: boolean;
   metadata: TimedEffectMetadata;
-  /**
-   * @deprecated use {@link TimedEffect.metadata} instead
-   */
-  tags: Record<string, number>;
   // TODO: change to a GameContext arg
   endOfTurnAction?: (
     game: Game,
@@ -67,6 +74,9 @@ export default class TimedEffect {
     game: Game,
     characterIndex: number,
     messageCache: MessageCache
+  ) => void;
+  executeAfterCardRolls?: (
+    context: TimedEffectContext
   ) => void;
 
   constructor(props: TimedEffectProps) {
@@ -78,11 +88,15 @@ export default class TimedEffect {
       props.activateEndOfTurnActionThisTurn ?? true;
     this.executeEndOfTimedEffectActionOnRemoval =
       props.executeEndOfTimedEffectActionOnRemoval ?? false;
-    this.metadata = props.metadata ?? {};
-    this.tags = props.tags ?? {};
+
+    this.metadata = {
+      ...defaultMetadata,
+      ...props.metadata,
+    };
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
     this.replacedAction = props.replacedAction;
+    this.executeAfterCardRolls = props.executeAfterCardRolls;
   }
 
   passTurn() {

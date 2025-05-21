@@ -9,10 +9,10 @@ import { a_malevolentShrine } from "./utilDecks/ubelSignature";
 
 export const empathyFailureName = "Stalking";
 
-export const a_reelseiden = new Card({
+export const a_shallowSlash = new Card({
   title: "Shallow Slash",
   description: ([dmg, atkSpd]) =>
-    `HP-4. DMG ${dmg}. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
+    `DMG ${dmg}. If used by Übel, has a 20% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [8, 2],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 20 },
@@ -27,7 +27,6 @@ export const a_reelseiden = new Card({
   ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
       `${character.name} slashed at ${opponent.name}!`,
       TCGThread.Gameroom
@@ -35,8 +34,8 @@ export const a_reelseiden = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: this.hpCost,
-      pierceFactor: pierceFactor,
+      additionalPierceFactor:
+        character.additionalMetadata.ubelSlashMovesPierceFactor,
     });
   },
 });
@@ -44,7 +43,7 @@ export const a_reelseiden = new Card({
 export const a_cleave = new Card({
   title: "Cleave",
   description: ([dmg, atkSpd]) =>
-    `HP-6. DMG ${dmg}. If used by Übel,has a 40% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
+    `DMG ${dmg}. If used by Übel,has a 40% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [12, 3],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 40 },
@@ -58,13 +57,12 @@ export const a_cleave = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(`A brutal slash!`, TCGThread.Gameroom);
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: this.hpCost,
-      pierceFactor: pierceFactor,
+      additionalPierceFactor:
+        character.additionalMetadata.ubelSlashMovesPierceFactor,
     });
   },
 });
@@ -72,7 +70,7 @@ export const a_cleave = new Card({
 export const a_dismantle = new Card({
   title: "Dismantle",
   description: ([dmg, atkSpd]) =>
-    `HP-8. DMG ${dmg}. If used by Übel, has a 60% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
+    `DMG ${dmg}. If used by Übel, has a 60% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [16, 4],
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 60 },
@@ -87,7 +85,6 @@ export const a_dismantle = new Card({
   ) {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
-    const pierceFactor = (character.additionalMetadata.pierceFactor ??= 0);
     messageCache.push(
       `${character.name} tries to cut ${opponent.name} into pieces!`,
       TCGThread.Gameroom
@@ -95,8 +92,8 @@ export const a_dismantle = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: this.hpCost,
-      pierceFactor: pierceFactor,
+      additionalPierceFactor:
+        character.additionalMetadata.ubelSlashMovesPierceFactor,
     });
   },
 });
@@ -134,7 +131,7 @@ export const rushdown = new Card({
         name: "Rushdown",
         description: `Increases SPD by ${spdIncrease} for ${turnCount} turns. Attacks will not miss`,
         turnDuration: turnCount,
-        tags: { ubelSpeedModifiers: 1 },
+        metadata: { ubelSpeedModifiers: 1 },
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
@@ -191,7 +188,7 @@ const slowdown = new Card({
         name: "Recompose",
         description: `Decreases SPD by 10 for ${turnCount} turns. Attacks will not hit. Heal ${endOfTurnHpIncrease} at turn end.`,
         turnDuration: turnCount,
-        tags: { ubelSpeedModifiers: 1 },
+        metadata: { ubelSpeedModifiers: 1 },
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
@@ -219,8 +216,7 @@ const slowdown = new Card({
 export const defend = new Card({
   title: "Defend",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [20],
   priority: 2,
@@ -259,7 +255,7 @@ export const sorganeil = new Card({
   title: "Sorganeil",
   cardMetadata: { nature: Nature.Util },
   description: () =>
-    `Priority-2. Will fail if the opponent's SPD is higher than your SPD by 35 or more. Set opponent's SPD to 1. Clear opponent's timed effects. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
+    `Will fail if the opponent's SPD is higher than your SPD by 35 or more. Set opponent's SPD to 1. Clear opponent's timed effects. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
   emoji: CardEmoji.UBEL_CARD,
   priority: -2,
   effects: [],
@@ -283,8 +279,8 @@ export const sorganeil = new Card({
     }
 
     opponent.skipTurn = true;
-    const opponentOriginalSpeed = opponent.stats.stats.SPD;
-    opponent.setStat(1, StatsEnum.SPD);
+    const opponentOriginalSpeedDiff = opponent.stats.stats.SPD - 1;
+    opponent.adjustStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD);
     messageCache.push(
       `${character.name} traps ${opponent.name} in ${character.cosmetic.pronouns.possessive} gaze!`,
       TCGThread.Gameroom
@@ -320,7 +316,7 @@ export const sorganeil = new Card({
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze. ${opponent.name} got free from ${character.name}'s Sorganeil.`,
             TCGThread.Gameroom
           );
-          opponent.setStat(opponentOriginalSpeed, StatsEnum.SPD);
+          opponent.adjustStat(opponentOriginalSpeedDiff, StatsEnum.SPD);
         },
       })
     );
@@ -368,7 +364,7 @@ export const empathy = new Card({
 });
 
 const ubelDeck = [
-  { card: a_reelseiden, count: 3 },
+  { card: a_shallowSlash, count: 3 },
   { card: a_cleave, count: 2 },
   { card: a_dismantle, count: 2 },
   { card: a_malevolentShrine, count: 1 },

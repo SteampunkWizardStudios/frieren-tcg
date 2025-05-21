@@ -65,6 +65,11 @@ export const buildChallengeButtonRespond = async (
         inline: true,
       },
       {
+        name: "Goddess Mode",
+        value: gameSettings.goddessMode ? "Yes" : "No",
+        inline: true,
+      },
+      {
         name: "Text Speed",
         value: `${textSpeedMs}ms`,
         inline: true,
@@ -152,10 +157,14 @@ export const buildChallengeButtonRespond = async (
         const timeoutEmbed =
           EmbedBuilder.from(embed).setDescription(timeoutMessage);
 
-        await interaction.editReply({
-          embeds: [timeoutEmbed],
-          components: [],
-        });
+        try {
+          await interaction.editReply({
+            embeds: [timeoutEmbed],
+            components: [],
+          });
+        } catch {
+          collector.stop("Failed to edit message");
+        }
       }
     });
   }

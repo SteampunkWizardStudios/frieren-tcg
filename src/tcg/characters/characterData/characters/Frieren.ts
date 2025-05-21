@@ -9,15 +9,10 @@ import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
+import mediaLinks from "@src/tcg/formatting/mediaLinks";
 
 const ANALYSIS_BOOST = 0.05;
 const ANALYSIS_STACK_CAP = 20;
-
-const imageUrl: Record<string, string> = {
-  icon: "https://media.discordapp.net/attachments/1346555621952192522/1347399695521026109/Frieren_anime_portrait.webp?ex=67dcd2c0&is=67db8140&hm=0b5f32d66153c8b41d2817170b41b7562e6ef607e9efb1abc220fe5905b7bd77&=&format=webp&width=600&height=600",
-  vangerisuCardVer:
-    "https://cdn.discordapp.com/attachments/1351391350398128159/1355588253721297007/Frieren_Card_2.png?ex=67e97971&is=67e827f1&hm=84a89d623d2339ff4ff198d0955843a692a39a9154aeee00e03f027eea19e2e6&",
-};
 
 const frierenStats = new Stats({
   [StatsEnum.HP]: 100.0,
@@ -42,7 +37,7 @@ const Frieren = new CharacterData({
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FRIEREN,
     color: 0xc5c3cc,
-    imageUrl: imageUrl.vangerisuCardVer,
+    imageUrl: mediaLinks.frierenVangerisuCard,
   },
   stats: frierenStats,
   cards: frierenDeck,
@@ -52,10 +47,17 @@ const Frieren = new CharacterData({
         Whenever an "Analysis" move is used, gain 2 Analysis stacks.
         When an attack is used, its damage is increased by ${(ANALYSIS_BOOST * 100).toFixed(2)}% * the number of Analysis stacks.
         After an attack is used, Analysis stacks is reset to 0.
-        A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.
-
-        **Sub-Ability: Mana Suppression** - Hide the amount of HP this character has.
-        **Sub-Ability: Flamme's Teachings** - See past the opponent's Mana Suppression.`,
+        A maximum of ${ANALYSIS_STACK_CAP} Analysis stacks can be held at any time.`,
+    subAbilities: [
+      {
+        name: "Mana Suppression",
+        description: "Hide the amount of HP this character has.",
+      },
+      {
+        name: "Flamme's Teachings",
+        description: "See past the opponent's Mana Suppression.",
+      },
+    ],
     abilityAfterOwnCardUse: function (
       game: Game,
       characterIndex: number,
@@ -63,18 +65,19 @@ const Frieren = new CharacterData({
       card: Card
     ) {
       const character = game.getCharacter(characterIndex);
-      if ("Analysis" in card.tags) {
-        character.adjustStat(card.tags["Analysis"], StatsEnum.Ability);
+      if (card.cardMetadata.analysis) {
+        character.adjustStat(card.cardMetadata.analysis, StatsEnum.Ability);
         if (character.stats.stats.Ability > ANALYSIS_STACK_CAP) {
           character.setStat(ANALYSIS_STACK_CAP, StatsEnum.Ability);
         }
       }
 
-      if ("PostAnalysis" in card.tags) {
+      const postAnalysis = card.cardMetadata.postAnalysis;
+      if (postAnalysis) {
         character.timedEffects.push(
           new TimedEffect({
             name: "Post Analysis",
-            description: `At this turn's resolution, gain ${card.tags["PostAnalysis"]} Analysis stack.`,
+            description: `At this turn's resolution, gain ${postAnalysis} Analysis stack.`,
             turnDuration: 1,
             metadata: { removableBySorganeil: false },
             endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
@@ -83,7 +86,7 @@ const Frieren = new CharacterData({
                 TCGThread.Gameroom
               );
               character.adjustStat(
-                card.tags["PostAnalysis"],
+                postAnalysis,
                 StatsEnum.Ability
               );
             },

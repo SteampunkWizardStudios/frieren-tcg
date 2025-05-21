@@ -34,7 +34,7 @@ const madness = new Card({
 const earPiercingScream = new Card({
   title: "Ear Piercing Scream",
   cardMetadata: { nature: Nature.Util },
-  description: ([def]) => `HP-2. Opponent's DEF-${def}.`,
+  description: ([def]) => `Opponent's DEF-${def}.`,
   emoji: CardEmoji.ENERGY,
   effects: [3],
   cardAction: function (
@@ -84,7 +84,7 @@ export const solitude = new Card({
 export const a_curse = new Card({
   title: "Curse",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-11. DMG ${dmg} at turn end for 5 turns.`,
+  description: ([dmg]) => `DMG ${dmg} at turn end for 5 turns.`,
   emoji: CardEmoji.PUNCH,
   effects: [5],
   cardAction: function (
@@ -114,7 +114,6 @@ export const a_curse = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -152,7 +151,7 @@ const guiltTrip = new Card({
 export const a_killingMagic = new Card({
   title: "Killing Magic",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-10. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.PUNCH,
   effects: [15],
   cardAction: function (
@@ -169,9 +168,8 @@ export const a_killingMagic = new Card({
     });
     messageCache.push(randomMessage, TCGThread.Gameroom);
 
-    const character = game.getCharacter(characterIndex);
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 10 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 
@@ -179,7 +177,8 @@ export const a_killingMagic = new Card({
 export const a_solitaryPractice = new Card({
   title: `Solitary Practice`,
   description: ([dmg]) =>
-    `HP-40. At this turn's resolution, strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20. `,
+    `At this turn's resolution, strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20. `,
+  hpCost: 40,
   emoji: CardEmoji.ENERGY,
   effects: [30],
   cardMetadata: { nature: Nature.Attack, signature: true },

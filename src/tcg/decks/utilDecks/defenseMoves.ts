@@ -1,6 +1,7 @@
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import Card from "@tcg/card";
 import { elementaryDefensiveMagic, bareHandedBlock } from "@decks/DenkenDeck";
+import { one_step_ahead } from "@decks/EdelDeck";
 import { commonDefensiveMagic } from "@decks/FernDeck";
 import { ordinaryDefensiveMagic } from "@decks/FrierenDeck";
 import { quickBlock } from "@decks/HimmelDeck";
@@ -14,6 +15,7 @@ import { defend } from "@decks/UbelDeck";
 
 export const defenseMoves: Record<CharacterName, Card[]> = {
   [CharacterName.Denken]: [elementaryDefensiveMagic, bareHandedBlock],
+  [CharacterName.Edel]: [one_step_ahead],
   [CharacterName.Fern]: [commonDefensiveMagic],
   [CharacterName.Frieren]: [ordinaryDefensiveMagic],
   [CharacterName.Himmel]: [quickBlock],

@@ -1,7 +1,7 @@
 import { PlayerPreferences, Character } from "@prisma/client";
 import prismaClient from "@prismaClient";
 import { CharacterData } from "@src/tcg/characters/characterData/characterData";
-import { CHARACTER_LIST } from "@src/tcg/characters/characterList";
+import { VISIBLE_CHARACTERS } from "@src/tcg/characters/characterList";
 
 /**
  * Gets a player's preferences, including their favourite characters.
@@ -179,9 +179,42 @@ export async function removeFavouriteCharacter(
   }
 }
 
+export async function setFavouriteCharacters(
+  playerId: number,
+  favouriteCharacters: Character[]
+) {
+  try {
+    const updatedPreferences = await prismaClient.playerPreferences.upsert({
+      where: { playerId: playerId },
+      create: {
+        playerId: playerId,
+        favouriteCharacters: {
+          connect: favouriteCharacters,
+        },
+      },
+      update: {
+        favouriteCharacters: {
+          set: favouriteCharacters,
+        },
+      },
+      select: {
+        favouriteCharacters: true,
+      },
+    });
+
+    return updatedPreferences;
+  } catch (error) {
+    console.error(
+      `Error setting favourite characters for player ${playerId}:`,
+      error
+    );
+    throw error;
+  }
+}
+
 export async function getSortedCharactersForPlayer(playerId: number): Promise<{
-  favoritedCharacter: CharacterData[];
-  nonFavoritedCharacter: CharacterData[];
+  favouritedCharacter: CharacterData[];
+  nonFavouritedCharacter: CharacterData[];
 }> {
   const playerPreferrences = await getPlayerPreferences(playerId);
   if (
@@ -196,7 +229,7 @@ export async function getSortedCharactersForPlayer(playerId: number): Promise<{
     const favouritedOnly = [];
     const nonFavouritedOnly = [];
 
-    for (const character of CHARACTER_LIST) {
+    for (const character of VISIBLE_CHARACTERS) {
       if (favouritedCharacterNames.has(character.name)) {
         favouritedOnly.push(character);
       } else {
@@ -205,13 +238,13 @@ export async function getSortedCharactersForPlayer(playerId: number): Promise<{
     }
 
     return {
-      favoritedCharacter: favouritedOnly,
-      nonFavoritedCharacter: nonFavouritedOnly,
+      favouritedCharacter: favouritedOnly,
+      nonFavouritedCharacter: nonFavouritedOnly,
     };
   } else {
     return {
-      favoritedCharacter: [],
-      nonFavoritedCharacter: CHARACTER_LIST,
+      favouritedCharacter: [],
+      nonFavouritedCharacter: VISIBLE_CHARACTERS,
     };
   }
 }
