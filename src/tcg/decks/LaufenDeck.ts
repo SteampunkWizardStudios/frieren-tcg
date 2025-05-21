@@ -186,7 +186,7 @@ export const parry = new Card({
   ) {
     sendToGameroom(`${name} switched to a parrying stance!`);
     selfStat(0, StatsEnum.DEF);
-    const tempDef = calcEffect(1);
+    const tempDef = calcEffect(0);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -221,7 +221,7 @@ export const jilwer = new Card({
     const turnCount = 2;
     sendToGameroom(`${name} cast Jilwer!`);
     selfStat(0, StatsEnum.SPD);
-    const tempSpd = calcEffect(1);
+    const tempSpd = calcEffect(0);
 
     self.timedEffects.push(
       new TimedEffect({
