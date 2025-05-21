@@ -159,8 +159,7 @@ export const mock = new Card({
 export const basicDefensiveMagic = new Card({
   title: "Basic Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -196,7 +195,7 @@ export const unbreakableBarrier = new Card({
   title: "Unbreakable Barrier",
   cardMetadata: { nature: Nature.Util },
   description: ([atk, def, oppSpd]) =>
-    `HP-5. HP-2 at the end of the next 5 turns. ATK+${atk}, DEF+${def} and Opponent's SPD-${oppSpd} for 5 turns.`,
+    `HP-2 at the end of the next 5 turns. ATK+${atk}, DEF+${def} and Opponent's SPD-${oppSpd} for 5 turns.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:

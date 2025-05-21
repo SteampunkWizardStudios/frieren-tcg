@@ -33,9 +33,13 @@ const Stille = new CharacterData({
     abilityName: "High-speed Escape",
     abilityEffectString: `When the opponent attacks, roll a D100. 
         If the result is less than the character's SPD minus the opponent's SPD, ignore the attack.
-        Afterwards, attack the opponent with DMG equivalent to ${(STILLE_REFLECT_SCALE * 100).toFixed(0)}% of (opponent's ATK + opponent's move DMG).
-        
-        **Sub-Ability: Birdwatching** - Both characters don't have access to default card options (Discard/Wait).`,
+        Afterwards, attack the opponent with DMG equivalent to ${(STILLE_REFLECT_SCALE * 100).toFixed(0)}% of (opponent's ATK + opponent's move DMG).`,
+    subAbilities: [
+      {
+        name: "Birdwatching",
+        description: `Both characters don't have access to default card options (Discard/Wait).`,
+      },
+    ],
     abilityStartOfTurnEffect: (
       game,
       characterIndex,

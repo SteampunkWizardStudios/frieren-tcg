@@ -61,7 +61,6 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -71,7 +70,7 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
       })
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 
@@ -123,7 +122,6 @@ const a_FrierenBackMeUp = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -138,7 +136,7 @@ const a_FrierenBackMeUp = new Card({
       })
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 
@@ -187,7 +185,7 @@ export const a_FrierenNow = new Card({
       })
     );
 
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 
@@ -248,7 +246,6 @@ const a_EisenTheEnemysOpen = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -303,7 +300,6 @@ const a_EisenCoverMyBack = new Card({
         );
         CommonCardAction.commonAttack(game, characterIndex, {
           damage: counterDmg,
-          hpCost: 0,
         });
         character.additionalMetadata.himmelEisenReadyToCounter = false;
       }
@@ -494,7 +490,6 @@ const a_heiterThreeSpears = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -565,10 +560,9 @@ const heiterTrustYou = new Card({
 export const quickBlock = new Card({
   title: "Quick Block",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+3. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  priority: 3,
+  priority: 2,
   effects: [20],
   cardAction: function (
     this: Card,
@@ -636,7 +630,7 @@ const rally = new Card({
 export const a_extremeSpeed = new Card({
   title: "Extreme Speed",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `Priority+1. HP-8. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 1,
   effects: [12],
@@ -658,17 +652,17 @@ export const a_extremeSpeed = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
 
 export const a_realHeroSwing = new Card({
   title: "A Real Hero's Swing",
-  description: ([dmg]) => `HP-12. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [18],
+  hpCost: 12,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361777461620248576/GIF_1092034222.gif?ex=6807e697&is=68069517&hm=853f7d8910a4ab79010685a4399cd55c0af1f343295e0b2e04c49f829b54eee7&",
@@ -685,7 +679,7 @@ export const a_realHeroSwing = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 12 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 

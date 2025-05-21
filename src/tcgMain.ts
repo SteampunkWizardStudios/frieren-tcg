@@ -20,8 +20,13 @@ import { printCharacter } from "./tcgChatInteractions/printCharacter";
 import TimedEffect from "@tcg/timedEffect";
 import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
-import { gameAndMessageContext } from "@tcg/gameContextProvider";
+import {
+  gameAndMessageContext,
+  timedEffectContext,
+} from "@tcg/gameContextProvider";
 import { CharacterSelectionType } from "./tcgChatInteractions/handleCharacterSelection";
+import goddessDeck from "@decks/utilDecks/goddessDeck";
+import { StatsEnum } from "@tcg/stats";
 
 const TURN_LIMIT = 50;
 
@@ -110,16 +115,28 @@ export const tcgMain = async (
     [TCGThread.OpponentThread]: opponentThread,
   };
 
+  const challengerChar = challengerSelection.char.clone();
+  const opponentChar = opponentSelection.char.clone();
+
+  if (gameSettings.goddessMode) {
+    [challengerChar, opponentChar].forEach((selection) => {
+      selection.cards = goddessDeck.map((card) => ({
+        card: card.clone(),
+        count: 1,
+      }));
+    });
+  }
+
   const game = new Game(
     [
       new Character({
-        characterData: challengerSelection.char.clone(),
+        characterData: challengerChar,
         messageCache: messageCache,
         characterUser: challenger,
         characterThread: TCGThread.ChallengerThread,
       }),
       new Character({
-        characterData: opponentSelection.char.clone(),
+        characterData: opponentChar,
         messageCache: messageCache,
         characterUser: opponent,
         characterThread: TCGThread.OpponentThread,
@@ -236,6 +253,20 @@ export const tcgMain = async (
           index
         );
         characterToPlayableMoveMap[index] = currUsableCards;
+
+        // executeAfterCardRolls, but before display to ensure the player sees the effects
+        game.characters.forEach((char, index) => {
+          char.timedEffects.forEach((timedEffect) => {
+            if (timedEffect.executeAfterCardRolls) {
+              console.log(
+                `Executing timed effect ${timedEffect.name} for ${char.name} after card rolls`
+              );
+              const context = timedEffectContext(game, index, messageCache);
+              timedEffect.executeAfterCardRolls(context);
+            }
+          });
+        });
+
         await sendToThread(
           messageCache.flush(useChannel),
           useChannel,
@@ -337,6 +368,11 @@ export const tcgMain = async (
       characterToSelectedMoveMap[1] = opponentSelectedMove;
     }
 
+    // set the selected moves for each character to be used as metadata
+    Object.entries(characterToSelectedMoveMap).forEach(([key, value]) => {
+      game.characters[Number(key)].additionalMetadata.selectedCard = value;
+    });
+
     // move resolution step
     game.characters.forEach((character: Character, characterIndex: number) => {
       character.ability.abilitySelectedMoveModifierEffect?.(
@@ -376,6 +412,12 @@ export const tcgMain = async (
             messageCache,
             characterIndex
           );
+
+          // use hpCost
+          if (card.hpCost) {
+            character.adjustStat(-card.hpCost, StatsEnum.HP);
+          }
+
           if (character.ability.abilityOwnCardEffectWrapper) {
             character.ability.abilityOwnCardEffectWrapper(context, card);
           } else {
@@ -422,6 +464,23 @@ export const tcgMain = async (
         TCGThread.Gameroom
       );
     }
+
+    // run effects for unplayed playable cards
+    game.characters.forEach((_, index) => {
+      const playableCards = Object.values(characterToPlayableMoveMap[index]);
+      const selectedCard = characterToSelectedMoveMap[index];
+      playableCards.forEach((card) => {
+        if (card !== selectedCard && card.onNotPlayed) {
+          const context = gameAndMessageContext.call(
+            card,
+            game,
+            messageCache,
+            index
+          );
+          card.onNotPlayed(context);
+        }
+      });
+    });
 
     // end of turn resolution
     // gather timed effects

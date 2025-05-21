@@ -80,7 +80,11 @@ export const getPlayerCharacter = async (
               const player = await getPlayer(i.user.id);
               const preferences = await getPlayerPreferences(player.id);
               const { selectedCharacter, selectionType } =
-                await handleCharacterSelection(i, preferences);
+                await handleCharacterSelection(
+                  i,
+                  preferences,
+                  characterDropdown.characterListUsed
+                );
 
               // Error message if player tried to pick random favourite character when they have no favourited characters
               const errorMessage = `You have no favourite characters. Please add some by using the \`/tcg-preferences toggle-favourite-character\` command.`;

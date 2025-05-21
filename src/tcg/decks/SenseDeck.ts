@@ -8,7 +8,7 @@ export const a_hairWhip = new Card({
   title: "Hair Whip",
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
-    `DEF+${def}. Afterwards, HP-4, DMG ${dmg}+DEF/4.`,
+    `DEF+${def}. Afterwards, HP-4, DMG ${dmg}+DEF/4.`, // No easy way to convey this message while keeping hpCost dynamic
   effects: [3, 7],
   emoji: CardEmoji.PUNCH,
   cardAction: function (
@@ -28,15 +28,16 @@ export const a_hairWhip = new Card({
     selfStat(0, StatsEnum.DEF);
 
     const damage = calcEffect(1) + selfStats.DEF / 4;
-    flatAttack(damage, 4);
+    flatAttack(damage);
   },
 });
 
 export const sharpen = new Card({
   title: "Sharpen",
   cardMetadata: { nature: Nature.Util },
-  description: ([def, atk]) => `HP-1. DEF+${def}. ATK+${atk}.`,
+  description: ([def, atk]) => `DEF+${def}. ATK+${atk}.`,
   effects: [2, 2],
+  hpCost: 1,
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
@@ -44,7 +45,7 @@ export const sharpen = new Card({
   ) {
     sendToGameroom(`${name} sharpened ${possessive} hair drills!`);
 
-    if (self.adjustStat(-1, StatsEnum.HP)) {
+    if (self.adjustStat(this.hpCost * -1, StatsEnum.HP)) {
       selfStat(0, StatsEnum.DEF);
       selfStat(1, StatsEnum.ATK);
     }
@@ -82,8 +83,9 @@ export const a_pierce = new Card({
   title: "Pierce",
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
-    `HP-7. DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
+    `DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
   effects: [2, 10],
+  hpCost: 7,
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
@@ -94,15 +96,14 @@ export const a_pierce = new Card({
     selfStat(0, StatsEnum.DEF);
 
     const damage = calcEffect(1) + selfStats.DEF / 4;
-    flatAttack(damage, 7, 0.25);
+    flatAttack(damage, 0.25);
   },
 });
 
 export const hairBarrier = new Card({
   title: "Hair Barrier",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   effects: [20],
   emoji: CardEmoji.HOURGLASS,
   priority: 2,
@@ -199,8 +200,9 @@ export const teaParty = new Card({
 export const a_piercingDrill = new Card({
   title: "Piercing Drill",
   description: ([dmg]) =>
-    `HP-12. DMG ${dmg} + DEF/3. Pierces through 1/3 of the opponent's defense.`,
+    `DMG ${dmg} + DEF/3. Pierces through 1/3 of the opponent's defense.`,
   effects: [14],
+  hpCost: 12,
   emoji: CardEmoji.PUNCH,
   cardMetadata: { nature: Nature.Attack, signature: true },
   cosmetic: {
@@ -213,7 +215,7 @@ export const a_piercingDrill = new Card({
   ) {
     sendToGameroom(`${name} used a piercing drill!`);
     const damage = calcEffect(0) + selfStats.DEF / 3;
-    flatAttack(damage, 12, 1 / 3);
+    flatAttack(damage, 1 / 3);
   },
 });
 

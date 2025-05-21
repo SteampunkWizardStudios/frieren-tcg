@@ -9,7 +9,7 @@ import { a_curse } from "./CosmicTonDeck";
 const a_shadowImpalement = new Card({
   title: "Shadow Impalement",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-5. DMG ${dmg}.`,
+  description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
   cardAction: function (
@@ -23,7 +23,7 @@ const a_shadowImpalement = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 
@@ -69,7 +69,7 @@ const camouflage = new Card({
 
 export const a_dragonfire = new Card({
   title: `Dragon Fire`,
-  description: ([dmg]) => `HP-10. DMG ${dmg}. Reduces the opponent's DEF to 1.`,
+  description: ([dmg]) => `DMG ${dmg}. Reduces the opponent's DEF to 1.`,
   emoji: CardEmoji.PUNCH,
   effects: [10],
   cardMetadata: { nature: Nature.Attack, signature: true },
@@ -87,7 +87,6 @@ export const a_dragonfire = new Card({
     if (
       CommonCardAction.commonAttack(game, characterIndex, {
         damage,
-        hpCost: 10,
       }) > 0
     ) {
       const opponent = game.getCharacter(1 - characterIndex);

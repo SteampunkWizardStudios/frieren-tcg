@@ -13,6 +13,8 @@ const defaultMetadata: CharacterAdditionalMetadata = {
   timedEffectAttackedThisTurn: false,
   accessToDefaultCardOptions: true,
   defenderDamageScaling: 1,
+  forcedDiscards: 0,
+  hidden: false,
 };
 
 export interface CharacterCosmetic {

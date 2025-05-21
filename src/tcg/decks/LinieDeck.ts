@@ -133,8 +133,7 @@ export const manaDetection = new Card({
 const parry = new Card({
   title: "Parry",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [20],
   priority: 2,
@@ -167,10 +166,11 @@ const parry = new Card({
 
 export const a_erfassenAxe = new Card({
   title: "Erfassen: Axe",
-  description: ([dmg]) => `HP-4. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   cardMetadata: { nature: Nature.Attack },
   effects: [12],
+  hpCost: 4,
   cosmetic: {
     cardGif: "https://c.tenor.com/eUCHN11H4B4AAAAd/tenor.gif",
   },
@@ -185,17 +185,19 @@ export const a_erfassenAxe = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 4 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+    });
   },
 });
 
 export const a_erfassenJavelin = new Card({
   title: "Erfassen: Javelin",
-  description: ([dmg]) =>
-    `HP-3. DMG ${dmg}. Deal ${dmg} at the end of next turn.`,
+  description: ([dmg]) => `DMG ${dmg}. Deal ${dmg} at the end of next turn.`,
   emoji: CardEmoji.LINIE_CARD,
   cardMetadata: { nature: Nature.Attack },
   effects: [5],
+  hpCost: 3,
   cosmetic: {
     cardGif: "https://c.tenor.com/zd9mOGFjT3IAAAAd/tenor.gif",
   },
@@ -210,7 +212,9 @@ export const a_erfassenJavelin = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 3 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+    });
 
     character.timedEffects.push(
       new TimedEffect({
@@ -225,7 +229,6 @@ export const a_erfassenJavelin = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },
@@ -237,9 +240,10 @@ export const a_erfassenJavelin = new Card({
 export const a_erfassenSword = new Card({
   title: "Erfassen: Sword",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `HP-2. DMG ${dmg}`,
+  description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [8],
+  hpCost: 2,
   cosmetic: {
     cardGif: "https://c.tenor.com/f4-8FBCgXg4AAAAd/tenor.gif",
   },
@@ -254,7 +258,9 @@ export const a_erfassenSword = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 2 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+    });
   },
 });
 
@@ -262,9 +268,10 @@ export const a_erfassenKnife = new Card({
   title: "Erfassen: Knife",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-1. DMG ${dmg}. At the end of the next 2 turns, deal ${dmg}.`,
+    `DMG ${dmg}. At the end of the next 2 turns, deal ${dmg}.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [2],
+  hpCost: 1,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -276,7 +283,9 @@ export const a_erfassenKnife = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 1 });
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+    });
 
     character.timedEffects.push(
       new TimedEffect({
@@ -291,7 +300,6 @@ export const a_erfassenKnife = new Card({
           );
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },

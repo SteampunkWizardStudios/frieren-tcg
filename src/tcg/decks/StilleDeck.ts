@@ -22,7 +22,7 @@ const a_peck = new Card({
     self.adjustStat(-2, StatsEnum.SPD);
     self.discardCard(Rolls.rollDAny(5));
     self.drawCard();
-    basicAttack(0, 0);
+    basicAttack(0);
   },
 });
 
@@ -41,7 +41,7 @@ const a_ironFeather = new Card({
     flatSelfStat(-3, StatsEnum.SPD);
     selfStat(0, StatsEnum.DEF);
 
-    basicAttack(1, 0);
+    basicAttack(1);
   },
 });
 
@@ -109,8 +109,7 @@ const roost = new Card({
 export const deflect = new Card({
   title: "Deflect",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [20],
   priority: 2,
@@ -141,7 +140,7 @@ export const deflect = new Card({
 const flyAway = new Card({
   title: "Fly Away",
   cardMetadata: { nature: Nature.Util },
-  description: ([spd]) => `Priority+2. SPD + ${spd} until the end of the turn.`,
+  description: ([spd]) => `SPD + ${spd} until the end of the turn.`,
   emoji: CardEmoji.STILLE_CARD,
   priority: 2,
   effects: [25],
@@ -202,7 +201,6 @@ export const a_geisel = new Card({
           sendToGameroom("The Geisel doesn't stop!");
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage + 15,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },

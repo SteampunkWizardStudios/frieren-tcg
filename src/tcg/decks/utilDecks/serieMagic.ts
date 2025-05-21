@@ -44,7 +44,7 @@ import {
 import {
   a_cleave,
   a_dismantle,
-  a_reelseiden,
+  a_shallowSlash,
   sorganeil,
 } from "@decks/UbelDeck";
 import { a_malevolentShrine } from "./ubelSignature";
@@ -54,7 +54,7 @@ export const serie_offensiveMagic_common = [
   a_whip,
   a_erfassenSword,
   a_trustInYourAllyFrierensZoltraak,
-  a_reelseiden,
+  a_shallowSlash,
   a_fernZoltraak,
   a_erfassenKnife,
 ];

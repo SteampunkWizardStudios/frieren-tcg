@@ -85,6 +85,7 @@ export default class Character {
         `Discarded ${discardedCard.title} + ${discardedCard.empowerLevel}`,
         this.characterThread
       );
+      
       return discardedCard;
     } else {
       throw new Error("index given greater than hand's length.");

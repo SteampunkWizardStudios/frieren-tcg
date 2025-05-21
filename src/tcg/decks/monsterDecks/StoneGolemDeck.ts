@@ -9,7 +9,7 @@ import { a_roomCollapse } from "./StoneGeiselDeck";
 export const a_rockTomb = new Card({
   title: "Rock Tomb",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, spd]) => `HP-3. DMG ${dmg}. Opponent's SPD-${spd}`,
+  description: ([dmg, spd]) => `DMG ${dmg}. Opponent's SPD-${spd}`,
   emoji: CardEmoji.PUNCH,
   effects: [10, 5],
   cardAction: function (
@@ -24,7 +24,7 @@ export const a_rockTomb = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
 
     const spdLoss = this.calculateEffectValue(this.effects[1]);
     opponent.adjustStat(-spdLoss, StatsEnum.SPD);
@@ -35,7 +35,7 @@ const crystalize = new Card({
   title: "Crystalize",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Priority+2. Increases DEF by ${def} for 2 turns. ATK-15 for 2 turns.`,
+    `Increases DEF by ${def} for 2 turns. ATK-15 for 2 turns.`,
   emoji: CardEmoji.SHIELD,
   priority: 2,
   effects: [30],
@@ -75,7 +75,7 @@ const crystalize = new Card({
 const a_crusher = new Card({
   title: "Crusher",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, spd]) => `HP-5. DMG ${dmg}. Opponent's SPD-${spd}.`,
+  description: ([dmg, spd]) => `DMG ${dmg}. Opponent's SPD-${spd}.`,
   emoji: CardEmoji.PUNCH,
   effects: [15, 7],
   cardAction: function (
@@ -90,7 +90,7 @@ const a_crusher = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
 
     opponent.adjustStat(
       -1 * this.calculateEffectValue(this.effects[1]),

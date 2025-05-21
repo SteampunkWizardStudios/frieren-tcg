@@ -1,5 +1,6 @@
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import Game from "@tcg/game";
+import { TimedEffectContext } from "./gameContextProvider";
 
 export interface TimedEffectProps {
   name: string;
@@ -9,7 +10,7 @@ export interface TimedEffectProps {
   executeEndOfTimedEffectActionOnRemoval?: boolean;
   priority?: number;
   tags?: Record<string, number>;
-  metadata?: Partial<TimedEffectMetadata>;
+  metadata?: TimedEffectMetadata;
   // TODO: change to a GameContext arg
   endOfTurnAction?: (
     game: Game,
@@ -28,6 +29,9 @@ export interface TimedEffectProps {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  executeAfterCardRolls?: (
+    context: TimedEffectContext
+  ) => void;
 }
 
 type TimedEffectMetadata = {
@@ -36,6 +40,10 @@ type TimedEffectMetadata = {
   barrage?: number;
   partyMember?: "Frieren" | "Eisen" | "Heiter";
   ubelSpeedModifiers?: number;
+};
+
+const defaultMetadata: TimedEffectMetadata = {
+  removableBySorganeil: true,
 };
 
 export default class TimedEffect {
@@ -68,6 +76,9 @@ export default class TimedEffect {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
+  executeAfterCardRolls?: (
+    context: TimedEffectContext
+  ) => void;
 
   constructor(props: TimedEffectProps) {
     this.name = props.name;
@@ -78,11 +89,16 @@ export default class TimedEffect {
       props.activateEndOfTurnActionThisTurn ?? true;
     this.executeEndOfTimedEffectActionOnRemoval =
       props.executeEndOfTimedEffectActionOnRemoval ?? false;
-    this.metadata = props.metadata ?? {};
+
+    this.metadata = {
+      ...defaultMetadata,
+      ...props.metadata,
+    };
     this.tags = props.tags ?? {};
     this.endOfTurnAction = props.endOfTurnAction;
     this.endOfTimedEffectAction = props.endOfTimedEffectAction;
     this.replacedAction = props.replacedAction;
+    this.executeAfterCardRolls = props.executeAfterCardRolls;
   }
 
   passTurn() {
