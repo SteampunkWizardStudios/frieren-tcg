@@ -58,9 +58,18 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setDescription("Get the head to head record against another player")
         .addUserOption((option) =>
           option
-            .setName("player")
-            .setDescription("The player to get the head to head record for")
+            .setName("player-2")
+            .setDescription(
+              "The second player to get the head to head record for"
+            )
             .setRequired(true)
+        )
+        .addUserOption((option) =>
+          option
+            .setName("player-1")
+            .setDescription(
+              "The first player to get the head to head record for, defaults to yourself"
+            )
         )
     ),
 
