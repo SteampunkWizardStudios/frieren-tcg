@@ -19,16 +19,10 @@ const a_axeSwipe = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { sendToGameroom, name, possessive, basicAttack }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} swiped ${character.cosmetic.pronouns.possessive} axe!`,
-      TCGThread.Gameroom
-    );
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[0]),
-    });
+    sendToGameroom(`${name} swiped ${possessive} axe!`);
+    basicAttack(0);
   },
 });
 
@@ -45,33 +39,23 @@ const offensiveStance = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, selfStat, possessive }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} took an offensive stance!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} took an offensive stance!`);
 
-    const atkChange = this.calculateEffectValue(this.effects[0]);
-    const spdChange = this.calculateEffectValue(this.effects[1]);
+    selfStat(0, StatsEnum.ATK);
+    self.adjustStat(-2, StatsEnum.DEF);
+    selfStat(1, StatsEnum.SPD);
 
-    character.adjustStat(atkChange, StatsEnum.ATK);
-    character.adjustStat(-2, StatsEnum.DEF);
-    character.adjustStat(spdChange, StatsEnum.SPD);
-
-    character.timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Offensive Stance",
         description: `DEF-2 for 2 turns.`,
         turnDuration: 2,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          messageCache.push(
-            `${character.name} shifts ${character.cosmetic.pronouns.possessive} stance.`,
-            TCGThread.Gameroom
-          );
-          character.adjustStat(2, StatsEnum.DEF);
+          sendToGameroom(`${name} shifts ${possessive} stance.`);
+          self.adjustStat(2, StatsEnum.DEF);
         },
       })
     );
@@ -87,33 +71,23 @@ const defensiveStance = new Card({
   effects: [2, 1],
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, selfStat, possessive }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} took a defensive stance!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} took a defensive stance!`);
 
-    const defChange = this.calculateEffectValue(this.effects[0]);
-    const spdChange = this.calculateEffectValue(this.effects[1]);
+    self.adjustStat(-2, StatsEnum.ATK);
+    selfStat(0, StatsEnum.DEF);
+    selfStat(1, StatsEnum.SPD);
 
-    character.adjustStat(-2, StatsEnum.ATK);
-    character.adjustStat(defChange, StatsEnum.DEF);
-    character.adjustStat(spdChange, StatsEnum.SPD);
-
-    character.timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Defensive Stance",
         description: `ATK-2 for 2 turns.`,
         turnDuration: 2,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          messageCache.push(
-            `${character.name} shifts ${character.cosmetic.pronouns.possessive} stance.`,
-            TCGThread.Gameroom
-          );
-          character.adjustStat(2, StatsEnum.ATK);
+          sendToGameroom(`${name} shifts ${possessive} stance.`);
+          self.adjustStat(2, StatsEnum.ATK);
         },
       })
     );
@@ -220,18 +194,9 @@ const concentration = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360979639362781304/IMG_3087.gif?ex=68084b4f&is=6806f9cf&hm=98d20b75a63aca3116965b33fac4adac213feaefa4895cf0751976527dd483a0&",
   },
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} concentrates on the battle.`,
-      TCGThread.Gameroom
-    );
-
-    const spd = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(spd, StatsEnum.SPD);
+  cardAction: function (this: Card, { name, sendToGameroom, selfStat }) {
+    sendToGameroom(`${name} concentrates on the battle.`);
+    selfStat(0, StatsEnum.SPD);
   },
 });
 
@@ -246,20 +211,9 @@ const a_ordensSlashTechnique = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361187449522356324/IMG_3119.gif?ex=68086419&is=68071299&hm=f010c6a8f3b17eb25cdb15c8605dfb69ea06a323b0ca5aaed2484cce741ed4e6&",
   },
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} used Orden's Slash Technique!`,
-      TCGThread.Gameroom
-    );
-
-    const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-    });
+  cardAction: function (this: Card, { sendToGameroom, name, basicAttack }) {
+    sendToGameroom(`${name} used Orden's Slash Technique!`);
+    basicAttack(0);
   },
 });
 
@@ -350,61 +304,61 @@ export const a_lightningStrike = new Card({
   ) {
     const character = game.getCharacter(characterIndex);
 
-      messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
-      const damage = this.calculateEffectValue(this.effects[0]);
+    messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
+    const damage = this.calculateEffectValue(this.effects[0]);
 
-      character.adjustStat(-5, StatsEnum.DEF);
-      character.adjustStat(-5, StatsEnum.SPD);
-      character.additionalMetadata.minimumPossibleHp = 1;
+    character.adjustStat(-5, StatsEnum.DEF);
+    character.adjustStat(-5, StatsEnum.SPD);
+    character.additionalMetadata.minimumPossibleHp = 1;
 
-      game.characters[characterIndex].timedEffects.push(
-        new TimedEffect({
-          name: "Opening",
-          description: `DEF-5 and SPD-5.`,
-          turnDuration: 2,
-          metadata: { removableBySorganeil: false },
-          endOfTimedEffectAction: (game, characterIndex) => {
-            game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
-            game.characters[characterIndex].adjustStat(5, StatsEnum.SPD);
-          },
-        })
-      );
+    game.characters[characterIndex].timedEffects.push(
+      new TimedEffect({
+        name: "Opening",
+        description: `DEF-5 and SPD-5.`,
+        turnDuration: 2,
+        metadata: { removableBySorganeil: false },
+        endOfTimedEffectAction: (game, characterIndex) => {
+          game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
+          game.characters[characterIndex].adjustStat(5, StatsEnum.SPD);
+        },
+      })
+    );
 
-      game.characters[characterIndex].timedEffects.push(
-        new TimedEffect({
-          name: "Impending Lightning",
-          description: `Strike for ${damage} damage.`,
-          turnDuration: 1,
-          activateEndOfTurnActionThisTurn: false,
-          endOfTimedEffectAction: (game, characterIndex) => {
-            messageCache.push(
-              `${character.name} performs Lightning Strike!`,
-              TCGThread.Gameroom
-            );
-            CommonCardAction.commonAttack(game, characterIndex, {
-              damage,
-              isTimedEffectAttack: true,
-            });
-          },
-        })
-      );
+    game.characters[characterIndex].timedEffects.push(
+      new TimedEffect({
+        name: "Impending Lightning",
+        description: `Strike for ${damage} damage.`,
+        turnDuration: 1,
+        activateEndOfTurnActionThisTurn: false,
+        endOfTimedEffectAction: (game, characterIndex) => {
+          messageCache.push(
+            `${character.name} performs Lightning Strike!`,
+            TCGThread.Gameroom
+          );
+          CommonCardAction.commonAttack(game, characterIndex, {
+            damage,
+            isTimedEffectAttack: true,
+          });
+        },
+      })
+    );
 
-      game.characters[characterIndex].timedEffects.push(
-        new TimedEffect({
-          name: "Sturdy",
-          description: `HP cannot fall below 1 this turn.`,
-          turnDuration: 1,
-          priority: -1,
-          metadata: { removableBySorganeil: false },
-          endOfTimedEffectAction: (_game, _characterIndex) => {
-            messageCache.push(
-              `${character.name} let out all ${character.cosmetic.pronouns.personal} has. ${character.name} is no longer Sturdy.`,
-              TCGThread.Gameroom
-            );
-            character.additionalMetadata.minimumPossibleHp = undefined;
-          },
-        })
-      );
+    game.characters[characterIndex].timedEffects.push(
+      new TimedEffect({
+        name: "Sturdy",
+        description: `HP cannot fall below 1 this turn.`,
+        turnDuration: 1,
+        priority: -1,
+        metadata: { removableBySorganeil: false },
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          messageCache.push(
+            `${character.name} let out all ${character.cosmetic.pronouns.personal} has. ${character.name} is no longer Sturdy.`,
+            TCGThread.Gameroom
+          );
+          character.additionalMetadata.minimumPossibleHp = undefined;
+        },
+      })
+    );
   },
 });
 
