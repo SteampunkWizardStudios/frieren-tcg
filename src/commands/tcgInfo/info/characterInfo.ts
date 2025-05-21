@@ -57,7 +57,8 @@ export async function showCharacterInfo(
 
           const { selectedCharacter: char } = await handleCharacterSelection(
             i,
-            preferences
+            preferences,
+            characterDropdown.characterListUsed
           );
 
           // Create new embed for the selected character

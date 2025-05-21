@@ -31,7 +31,6 @@ const a_jab = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
-      hpCost: 0,
     });
   },
 });
@@ -62,7 +61,6 @@ const a_hook = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
-      hpCost: this.hpCost,
     });
   },
 });
@@ -98,7 +96,6 @@ const a_uppercut = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
@@ -176,7 +173,6 @@ export const a_waldgoseBase = new Card({
       const initialDamage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: initialDamage,
-        hpCost: this.hpCost,
       });
 
       const multiDamage = this.calculateEffectValue(this.effects[1]);
@@ -198,7 +194,6 @@ export const a_waldgoseBase = new Card({
 
             CommonCardAction.commonAttack(game, characterIndex, {
               damage: waldgoseDmg,
-              hpCost: 0,
               isTimedEffectAttack: true,
             });
           },
@@ -262,7 +257,6 @@ export const a_daosdorgBase = new Card({
 
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: this.calculateEffectValue(this.effects[0]),
-        hpCost: this.hpCost,
       });
 
       let hasWaldgose: boolean = false;
@@ -345,7 +339,6 @@ export const a_catastraviaBase = new Card({
       const initialDamage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {
         damage: initialDamage,
-        hpCost: this.hpCost,
       });
 
       const multiDamage = this.calculateEffectValue(this.effects[1]);
@@ -361,7 +354,6 @@ export const a_catastraviaBase = new Card({
             );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage: multiDamage,
-              hpCost: 0,
               isTimedEffectAttack: true,
             });
           },
@@ -474,7 +466,6 @@ export const a_concentratedOffensiveMagicZoltraak = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[0]),
-      hpCost: this.hpCost,
     });
   },
 });

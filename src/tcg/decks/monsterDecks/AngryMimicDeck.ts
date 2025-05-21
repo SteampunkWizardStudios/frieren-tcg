@@ -62,7 +62,6 @@ const omNomNomNom = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
     const dealtDamage = CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: 5,
     });
 
     character.adjustStat(dealtDamage / 2, StatsEnum.HP);
@@ -151,7 +150,7 @@ const a_callOfCthulhu = new Card({
 
     character.setStat(1, StatsEnum.HP);
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 0 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 

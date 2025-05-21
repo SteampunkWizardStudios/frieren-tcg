@@ -22,7 +22,7 @@ const a_peck = new Card({
     self.adjustStat(-2, StatsEnum.SPD);
     self.discardCard(Rolls.rollDAny(5));
     self.drawCard();
-    basicAttack(0, 0);
+    basicAttack(0);
   },
 });
 
@@ -41,7 +41,7 @@ const a_ironFeather = new Card({
     flatSelfStat(-3, StatsEnum.SPD);
     selfStat(0, StatsEnum.DEF);
 
-    basicAttack(1, 0);
+    basicAttack(1);
   },
 });
 
@@ -201,7 +201,6 @@ export const a_geisel = new Card({
           sendToGameroom("The Geisel doesn't stop!");
           CommonCardAction.commonAttack(game, characterIndex, {
             damage: damage + 15,
-            hpCost: 0,
             isTimedEffectAttack: true,
           });
         },

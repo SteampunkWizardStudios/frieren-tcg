@@ -41,7 +41,6 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
@@ -86,7 +85,6 @@ export const a_trustInYourAllyFernsBarrage = new Card({
       );
       CommonCardAction.commonAttack(game, characterIndex, {
         damage,
-        hpCost: 0,
       });
       character.timedEffects.push(
         new TimedEffect({
@@ -98,7 +96,6 @@ export const a_trustInYourAllyFernsBarrage = new Card({
             messageCache.push("The barrage continues!", TCGThread.Gameroom);
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
-              hpCost: 0,
               isTimedEffectAttack: true,
             });
           },
@@ -145,7 +142,6 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
@@ -373,7 +369,6 @@ export const a_threeSpearsOfTheGoddess = new Card({
             );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
-              hpCost: 0,
               isTimedEffectAttack: true,
             });
           },

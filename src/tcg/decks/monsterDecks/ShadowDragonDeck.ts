@@ -23,7 +23,7 @@ const a_shadowImpalement = new Card({
     );
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, { damage, hpCost: 5 });
+    CommonCardAction.commonAttack(game, characterIndex, { damage });
   },
 });
 
@@ -87,7 +87,6 @@ export const a_dragonfire = new Card({
     if (
       CommonCardAction.commonAttack(game, characterIndex, {
         damage,
-        hpCost: 10,
       }) > 0
     ) {
       const opponent = game.getCharacter(1 - characterIndex);

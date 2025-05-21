@@ -34,7 +34,6 @@ export const a_fernZoltraak = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
     });
   },
 });
@@ -70,7 +69,6 @@ export const a_fernBarrage = new Card({
 
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      hpCost: this.hpCost,
       additionalPierceFactor: 0.25,
     });
 
@@ -107,7 +105,6 @@ export const a_fernBarrage = new Card({
             );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
-              hpCost: 4,
               additionalPierceFactor: 0.25,
             });
           } else {
@@ -152,7 +149,6 @@ const a_fernConcentratedZoltraakSnipe = new Card({
       damage:
         baseDamage +
         singleBarrageDamage * (character.additionalMetadata.fernBarrage ??= 0),
-      hpCost: this.hpCost,
       additionalPierceFactor: 0.5,
     });
 

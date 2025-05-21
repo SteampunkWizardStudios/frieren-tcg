@@ -1,3 +1,5 @@
+import Card from "@tcg/card";
+
 export enum UbelHit {
   SureHit = "sureHit",
   SureMiss = "sureMiss",
@@ -14,6 +16,9 @@ export type CharacterAdditionalMetadata = {
   minimumPossibleHp?: number | undefined; // if undefined, there is no minimum hp cap
   pierceFactor?: number;
   overheal?: boolean;
+  selectedCard?: Card;
+  forcedDiscards: number;
+  hidden?: boolean;
 
   senseTeaTimeStacks?: number;
   serieToyingNextTurn?: boolean;
