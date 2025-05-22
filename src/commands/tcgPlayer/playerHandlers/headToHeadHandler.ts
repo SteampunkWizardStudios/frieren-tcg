@@ -6,8 +6,8 @@ import { getMatchHistoryAgainstPlayer } from "@src/util/db/getMatchHistory";
 export async function handleHeadToHead(
   interaction: ChatInputCommandInteraction
 ) {
-  const player1 = interaction.options.getUser("player-1") ?? interaction.user;
-  const player2 = interaction.options.getUser("player-2", true);
+  const player1 = interaction.options.getUser("player") ?? interaction.user;
+  const player2 = interaction.options.getUser("opponent", true);
 
   const headToHeadMatches = await getMatchHistoryAgainstPlayer(
     player1.id,
