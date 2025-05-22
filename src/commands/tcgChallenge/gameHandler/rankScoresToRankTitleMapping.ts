@@ -34,6 +34,9 @@ export const getRank = (score: number): Rank => {
   }
 };
 
+const allRankRoleIds = Object.values(RANK_SCORE_TO_RANK_MAPPING).map(
+  (rankMapping) => rankMapping.rankRoleId
+);
 /**
  * Returns a collection of roles for a member with all rank roles removed and the new rank role added
  * @param member The Discord guild member to update roles for
@@ -45,10 +48,6 @@ export async function getNewRolesForRank(
   rank: Rank
 ): Promise<Collection<string, Role>> {
   const currentRoles = member.roles.cache;
-
-  const allRankRoleIds = Object.values(RANK_SCORE_TO_RANK_MAPPING).map(
-    (rankMapping) => rankMapping.rankRoleId
-  );
 
   const rankRoleIdSet = new Set(allRankRoleIds);
   const rolesWithoutOldRanks = currentRoles.filter(
