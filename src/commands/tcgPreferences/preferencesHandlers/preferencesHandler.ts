@@ -85,6 +85,7 @@ export async function handlePlayerPreferences(
           .setCustomId(CUSTOM_ID)
           .setPlaceholder("Select a character")
           .setMaxValues(VISIBLE_CHARACTERS.length)
+          .setMinValues(0)
           .setOptions(options);
 
         const embed = new EmbedBuilder()
