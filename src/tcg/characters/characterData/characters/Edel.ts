@@ -45,7 +45,7 @@ const Edel = new CharacterData({
       if (self.stats.stats.Ability > 0) {
         self.adjustStat(-1, StatsEnum.Ability);
         messageCache.push(
-          `${self.name} made eye contact with ${opponent.name}, ${self.cosmetic.pronouns.possessive} has Priority+1.`,
+          `${self.name} made eye contact with ${opponent.name}, ${self.cosmetic.pronouns.personal} has Priority+1.`,
           TCGThread.Gameroom
         );
 
