@@ -8,9 +8,10 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 const a_jab = new Card({
   title: "Jab",
   cardMetadata: { nature: Nature.Attack },
-  description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal ${dmg} DMG.`,
+  description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal ${dmg} DMG, with 50% Pierce.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
+  hpCost: 3,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -31,6 +32,7 @@ const a_jab = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
+      additionalPierceFactor: 0.5,
     });
   },
 });
@@ -38,9 +40,10 @@ const a_jab = new Card({
 const a_hook = new Card({
   title: "Hook",
   cardMetadata: { nature: Nature.Attack },
-  description: ([spd, atk, dmg]) => `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG.`,
+  description: ([spd, atk, dmg]) => `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG, with 50% Pierce.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
+  hpCost: 3,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -61,6 +64,7 @@ const a_hook = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
+      additionalPierceFactor: 0.5,
     });
   },
 });
@@ -68,9 +72,10 @@ const a_hook = new Card({
 const a_uppercut = new Card({
   title: "Uppercut",
   cardMetadata: { nature: Nature.Attack },
-  description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
+  description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG, with 50% Pierce.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 3],
+  hpCost: 5,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364978489035460708/GIF_0836074812.gif?ex=680c4b87&is=680afa07&hm=84fd66beff9352aba9c037ff66d2b0e69219b34c0e3c9c5e62edbf96dc62a0f8&",
@@ -96,6 +101,7 @@ const a_uppercut = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
+      additionalPierceFactor: 0.5,
     });
   },
 });

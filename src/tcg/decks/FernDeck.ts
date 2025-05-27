@@ -197,7 +197,7 @@ export const manaConcealment = new Card({
   title: "Mana Concealment",
   cardMetadata: { nature: Nature.Util },
   description: ([atk, def]) =>
-    `ATK+${atk}. DEF+${def}. Receive Priority+1 and additional 50% Pierce on attacks for next turn.`,
+    `ATK+${atk}. DEF+${def}. Next turn, receive Priority+1 and additional 50% Pierce on attacks.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [1, 2],
   cardAction: function (
@@ -219,19 +219,25 @@ export const manaConcealment = new Card({
       StatsEnum.DEF
     );
 
-    character.ability.abilitySelectedMoveModifierEffect = function (
+    character.ability.abilityStartOfTurnEffect = function (
       _game,
       _characterIndex,
       _messageCache,
-      selectedCard
     ) {
-      if (selectedCard.cardMetadata.nature === Nature.Attack) {
-        selectedCard.priority = 1;
-      }
+      character.ability.abilitySelectedMoveModifierEffect = function (
+        _game,
+        _characterIndex,
+        _messageCache,
+        selectedCard
+      ) {
+        if (selectedCard.cardMetadata.nature === Nature.Attack) {
+          selectedCard.priority = 1;
+        }
 
-      return selectedCard;
-    };
-    character.additionalMetadata.pierceFactor = 0.5;
+        return selectedCard;
+      };
+      character.additionalMetadata.pierceFactor = 0.5;
+    }
 
     character.timedEffects.push(
       new TimedEffect({
@@ -247,6 +253,7 @@ export const manaConcealment = new Card({
           );
           character.ability.abilitySelectedMoveModifierEffect = undefined;
           character.additionalMetadata.pierceFactor = 0;
+          character.ability.abilityStartOfTurnEffect = undefined;
         },
       })
     );
