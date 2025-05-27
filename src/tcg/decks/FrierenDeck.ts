@@ -76,7 +76,7 @@ export const a_judradjim = new Card({
     cardImageUrl: mediaLinks.judradjim_image,
     cardGif: mediaLinks.judradjim_gif,
   },
-  effects: [13],
+  effects: [12],
   hpCost: 7,
   cardAction: function (this: Card, { name, sendToGameroom, basicAttack }) {
     sendToGameroom(`${name} sent forth Judradjim!`);
@@ -93,7 +93,7 @@ export const a_vollzanbel = new Card({
     cardImageUrl: mediaLinks.vollzanbel_image,
     cardGif: mediaLinks.vollzanbel_gif,
   },
-  effects: [18],
+  effects: [17],
   hpCost: 10,
   cardAction: function (this: Card, { name, sendToGameroom, basicAttack }) {
     sendToGameroom(`${name} summoned Vollzanbel!`);
