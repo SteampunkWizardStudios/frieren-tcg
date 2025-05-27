@@ -149,7 +149,8 @@ const jumboBerrySpecialBreak = new Card({
 export const block = new Card({
   title: "Block",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) =>
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.STARK_CARD,
   effects: [20],
   priority: 2,
@@ -168,16 +169,16 @@ export const block = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.TrueDEF);
     character.timedEffects.push(
       new TimedEffect({
         name: "Block",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.DEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );

@@ -10,6 +10,7 @@ const starkStats = new Stats({
   [StatsEnum.HP]: 120.0,
   [StatsEnum.ATK]: 10.0,
   [StatsEnum.DEF]: 10.0,
+  [StatsEnum.TrueDEF]: 0.0,
   [StatsEnum.SPD]: 8.0,
   [StatsEnum.Ability]: 0.0,
 });

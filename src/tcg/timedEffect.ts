@@ -28,9 +28,7 @@ export interface TimedEffectProps {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
-  executeAfterCardRolls?: (
-    context: TimedEffectContext
-  ) => void;
+  executeAfterCardRolls?: (context: TimedEffectContext) => void;
 }
 
 type TimedEffectMetadata = {
@@ -75,9 +73,7 @@ export default class TimedEffect {
     characterIndex: number,
     messageCache: MessageCache
   ) => void;
-  executeAfterCardRolls?: (
-    context: TimedEffectContext
-  ) => void;
+  executeAfterCardRolls?: (context: TimedEffectContext) => void;
 
   constructor(props: TimedEffectProps) {
     this.name = props.name;

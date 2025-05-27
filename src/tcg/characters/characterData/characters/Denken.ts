@@ -14,6 +14,7 @@ const denkenStats = new Stats({
   [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 11.0,
   [StatsEnum.DEF]: 11.0,
+  [StatsEnum.TrueDEF]: 0.0,
   [StatsEnum.SPD]: 10.0,
   [StatsEnum.Ability]: DENKEN_PRESERVERANCE_COUNT,
 });

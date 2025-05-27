@@ -61,7 +61,7 @@ export const one_step_ahead = new Card({
   cardMetadata: { nature: Nature.Defense },
   emoji: CardEmoji.EDEL_CARD,
   description: ([def, spd, dmg]) =>
-    `DEF+${def} for 1 turn. If this card is played the same turn your opponent plays a defensive card, their SPD-${spd}, they redraw 1 card, and attack with DMG ${dmg} ignoring all defense.`,
+    `TrueDEF+${def} for 1 turn. If this card is played the same turn your opponent plays a defensive card, their SPD-${spd}, they redraw 1 card, and attack with DMG ${dmg} ignoring all defense.`,
   effects: [20, 2, 10],
   priority: 3,
   cardAction: ({
@@ -75,19 +75,19 @@ export const one_step_ahead = new Card({
     basicAttack,
   }) => {
     sendToGameroom(`${name} put up a full coverage defense.`);
-    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.TrueDEF);
 
     const def = calcEffect(0);
 
     self.timedEffects.push(
       new TimedEffect({
         name: "Full Coverage Defense",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (game, characterIndex) => {
-          game.characters[characterIndex].adjustStat(-def, StatsEnum.DEF);
+          game.characters[characterIndex].adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );
@@ -132,7 +132,7 @@ const mental_fog = new Card({
 
     opponentStat(0, StatsEnum.SPD, -1);
     redrawRandom(opponent, self);
-	redrawRandom(opponent, self);
+    redrawRandom(opponent, self);
 
     const cost = calcEffect(1);
 

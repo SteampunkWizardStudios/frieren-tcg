@@ -172,7 +172,8 @@ const quickDodge = new Card({
 export const parry = new Card({
   title: "Parry",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) =>
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [20],
   priority: 2,
@@ -185,18 +186,18 @@ export const parry = new Card({
     { self, name, sendToGameroom, calcEffect, selfStat }
   ) {
     sendToGameroom(`${name} switched to a parrying stance!`);
-    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.TrueDEF);
     const tempDef = calcEffect(0);
 
     self.timedEffects.push(
       new TimedEffect({
         name: "Parry",
-        description: `Increases DEF by ${tempDef} until the end of the turn.`,
+        description: `Increases TrueDEF by ${tempDef} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          self.adjustStat(-1 * tempDef, StatsEnum.DEF);
+          self.adjustStat(-1 * tempDef, StatsEnum.TrueDEF);
         },
       })
     );

@@ -560,7 +560,8 @@ const heiterTrustYou = new Card({
 export const quickBlock = new Card({
   title: "Quick Block",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) =>
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.HIMMEL_CARD,
   priority: 2,
   effects: [20],
@@ -575,16 +576,16 @@ export const quickBlock = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.TrueDEF);
     character.timedEffects.push(
       new TimedEffect({
         name: "Quick Block",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.DEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );

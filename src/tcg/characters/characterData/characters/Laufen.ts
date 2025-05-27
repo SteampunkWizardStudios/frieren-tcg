@@ -14,6 +14,7 @@ const laufenStats = new Stats({
   [StatsEnum.HP]: 90.0,
   [StatsEnum.ATK]: 10.0,
   [StatsEnum.DEF]: 8.0,
+  [StatsEnum.TrueDEF]: 0.0,
   [StatsEnum.SPD]: 30.0,
   [StatsEnum.Ability]: 0.0,
 });
@@ -24,7 +25,7 @@ const Laufen = new CharacterData({
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.LAUFEN,
     color: 0xcf7457,
-    imageUrl: mediaLinks.laufenPortrait
+    imageUrl: mediaLinks.laufenPortrait,
   },
   stats: laufenStats,
   cards: laufenDeck,

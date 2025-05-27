@@ -31,10 +31,7 @@ function characterBasedContext(game: Game, characterIndex: number) {
     return change;
   };
 
-  const flatAttack = (
-    damage: number,
-    additionalPierceFactor?: number
-  ) => {
+  const flatAttack = (damage: number, additionalPierceFactor?: number) => {
     return CommonCardAction.commonAttack(game, characterIndex, {
       damage,
       additionalPierceFactor,
@@ -104,10 +101,7 @@ export function gameContextProvider(
     selfStat: changeStatWithEmpower.bind(null, self),
 
     // Attacks
-    basicAttack: (
-      effectIndex: number,
-      additionalPierceFactor?: number
-    ) => {
+    basicAttack: (effectIndex: number, additionalPierceFactor?: number) => {
       const damage = calculateEffectValue(
         this.effects[effectIndex],
         this.empowerLevel

@@ -133,7 +133,8 @@ export const manaDetection = new Card({
 const parry = new Card({
   title: "Parry",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) =>
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [20],
   priority: 2,
@@ -148,7 +149,7 @@ const parry = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.TrueDEF);
     character.timedEffects.push(
       new TimedEffect({
         name: "Parry",
@@ -157,7 +158,7 @@ const parry = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (game, characterIndex) => {
-          game.characters[characterIndex].adjustStat(-def, StatsEnum.DEF);
+          game.characters[characterIndex].adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );

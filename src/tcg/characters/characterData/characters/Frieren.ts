@@ -18,6 +18,7 @@ const frierenStats = new Stats({
   [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 12.0,
   [StatsEnum.DEF]: 12.0,
+  [StatsEnum.TrueDEF]: 0.0,
   [StatsEnum.SPD]: 12.0,
   [StatsEnum.Ability]: 0.0,
 });
@@ -85,10 +86,7 @@ const Frieren = new CharacterData({
                 "Frieren performed her analysis.",
                 TCGThread.Gameroom
               );
-              character.adjustStat(
-                postAnalysis,
-                StatsEnum.Ability
-              );
+              character.adjustStat(postAnalysis, StatsEnum.Ability);
             },
           })
         );

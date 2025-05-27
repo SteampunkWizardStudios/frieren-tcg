@@ -10,6 +10,7 @@ const fernStats = new Stats({
   [StatsEnum.HP]: 100.0,
   [StatsEnum.ATK]: 12.0,
   [StatsEnum.DEF]: 10.0,
+  [StatsEnum.TrueDEF]: 0.0,
   [StatsEnum.SPD]: 14.0,
   [StatsEnum.Ability]: 0.0,
 });

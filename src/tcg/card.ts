@@ -53,7 +53,7 @@ export type CardProps = {
   onNotPlayed?: (context: GameMessageContext) => void;
   empowerLevel?: number;
   priority?: number;
-    /**
+  /**
    * @deprecated Use {@link Card.cardMetadata} instead
    */
   imitated?: boolean;

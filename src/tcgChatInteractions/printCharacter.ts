@@ -30,6 +30,7 @@ export const printCharacter = (
     `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
     `- ${statDetails[StatsEnum.ATK].emoji} **ATK**: ${charStat.ATK}`,
     `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${charStat.DEF}`,
+    `- ${statDetails[StatsEnum.TrueDEF].emoji} **TrueDEF**: ${charStat.TrueDEF}`,
     `- ${statDetails[StatsEnum.SPD].emoji} **SPD**: ${charStat.SPD}`,
     `- ${statDetails[StatsEnum.Ability].emoji} **Ability**: ${character.ability.abilityName} - ${charStat.Ability}`,
     `  - ${formatAbility(character.ability)}`,

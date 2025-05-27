@@ -218,7 +218,7 @@ export default class Character {
         }
       }
 
-      this.messageCache.push(statUpdateLines.join(". "), TCGThread.Gameroom);
+      this.messageCache.push(statUpdateLines.join(" "), TCGThread.Gameroom);
       return true;
     } else {
       this.messageCache.push(
@@ -277,14 +277,15 @@ export default class Character {
       } else {
         this.stats.stats.HP = newValue;
       }
-    } else if (stat === StatsEnum.Ability) {
-      this.stats.stats.Ability = newValue;
     } else {
       // ATK DEF SPD
-      if (newValue <= 1) {
-        this.stats.stats[stat] = 1;
-      } else {
+      if (stat === StatsEnum.Ability || stat === StatsEnum.TrueDEF) {
         this.stats.stats[stat] = newValue;
+      } else if (newValue > 1) {
+        this.stats.stats[stat] = newValue;
+      } else {
+        // minimum possible stat for ATK DEF SPD is 1
+        this.stats.stats[stat] = 1;
       }
     }
 

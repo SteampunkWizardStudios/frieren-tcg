@@ -105,6 +105,7 @@ export const a_fernBarrage = new Card({
             );
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
+              isTimedEffectAttack: true,
               additionalPierceFactor: 0.25,
             });
           } else {
@@ -309,7 +310,7 @@ export const commonDefensiveMagic = new Card({
   title: "Common Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Increases DEF by ${def} until the end of the turn. Reduce 1 Barrage count.`,
+    `Increases TrueDEF by ${def} until the end of the turn. Reduce 1 Barrage count.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [20],
   priority: 2,
@@ -328,7 +329,7 @@ export const commonDefensiveMagic = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.TrueDEF);
     character.additionalMetadata.fernBarrage = Math.max(
       0,
       (character.additionalMetadata.fernBarrage ?? 0) - 1
@@ -341,12 +342,12 @@ export const commonDefensiveMagic = new Card({
     character.timedEffects.push(
       new TimedEffect({
         name: "Common Defensive Magic",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          character.adjustStat(-def, StatsEnum.DEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );

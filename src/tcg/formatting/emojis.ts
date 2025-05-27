@@ -9,6 +9,7 @@ export const statDetails: Record<StatsEnum, StatInfo> = {
   [StatsEnum.HP]: { emoji: "❤️" },
   [StatsEnum.ATK]: { emoji: "⚔️" },
   [StatsEnum.DEF]: { emoji: "🛡️" },
+  [StatsEnum.TrueDEF]: { emoji: "💠" },
   [StatsEnum.SPD]: { emoji: "⚡" },
   [StatsEnum.Ability]: { emoji: "✨" },
 };

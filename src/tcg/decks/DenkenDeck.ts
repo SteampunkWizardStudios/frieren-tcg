@@ -104,7 +104,7 @@ export const bareHandedBlock = new Card({
   title: "Bare-handed Block",
   cardMetadata: { nature: Nature.Defense },
   description: ([def, tempDef]) =>
-    `DEF+${def}. Increases DEF by an additional ${tempDef} until the end of the turn.`,
+    `DEF+${def}. TrueDEF+${tempDef} until the end of the turn.`,
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [2, 8],
@@ -122,17 +122,17 @@ export const bareHandedBlock = new Card({
     character.adjustStat(def, StatsEnum.DEF);
 
     const tempDef = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(tempDef, StatsEnum.DEF);
+    character.adjustStat(tempDef, StatsEnum.TrueDEF);
 
     character.timedEffects.push(
       new TimedEffect({
         name: "Block",
-        description: `Increases DEF by ${tempDef} until the end of the turn.`,
+        description: `Increases TrueDEF by ${tempDef} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-tempDef, StatsEnum.DEF);
+          character.adjustStat(-tempDef, StatsEnum.TrueDEF);
         },
       })
     );
@@ -382,7 +382,7 @@ const elementaryDefensiveMagicBase = new Card({
   title: "Elementary Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
+    `Increases TrueDEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [20],
@@ -398,16 +398,16 @@ const elementaryDefensiveMagicBase = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.TrueDEF);
     character.timedEffects.push(
       new TimedEffect({
         name: "Elementary Defensive Magic",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.DEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );
@@ -418,7 +418,7 @@ export const elementaryDefensiveMagic = new Card({
   title: "Elementary Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Increases DEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
+    `Increases TrueDEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   priority: 2,
   effects: [20],

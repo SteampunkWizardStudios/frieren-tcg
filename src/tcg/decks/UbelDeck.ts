@@ -216,7 +216,8 @@ const slowdown = new Card({
 export const defend = new Card({
   title: "Defend",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) =>
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.UBEL_CARD,
   effects: [20],
   priority: 2,
@@ -235,16 +236,16 @@ export const defend = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.TrueDEF);
     character.timedEffects.push(
       new TimedEffect({
         name: "Defend",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         turnDuration: 1,
         priority: -1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.DEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );

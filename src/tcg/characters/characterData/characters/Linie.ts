@@ -14,6 +14,7 @@ const linieStats = new Stats({
   [StatsEnum.HP]: 95.0,
   [StatsEnum.ATK]: 13.0,
   [StatsEnum.DEF]: 10.0,
+  [StatsEnum.TrueDEF]: 0.0,
   [StatsEnum.SPD]: 12.0,
   [StatsEnum.Ability]: 0.0,
 });

@@ -109,7 +109,8 @@ const roost = new Card({
 export const deflect = new Card({
   title: "Deflect",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) =>
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [20],
   priority: 2,
@@ -120,17 +121,17 @@ export const deflect = new Card({
     sendToGameroom(`${name} prepares to deflect an attack!`);
 
     const def = calcEffect(0);
-    self.adjustStat(def, StatsEnum.DEF);
+    self.adjustStat(def, StatsEnum.TrueDEF);
 
     self.timedEffects.push(
       new TimedEffect({
         name: "Deflect",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         turnDuration: 1,
         priority: -1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          self.adjustStat(-def, StatsEnum.DEF);
+          self.adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );

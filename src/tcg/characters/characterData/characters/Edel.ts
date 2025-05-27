@@ -11,6 +11,7 @@ const edelStats = new Stats({
   [StatsEnum.HP]: 80,
   [StatsEnum.ATK]: 8,
   [StatsEnum.DEF]: 9,
+  [StatsEnum.TrueDEF]: 0.0,
   [StatsEnum.SPD]: 11,
   [StatsEnum.Ability]: 0,
 });

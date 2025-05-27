@@ -7,8 +7,7 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 export const a_hairWhip = new Card({
   title: "Hair Whip",
   cardMetadata: { nature: Nature.Attack },
-  description: ([def, dmg]) =>
-    `DEF+${def}. Afterwards, DMG ${dmg}+DEF/4.`,
+  description: ([def, dmg]) => `DEF+${def}. Afterwards, DMG ${dmg}+DEF/4.`,
   effects: [3, 7],
   hpCost: 4,
   emoji: CardEmoji.PUNCH,
@@ -102,7 +101,8 @@ export const a_pierce = new Card({
 export const hairBarrier = new Card({
   title: "Hair Barrier",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) =>
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   effects: [20],
   emoji: CardEmoji.HOURGLASS,
   priority: 2,
@@ -119,17 +119,17 @@ export const hairBarrier = new Card({
     );
 
     const def = calcEffect(0);
-    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.TrueDEF);
 
     self.timedEffects.push(
       new TimedEffect({
         name: "Hair Barrier",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-1 * def, StatsEnum.DEF);
+          self.adjustStat(-1 * def, StatsEnum.TrueDEF);
         },
       })
     );
@@ -138,7 +138,7 @@ export const hairBarrier = new Card({
 
 export const teaTime = new Card({
   title: "Tea Time",
-  cardMetadata: { nature: Nature.Util, teaTime: 1, },
+  cardMetadata: { nature: Nature.Util, teaTime: 1 },
   description: ([hp]) =>
     `Empower both characters' hands. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
   effects: [4],

@@ -161,7 +161,8 @@ export const mock = new Card({
 export const basicDefensiveMagic = new Card({
   title: "Basic Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) =>
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
@@ -176,17 +177,17 @@ export const basicDefensiveMagic = new Card({
     sendToGameroom(`${name} cast a basic defensive magic!`);
 
     const def = calcEffect(0);
-    self.adjustStat(def, StatsEnum.DEF);
+    self.adjustStat(def, StatsEnum.TrueDEF);
 
     self.timedEffects.push(
       new TimedEffect({
         name: "Ordinary Defensive Magic",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-def, StatsEnum.DEF);
+          self.adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );

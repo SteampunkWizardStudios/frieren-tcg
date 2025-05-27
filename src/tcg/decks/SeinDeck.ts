@@ -76,30 +76,30 @@ export const a_trustInYourAllyFernsBarrage = new Card({
       );
     }
 
-      const damage = Number(
-        (
-          this.calculateEffectValue(this.effects[0]) +
-          character.stats.stats.HP / 10
-        ).toFixed(2)
-      );
-      CommonCardAction.commonAttack(game, characterIndex, {
-        damage,
-      });
-      character.timedEffects.push(
-        new TimedEffect({
-          name: "Barrage",
-          description: `Deal ${damage} at the end of the effect.`,
-          turnDuration: 2,
-          activateEndOfTurnActionThisTurn: false,
-          endOfTurnAction: (game, characterIndex, messageCache) => {
-            messageCache.push("The barrage continues!", TCGThread.Gameroom);
-            CommonCardAction.commonAttack(game, characterIndex, {
-              damage,
-              isTimedEffectAttack: true,
-            });
-          },
-        })
-      );
+    const damage = Number(
+      (
+        this.calculateEffectValue(this.effects[0]) +
+        character.stats.stats.HP / 10
+      ).toFixed(2)
+    );
+    CommonCardAction.commonAttack(game, characterIndex, {
+      damage,
+    });
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Barrage",
+        description: `Deal ${damage} at the end of the effect.`,
+        turnDuration: 2,
+        activateEndOfTurnActionThisTurn: false,
+        endOfTurnAction: (game, characterIndex, messageCache) => {
+          messageCache.push("The barrage continues!", TCGThread.Gameroom);
+          CommonCardAction.commonAttack(game, characterIndex, {
+            damage,
+            isTimedEffectAttack: true,
+          });
+        },
+      })
+    );
   },
 });
 
@@ -282,7 +282,8 @@ export const poisonCure = new Card({
 export const braceYourself = new Card({
   title: "Brace Yourself",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) =>
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -310,7 +311,7 @@ export const braceYourself = new Card({
     }
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.TrueDEF);
     character.timedEffects.push(
       new TimedEffect({
         name: "Brace Yourself",
@@ -319,7 +320,7 @@ export const braceYourself = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.DEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );
@@ -348,29 +349,29 @@ export const a_threeSpearsOfTheGoddess = new Card({
       `${character.name} used Three Spears of the Goddess!`,
       TCGThread.Gameroom
     );
-      const damage = Number(
-        (
-          this.calculateEffectValue(this.effects[0]) +
-          character.stats.stats.HP / 10
-        ).toFixed(2)
-      );
-      character.timedEffects.push(
-        new TimedEffect({
-          name: "Three Spears of the Goddess",
-          description: `Deal ${damage} at each turn's end.`,
-          turnDuration: 3,
-          endOfTurnAction: (game, characterIndex) => {
-            messageCache.push(
-              "The goddess' spears continue to rain!",
-              TCGThread.Gameroom
-            );
-            CommonCardAction.commonAttack(game, characterIndex, {
-              damage,
-              isTimedEffectAttack: true,
-            });
-          },
-        })
-      );
+    const damage = Number(
+      (
+        this.calculateEffectValue(this.effects[0]) +
+        character.stats.stats.HP / 10
+      ).toFixed(2)
+    );
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Three Spears of the Goddess",
+        description: `Deal ${damage} at each turn's end.`,
+        turnDuration: 3,
+        endOfTurnAction: (game, characterIndex) => {
+          messageCache.push(
+            "The goddess' spears continue to rain!",
+            TCGThread.Gameroom
+          );
+          CommonCardAction.commonAttack(game, characterIndex, {
+            damage,
+            isTimedEffectAttack: true,
+          });
+        },
+      })
+    );
   },
 });
 

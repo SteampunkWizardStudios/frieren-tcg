@@ -107,6 +107,7 @@ export default class Game {
         baseDamage,
         attacker.stats.stats.ATK,
         defender.stats.stats.DEF,
+        defender.stats.stats.TrueDEF,
         defender.additionalMetadata.defenderDamageScaling
       );
 
@@ -287,11 +288,14 @@ export default class Game {
     moveDamage: number,
     attackerAttack: number,
     defenderDefense: number,
+    defenderTrueDefense: number,
     defenderDamageScaling: number
   ) {
     return (
-      Math.max(1, moveDamage + attackerAttack - defenderDefense) *
-      defenderDamageScaling
+      Math.max(
+        1,
+        moveDamage + attackerAttack - defenderDefense - defenderTrueDefense
+      ) * defenderDamageScaling
     );
   }
 }

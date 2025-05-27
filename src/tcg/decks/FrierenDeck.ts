@@ -144,7 +144,8 @@ export const demonMagicAnalysis = new Card({
 export const ordinaryDefensiveMagic = new Card({
   title: "Ordinary Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) => `Increases DEF by ${def} until the end of the turn.`,
+  description: ([def]) =>
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl: mediaLinks.ordinaryDefensiveMagic_image,
@@ -159,17 +160,17 @@ export const ordinaryDefensiveMagic = new Card({
     sendToGameroom(`${name} cast ordinary defensive magic!`);
 
     const def = calcEffect(0);
-    self.adjustStat(def, StatsEnum.DEF);
+    self.adjustStat(def, StatsEnum.TrueDEF);
 
     self.timedEffects.push(
       new TimedEffect({
         name: "Ordinary Defensive Magic",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-def, StatsEnum.DEF);
+          self.adjustStat(-def, StatsEnum.TrueDEF);
         },
       })
     );

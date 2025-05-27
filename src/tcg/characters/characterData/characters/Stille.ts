@@ -15,6 +15,7 @@ const stilleStats = new Stats({
   [StatsEnum.HP]: 20.0,
   [StatsEnum.ATK]: 1.0,
   [StatsEnum.DEF]: 20.0,
+  [StatsEnum.TrueDEF]: 0.0,
   [StatsEnum.SPD]: 99.0,
   [StatsEnum.Ability]: 0.0,
 });
