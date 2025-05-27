@@ -9,14 +9,14 @@ import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
 import mediaLinks from "@src/tcg/formatting/mediaLinks";
 
-const STILLE_REFLECT_SCALE = 0.75;
+const STILLE_REFLECT_SCALE = 0.8;
 
 const stilleStats = new Stats({
   [StatsEnum.HP]: 20.0,
   [StatsEnum.ATK]: 1.0,
   [StatsEnum.DEF]: 20.0,
   [StatsEnum.TrueDEF]: 0.0,
-  [StatsEnum.SPD]: 99.0,
+  [StatsEnum.SPD]: 80.0,
   [StatsEnum.Ability]: 0.0,
 });
 
