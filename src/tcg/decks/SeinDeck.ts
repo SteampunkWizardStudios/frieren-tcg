@@ -106,15 +106,14 @@ export const a_trustInYourAllyFernsBarrage = new Card({
 const a_trustInYourAllyStarksLightningStrike = new Card({
   title: "Trust in Your Ally: Stark's Lightning Strike",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg]) => `DMG ${dmg}+HP/7.`,
+  description: ([dmg]) => `DMG ${dmg}+HP/8.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1353035310677622845/Trust_in_your_Ally_Starks_Lightning_Strike.png?ex=67e02fd4&is=67dede54&hm=608a0bc2795f44b1512ecb7d26b29213aedada2f9f9db64b178447be0dd98476&",
   },
-  effects: [7],
+  effects: [10],
   hpCost: 9,
-  priority: -1,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -135,7 +134,7 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
     const damage = Number(
       (
         this.calculateEffectValue(this.effects[0]) +
-        character.stats.stats.HP / 7
+        character.stats.stats.HP / 8
       ).toFixed(2)
     );
     CommonCardAction.commonAttack(game, characterIndex, {
@@ -147,7 +146,8 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
 export const mugOfBeer = new Card({
   title: "Mug of Beer",
   cardMetadata: { nature: Nature.Util },
-  description: ([hp, atk]) => `HP+${hp}. ATK+${atk}. DEF-2. SPD-1.`,
+  description: ([hp, atk]) =>
+    `HP+${hp}. ATK+${atk}. DEF-2 and SPD-2 for 2 turns.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -155,7 +155,7 @@ export const mugOfBeer = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361017071886012681/GIF_3575013087.gif?ex=6807c56c&is=680673ec&hm=1e20739be8a75140974b9babb65729cf83c31d4f3d991bc35c90207fda41cd34&",
   },
-  effects: [6, 2],
+  effects: [8, 3],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -174,8 +174,26 @@ export const mugOfBeer = new Card({
       this.calculateEffectValue(this.effects[1]),
       StatsEnum.ATK
     );
+
     character.adjustStat(-2, StatsEnum.DEF);
-    character.adjustStat(-1, StatsEnum.SPD);
+    character.adjustStat(-2, StatsEnum.SPD);
+
+    character.timedEffects.push(
+      new TimedEffect({
+        name: "Drunk",
+        description: `DEF-2. SPD-2.`,
+        turnDuration: 2,
+        metadata: { removableBySorganeil: false },
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+          messageCache.push(
+            `${character.name}'s drowsiness faded.`,
+            TCGThread.Gameroom
+          );
+          character.adjustStat(2, StatsEnum.DEF);
+          character.adjustStat(2, StatsEnum.SPD);
+        },
+      })
+    );
   },
 });
 
@@ -191,6 +209,7 @@ export const smokeBreak = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361017954392866997/3.2.1.sein.gif?ex=6807c63e&is=680674be&hm=110488d337d86b35ac2b84cfec08e01c070a3ecb4563ccdfb3c1df602c5249f9&",
   },
   effects: [3, 2, 2],
+  hpCost: 3,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -200,20 +219,19 @@ export const smokeBreak = new Card({
       `${character.name} took a smoke break.`,
       TCGThread.Gameroom
     );
-    if (character.adjustStat(-5, StatsEnum.HP)) {
-      character.adjustStat(
-        this.calculateEffectValue(this.effects[0]),
-        StatsEnum.ATK
-      );
-      character.adjustStat(
-        this.calculateEffectValue(this.effects[1]),
-        StatsEnum.DEF
-      );
-      character.adjustStat(
-        this.calculateEffectValue(this.effects[2]),
-        StatsEnum.SPD
-      );
-    }
+
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[0]),
+      StatsEnum.ATK
+    );
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[1]),
+      StatsEnum.DEF
+    );
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[2]),
+      StatsEnum.SPD
+    );
   },
 });
 
@@ -262,7 +280,7 @@ export const poisonCure = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361016416488390776/GIF_0966802288.gif?ex=6807c4d0&is=68067350&hm=2d09267ccc0505a949b0c57e6c9bb84fc99decb89d35637cadced435723f5904&",
   },
-  effects: [10],
+  effects: [12],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -315,7 +333,7 @@ export const braceYourself = new Card({
     character.timedEffects.push(
       new TimedEffect({
         name: "Brace Yourself",
-        description: `Increases DEF by ${def} until the end of the turn.`,
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
         priority: -1,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },

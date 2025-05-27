@@ -138,14 +138,14 @@ export const a_livingGrimoireUtilityRecovery = new Card({
 export const mock = new Card({
   title: "Mock",
   cardMetadata: { nature: Nature.Util },
-  description: ([hp, def, spd]) =>
-    `HP+${hp}. Opponent's DEF-${def}. Opponent's SPD-${spd}`,
+  description: ([hp, spd, def]) =>
+    `HP+${hp}. SPD+${spd}. Opponent's DEF-${def}.`,
   emoji: CardEmoji.SERIE_CARD,
   cosmetic: {
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015502966825/Mock_1.png?ex=67df98ae&is=67de472e&hm=b4bfad8c4a548745a18660e2fcb39e7927661f269b17f9f8c73b66fa780f3d04&",
   },
-  effects: [3, 2, 1],
+  effects: [3, 2, 2],
   cardAction: function (
     this: Card,
     { name, sendToGameroom, selfStat, opponentStat }
@@ -153,8 +153,8 @@ export const mock = new Card({
     sendToGameroom(`${name} mocked the opponent.`);
 
     selfStat(0, StatsEnum.HP);
-    opponentStat(1, StatsEnum.DEF, -1);
-    opponentStat(2, StatsEnum.SPD, -1);
+    selfStat(1, StatsEnum.SPD);
+    opponentStat(2, StatsEnum.DEF, -1);
   },
 });
 
