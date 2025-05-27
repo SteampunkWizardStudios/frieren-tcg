@@ -219,7 +219,7 @@ export const a_theHeightOfMagic = new Card({
       return new Card({
         ...fieldOfFlower,
         description: ([hp, endHp]) =>
-          `This card is treated as "The Height of Magic" if your HP is <= 25. Heal ${hp} HP. At the next 3 turn ends, heal ${endHp}.`,
+          `This card is treated as ${CardEmoji.FRIEREN_CARD} **"The Height of Magic"** if your HP is <= 25. Heal ${hp} HP. At the next 3 turn ends, heal ${endHp}.`,
         empowerLevel: this.empowerLevel,
         priority: 0,
       });
@@ -241,7 +241,7 @@ const frierenDeck = [
   { card: demonMagicAnalysis, count: 2 },
   { card: ordinaryDefensiveMagic, count: 2 },
   { card: fieldOfFlower, count: 2 },
-  { card: a_theHeightOfMagic, count: 1 },
+  { card: a_theHeightOfMagic, count: 100 },
 ];
 
 export default frierenDeck;
