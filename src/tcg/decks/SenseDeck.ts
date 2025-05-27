@@ -3,12 +3,13 @@ import TimedEffect from "@tcg/timedEffect";
 import { StatsEnum } from "@tcg/stats";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import { manaConcealment } from "./FernDeck";
 
 export const a_hairWhip = new Card({
   title: "Hair Whip",
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) => `DEF+${def}. Afterwards, DMG ${dmg}+DEF/4.`,
-  effects: [3, 7],
+  effects: [2, 7],
   hpCost: 4,
   emoji: CardEmoji.PUNCH,
   cardAction: function (
@@ -35,9 +36,9 @@ export const a_hairWhip = new Card({
 export const sharpen = new Card({
   title: "Sharpen",
   cardMetadata: { nature: Nature.Util },
-  description: ([def, atk]) => `DEF+${def}. ATK+${atk}.`,
-  effects: [2, 2],
-  hpCost: 1,
+  description: ([def, atk, spd]) => `DEF+${def}. ATK+${atk}. SPD+${spd}`,
+  effects: [2, 2, 2],
+  hpCost: 3,
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
@@ -47,6 +48,7 @@ export const sharpen = new Card({
 
     selfStat(0, StatsEnum.DEF);
     selfStat(1, StatsEnum.ATK);
+    selfStat(2, StatsEnum.SPD);
   },
 });
 
@@ -82,7 +84,7 @@ export const a_pierce = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
     `DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
-  effects: [2, 10],
+  effects: [1, 10],
   hpCost: 7,
   emoji: CardEmoji.PUNCH,
   cardAction: function (
@@ -139,9 +141,9 @@ export const hairBarrier = new Card({
 export const teaTime = new Card({
   title: "Tea Time",
   cardMetadata: { nature: Nature.Util, teaTime: 1 },
-  description: ([hp]) =>
-    `Empower both characters' hands. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
-  effects: [4],
+  description: ([spd, hp]) =>
+    `SPD+${spd}. Empower both characters' hands. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
+  effects: [1, 4],
   emoji: CardEmoji.HEART,
   cosmetic: {
     cardGif:
@@ -149,16 +151,18 @@ export const teaTime = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, opponent, name, sendToGameroom, calcEffect }
+    { self, opponent, name, selfStat, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(
       `${name} and ${opponent.name} enjoyed a refreshing cup of tea. Both characters' hands are empowered!`
     );
 
+    selfStat(0, StatsEnum.SPD);
+
     self.empowerHand();
     opponent.empowerHand();
 
-    const hpHeal = calcEffect(0);
+    const hpHeal = calcEffect(1);
     self.adjustStat(hpHeal, StatsEnum.HP);
     opponent.adjustStat(hpHeal, StatsEnum.HP);
   },
@@ -167,9 +171,9 @@ export const teaTime = new Card({
 export const teaParty = new Card({
   title: "Tea Party",
   cardMetadata: { nature: Nature.Util, teaTime: 2 },
-  description: ([hp]) =>
-    `Empower both characters' hands twice. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
-  effects: [7],
+  description: ([spd, hp]) =>
+    `SPD+${spd}. Empower both characters' hands twice. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
+  effects: [2, 7],
   emoji: CardEmoji.RANDOM,
   cosmetic: {
     cardGif:
@@ -177,18 +181,20 @@ export const teaParty = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, opponent, name, sendToGameroom, calcEffect }
+    { self, opponent, name, selfStat, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(
       `${name} and ${opponent.name} held a tea party! Both characters' hands are greatly empowered!`
     );
+
+    selfStat(0, StatsEnum.SPD);
 
     for (let i = 0; i < 2; i++) {
       self.empowerHand();
       opponent.empowerHand();
     }
 
-    const hpHeal = calcEffect(0);
+    const hpHeal = calcEffect(1);
     self.adjustStat(hpHeal, StatsEnum.HP);
     opponent.adjustStat(hpHeal, StatsEnum.HP);
   },
@@ -218,7 +224,8 @@ export const a_piercingDrill = new Card({
 
 const senseDeck = [
   { card: a_hairWhip, count: 2 },
-  { card: sharpen, count: 2 },
+  { card: sharpen, count: 1 },
+  { card: manaConcealment, count: 1 },
   { card: rest, count: 1 },
   { card: a_pierce, count: 2 },
   { card: hairBarrier, count: 3 },
