@@ -228,6 +228,8 @@ export const manaConcealment = new Card({
       if (selectedCard.cardMetadata.nature === Nature.Attack) {
         selectedCard.priority = 1;
       }
+
+      return selectedCard;
     };
     character.additionalMetadata.pierceFactor = 0.5;
 

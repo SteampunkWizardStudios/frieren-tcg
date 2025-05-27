@@ -372,12 +372,15 @@ export const tcgMain = async (
 
     // move resolution step
     game.characters.forEach((character: Character, characterIndex: number) => {
-      character.ability.abilitySelectedMoveModifierEffect?.(
-        game,
-        characterIndex,
-        messageCache,
-        characterToSelectedMoveMap[characterIndex]
-      );
+      if (character.ability.abilitySelectedMoveModifierEffect) {
+        characterToSelectedMoveMap[characterIndex] =
+          character.ability.abilitySelectedMoveModifierEffect(
+            game,
+            characterIndex,
+            messageCache,
+            characterToSelectedMoveMap[characterIndex].clone()
+          );
+      }
     });
     const moveFirst = game.getFirstMove(characterToSelectedMoveMap);
     const moveOrder = [moveFirst, 1 - moveFirst];

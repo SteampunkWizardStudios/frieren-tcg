@@ -49,8 +49,8 @@ export const playSelectedMove = async (
   });
 
   const cards: Card[] = Object.values(playerPossibleMove);
-  const randomCard: Card =
-    cards[Math.floor(Math.random() * (cards.length - 1))]; // -1 so Forfeit is always avoided
+  const randomIndex = Math.floor(Math.random() * (cards.length - 1)); // -1 so Forfeit is always avoided
+  const randomCard: Card = cards[randomIndex];
 
   return new Promise<Card>((resolve, reject) => {
     const fallbackTimeout = setTimeout(() => {
@@ -59,6 +59,7 @@ export const playSelectedMove = async (
         console.warn(
           "Fallback timeout triggered in getSelectedMove function - collector failed to end properly."
         );
+        character.playCard(randomIndex);
         resolve(randomCard);
       }
     }, timeLimit + 5000); // 5 additional seconds for fallback timeout
@@ -133,6 +134,7 @@ export const playSelectedMove = async (
             // When the collector expires, disable the select menu
             if (collected.size === 0) {
               if (!isResolved) {
+                character.playCard(randomIndex);
                 await response
                   .edit({
                     content: `Timeout! Playing a random card: ${randomCard.emoji} **${randomCard.getTitle()}**!`,
@@ -147,6 +149,8 @@ export const playSelectedMove = async (
             }
           } catch (error) {
             console.error("Error in collector end event:", error);
+
+            character.playCard(randomIndex);
             if (!isResolved) {
               isResolved = true;
               clearTimeout(fallbackTimeout);

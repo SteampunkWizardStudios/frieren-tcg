@@ -18,7 +18,7 @@ export type Ability = {
     characterIndex: number,
     messageCache: MessageCache,
     card: Card
-  ) => void;
+  ) => Card;
   abilityOwnCardEffectWrapper?: (
     context: GameMessageContext,
     card: Card
