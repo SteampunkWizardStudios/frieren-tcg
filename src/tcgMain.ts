@@ -414,7 +414,7 @@ export const tcgMain = async (
           );
 
           // use hpCost
-          if (card.hpCost) {
+          if (card.hpCost && card.hpCost !== 0) {
             character.adjustStat(-card.hpCost, StatsEnum.HP);
           }
 
