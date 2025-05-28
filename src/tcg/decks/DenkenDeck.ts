@@ -317,7 +317,7 @@ export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
   cardMetadata: { nature: Nature.Attack },
   description: ([initDmg]) =>
-    `DMG ${initDmg}, ${initDmg + 1}, ${initDmg + 2}, ${initDmg + 3}, ${initDmg + 4}.`,
+    `DMG ${initDmg}, ${+initDmg + 1}, ${+initDmg + 2}, ${+initDmg + 3}, ${+initDmg + 4}.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2],
   hpCost: 15,
@@ -467,7 +467,7 @@ export const thisIsNoPlaceToGiveUp = new Card({
   description: ([hpFirst, hpSecond]) =>
     `Heal ${hpFirst}HP. Heal an additional ${hpSecond}HP and gain 1 Preserverance stack if HP <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [7, 11],
+  effects: [7, 7],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364979223357296802/GIF_0406490421.gif?ex=680c4c36&is=680afab6&hm=cf5c0f9d7e3e14ec143a8b304c0d416868db25cb8de5a1f0b38cc4c7507df73d&",
