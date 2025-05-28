@@ -241,7 +241,7 @@ const frierenDeck = [
   { card: demonMagicAnalysis, count: 2 },
   { card: ordinaryDefensiveMagic, count: 2 },
   { card: fieldOfFlower, count: 2 },
-  { card: a_theHeightOfMagic, count: 100 },
+  { card: a_theHeightOfMagic, count: 1 },
 ];
 
 export default frierenDeck;

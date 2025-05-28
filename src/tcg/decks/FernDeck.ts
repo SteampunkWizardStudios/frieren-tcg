@@ -222,7 +222,7 @@ export const manaConcealment = new Card({
     character.ability.abilityStartOfTurnEffect = function (
       _game,
       _characterIndex,
-      _messageCache,
+      _messageCache
     ) {
       character.ability.abilitySelectedMoveModifierEffect = function (
         _game,
@@ -237,7 +237,7 @@ export const manaConcealment = new Card({
         return selectedCard;
       };
       character.additionalMetadata.pierceFactor = 0.5;
-    }
+    };
 
     character.timedEffects.push(
       new TimedEffect({

@@ -8,7 +8,8 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 const a_jab = new Card({
   title: "Jab",
   cardMetadata: { nature: Nature.Attack },
-  description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal ${dmg} DMG, with 50% Pierce.`,
+  description: ([def, spd, dmg]) =>
+    `DEF+${def}. SPD+${spd}. Deal ${dmg} DMG, with 50% Pierce.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
   hpCost: 3,
@@ -40,7 +41,8 @@ const a_jab = new Card({
 const a_hook = new Card({
   title: "Hook",
   cardMetadata: { nature: Nature.Attack },
-  description: ([spd, atk, dmg]) => `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG, with 50% Pierce.`,
+  description: ([spd, atk, dmg]) =>
+    `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG, with 50% Pierce.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
   hpCost: 3,
@@ -72,7 +74,8 @@ const a_hook = new Card({
 const a_uppercut = new Card({
   title: "Uppercut",
   cardMetadata: { nature: Nature.Attack },
-  description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG, with 50% Pierce.`,
+  description: ([atk, spd, dmg]) =>
+    `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG, with 50% Pierce.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 3],
   hpCost: 5,
