@@ -2,7 +2,6 @@ import Card, { Nature } from "@tcg/card";
 import TimedEffect from "@tcg/timedEffect";
 import { StatsEnum } from "@tcg/stats";
 import { CardEmoji } from "@tcg/formatting/emojis";
-import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { manaConcealment } from "./FernDeck";
 
 export const a_hairWhip = new Card({
@@ -52,32 +51,32 @@ export const sharpen = new Card({
   },
 });
 
-export const rest = new Card({
-  title: "Rest",
-  cardMetadata: { nature: Nature.Util },
-  description: ([hp]) => `DEF-2 for 2 turns. Heal ${hp} HP`,
-  effects: [10],
-  emoji: CardEmoji.HEART,
-  cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
-    sendToGameroom(`${name} rests up.`);
+// export const rest = new Card({
+//   title: "Rest",
+//   cardMetadata: { nature: Nature.Util },
+//   description: ([hp]) => `DEF-2 for 2 turns. Heal ${hp} HP`,
+//   effects: [10],
+//   emoji: CardEmoji.HEART,
+//   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
+//     sendToGameroom(`${name} rests up.`);
 
-    self.adjustStat(-2, StatsEnum.DEF);
-    selfStat(0, StatsEnum.HP);
+//     self.adjustStat(-2, StatsEnum.DEF);
+//     selfStat(0, StatsEnum.HP);
 
-    self.timedEffects.push(
-      new TimedEffect({
-        name: "Rest",
-        description: `DEF-2 for 2 turns`,
-        turnDuration: 2,
-        metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: (game, characterIndex, messageCache) => {
-          messageCache.push(`${name} had a good rest.`, TCGThread.Gameroom);
-          game.characters[characterIndex].adjustStat(2, StatsEnum.DEF);
-        },
-      })
-    );
-  },
-});
+//     self.timedEffects.push(
+//       new TimedEffect({
+//         name: "Rest",
+//         description: `DEF-2 for 2 turns`,
+//         turnDuration: 2,
+//         metadata: { removableBySorganeil: false },
+//         endOfTimedEffectAction: (game, characterIndex, messageCache) => {
+//           messageCache.push(`${name} had a good rest.`, TCGThread.Gameroom);
+//           game.characters[characterIndex].adjustStat(2, StatsEnum.DEF);
+//         },
+//       })
+//     );
+//   },
+// });
 
 export const a_pierce = new Card({
   title: "Pierce",
@@ -225,8 +224,7 @@ export const a_piercingDrill = new Card({
 const senseDeck = [
   { card: a_hairWhip, count: 2 },
   { card: sharpen, count: 1 },
-  { card: manaConcealment, count: 1 },
-  { card: rest, count: 1 },
+  { card: manaConcealment, count: 2 },
   { card: a_pierce, count: 2 },
   { card: hairBarrier, count: 3 },
   { card: teaTime, count: 2 },

@@ -39,7 +39,6 @@ import {
   a_pierce,
   a_piercingDrill,
   sharpen,
-  rest,
 } from "@decks/SenseDeck";
 import {
   a_cleave,
@@ -96,7 +95,6 @@ export const serie_utilityMagic_tactics = [
 
 export const serie_utilityMagic_recovery = [
   solitude,
-  rest,
   poisonCure,
   hide,
   fieldOfFlower,

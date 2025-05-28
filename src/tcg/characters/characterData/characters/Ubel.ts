@@ -41,7 +41,8 @@ function checkForEffects(effects: string[]): Record<string, boolean> {
 function missAttack(
   context: GameMessageContext,
   card: Card,
-  failureRate: number
+  failureRate: number,
+  hitIntoShield: boolean
 ) {
   const { game, selfIndex: characterIndex, messageCache } = context;
   // Non Ubel slashing sureHits get treated normally
@@ -51,11 +52,14 @@ function missAttack(
     const character = game.getCharacter(characterIndex);
 
     messageCache.push("The attack cannot connect!", TCGThread.Gameroom);
-    messageCache.push("Yet Übel keeps rushing forward!", TCGThread.Gameroom);
 
-    const atkSpdBuff = card.calculateEffectValue(card.effects[1]);
-    character.adjustStat(atkSpdBuff, StatsEnum.ATK);
-    character.adjustStat(atkSpdBuff, StatsEnum.SPD);
+    if (!hitIntoShield) {
+      messageCache.push("Yet Übel keeps rushing forward!", TCGThread.Gameroom);
+
+      const atkSpdBuff = card.calculateEffectValue(card.effects[1]);
+      character.adjustStat(atkSpdBuff, StatsEnum.ATK);
+      character.adjustStat(atkSpdBuff, StatsEnum.SPD);
+    }
   }
 }
 
@@ -88,7 +92,7 @@ function playOffensiveCard(
   );
   messageCache.push(`# Luck roll: ${luckRoll}`, TCGThread.Gameroom);
   if (luckRoll < failureRate) {
-    missAttack(context, card, failureRate);
+    missAttack(context, card, failureRate, false);
   } else {
     messageCache.push("The attack connects!", TCGThread.Gameroom);
     card.cardAction?.(context);
@@ -227,7 +231,7 @@ const Ubel = new CharacterData({
         case UbelHit.SureMiss:
           // defensive move
           if (!activeEffects.Recompose) {
-            missAttack(context, card, failureRate);
+            missAttack(context, card, failureRate, true);
             return;
           }
           // Recomposing

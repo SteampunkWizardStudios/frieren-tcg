@@ -80,7 +80,7 @@ export const a_whip = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([spd, dmg]) => `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/5.`,
   emoji: CardEmoji.LAUFEN_CARD,
-  effects: [1, 9],
+  effects: [2, 9],
   hpCost: 7,
   cosmetic: {
     cardGif:

@@ -1,11 +1,11 @@
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import Card from "@tcg/card";
-import { a_catastraviaBase } from "@decks/DenkenDeck";
+import { bareHandedBlock } from "@decks/DenkenDeck";
 import { telekinesis } from "@decks/EdelDeck";
 import { spellToCreateManaButterflies } from "@decks/FernDeck";
 import { a_theHeightOfMagic } from "@decks/FrierenDeck";
 import { a_realHeroSwing } from "@decks/HimmelDeck";
-import { jilwer } from "@decks/LaufenDeck";
+import { a_supersonicStrike } from "@decks/LaufenDeck";
 import { imitate } from "@decks/LinieDeck";
 import { a_threeSpearsOfTheGoddess } from "@decks/SeinDeck";
 import { a_piercingDrill } from "@decks/SenseDeck";
@@ -15,12 +15,12 @@ import { a_lightningStrike } from "@decks/StarkDeck";
 import { a_malevolentShrine } from "./ubelSignature";
 
 export const signatureMoves: Record<CharacterName, Card> = {
-  [CharacterName.Denken]: a_catastraviaBase,
+  [CharacterName.Denken]: bareHandedBlock,
   [CharacterName.Edel]: telekinesis,
   [CharacterName.Fern]: spellToCreateManaButterflies,
   [CharacterName.Frieren]: a_theHeightOfMagic,
   [CharacterName.Himmel]: a_realHeroSwing,
-  [CharacterName.Laufen]: jilwer,
+  [CharacterName.Laufen]: a_supersonicStrike,
   [CharacterName.Linie]: imitate,
   [CharacterName.Sein]: a_threeSpearsOfTheGoddess,
   [CharacterName.Sense]: a_piercingDrill,

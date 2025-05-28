@@ -156,10 +156,10 @@ export const rushdown = new Card({
 const slowdown = new Card({
   title: "Slow Down",
   cardMetadata: { nature: Nature.Util },
-  description: ([hp, endOfTurnHp]) =>
-    `SPD-10 for 2 turns. Heal ${hp}HP, then ${endOfTurnHp} HP at the end of each turn. Attacks will not hit while this effect is active.`,
+  description: ([def, hp, endOfTurnHp]) =>
+    `SPD-10 and DEF+${def} for 2 turns. Heal ${hp}HP, then ${endOfTurnHp} HP at the end of each turn. Attacks will not hit while this effect is active.`,
   emoji: CardEmoji.UBEL_CARD,
-  effects: [10, 5],
+  effects: [5, 10, 5],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364216703541837844/GIF_2189012353.gif?ex=6808dd50&is=68078bd0&hm=644b405b52a67b684bda6bfff12ce2ffa99d091de554b967213e07aa87883a8d&",
@@ -176,10 +176,14 @@ const slowdown = new Card({
 
     const turnCount = 2;
     character.adjustStat(-10, StatsEnum.SPD);
-    const hpIncrease = this.calculateEffectValue(this.effects[0]);
+
+    const defIncrease = this.calculateEffectValue(this.effects[0]);
+    character.adjustStat(defIncrease, StatsEnum.DEF);
+
+    const hpIncrease = this.calculateEffectValue(this.effects[1]);
     character.adjustStat(hpIncrease, StatsEnum.HP);
 
-    const endOfTurnHpIncrease = this.calculateEffectValue(this.effects[1]);
+    const endOfTurnHpIncrease = this.calculateEffectValue(this.effects[2]);
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
@@ -204,9 +208,11 @@ const slowdown = new Card({
             TCGThread.Gameroom
           );
           character.adjustStat(10, StatsEnum.SPD);
+          character.adjustStat(-defIncrease, StatsEnum.DEF);
         },
         replacedAction: function (this, _game, _characterIndex) {
           character.adjustStat(10, StatsEnum.SPD);
+          character.adjustStat(-defIncrease, StatsEnum.DEF);
         },
       })
     );

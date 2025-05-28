@@ -310,7 +310,7 @@ const a_daosdorg = new Card({
 
 export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
-  cardMetadata: { nature: Nature.Attack, signature: true },
+  cardMetadata: { nature: Nature.Attack },
   description: ([dmg, multiDmg]) =>
     `DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
@@ -389,7 +389,7 @@ const a_catastravia = new Card({
 
 const elementaryDefensiveMagicBase = new Card({
   title: "Elementary Defensive Magic",
-  cardMetadata: { nature: Nature.Defense },
+  cardMetadata: { nature: Nature.Defense, signature: true },
   description: ([def]) =>
     `Increases TrueDEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,

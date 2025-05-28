@@ -9,10 +9,10 @@ import Game from "@tcg/game";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 
 const a_FrierenStrikeTheirWeakpoint = new Card({
-  title: "Frieren! Strike Their Weakpoint!",
+  title: "Frieren! Strike Their Weakpoints!",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, oppDef]) =>
-    `Opponent's DEF-${oppDef} for 2 turns. Frieren attacks for ${dmg} DMG. At next turn's end, Frieren attacks for an additional ${dmg} DMG.`,
+  description: ([dmg]) =>
+    `Frieren attacks for ${dmg} DMG. At next turn's end, Frieren attacks for an additional ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
   cosmetic: {
     cardGif:
@@ -24,7 +24,6 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1 - characterIndex);
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
@@ -39,9 +38,6 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
     }
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    const oppDefDebuff = this.calculateEffectValue(this.effects[1]);
-    opponent.adjustStat(-1 * oppDefDebuff, StatsEnum.DEF);
-
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
       characterIndex,
@@ -64,9 +60,6 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
             isTimedEffectAttack: true,
           });
         },
-        endOfTimedEffectAction: function (this, _game, _characterIndex) {
-          opponent.adjustStat(oppDefDebuff, StatsEnum.DEF);
-        },
       })
     );
 
@@ -77,8 +70,8 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
 const a_FrierenBackMeUp = new Card({
   title: "Frieren! Back Me Up!",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, oppDef]) =>
-    `Opponent's DEF-${oppDef} for 3 turns. Frieren attacks for ${dmg} DMG. For the next 3 turn ends, Frieren attacks for an additional ${dmg} DMG.`,
+  description: ([dmg]) =>
+    `Frieren attacks for ${dmg} DMG. For the next 4 turn ends, Frieren attacks for an additional ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
   effects: [3, 2],
   cardAction: function (
@@ -86,7 +79,6 @@ const a_FrierenBackMeUp = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1 - characterIndex);
     const isHimmel = character.name === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
@@ -101,8 +93,6 @@ const a_FrierenBackMeUp = new Card({
     }
 
     const damage = this.calculateEffectValue(this.effects[0]);
-    const oppDefDebuff = this.calculateEffectValue(this.effects[1]);
-    opponent.adjustStat(-1 * oppDefDebuff, StatsEnum.DEF);
 
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
@@ -111,7 +101,7 @@ const a_FrierenBackMeUp = new Card({
       new TimedEffect({
         name: `${isHimmel ? "Frieren: " : "Mage: "}Backing Fire`,
         description: `Deal ${damage} at each turn's end.`,
-        turnDuration: 3,
+        turnDuration: 4,
         metadata: { frieren: true },
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: function (this, game, characterIndex) {
@@ -131,7 +121,6 @@ const a_FrierenBackMeUp = new Card({
             `${isHimmel ? "Frieren" : `${otherCharacter.name}`} let up the supporting fire.`,
             TCGThread.Gameroom
           );
-          opponent.adjustStat(oppDefDebuff, StatsEnum.DEF);
         },
       })
     );
@@ -145,7 +134,7 @@ export const a_FrierenNow = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [8],
+  effects: [10],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -595,10 +584,10 @@ export const quickBlock = new Card({
 const rally = new Card({
   title: "Rally",
   cardMetadata: { nature: Nature.Util },
-  description: ([hp, stat]) =>
-    `HP+${hp}. ATK+${stat}. DEF+${stat}. SPD+${stat}. An additional HP+${hp}, ATK+${stat}, DEF+${stat}, SPD+${stat} for each one of your active allies.`,
+  description: ([stat, lessStat]) =>
+    `ATK+${stat}. DEF+${stat}. SPD+${stat}. An additional ATK+${lessStat}, DEF+${lessStat}, SPD+${lessStat} per ally active, or per active Timed Effect if not used by Himmel.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [2, 1],
+  effects: [1, 0.5],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -618,10 +607,10 @@ const rally = new Card({
     }
 
     const activeAllies = 1 + character.timedEffects.length;
-    const hp = activeAllies * this.calculateEffectValue(this.effects[0]);
-    const stat = activeAllies * this.calculateEffectValue(this.effects[1]);
+    const stat =
+      this.calculateEffectValue(this.effects[0]) +
+      activeAllies * this.calculateEffectValue(this.effects[1]);
 
-    character.adjustStat(hp, StatsEnum.HP);
     character.adjustStat(stat, StatsEnum.ATK);
     character.adjustStat(stat, StatsEnum.DEF);
     character.adjustStat(stat, StatsEnum.SPD);
