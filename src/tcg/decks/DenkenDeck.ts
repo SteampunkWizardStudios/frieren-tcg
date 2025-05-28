@@ -316,10 +316,10 @@ const a_daosdorg = new Card({
 export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
   cardMetadata: { nature: Nature.Attack },
-  description: ([initDmg]) =>
-    `DMG ${initDmg}, ${+initDmg + 1}, ${+initDmg + 2}, ${+initDmg + 3}, ${+initDmg + 4}.`,
+  description: ([dmg0, dmg1, dmg2, dmg3, dmg4]) =>
+    `DMG ${dmg0}, ${dmg1}, ${dmg2}, ${dmg3}, ${dmg4}.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2],
+  effects: [2, 3, 4, 5, 6],
   hpCost: 15,
   cosmetic: {
     cardGif:
@@ -345,7 +345,7 @@ export const a_catastraviaBase = new Card({
       );
 
       for (let i = 0; i < 5; i++) {
-        const damage = this.calculateEffectValue(this.effects[0] + i);
+        const damage = this.calculateEffectValue(this.effects[i]);
         CommonCardAction.commonAttack(game, characterIndex, {
           damage,
         });
