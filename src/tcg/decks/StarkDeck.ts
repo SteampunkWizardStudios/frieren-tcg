@@ -32,7 +32,7 @@ const offensiveStance = new Card({
   description: ([atk, spd]) =>
     `ATK+${atk}. DEF-2 for 2 turns. SPD+${spd}. Gain 1 <Resolve>.`,
   emoji: CardEmoji.STARK_CARD,
-  effects: [2, 1],
+  effects: [2, 2],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361122664416018593/IMG_3106.gif?ex=680827c3&is=6806d643&hm=d6fdc758cc5b780bad809f674a6d3bf88f19ff038136bd96dca94e7c09ce18ed&",
@@ -68,7 +68,7 @@ const defensiveStance = new Card({
   description: ([def, spd]) =>
     `DEF+${def}. ATK-2 for 2 turns. SPD+${spd}. Gain 1 <Resolve>.`,
   emoji: CardEmoji.STARK_CARD,
-  effects: [2, 1],
+  effects: [2, 2],
   cardAction: function (
     this: Card,
     { self, name, sendToGameroom, selfStat, possessive }
@@ -100,7 +100,7 @@ const jumboBerrySpecialBreak = new Card({
   description: ([def, hp]) =>
     `SPD-2 for 2 turns. DEF+${def} for 2 turns. Heal ${hp} HP. Gain 1 <Resolve> at the end of next turn.`,
   emoji: CardEmoji.JUMBO_BERRY_CARD,
-  effects: [2, 7],
+  effects: [2, 10],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360990957671153826/IMG_3099.gif?ex=680855da&is=6807045a&hm=7b11f297c0dc63b3bd8e9e19d7b7cb316001a389454bd05213d99686879f4f3c&",
@@ -221,10 +221,10 @@ const a_ordensSlashTechnique = new Card({
 const fearBroughtMeThisFar = new Card({
   title: "Fear Brought Me This Far",
   cardMetadata: { nature: Nature.Util, resolve: 2 },
-  description: ([atkDef, atkDefAdditional]) =>
-    `Increases ATK and DEF by ${atkDef}. Increases ATK and DEF by an additional ${atkDefAdditional} if HP <=60. Gain 2 <Resolve>.`,
+  description: ([atkDef]) =>
+    `Increases ATK and DEF by ${atkDef}. Gain 2 <Resolve>.`,
   emoji: CardEmoji.STARK_CARD,
-  effects: [2, 1],
+  effects: [3],
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360983005946183957/IMG_3091.gif?ex=68084e72&is=6806fcf2&hm=5e9453189ccb1c31a4def06862e8dc7d2468c471eff0f8faa63d6288c8127c6c&",
@@ -239,15 +239,7 @@ const fearBroughtMeThisFar = new Card({
       TCGThread.Gameroom
     );
 
-    let atkDef = this.calculateEffectValue(this.effects[0]);
-    if (character.stats.stats.HP <= 60) {
-      messageCache.push(
-        `${character.name} resolves ${character.cosmetic.pronouns.reflexive}...`,
-        TCGThread.Gameroom
-      );
-      atkDef += this.calculateEffectValue(this.effects[1]);
-    }
-
+    const atkDef = this.calculateEffectValue(this.effects[0]);
     character.adjustStat(atkDef, StatsEnum.ATK);
     character.adjustStat(atkDef, StatsEnum.DEF);
   },
@@ -288,17 +280,14 @@ const a_eisensAxeCleave = new Card({
   },
 });
 
-export const a_lightningStrike = new Card({
-  title: "Lightning Strike",
+export const a_lastStand = new Card({
+  title: "Last Stand",
   description: ([dmg]) =>
-    `DEF-5 and SPD-5 for 2 turns. At this turn's end, strike for ${dmg} DMG. Uses up 2 Resolve stack. Stark's HP cannot drop below 1 until the end of the turn after this move is used.`,
+    `DEF-5 for 2 turns. This character's HP cannot drop below 1 for 2 turns. At the end of next turn, HP-20, use 2 Resolves, strike for DMG ${dmg}.`,
   emoji: CardEmoji.STARK_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true, resolve: -2 },
-  effects: [20],
-  hpCost: 14,
-  cosmetic: {
-    cardGif: "https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif",
-  },
+  effects: [25],
+  priority: 1,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -307,31 +296,21 @@ export const a_lightningStrike = new Card({
 
     messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
     const damage = this.calculateEffectValue(this.effects[0]);
-
-    character.adjustStat(-5, StatsEnum.DEF);
-    character.adjustStat(-5, StatsEnum.SPD);
     character.additionalMetadata.minimumPossibleHp = 1;
-
-    game.characters[characterIndex].timedEffects.push(
-      new TimedEffect({
-        name: "Opening",
-        description: `DEF-5 and SPD-5.`,
-        turnDuration: 2,
-        metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: (game, characterIndex) => {
-          game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
-          game.characters[characterIndex].adjustStat(5, StatsEnum.SPD);
-        },
-      })
-    );
+    character.adjustStat(-5, StatsEnum.DEF);
 
     game.characters[characterIndex].timedEffects.push(
       new TimedEffect({
         name: "Impending Lightning",
         description: `Strike for ${damage} damage.`,
-        turnDuration: 1,
+        turnDuration: 2,
         activateEndOfTurnActionThisTurn: false,
         endOfTimedEffectAction: (game, characterIndex) => {
+          messageCache.push(
+            `[⠀](https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif)`,
+            TCGThread.Gameroom
+          );
+          game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
           messageCache.push(
             `${character.name} performs Lightning Strike!`,
             TCGThread.Gameroom
@@ -348,7 +327,7 @@ export const a_lightningStrike = new Card({
       new TimedEffect({
         name: "Sturdy",
         description: `HP cannot fall below 1 this turn.`,
-        turnDuration: 1,
+        turnDuration: 2,
         priority: -1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
@@ -373,7 +352,7 @@ const starkDeck = [
   { card: a_ordensSlashTechnique, count: 2 },
   { card: fearBroughtMeThisFar, count: 1 },
   { card: a_eisensAxeCleave, count: 1 },
-  { card: a_lightningStrike, count: 1 },
+  { card: a_lastStand, count: 1 },
 ];
 
 export default starkDeck;

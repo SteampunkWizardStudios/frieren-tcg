@@ -30,7 +30,9 @@ const useRandomCard = function (props: {
   });
 
   sendToGameroom(`${name} used **${newCard.getTitle()}**.`);
-  flatSelfStat(-newCard.hpCost, StatsEnum.HP);
+  if (newCard.hpCost && newCard.hpCost !== 0) {
+    flatSelfStat(-newCard.hpCost, StatsEnum.HP);
+  }
 
   return newCard;
 };

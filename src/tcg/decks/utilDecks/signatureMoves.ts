@@ -11,7 +11,7 @@ import { a_threeSpearsOfTheGoddess } from "@decks/SeinDeck";
 import { a_piercingDrill } from "@decks/SenseDeck";
 import { ancientBarrierMagic } from "./serieSignature";
 import { a_geisel } from "@decks/StilleDeck";
-import { a_lightningStrike } from "@decks/StarkDeck";
+import { a_lastStand } from "@decks/StarkDeck";
 import { a_malevolentShrine } from "./ubelSignature";
 
 export const signatureMoves: Record<CharacterName, Card> = {
@@ -24,7 +24,7 @@ export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Linie]: imitate,
   [CharacterName.Sein]: a_threeSpearsOfTheGoddess,
   [CharacterName.Sense]: a_piercingDrill,
-  [CharacterName.Stark]: a_lightningStrike,
+  [CharacterName.Stark]: a_lastStand,
   [CharacterName.Stille]: a_geisel,
   [CharacterName.Serie]: ancientBarrierMagic,
   [CharacterName.Ubel]: a_malevolentShrine,

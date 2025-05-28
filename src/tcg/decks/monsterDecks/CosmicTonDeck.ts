@@ -153,7 +153,8 @@ export const a_killingMagic = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.PUNCH,
-  effects: [15],
+  effects: [14],
+  hpCost: 8,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
