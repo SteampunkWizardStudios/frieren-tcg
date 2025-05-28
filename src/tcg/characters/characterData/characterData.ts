@@ -13,6 +13,7 @@ const defaultMetadata: CharacterAdditionalMetadata = {
   timedEffectAttackedThisTurn: false,
   accessToDefaultCardOptions: true,
   defenderDamageScaling: 1,
+  pierceFactor: 0,
   forcedDiscards: 0,
 
   hidden: false,

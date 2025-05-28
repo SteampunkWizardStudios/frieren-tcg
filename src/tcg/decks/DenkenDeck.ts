@@ -8,11 +8,10 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 const a_jab = new Card({
   title: "Jab",
   cardMetadata: { nature: Nature.Attack },
-  description: ([def, spd, dmg]) =>
-    `DEF+${def}. SPD+${spd}. Deal ${dmg} DMG, with 50% Pierce.`,
+  description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
-  hpCost: 3,
+  hpCost: 2,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -41,11 +40,10 @@ const a_jab = new Card({
 const a_hook = new Card({
   title: "Hook",
   cardMetadata: { nature: Nature.Attack },
-  description: ([spd, atk, dmg]) =>
-    `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG, with 50% Pierce.`,
+  description: ([spd, atk, dmg]) => `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
-  hpCost: 3,
+  hpCost: 2,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -74,11 +72,10 @@ const a_hook = new Card({
 const a_uppercut = new Card({
   title: "Uppercut",
   cardMetadata: { nature: Nature.Attack },
-  description: ([atk, spd, dmg]) =>
-    `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG, with 50% Pierce.`,
+  description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 3],
-  hpCost: 5,
+  hpCost: 3,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364978489035460708/GIF_0836074812.gif?ex=680c4b87&is=680afa07&hm=84fd66beff9352aba9c037ff66d2b0e69219b34c0e3c9c5e62edbf96dc62a0f8&",
@@ -152,9 +149,9 @@ export const a_waldgoseBase = new Card({
   title: "Tornado Winds: Waldgose",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg, multiDmg]) =>
-    `DMG ${dmg}. At the next 3 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
+    `DMG ${dmg}. At the next 4 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [6, 2],
+  effects: [6, 1],
   hpCost: 7,
   cosmetic: {
     cardGif:
@@ -179,19 +176,17 @@ export const a_waldgoseBase = new Card({
         `${character.name} whipped up a tornado!`,
         TCGThread.Gameroom
       );
-      const initialDamage = this.calculateEffectValue(this.effects[0]);
+      const damage = this.calculateEffectValue(this.effects[0]);
       CommonCardAction.commonAttack(game, characterIndex, {
-        damage: initialDamage,
+        damage,
       });
-
-      const multiDamage = this.calculateEffectValue(this.effects[1]);
-      const damage = this.cardMetadata?.waldgoseDamage ?? multiDamage;
 
       character.timedEffects.push(
         new TimedEffect({
           name: "Tornado Winds: Waldgose",
           description: `Deal ${damage} at each turn's end.`,
-          turnDuration: 3,
+          turnDuration: 4,
+          metadata: { isWaldgose: true },
           endOfTurnAction: function (this, game, characterIndex) {
             messageCache.push("The wind rages on!", TCGThread.Gameroom);
 
@@ -230,10 +225,10 @@ const a_waldgose = new Card({
 export const a_daosdorgBase = new Card({
   title: "Hellfire: Daosdorg",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, waldgoseDmgBonus, oppDefDebuff]) =>
-    `DMG ${dmg}. If Waldgose is active, increase its turn end damage by ${waldgoseDmgBonus} and reduce Opponent's DEF by ${oppDefDebuff}. Treat this card as "Hook" if the user's HP is <= 0.`,
+  description: ([dmg]) =>
+    `DMG ${dmg}. Afterwards, all your attacks receive 25% Pierce for the duration of any currently active Waldgose. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [12, 3, 1],
+  effects: [10],
   hpCost: 9,
   cosmetic: {
     cardGif:
@@ -262,26 +257,36 @@ export const a_daosdorgBase = new Card({
         damage: this.calculateEffectValue(this.effects[0]),
       });
 
-      let hasWaldgose: boolean = false;
-
+      let daosdorgTurnDuration = 0;
       for (const timedEffect of character.timedEffects) {
-        if (timedEffect.metadata.waldgoseDamage) {
-          timedEffect.metadata.waldgoseDamage += this.calculateEffectValue(
-            this.effects[1]
+        if (timedEffect.metadata.isWaldgose) {
+          daosdorgTurnDuration = Math.max(
+            daosdorgTurnDuration,
+            timedEffect.turnDuration
           );
-          hasWaldgose = true;
         }
       }
 
-      if (hasWaldgose) {
+      if (daosdorgTurnDuration > 0) {
         messageCache.push(
           `The hellfire infused itself into the raging winds!`,
           TCGThread.Gameroom
         );
 
-        const opponent = game.getCharacter(1 - characterIndex);
-        const oppDefDebuff = this.calculateEffectValue(this.effects[2]);
-        opponent.adjustStat(-1 * oppDefDebuff, StatsEnum.DEF);
+        character.additionalMetadata.pierceFactor += 0.25;
+        character.timedEffects.push(
+          new TimedEffect({
+            name: "Hellfire: Daosdorg",
+            description: `All your attacks receive +25% Pierce.`,
+            turnDuration: daosdorgTurnDuration,
+            priority: -1,
+            executeEndOfTimedEffectActionOnRemoval: true,
+            endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
+              messageCache.push(`The hellfire quietens.`, TCGThread.Gameroom);
+              character.additionalMetadata.pierceFactor -= 0.25;
+            },
+          })
+        );
       }
     }
   },
@@ -311,10 +316,10 @@ const a_daosdorg = new Card({
 export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg, multiDmg]) =>
-    `DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Uppercut" if the user's HP is <= 0.`,
+  description: ([initDmg]) =>
+    `DMG ${initDmg}, ${initDmg + 1}, ${initDmg + 2}, ${initDmg + 3}, ${initDmg + 4}.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [9, 3],
+  effects: [2],
   hpCost: 15,
   cosmetic: {
     cardGif:
@@ -339,29 +344,12 @@ export const a_catastraviaBase = new Card({
         TCGThread.Gameroom
       );
 
-      const initialDamage = this.calculateEffectValue(this.effects[0]);
-      CommonCardAction.commonAttack(game, characterIndex, {
-        damage: initialDamage,
-      });
-
-      const multiDamage = this.calculateEffectValue(this.effects[1]);
-      character.timedEffects.push(
-        new TimedEffect({
-          name: "Lights of Judgment: Catastravia",
-          description: `Deal ${multiDamage} at each turn's end.`,
-          turnDuration: 5,
-          endOfTurnAction: (game, characterIndex) => {
-            messageCache.push(
-              "The lights of judgment lit up the sky.",
-              TCGThread.Gameroom
-            );
-            CommonCardAction.commonAttack(game, characterIndex, {
-              damage: multiDamage,
-              isTimedEffectAttack: true,
-            });
-          },
-        })
-      );
+      for (let i = 0; i < 5; i++) {
+        const damage = this.calculateEffectValue(this.effects[0] + i);
+        CommonCardAction.commonAttack(game, characterIndex, {
+          damage,
+        });
+      }
     }
   },
 });

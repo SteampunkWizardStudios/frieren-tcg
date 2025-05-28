@@ -33,17 +33,19 @@ export interface TimedEffectProps {
 
 type TimedEffectMetadata = {
   removableBySorganeil?: boolean;
-  waldgoseDamage?: number;
   barrage?: number;
 
   frieren?: boolean;
   eisen?: boolean;
   heiter?: boolean;
 
+  isWaldgose?: boolean;
+
   ubelSpeedModifiers?: number;
 };
 
 const defaultMetadata: TimedEffectMetadata = {
+  isWaldgose: false,
   removableBySorganeil: true,
 };
 

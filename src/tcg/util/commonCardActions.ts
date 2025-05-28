@@ -16,7 +16,7 @@ export default class CommonCardAction {
     const character = game.getCharacter(characterIndex);
     const opponent = game.getCharacter(1 - characterIndex);
     const pierceFactor =
-      (character.additionalMetadata.pierceFactor ??= 0) +
+      character.additionalMetadata.pierceFactor +
       (option.additionalPierceFactor ?? 0);
 
     const actualDamage = game.attack({
