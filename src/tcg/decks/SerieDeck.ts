@@ -145,7 +145,7 @@ export const mock = new Card({
     cardImageUrl:
       "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015502966825/Mock_1.png?ex=67df98ae&is=67de472e&hm=b4bfad8c4a548745a18660e2fcb39e7927661f269b17f9f8c73b66fa780f3d04&",
   },
-  effects: [3, 2, 2],
+  effects: [3, 2, 1],
   cardAction: function (
     this: Card,
     { name, sendToGameroom, selfStat, opponentStat }

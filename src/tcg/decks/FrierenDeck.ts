@@ -15,6 +15,7 @@ export const a_zoltraak = new Card({
     cardImageUrl: mediaLinks.zoltraak_image,
     cardGif: mediaLinks.zoltraak_gif,
   },
+  hpCost: 4,
   effects: [8],
   cardAction: function (this: Card, { sendToGameroom, name, basicAttack }) {
     sendToGameroom(`${name} fired Zoltraak!`);
