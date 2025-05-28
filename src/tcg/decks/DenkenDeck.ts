@@ -32,7 +32,6 @@ const a_jab = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
-      additionalPierceFactor: 0.5,
     });
   },
 });
@@ -64,7 +63,6 @@ const a_hook = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
-      additionalPierceFactor: 0.5,
     });
   },
 });
@@ -101,7 +99,6 @@ const a_uppercut = new Card({
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
-      additionalPierceFactor: 0.5,
     });
   },
 });
