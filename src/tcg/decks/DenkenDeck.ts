@@ -178,6 +178,7 @@ export const a_waldgoseBase = new Card({
         damage,
       });
 
+      const multiDamage = this.calculateEffectValue(this.effects[1]);
       character.timedEffects.push(
         new TimedEffect({
           name: "Tornado Winds: Waldgose",
@@ -188,7 +189,7 @@ export const a_waldgoseBase = new Card({
             messageCache.push("The wind rages on!", TCGThread.Gameroom);
 
             CommonCardAction.commonAttack(game, characterIndex, {
-              damage: damage,
+              damage: multiDamage,
               isTimedEffectAttack: true,
             });
           },
