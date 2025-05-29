@@ -54,28 +54,16 @@ export const adapt = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { selfStats, name, sendToGameroom, selfStat }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} adapts to the situation.`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} adapts to the situation.`);
+    selfStat(0, StatsEnum.SPD);
 
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.SPD
-    );
-
-    const atkDefAdjust = this.calculateEffectValue(this.effects[1]);
-    if (character.stats.stats.HP > 50) {
-      character.adjustStat(atkDefAdjust, StatsEnum.ATK);
-      character.adjustStat(atkDefAdjust, StatsEnum.DEF);
+    if (selfStats.HP > 50) {
+      selfStat(1, StatsEnum.ATK);
+      selfStat(1, StatsEnum.DEF);
     } else {
-      character.adjustStat(
-        this.calculateEffectValue(this.effects[2]),
-        StatsEnum.HP
-      );
+      selfStat(2, StatsEnum.HP);
     }
   },
 });
@@ -275,34 +263,21 @@ export const a_erfassenKnife = new Card({
   hpCost: 1,
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { name, possessive, self, sendToGameroom, basicAttack, calcEffect }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} recalls ${character.cosmetic.pronouns.possessive} Knife throw imitation.`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} recalls ${possessive} Knife throw imitation.`);
+    basicAttack(0);
 
-    const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-    });
-
-    character.timedEffects.push(
+    const damage = calcEffect(0);
+    self.timedEffects.push(
       new TimedEffect({
         name: "Erfassen: Knife",
         description: `Deal ${damage} at each turn's end.`,
         turnDuration: 3,
         activateEndOfTurnActionThisTurn: false,
-        endOfTurnAction: function (this: TimedEffect, game, characterIndex) {
-          messageCache.push(
-            `${character.name} flings a knife at the opponent!`,
-            TCGThread.Gameroom
-          );
-          CommonCardAction.commonAttack(game, characterIndex, {
-            damage,
-            isTimedEffectAttack: true,
-          });
+        endOfTurnAction: function (this: TimedEffect, _game, _characterIndex) {
+          sendToGameroom(`${name} flings a knife at the opponent!`);
+          basicAttack(0);
         },
       })
     );

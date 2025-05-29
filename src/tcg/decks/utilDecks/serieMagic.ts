@@ -40,13 +40,14 @@ import {
   a_piercingDrill,
   sharpen,
 } from "@decks/SenseDeck";
-import {
-  a_cleave,
-  a_dismantle,
-  a_shallowSlash,
-  sorganeil,
-} from "@decks/UbelDeck";
+import { a_cleave, a_dismantle, a_shallowSlash } from "@decks/UbelDeck";
 import { a_malevolentShrine } from "./ubelSignature";
+import {
+  a_concentratedZoltraakBolt,
+  a_ehreDoragate,
+  perfectSorganeil,
+  scharfJubelade,
+} from "../WirbelDeck";
 
 export const serie_offensiveMagic_common = [
   a_zoltraak,
@@ -56,6 +57,7 @@ export const serie_offensiveMagic_common = [
   a_shallowSlash,
   a_fernZoltraak,
   a_erfassenKnife,
+  a_ehreDoragate,
 ];
 
 export const serie_offensiveMagic_rare = [
@@ -80,6 +82,7 @@ export const serie_offensiveMagic_unusual = [
   a_piercingDrill,
   a_catastraviaBase,
   a_malevolentShrine,
+  a_concentratedZoltraakBolt,
 ];
 
 export const serie_utilityMagic_tactics = [
@@ -90,7 +93,8 @@ export const serie_utilityMagic_tactics = [
   barrierMagicAnalysis,
   demonMagicAnalysis,
   manaConcealment,
-  sorganeil,
+  perfectSorganeil,
+  scharfJubelade,
 ];
 
 export const serie_utilityMagic_recovery = [

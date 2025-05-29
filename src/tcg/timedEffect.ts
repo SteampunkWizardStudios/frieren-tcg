@@ -39,13 +39,15 @@ type TimedEffectMetadata = {
   eisen?: boolean;
   heiter?: boolean;
 
-  isWaldgose?: boolean;
+  denkenIsWaldgose?: boolean;
+  wirbelIsTacticalRetreat?: boolean;
 
   ubelSpeedModifiers?: number;
 };
 
 const defaultMetadata: TimedEffectMetadata = {
-  isWaldgose: false,
+  denkenIsWaldgose: false,
+  wirbelIsTacticalRetreat: false,
   removableBySorganeil: true,
 };
 

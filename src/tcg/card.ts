@@ -32,6 +32,8 @@ type CardMetadata = {
   resolve?: number;
   signatureMoveOf?: CharacterName;
   ubelFailureRate?: number;
+  isEhreDoragate?: boolean;
+
   empathized?: boolean;
   imitated?: boolean;
   temporary?: boolean;

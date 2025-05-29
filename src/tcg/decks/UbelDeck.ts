@@ -262,7 +262,7 @@ export const sorganeil = new Card({
   title: "Sorganeil",
   cardMetadata: { nature: Nature.Util },
   description: () =>
-    `Will fail if the opponent's SPD is higher than your SPD by 35 or more. Set opponent's SPD to 1. Clear opponent's timed effects. Opponent can only wait next turn. Attacks will hit with 100% certainty.`,
+    `Will fail if the opponent's SPD is higher than your SPD by 35 or more. Set opponent's SPD to 1. Clear opponent's timed effects. Opponent can only use default actions next turn. Attacks will hit with 100% certainty.`,
   emoji: CardEmoji.UBEL_CARD,
   priority: -2,
   effects: [],

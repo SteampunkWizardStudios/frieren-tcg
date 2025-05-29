@@ -2,183 +2,111 @@ import Card, { Nature } from "@tcg/card";
 import TimedEffect from "@tcg/timedEffect";
 import { StatsEnum } from "@tcg/stats";
 import { CardEmoji } from "@tcg/formatting/emojis";
+import { CharacterName } from "../characters/metadata/CharacterName";
+import { GameMessageContext } from "../gameContextProvider";
 
-export const a_hairWhip = new Card({
-  title: "Hair Whip",
-  cardMetadata: { nature: Nature.Attack },
-  description: ([def, dmg]) => `DEF+${def}. Afterwards, DMG ${dmg}+DEF/4.`,
-  effects: [2, 7],
-  hpCost: 4,
-  emoji: CardEmoji.PUNCH,
-  cardAction: function (
-    this: Card,
-    {
-      name,
-      selfStats,
-      possessive,
-      selfStat,
-      flatAttack,
-      sendToGameroom,
-      calcEffect,
-    }
-  ) {
-    sendToGameroom(`${name} whipped ${possessive} hair!`);
-
-    selfStat(0, StatsEnum.DEF);
-
-    const damage = calcEffect(1) + selfStats.DEF / 4;
-    flatAttack(damage);
-  },
-});
-
-export const sharpen = new Card({
-  title: "Sharpen",
+export const tacticalRetreat = new Card({
+  title: "Tactical Retreat",
   cardMetadata: { nature: Nature.Util },
-  description: ([def, atk, spd]) => `DEF+${def}. ATK+${atk}. SPD+${spd}`,
-  effects: [2, 2, 2],
-  hpCost: 3,
-  emoji: CardEmoji.PUNCH,
+  description: ([trueDef]) =>
+    `TrueDEF+${trueDef} for 2 turns. Using an attack aside from "Ehre: Hailstorm - Doragate" will cost an additional 10HP while the effect is active, and will end the effect.`,
+  effects: [10],
+  emoji: CardEmoji.WIRBEL_CARD,
   cardAction: function (
     this: Card,
-    { name, possessive, sendToGameroom, selfStat }
+    { self, name, sendToGameroom, selfStat, calcEffect }
   ) {
-    sendToGameroom(`${name} sharpened ${possessive} hair drills!`);
+    sendToGameroom(`${name} performed a tactical retreat.`);
 
-    selfStat(0, StatsEnum.DEF);
-    selfStat(1, StatsEnum.ATK);
-    selfStat(2, StatsEnum.SPD);
-  },
-});
+    const trueDef = calcEffect(0);
+    selfStat(0, StatsEnum.TrueDEF);
 
-// export const rest = new Card({
-//   title: "Rest",
-//   cardMetadata: { nature: Nature.Util },
-//   description: ([hp]) => `DEF-2 for 2 turns. Heal ${hp} HP`,
-//   effects: [10],
-//   emoji: CardEmoji.HEART,
-//   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
-//     sendToGameroom(`${name} rests up.`);
+    self.ability.abilityOwnCardEffectWrapper = function (
+      context: GameMessageContext,
+      card: Card
+    ) {
+      const {
+        self,
+        game,
+        selfIndex,
+        messageCache,
+        name,
+        sendToGameroom,
+        flatSelfStat,
+      } = context;
 
-//     self.adjustStat(-2, StatsEnum.DEF);
-//     selfStat(0, StatsEnum.HP);
+      // specific check for if an attack is used while tactical retreat is in effect
+      if (
+        card.cardMetadata.nature == Nature.Attack &&
+        !card.cardMetadata.isEhreDoragate
+      ) {
+        const newTimedEffects = [];
+        for (const timedEffect of self.timedEffects) {
+          if (timedEffect.metadata.wirbelIsTacticalRetreat) {
+            sendToGameroom(`${name} abruptly returned to the battlefield.`);
+            flatSelfStat(-10, StatsEnum.HP);
+            timedEffect.endOfTimedEffectAction?.(game, selfIndex, messageCache);
+          } else {
+            newTimedEffects.push(timedEffect);
+          }
+        }
+        self.timedEffects = newTimedEffects;
+      }
 
-//     self.timedEffects.push(
-//       new TimedEffect({
-//         name: "Rest",
-//         description: `DEF-2 for 2 turns`,
-//         turnDuration: 2,
-//         metadata: { removableBySorganeil: false },
-//         endOfTimedEffectAction: (game, characterIndex, messageCache) => {
-//           messageCache.push(`${name} had a good rest.`, TCGThread.Gameroom);
-//           game.characters[characterIndex].adjustStat(2, StatsEnum.DEF);
-//         },
-//       })
-//     );
-//   },
-// });
+      card.cardAction?.(context);
+    };
 
-export const a_pierce = new Card({
-  title: "Pierce",
-  cardMetadata: { nature: Nature.Attack },
-  description: ([def, dmg]) =>
-    `DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
-  effects: [1, 10],
-  hpCost: 7,
-  emoji: CardEmoji.PUNCH,
-  cardAction: function (
-    this: Card,
-    { name, selfStats, sendToGameroom, selfStat, flatAttack, calcEffect }
-  ) {
-    sendToGameroom(`${name} pierced the opponent!`);
-
-    selfStat(0, StatsEnum.DEF);
-
-    const damage = calcEffect(1) + selfStats.DEF / 4;
-    flatAttack(damage, 0.25);
-  },
-});
-
-export const teaTime = new Card({
-  title: "Tea Time",
-  cardMetadata: { nature: Nature.Util, teaTime: 1 },
-  description: ([spd, hp]) =>
-    `SPD+${spd}. Empower both characters' hands. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
-  effects: [1, 4],
-  emoji: CardEmoji.HEART,
-  cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364949044656607232/GIF_0807192060.gif?ex=680b875b&is=680a35db&hm=ced86d0c723bc4d139d0012c97a29d89d6fad79d084e1607036211869d17b57e&",
-  },
-  cardAction: function (
-    this: Card,
-    { self, opponent, name, selfStat, sendToGameroom, calcEffect }
-  ) {
-    sendToGameroom(
-      `${name} and ${opponent.name} enjoyed a refreshing cup of tea. Both characters' hands are empowered!`
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Tactical Retreat",
+        description: `Increases TrueDEF by ${trueDef}. Using an attack aside from "Ehre: Hailstorm - Doragate" will cost an additional 10HP while the effect is active, and will end the effect.`,
+        priority: -1,
+        turnDuration: 2,
+        metadata: { removableBySorganeil: true, wirbelIsTacticalRetreat: true },
+        executeEndOfTimedEffectActionOnRemoval: true,
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          self.adjustStat(-1 * trueDef, StatsEnum.TrueDEF);
+        },
+      })
     );
-
-    selfStat(0, StatsEnum.SPD);
-
-    self.empowerHand();
-    opponent.empowerHand();
-
-    const hpHeal = calcEffect(1);
-    self.adjustStat(hpHeal, StatsEnum.HP);
-    opponent.adjustStat(hpHeal, StatsEnum.HP);
   },
 });
 
-export const teaParty = new Card({
-  title: "Tea Party",
-  cardMetadata: { nature: Nature.Util, teaTime: 2 },
-  description: ([spd, hp]) =>
-    `SPD+${spd}. Empower both characters' hands twice. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
-  effects: [2, 7],
-  emoji: CardEmoji.RANDOM,
-  cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364992405018902568/GIF_0507169428.gif?ex=680c587d&is=680b06fd&hm=dd2441c0af97bd72ee4c6ee262830ce4a418d07197f696bae7bb832202d6498c&",
-  },
+export const scharfJubelade = new Card({
+  title: "Scharf: Barrier of Steel Petals - Jubelade",
+  cardMetadata: { nature: Nature.Util },
+  description: ([def]) => `Increases DEF by ${def} for 3 turns.`,
+  effects: [4],
+  emoji: CardEmoji.WIRBEL_CARD,
+  priority: 2,
   cardAction: function (
     this: Card,
-    { self, opponent, name, selfStat, sendToGameroom, calcEffect }
+    { self, name, selfStat, sendToGameroom, calcEffect }
   ) {
-    sendToGameroom(
-      `${name} and ${opponent.name} held a tea party! Both characters' hands are greatly empowered!`
-    );
-
-    selfStat(0, StatsEnum.SPD);
-
-    for (let i = 0; i < 2; i++) {
-      self.empowerHand();
-      opponent.empowerHand();
+    const isWirbel = name === CharacterName.Wirbel;
+    if (isWirbel) {
+      sendToGameroom(
+        `Wirbel commanded Scharf to put up a Barrier of Steel Petals!`
+      );
+    } else {
+      sendToGameroom(`${name} erected a Barrier of Steel Petals!`);
     }
 
-    const hpHeal = calcEffect(1);
-    self.adjustStat(hpHeal, StatsEnum.HP);
-    opponent.adjustStat(hpHeal, StatsEnum.HP);
-  },
-});
+    const def = calcEffect(0);
+    selfStat(0, StatsEnum.DEF);
 
-export const a_piercingDrill = new Card({
-  title: "Piercing Drill",
-  description: ([dmg]) =>
-    `DMG ${dmg} + DEF/3. Pierces through 1/3 of the opponent's defense.`,
-  effects: [14],
-  hpCost: 12,
-  emoji: CardEmoji.PUNCH,
-  cardMetadata: { nature: Nature.Attack, signature: true },
-  cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364943023678427196/GIF_3233937113.gif?ex=680b81c0&is=680a3040&hm=07d5b41617b811cd069cc08f1de64d9966b4d03df7936844262be5f6ee25e0cb&",
-  },
-  cardAction: function (
-    this: Card,
-    { name, selfStats, sendToGameroom, flatAttack, calcEffect }
-  ) {
-    sendToGameroom(`${name} used a piercing drill!`);
-    const damage = calcEffect(0) + selfStats.DEF / 3;
-    flatAttack(damage, 1 / 3);
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Barrier of Steel Petals - Jubelade",
+        description: `Increases DEF by ${def}.`,
+        priority: -1,
+        turnDuration: 3,
+        metadata: { removableBySorganeil: true },
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          self.adjustStat(-1 * def, StatsEnum.DEF);
+        },
+      })
+    );
   },
 });
 
@@ -214,15 +142,208 @@ export const emergencyDefensiveBarrier = new Card({
   },
 });
 
+const a_spearRush = new Card({
+  title: "Spear Rush",
+  cardMetadata: { nature: Nature.Attack },
+  description: ([spd, dmg]) =>
+    `HP-7. SPD+${spd}. DMG ${dmg} x 3. Pierces 25% of DEF.`,
+  emoji: CardEmoji.WIRBEL_CARD,
+  effects: [2, 3],
+  hpCost: 7,
+  cardAction: function (
+    this: Card,
+    { name, sendToGameroom, calcEffect, possessive, flatAttack, selfStat }
+  ) {
+    sendToGameroom(`${name} rushed forward with ${possessive} spear!`);
+    selfStat(0, StatsEnum.SPD);
+
+    const damage = calcEffect(1);
+    const pierceFactor = 0.25;
+    for (let i = 0; i < 3; i++) {
+      flatAttack(damage, pierceFactor);
+    }
+  },
+});
+
+const a_captainsOrderBase = new Card({
+  title: "Captain's Order",
+  cardMetadata: { nature: Nature.Attack },
+  description: ([atk, def, spd, dmg]) =>
+    `If the Opp's DEF > your ATK, ATK+${atk}, DEF+${def}, SPD+${spd}. Else, DMG ${dmg} with 25% DEF Pierce.`,
+  emoji: CardEmoji.WIRBEL_CARD,
+  effects: [3, 1, 2, 6],
+  hpCost: 4,
+  cardAction: function (this: Card, context) {
+    const { opponentStats, selfStats, selfStat, basicAttack } = context;
+
+    if (opponentStats.DEF > selfStats.ATK) {
+      selfStat(0, StatsEnum.ATK);
+      selfStat(1, StatsEnum.DEF);
+      selfStat(2, StatsEnum.SPD);
+    } else {
+      const pierceFactor = 0.25;
+      basicAttack(3, pierceFactor);
+    }
+  },
+});
+
+const captainsOrder = new Card({
+  ...a_captainsOrderBase,
+  cardAction: () => {},
+  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
+    const character = game.characters[characterIndex];
+    const opponent = game.characters[1 - characterIndex];
+
+    if (opponent.stats.stats.DEF > character.stats.stats.ATK) {
+      return new Card({
+        ...a_captainsOrderBase,
+        cardMetadata: { nature: Nature.Util },
+      });
+    } else {
+      return new Card({
+        ...a_captainsOrderBase,
+        cardMetadata: { nature: Nature.Attack },
+      });
+    }
+  },
+});
+
+export const a_ehreDoragate = new Card({
+  title: "Ehre: Bulletstorm - Doragate",
+  cardMetadata: { nature: Nature.Attack, isEhreDoragate: true },
+  description: ([dmg]) =>
+    `DMG ${dmg}. At the end of the next 2 turns, DMG ${dmg}. Pierces 50% of DEF.`,
+  emoji: CardEmoji.WIRBEL_CARD,
+  effects: [1],
+  hpCost: 1,
+  cardAction: function (
+    this: Card,
+    { self, name, sendToGameroom, calcEffect, flatAttack }
+  ) {
+    const isWirbel = name === CharacterName.Wirbel;
+    if (isWirbel) {
+      sendToGameroom(`Wirbel commanded Ehre to let fall a storm of bullets!`);
+    } else {
+      sendToGameroom(
+        `${name} casted Doragate! ${name} summoned a storm of bullets!`
+      );
+    }
+
+    const damage = calcEffect(0);
+    const pierceFactor = 0.5;
+    flatAttack(damage, pierceFactor);
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Bulletstorm - Doragate",
+        description: `Deal ${damage} at each turn's end, with ${(pierceFactor * 100).toFixed(2)}% Pierce.`,
+        turnDuration: 3,
+        activateEndOfTurnActionThisTurn: false,
+        endOfTurnAction: function (this: TimedEffect, _game, _characterIndex) {
+          sendToGameroom(`The bulletstorm keeps raining down!`);
+          flatAttack(damage, pierceFactor);
+        },
+      })
+    );
+  },
+});
+
+export const perfectSorganeil = new Card({
+  title: "Perfect Sorganeil",
+  cardMetadata: { nature: Nature.Attack },
+  description: ([dmg]) =>
+    `DMG ${dmg}. Will fail if the opponent's SPD is higher than your SPD by 50 or more. Set opponent's SPD to 1. Clear opponent's timed effects. Opponent can only perform Default actions next turn.`,
+  emoji: CardEmoji.WIRBEL_CARD,
+  priority: -1,
+  effects: [1],
+  cardAction: function (this: Card, context: GameMessageContext) {
+    const {
+      self,
+      game,
+      opponentIndex,
+      messageCache,
+      opponent,
+      name,
+      opponentName,
+      basicAttack,
+      selfStats,
+      opponentStats,
+      flatOpponentStat,
+      possessive,
+      sendToGameroom,
+    } = context;
+    if (opponentStats.SPD - selfStats.SPD >= 50) {
+      sendToGameroom(
+        `${name}'s gaze cannot keep up with ${opponentName}'s speed!`
+      );
+      return;
+    }
+
+    sendToGameroom(`${name} traps ${opponentName} in ${possessive} gaze!`);
+    basicAttack(0);
+    opponent.skipTurn = true;
+    const opponentOriginalSpeedDiff = opponentStats.SPD - 1;
+    flatOpponentStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD);
+
+    const newTimedEffects: TimedEffect[] = [];
+    opponent.timedEffects.map((timedEffect) => {
+      if (!timedEffect.metadata.removableBySorganeil) {
+        newTimedEffects.push(timedEffect);
+      }
+      if (
+        timedEffect.executeEndOfTimedEffectActionOnRemoval &&
+        timedEffect.endOfTimedEffectAction
+      ) {
+        timedEffect.endOfTimedEffectAction(game, opponentIndex, messageCache);
+      }
+    });
+    opponent.timedEffects = newTimedEffects;
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Sorganeil",
+        description: `Traps the opponent in place.`,
+        turnDuration: 2,
+        priority: -1,
+        metadata: { removableBySorganeil: false },
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+          sendToGameroom(
+            `${name} averted ${possessive} gaze. ${opponentName} got free from ${name}'s Sorganeil.`
+          );
+          flatOpponentStat(opponentOriginalSpeedDiff, StatsEnum.SPD);
+        },
+      })
+    );
+  },
+});
+
+export const a_concentratedZoltraakBolt = new Card({
+  title: "Concentrated Zoltraak Bolt",
+  cardMetadata: { nature: Nature.Attack },
+  description: ([dmg]) => `DMG ${dmg}.`,
+  emoji: CardEmoji.WIRBEL_CARD,
+  effects: [18],
+  hpCost: 12,
+  cardAction: function (this: Card, { name, sendToGameroom, basicAttack }) {
+    sendToGameroom(`${name} shot forth a deadly Zoltraak Bolt!`);
+    if (Math.random() < 0.5) {
+      sendToGameroom(`The bolt collapses the ceiling above!`);
+    } else {
+      sendToGameroom(`The bolt hit the target head on!`);
+    }
+    basicAttack(0);
+  },
+});
+
 const wirbelDeck = [
-  { card: emergencyDefensiveBarrier, count: 200 },
-  // { card: a_hairWhip, count: 2 },
-  // { card: sharpen, count: 1 },
-  // { card: manaConcealment, count: 2 },
-  // { card: a_pierce, count: 2 },
-  // { card: teaTime, count: 2 },
-  // { card: teaParty, count: 2 },
-  // { card: a_piercingDrill, count: 2 },
+  { card: tacticalRetreat, count: 2 },
+  { card: emergencyDefensiveBarrier, count: 2 },
+  { card: scharfJubelade, count: 2 },
+  { card: a_spearRush, count: 3 },
+  { card: captainsOrder, count: 2 },
+  { card: a_ehreDoragate, count: 2 },
+  { card: perfectSorganeil, count: 2 },
+  { card: a_concentratedZoltraakBolt, count: 1 },
 ];
 
 export default wirbelDeck;

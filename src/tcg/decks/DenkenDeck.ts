@@ -189,7 +189,7 @@ export const a_waldgoseBase = new Card({
           name: "Tornado Winds: Waldgose",
           description: `Deal ${damage} at each turn's end.`,
           turnDuration: 5,
-          metadata: { isWaldgose: true },
+          metadata: { denkenIsWaldgose: true },
           endOfTurnAction: function (this, game, characterIndex) {
             messageCache.push("The wind rages on!", TCGThread.Gameroom);
 
@@ -268,7 +268,7 @@ export const a_daosdorgBase = new Card({
 
       let daosdorgTurnDuration = 0;
       for (const timedEffect of character.timedEffects) {
-        if (timedEffect.metadata.isWaldgose) {
+        if (timedEffect.metadata.denkenIsWaldgose) {
           daosdorgTurnDuration = Math.max(
             daosdorgTurnDuration,
             timedEffect.turnDuration
@@ -326,7 +326,7 @@ export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg0, dmg1, dmg2, dmg3, dmg4]) =>
-    `HP-15. DMG ${dmg0}, ${dmg1}, ${dmg2}, ${dmg3}, ${dmg4}.`,
+    `HP-15. DMG ${dmg0}, ${dmg1}, ${dmg2}, ${dmg3}, ${dmg4}. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 3, 4, 5, 6],
   hpCost: 0, // hpCost variable at cast time
