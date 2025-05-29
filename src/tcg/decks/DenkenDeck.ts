@@ -11,7 +11,7 @@ const a_jab = new Card({
   description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
-  hpCost: 2,
+  hpCost: 1,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -42,7 +42,7 @@ const a_hook = new Card({
   description: ([spd, atk, dmg]) => `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
-  hpCost: 2,
+  hpCost: 1,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -73,7 +73,7 @@ const a_uppercut = new Card({
   description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 3],
-  hpCost: 3,
+  hpCost: 2,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364978489035460708/GIF_0836074812.gif?ex=680c4b87&is=680afa07&hm=84fd66beff9352aba9c037ff66d2b0e69219b34c0e3c9c5e62edbf96dc62a0f8&",
@@ -146,10 +146,10 @@ export const a_waldgoseBase = new Card({
   title: "Tornado Winds: Waldgose",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg, multiDmg]) =>
-    `DMG ${dmg}. At the next 4 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
+    `HP-7. DMG ${dmg}. At the next 5 turn ends, deal ${multiDmg} DMG. Treat this card as "Jab" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [6, 1],
-  hpCost: 7,
+  hpCost: 0, // hp cost variable at cast time
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364217876323500123/GIF_0112106003.gif?ex=6808de67&is=68078ce7&hm=53339631d41657c84bff7858a0d4ca127e5dd726db694b68d34f5d833a75c8ba&",
@@ -160,15 +160,20 @@ export const a_waldgoseBase = new Card({
       selfIndex: characterIndex,
       self: character,
       messageCache,
+      flatSelfStat,
     } = context;
+
+    const waldgoseHpCost = 7;
 
     if (character.stats.stats.HP <= 0) {
       const jab = new Card({
         ...a_jab,
         empowerLevel: this.empowerLevel,
       });
+      flatSelfStat(-jab.hpCost, StatsEnum.HP);
       jab.cardAction(context);
     } else {
+      flatSelfStat(-waldgoseHpCost, StatsEnum.HP);
       messageCache.push(
         `${character.name} whipped up a tornado!`,
         TCGThread.Gameroom
@@ -183,7 +188,7 @@ export const a_waldgoseBase = new Card({
         new TimedEffect({
           name: "Tornado Winds: Waldgose",
           description: `Deal ${damage} at each turn's end.`,
-          turnDuration: 4,
+          turnDuration: 5,
           metadata: { isWaldgose: true },
           endOfTurnAction: function (this, game, characterIndex) {
             messageCache.push("The wind rages on!", TCGThread.Gameroom);
@@ -224,10 +229,10 @@ export const a_daosdorgBase = new Card({
   title: "Hellfire: Daosdorg",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `DMG ${dmg}. Afterwards, all your attacks receive 25% Pierce for the duration of any currently active Waldgose. Treat this card as "Hook" if the user's HP is <= 0.`,
+    `HP-9. DMG ${dmg}. Afterwards, all your attacks receive 50% Pierce for the duration of any currently active Waldgose. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [10],
-  hpCost: 9,
+  effects: [12],
+  hpCost: 0, // hpCost variable at cast time
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364218009102581871/GIF_4214490964.gif?ex=6808de87&is=68078d07&hm=dedf596f960aafe344c5eedec122d4dbd54c3b5c6f8b002b3cae75da891fdedf&",
@@ -238,14 +243,20 @@ export const a_daosdorgBase = new Card({
       selfIndex: characterIndex,
       self: character,
       messageCache,
+      flatSelfStat,
     } = context;
+
+    const daosdorgHpCost = 9;
+
     if (character.stats.stats.HP <= 0) {
       const hook = new Card({
         ...a_hook,
         empowerLevel: this.empowerLevel,
       });
+      flatSelfStat(-hook.hpCost, StatsEnum.HP);
       hook.cardAction(context);
     } else {
+      flatSelfStat(-daosdorgHpCost, StatsEnum.HP);
       messageCache.push(
         `${character.name} set the sky aflame.`,
         TCGThread.Gameroom
@@ -271,7 +282,7 @@ export const a_daosdorgBase = new Card({
           TCGThread.Gameroom
         );
 
-        character.additionalMetadata.pierceFactor += 0.25;
+        character.additionalMetadata.pierceFactor += 0.5;
         character.timedEffects.push(
           new TimedEffect({
             name: "Hellfire: Daosdorg",
@@ -281,7 +292,7 @@ export const a_daosdorgBase = new Card({
             executeEndOfTimedEffectActionOnRemoval: true,
             endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
               messageCache.push(`The hellfire quietens.`, TCGThread.Gameroom);
-              character.additionalMetadata.pierceFactor -= 0.25;
+              character.additionalMetadata.pierceFactor -= 0.5;
             },
           })
         );
@@ -315,10 +326,10 @@ export const a_catastraviaBase = new Card({
   title: "Lights of Judgment: Catastravia",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg0, dmg1, dmg2, dmg3, dmg4]) =>
-    `DMG ${dmg0}, ${dmg1}, ${dmg2}, ${dmg3}, ${dmg4}.`,
+    `HP-15. DMG ${dmg0}, ${dmg1}, ${dmg2}, ${dmg3}, ${dmg4}.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 3, 4, 5, 6],
-  hpCost: 15,
+  hpCost: 0, // hpCost variable at cast time
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364218121669316608/GIF_1295476803.gif?ex=6808dea2&is=68078d22&hm=bdc2fd9b990ddf12a7cb0d6ad7b24dca2a24203773cd3896f0c53681dad85ed9&",
@@ -329,14 +340,21 @@ export const a_catastraviaBase = new Card({
       selfIndex: characterIndex,
       self: character,
       messageCache,
+      flatSelfStat,
     } = context;
+
+    const catastraviaHpCost = 15;
+
     if (character.stats.stats.HP <= 0) {
       const uppercut = new Card({
         ...a_uppercut,
         empowerLevel: this.empowerLevel,
       });
+
+      flatSelfStat(-uppercut.hpCost, StatsEnum.HP);
       uppercut.cardAction(context);
     } else {
+      flatSelfStat(-catastraviaHpCost, StatsEnum.HP);
       messageCache.push(
         `${character.name} covered the sky in stars.`,
         TCGThread.Gameroom

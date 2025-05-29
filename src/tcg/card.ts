@@ -108,7 +108,7 @@ export default class Card implements CardProps {
 
     let description = this.description(empoweredEffects);
 
-    if (this.hpCost && !this.cardMetadata.hideHpCost) {
+    if (this.hpCost && this.hpCost !== 0 && !this.cardMetadata.hideHpCost) {
       description = `HP-${this.hpCost}. ${description}`;
     }
     if (this.priority && !this.cardMetadata.hidePriority) {
