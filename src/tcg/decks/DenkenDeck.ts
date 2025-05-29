@@ -8,9 +8,10 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 const a_jab = new Card({
   title: "Jab",
   cardMetadata: { nature: Nature.Attack },
-  description: ([def, spd, dmg]) => `DEF+${def}. SPD+${spd}. Deal ${dmg} DMG.`,
+  description: ([def, atk, spd, dmg]) =>
+    `DEF+${def}. ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 1, 2],
+  effects: [1, 1, 1, 2],
   hpCost: 1,
   cardAction: function (
     this: Card,
@@ -28,10 +29,14 @@ const a_jab = new Card({
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
+      StatsEnum.ATK
+    );
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[2]),
       StatsEnum.SPD
     );
     CommonCardAction.commonAttack(game, characterIndex, {
-      damage: this.calculateEffectValue(this.effects[2]),
+      damage: this.calculateEffectValue(this.effects[3]),
     });
   },
 });
@@ -328,7 +333,7 @@ export const a_catastraviaBase = new Card({
   description: ([dmg0, dmg1, dmg2, dmg3, dmg4]) =>
     `HP-15. DMG ${dmg0}, ${dmg1}, ${dmg2}, ${dmg3}, ${dmg4}. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 3, 4, 5, 6],
+  effects: [1, 2, 3, 4, 5],
   hpCost: 0, // hpCost variable at cast time
   cosmetic: {
     cardGif:
