@@ -102,6 +102,7 @@ export const scharfJubelade = new Card({
         priority: -1,
         turnDuration: 3,
         metadata: { removableBySorganeil: true },
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: (_game, _characterIndex) => {
           self.adjustStat(-1 * def, StatsEnum.DEF);
         },
@@ -146,7 +147,7 @@ const a_spearRush = new Card({
   title: "Spear Rush",
   cardMetadata: { nature: Nature.Attack },
   description: ([spd, dmg]) =>
-    `HP-7. SPD+${spd}. DMG ${dmg} x 3. Pierces 15% of DEF.`,
+    `SPD+${spd}. DMG ${dmg} x 3. Pierces 15% of DEF.`,
   emoji: CardEmoji.WIRBEL_CARD,
   effects: [2, 3],
   hpCost: 7,
@@ -248,7 +249,11 @@ export const a_ehreDoragate = new Card({
 
 export const perfectSorganeil = new Card({
   title: "Perfect Sorganeil",
-  cardMetadata: { nature: Nature.Attack, signature: true, signatureMoveOf: CharacterName.Wirbel },
+  cardMetadata: {
+    nature: Nature.Attack,
+    signature: true,
+    signatureMoveOf: CharacterName.Wirbel,
+  },
   description: ([dmg]) =>
     `DMG ${dmg}. Will fail if the opponent's SPD is higher than your SPD by 50 or more. Set opponent's SPD to 1. Clear opponent's timed effects. Opponent can only perform Default actions next turn.`,
   emoji: CardEmoji.WIRBEL_CARD,
