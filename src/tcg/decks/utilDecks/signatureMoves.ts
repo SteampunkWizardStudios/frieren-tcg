@@ -28,6 +28,7 @@ export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Stille]: a_geisel,
   [CharacterName.Serie]: ancientBarrierMagic,
   [CharacterName.Ubel]: a_malevolentShrine,
+  [CharacterName.Wirbel]: a_piercingDrill,
 };
 
 export const SIGNATURE_MOVES_LIST = Object.entries(signatureMoves);

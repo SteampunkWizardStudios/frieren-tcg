@@ -5,6 +5,7 @@ import TimedEffect from "@tcg/timedEffect";
 import Rolls from "@tcg/util/rolls";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import mediaLinks from "../formatting/mediaLinks";
 
 const a_peck = new Card({
   title: "Peck",
@@ -32,6 +33,9 @@ const a_ironFeather = new Card({
   description: ([def, dmg]) => `SPD-3. DEF+${def}. DMG ${dmg}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [1, 3],
+  cosmetic: {
+    cardGif: mediaLinks.stille_ironFeather_gif,
+  },
   cardAction: function (
     this: Card,
     { reflexive, name, sendToGameroom, basicAttack, flatSelfStat, selfStat }
@@ -51,6 +55,9 @@ const hide = new Card({
   description: ([def]) => `SPD-3. DEF+${def}.`,
   emoji: CardEmoji.STILLE_CARD,
   effects: [2],
+  cosmetic: {
+    cardGif: mediaLinks.stille_hide_gif,
+  },
   cardAction: function (
     this: Card,
     { name, reflexive, selfStat, flatSelfStat, sendToGameroom }
@@ -68,6 +75,9 @@ const roost = new Card({
   description: ([hp]) => `SPD-5 for 3 turns. DEF-3 for 2 turns. Heal ${hp}HP.`,
   emoji: CardEmoji.ROOST_CARD,
   effects: [5],
+  cosmetic: {
+    cardGif: mediaLinks.stille_roost_gif,
+  },
   cardAction: function (
     this: Card,
     { self, name, sendToGameroom, selfStat, flatSelfStat }
@@ -146,8 +156,7 @@ const flyAway = new Card({
   priority: 2,
   effects: [25],
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1361940199583780864/IMG_3171.gif?ex=6807d567&is=680683e7&hm=55cb8759a21dc4e1d852861c8856dd068b299cb289a109cd4be8cdd27cca4e2f&",
+    cardGif: mediaLinks.stille_flyAway_gif,
   },
   cardAction: function (
     this: Card,

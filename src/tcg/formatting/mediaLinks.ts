@@ -26,6 +26,8 @@ const characterPortraits = {
     "https://cdn.discordapp.com/attachments/1346555621952192522/1347746124936646756/Stille_EP18.webp?ex=67dcc3e4&is=67db7264&hm=2b4045f648e23094cc5011390d138a4e350471c86533dc7ec07a1d4b34c684f2&",
   ubelPortrait:
     "https://images-ext-1.discordapp.net/external/T8sKlCzZxYVznbr_nMT7c2GR556S5JQs-2NGeGiSm9Q/%3Fcb%3D20240112114604/https/static.wikia.nocookie.net/frieren/images/4/43/%25C3%259Cbel_anime_portrait.png/revision/latest?format=webp&width=375&height=375",
+  wirbelPortrait:
+    "https://static.wikia.nocookie.net/frieren/images/d/da/Wirbel_anime_portrait.png/revision/latest?cb=20240112114401",
 } as const;
 
 const vangerisuCards = {
@@ -38,8 +40,14 @@ const vangerisuCards = {
 } as const;
 
 const edelCardLinks = {
-  telekinesis_gif:
+  edel_kneel_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1374486346898345984/IMG_6695.gif?ex=68396e69&is=68381ce9&hm=317835f24a90eb7a73e8c7ea601dd9d190e82cb74c33e0265179914a249734aa&",
+  edel_telekinesis_gif:
     "https://media.discordapp.net/attachments/1367328754795286599/1368285080606347444/Stone_hurling_spell_EP24.gif?ex=6817aa48&is=681658c8&hm=b41474c8c6b45cfcf6d65a0d1f5586e9633d1d064f0ee1ab4facd0d9b3699a84",
+  edel_mental_fog_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1374497391608070154/IMG_6697.gif?ex=683978b3&is=68382733&hm=61b9c7230060e8b56e81bdb9802e6af68ee6d270d8364a55ad5084fefa4eca72&",
+  edel_clear_mind_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1374729135372632084/GIF_3709745143.gif?ex=6839a7c7&is=68385647&hm=1e0ff2c68dc5869471ac969c2c5050d96d76dcceac26e711827a1615138ba618&",
 };
 
 const frierenCardLinks = {
@@ -78,12 +86,24 @@ const frierenCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1364284928543424652/GIF_0512568585.gif?ex=68091cda&is=6807cb5a&hm=fa96e7031f374a6a962522623b61e81a53133ba49d57583e77d483e379a31edf&",
 } as const;
 
+const stilleCardLinks = {
+  stille_hide_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1374730977061900400/GIF_1220750973.gif?ex=6839a97e&is=683857fe&hm=efca39e0b8ca3e13ee37c77ea4083ff5b64924dd1d20a51eb4321dc949d6dd19&",
+  stille_ironFeather_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1374730934217216103/GIF_3381206608.gif?ex=6839a973&is=683857f3&hm=a0177cee8d1ab09c0845af7b7e64d53a5244b1e970491bdd21a00641f5bb782a&",
+  stille_roost_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1374730994883629129/GIF_0977172306.gif?ex=6839a982&is=68385802&hm=3f3f42fb23a8d5da61241b0602d5de629f7b460f1cba0d898758bd7aa2105939&",
+  stille_flyAway_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361940199583780864/IMG_3171.gif?ex=6807d567&is=680683e7&hm=55cb8759a21dc4e1d852861c8856dd068b299cb289a109cd4be8cdd27cca4e2f&",
+} as const;
+
 const mediaLinks = {
   ...characterPortraits,
   ...vangerisuCards,
 
   ...edelCardLinks,
   ...frierenCardLinks,
+  ...stilleCardLinks,
 } as const;
 
 export default mediaLinks;

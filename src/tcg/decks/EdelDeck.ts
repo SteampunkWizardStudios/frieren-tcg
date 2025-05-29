@@ -40,7 +40,7 @@ export const telekinesis = new Card({
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
   cosmetic: {
-    cardGif: mediaLinks.telekinesis_gif,
+    cardGif: mediaLinks.edel_telekinesis_gif,
   },
   description: ([dmg]) => `Your opponent redraws 3 cards. DMG ${dmg}.`,
   effects: [14],
@@ -116,6 +116,9 @@ const mental_fog = new Card({
     `Eye Contact next turn. Opponent's SPD-${spd} and they redraw two cards. Their highest empowered card they draw will cost ${cost} additional HP for the next 5 turns.`,
   effects: [2, 7],
   hpCost: 10,
+  cosmetic: {
+    cardGif: mediaLinks.edel_mental_fog_gif,
+  },
   cardAction: ({
     name,
     self,
@@ -161,6 +164,9 @@ const clear_mind = new Card({
   description: ([hp, spd]) =>
     `Heal ${hp} HP. SPD+${spd}. Eye Contact next turn. Both players redraw their hand.`,
   effects: [10, 2],
+  cosmetic: {
+    cardGif: mediaLinks.edel_clear_mind_gif,
+  },
   cardAction: ({
     name,
     possessive,
@@ -256,6 +262,9 @@ const kneel = new Card({
     `DMG ${dmg} + three per each card you've forced your opponent to discard this match. Ignores defense. At the end of the turn, if your opponent has forcibly discarded over 10 cards, and have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
   effects: [10],
   hpCost: 10,
+  cosmetic: {
+    cardGif: mediaLinks.edel_kneel_gif,
+  },
   cardAction: ({
     name,
     sendToGameroom,
