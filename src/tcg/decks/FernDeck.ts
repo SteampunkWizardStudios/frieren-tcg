@@ -103,6 +103,7 @@ export const a_fernBarrage = new Card({
               `${character.name} lost 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
               TCGThread.Gameroom
             );
+            character.adjustStat(-4, StatsEnum.HP);
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
               isTimedEffectAttack: true,
