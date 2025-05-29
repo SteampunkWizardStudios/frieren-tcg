@@ -146,7 +146,7 @@ const a_spearRush = new Card({
   title: "Spear Rush",
   cardMetadata: { nature: Nature.Attack },
   description: ([spd, dmg]) =>
-    `HP-7. SPD+${spd}. DMG ${dmg} x 3. Pierces 25% of DEF.`,
+    `HP-7. SPD+${spd}. DMG ${dmg} x 3. Pierces 15% of DEF.`,
   emoji: CardEmoji.WIRBEL_CARD,
   effects: [2, 3],
   hpCost: 7,
@@ -158,7 +158,7 @@ const a_spearRush = new Card({
     selfStat(0, StatsEnum.SPD);
 
     const damage = calcEffect(1);
-    const pierceFactor = 0.25;
+    const pierceFactor = 0.15;
     for (let i = 0; i < 3; i++) {
       flatAttack(damage, pierceFactor);
     }
@@ -169,9 +169,9 @@ const a_captainsOrderBase = new Card({
   title: "Captain's Order",
   cardMetadata: { nature: Nature.Attack },
   description: ([atk, def, spd, dmg]) =>
-    `If the Opp's DEF > your ATK, ATK+${atk}, DEF+${def}, SPD+${spd}. Else, DMG ${dmg} with 25% DEF Pierce.`,
+    `If the Opp's DEF > your ATK, ATK+${atk}, DEF+${def}, SPD+${spd}. Else, DMG ${dmg}.`,
   emoji: CardEmoji.WIRBEL_CARD,
-  effects: [3, 1, 2, 6],
+  effects: [3, 1, 2, 10],
   hpCost: 4,
   cardAction: function (this: Card, context) {
     const { opponentStats, selfStats, selfStat, basicAttack } = context;
@@ -181,8 +181,7 @@ const a_captainsOrderBase = new Card({
       selfStat(1, StatsEnum.DEF);
       selfStat(2, StatsEnum.SPD);
     } else {
-      const pierceFactor = 0.25;
-      basicAttack(3, pierceFactor);
+      basicAttack(3);
     }
   },
 });
@@ -212,10 +211,9 @@ export const a_ehreDoragate = new Card({
   title: "Ehre: Bulletstorm - Doragate",
   cardMetadata: { nature: Nature.Attack, isEhreDoragate: true },
   description: ([dmg]) =>
-    `DMG ${dmg}. At the end of the next 2 turns, DMG ${dmg}. Pierces 50% of DEF.`,
+    `DMG ${dmg}. At the end of the next 2 turns, DMG ${dmg}. Pierces 30% of DEF.`,
   emoji: CardEmoji.WIRBEL_CARD,
   effects: [1],
-  hpCost: 1,
   cardAction: function (
     this: Card,
     { self, name, sendToGameroom, calcEffect, flatAttack }
@@ -230,7 +228,7 @@ export const a_ehreDoragate = new Card({
     }
 
     const damage = calcEffect(0);
-    const pierceFactor = 0.5;
+    const pierceFactor = 0.3;
     flatAttack(damage, pierceFactor);
 
     self.timedEffects.push(
