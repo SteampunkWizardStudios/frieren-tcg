@@ -48,9 +48,11 @@ export const playSelectedMove = async (
     components: [dropdown],
   });
 
-  const cards: Card[] = Object.values(playerPossibleMove);
-  const randomIndex = Math.floor(Math.random() * (cards.length - 1)); // -1 so Forfeit is always avoided
-  const randomCard: Card = cards[randomIndex];
+  const cardsIndices: string[] = Object.keys(playerPossibleMove);
+  const randomIndexString =
+    cardsIndices[Math.floor(Math.random() * (cardsIndices.length - 1))]; // -1 so Forfeit is always avoided
+  const randomIndex: number = parseInt(randomIndexString);
+  const randomCard: Card = playerPossibleMove[randomIndexString];
 
   return new Promise<Card>((resolve, reject) => {
     const fallbackTimeout = setTimeout(() => {
@@ -59,7 +61,9 @@ export const playSelectedMove = async (
         console.warn(
           "Fallback timeout triggered in getSelectedMove function - collector failed to end properly."
         );
-        character.playCard(randomIndex);
+        if (randomIndex < 6) {
+          character.playCard(randomIndex);
+        }
         resolve(randomCard);
       }
     }, timeLimit + 5000); // 5 additional seconds for fallback timeout
@@ -87,7 +91,7 @@ export const playSelectedMove = async (
               if (!i.replied && !i.deferred) {
                 await i.deferUpdate();
               }
-              collector.stop("Character selected");
+              collector.stop("Card selected");
 
               const selectedCardIndex = parseInt(i.values[0]);
               const selectedCard =
@@ -134,7 +138,9 @@ export const playSelectedMove = async (
             // When the collector expires, disable the select menu
             if (collected.size === 0) {
               if (!isResolved) {
-                character.playCard(randomIndex);
+                if (randomIndex < 6) {
+                  character.playCard(randomIndex);
+                }
                 await response
                   .edit({
                     content: `Timeout! Playing a random card: ${randomCard.emoji} **${randomCard.getTitle()}**!`,
@@ -150,7 +156,9 @@ export const playSelectedMove = async (
           } catch (error) {
             console.error("Error in collector end event:", error);
 
-            character.playCard(randomIndex);
+            if (randomIndex < 6) {
+              character.playCard(randomIndex);
+            }
             if (!isResolved) {
               isResolved = true;
               clearTimeout(fallbackTimeout);
