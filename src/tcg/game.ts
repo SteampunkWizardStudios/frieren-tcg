@@ -84,13 +84,17 @@ export default class Game {
         this.messageCache
       );
     }
+
     // counter attacks should not be under defend effect
+    const modifiedAttackDamage =
+      attackProps.damage *
+      this.additionalMetadata.attackModifier[attackProps.attackerIndex];
     if (defender.ability.abilityDefendEffect) {
       defender.ability.abilityDefendEffect(
         this,
         1 - attackProps.attackerIndex,
         this.messageCache,
-        attackProps.damage
+        modifiedAttackDamage
       );
     }
 
@@ -99,9 +103,7 @@ export default class Game {
     if (this.additionalMetadata.attackMissed[attackProps.attackerIndex]) {
       this.messageCache.push(`# ${attacker.name} missed!`, TCGThread.Gameroom);
     } else {
-      let baseDamage =
-        attackProps.damage *
-        this.additionalMetadata.attackModifier[attackProps.attackerIndex];
+      let baseDamage = modifiedAttackDamage;
 
       baseDamage = this.calculateDamage(
         baseDamage,

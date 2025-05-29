@@ -229,7 +229,7 @@ export const a_daosdorgBase = new Card({
   title: "Hellfire: Daosdorg",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-9. DMG ${dmg}. Afterwards, all your attacks receive 30% Pierce for the duration of any currently active Waldgose. Treat this card as "Hook" if the user's HP is <= 0.`,
+    `HP-9. DMG ${dmg}. Afterwards, all your attacks receive 15% Pierce for the duration of any currently active Waldgose. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [12],
   hpCost: 0, // hpCost variable at cast time
@@ -282,17 +282,17 @@ export const a_daosdorgBase = new Card({
           TCGThread.Gameroom
         );
 
-        character.additionalMetadata.pierceFactor += 0.3;
+        character.additionalMetadata.pierceFactor += 0.15;
         character.timedEffects.push(
           new TimedEffect({
             name: "Hellfire: Daosdorg",
-            description: `All your attacks receive +30% Pierce.`,
+            description: `All your attacks receive +15% Pierce.`,
             turnDuration: daosdorgTurnDuration,
             priority: -1,
             executeEndOfTimedEffectActionOnRemoval: true,
             endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
               messageCache.push(`The hellfire quietens.`, TCGThread.Gameroom);
-              character.additionalMetadata.pierceFactor -= 0.3;
+              character.additionalMetadata.pierceFactor -= 0.15;
             },
           })
         );
