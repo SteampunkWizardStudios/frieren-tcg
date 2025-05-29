@@ -248,7 +248,7 @@ export const a_ehreDoragate = new Card({
 
 export const perfectSorganeil = new Card({
   title: "Perfect Sorganeil",
-  cardMetadata: { nature: Nature.Attack },
+  cardMetadata: { nature: Nature.Attack, signature: true, signatureMoveOf: CharacterName.Wirbel },
   description: ([dmg]) =>
     `DMG ${dmg}. Will fail if the opponent's SPD is higher than your SPD by 50 or more. Set opponent's SPD to 1. Clear opponent's timed effects. Opponent can only perform Default actions next turn.`,
   emoji: CardEmoji.WIRBEL_CARD,
