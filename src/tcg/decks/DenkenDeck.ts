@@ -12,7 +12,6 @@ const a_jab = new Card({
     `DEF+${def}. ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [1, 1, 1, 2],
-  hpCost: 1,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -47,7 +46,6 @@ const a_hook = new Card({
   description: ([spd, atk, dmg]) => `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
-  hpCost: 1,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -78,7 +76,6 @@ const a_uppercut = new Card({
   description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 3],
-  hpCost: 2,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364978489035460708/GIF_0836074812.gif?ex=680c4b87&is=680afa07&hm=84fd66beff9352aba9c037ff66d2b0e69219b34c0e3c9c5e62edbf96dc62a0f8&",
@@ -234,7 +231,7 @@ export const a_daosdorgBase = new Card({
   title: "Hellfire: Daosdorg",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `HP-9. DMG ${dmg}. Afterwards, all your attacks receive 15% Pierce for the duration of any currently active Waldgose. Treat this card as "Hook" if the user's HP is <= 0.`,
+    `HP-9. DMG ${dmg}. Afterwards, all your attacks receive 20% Pierce for the duration of any currently active Waldgose. Treat this card as "Hook" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [12],
   hpCost: 0, // hpCost variable at cast time
@@ -287,17 +284,17 @@ export const a_daosdorgBase = new Card({
           TCGThread.Gameroom
         );
 
-        character.additionalMetadata.pierceFactor += 0.15;
+        character.additionalMetadata.pierceFactor += 0.2;
         character.timedEffects.push(
           new TimedEffect({
             name: "Hellfire: Daosdorg",
-            description: `All your attacks receive +15% Pierce.`,
+            description: `All your attacks receive +20% Pierce.`,
             turnDuration: daosdorgTurnDuration,
             priority: -1,
             executeEndOfTimedEffectActionOnRemoval: true,
             endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
               messageCache.push(`The hellfire quietens.`, TCGThread.Gameroom);
-              character.additionalMetadata.pierceFactor -= 0.15;
+              character.additionalMetadata.pierceFactor -= 0.2;
             },
           })
         );
@@ -333,7 +330,7 @@ export const a_catastraviaBase = new Card({
   description: ([dmg0, dmg1, dmg2, dmg3, dmg4]) =>
     `HP-15. DMG ${dmg0}, ${dmg1}, ${dmg2}, ${dmg3}, ${dmg4}. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [1, 2, 3, 4, 5],
+  effects: [2, 3, 4, 5, 6],
   hpCost: 0, // hpCost variable at cast time
   cosmetic: {
     cardGif:
