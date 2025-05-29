@@ -198,11 +198,13 @@ const captainsOrder = new Card({
       return new Card({
         ...a_captainsOrderBase,
         cardMetadata: { nature: Nature.Util },
+        empowerLevel: this.empowerLevel,
       });
     } else {
       return new Card({
         ...a_captainsOrderBase,
         cardMetadata: { nature: Nature.Attack },
+        empowerLevel: this.empowerLevel,
       });
     }
   },
