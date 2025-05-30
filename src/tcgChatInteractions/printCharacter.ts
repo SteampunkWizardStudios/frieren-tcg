@@ -13,8 +13,12 @@ export const printCharacter = (
   const printStack: string[] = [];
   const charStat = character.stats.stats;
   let hpInfo: string;
-  if (meta.manaSuppressed && obfuscateInformation) {
-    hpInfo = "?? / ??";
+  if (obfuscateInformation && (meta.manaSuppressed || meta.deceitful)) {
+    if (meta.deceitful) {
+      hpInfo = "10 / 10";
+    } else {
+      hpInfo = "?? / ??";
+    }
   } else {
     const healthbar = new ProgressBarBuilder()
       .setValue(charStat.HP)
@@ -28,10 +32,10 @@ export const printCharacter = (
   const lines = [
     `# ${character.name} (${character.characterUser.displayName}) [⠀](${character.cosmetic.imageUrl})`,
     `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
-    `- ${statDetails[StatsEnum.ATK].emoji} **ATK**: ${charStat.ATK}`,
-    `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${charStat.DEF}`,
-    `- ${statDetails[StatsEnum.TrueDEF].emoji} **TrueDEF**: ${charStat.TrueDEF}`,
-    `- ${statDetails[StatsEnum.SPD].emoji} **SPD**: ${charStat.SPD}`,
+    `- ${statDetails[StatsEnum.ATK].emoji} **ATK**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.ATK}`,
+    `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.DEF}`,
+    `- ${statDetails[StatsEnum.TrueDEF].emoji} **TrueDEF**: ${meta.deceitful && obfuscateInformation ? 0 : charStat.TrueDEF}`,
+    `- ${statDetails[StatsEnum.SPD].emoji} **SPD**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.SPD}`,
     `- ${statDetails[StatsEnum.Ability].emoji} **Ability**: ${character.ability.abilityName} - ${charStat.Ability}`,
     `  - ${formatAbility(character.ability)}`,
     `**Active Pile:** ${activePileCount} Card${activePileCount > 1 ? "s" : ""}     **Discard Pile:** ${discardPileCount} Card${discardPileCount > 1 ? "s" : ""}`,

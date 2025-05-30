@@ -13,4 +13,5 @@ export enum CharacterName {
   Stille = "Stille",
   Ubel = "Übel",
   Wirbel = "Wirbel",
+  Flamme = "Flamme",
 }

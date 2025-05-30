@@ -9,6 +9,7 @@ export enum UbelHit {
 export type CharacterAdditionalMetadata = {
   manaSuppressed: boolean;
   ignoreManaSuppressed: boolean;
+  deceitful: boolean;
   attackedThisTurn: boolean;
   timedEffectAttackedThisTurn: boolean;
   accessToDefaultCardOptions: boolean;

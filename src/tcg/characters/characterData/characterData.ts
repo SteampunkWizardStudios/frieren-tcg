@@ -9,6 +9,7 @@ import { CharacterEmoji } from "@tcg/formatting/emojis";
 const defaultMetadata: CharacterAdditionalMetadata = {
   manaSuppressed: false,
   ignoreManaSuppressed: false,
+  deceitful: false,
   attackedThisTurn: false,
   timedEffectAttackedThisTurn: false,
   accessToDefaultCardOptions: true,

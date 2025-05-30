@@ -199,7 +199,11 @@ export default class Character {
           `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`
         );
         if (
-          !(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed)
+          !(
+            stat === StatsEnum.HP &&
+            (this.additionalMetadata.manaSuppressed ||
+              this.additionalMetadata.deceitful)
+          )
         ) {
           statUpdateLines.push(
             `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`
@@ -210,7 +214,11 @@ export default class Character {
           `${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`
         );
         if (
-          !(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed)
+          !(
+            stat === StatsEnum.HP &&
+            (this.additionalMetadata.manaSuppressed ||
+              this.additionalMetadata.deceitful)
+          )
         ) {
           statUpdateLines.push(
             `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`
