@@ -220,23 +220,24 @@ export const manaConcealment = new Card({
       StatsEnum.DEF
     );
 
+    character.ability.abilitySelectedMoveModifierEffect = function (
+      _game,
+      _characterIndex,
+      _messageCache,
+      selectedCard
+    ) {
+      if (selectedCard.cardMetadata.nature === Nature.Attack) {
+        selectedCard.priority = 1;
+      }
+
+      return selectedCard;
+    };
+
     character.ability.abilityStartOfTurnEffect = function (
       _game,
       _characterIndex,
       _messageCache
     ) {
-      character.ability.abilitySelectedMoveModifierEffect = function (
-        _game,
-        _characterIndex,
-        _messageCache,
-        selectedCard
-      ) {
-        if (selectedCard.cardMetadata.nature === Nature.Attack) {
-          selectedCard.priority = 1;
-        }
-
-        return selectedCard;
-      };
       character.additionalMetadata.pierceFactor = 0.5;
     };
 

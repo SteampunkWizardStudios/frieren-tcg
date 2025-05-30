@@ -285,7 +285,7 @@ export const a_lastStand = new Card({
   description: ([dmg]) =>
     `DEF-5 for 2 turns. This character's HP cannot drop below 1 for 2 turns. At the end of next turn, HP-20, use 2 Resolves, strike for DMG ${dmg}.`,
   emoji: CardEmoji.STARK_CARD,
-  cardMetadata: { nature: Nature.Attack, signature: true, resolve: -2 },
+  cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [25],
   priority: 1,
   cardAction: function (
@@ -296,6 +296,7 @@ export const a_lastStand = new Card({
 
     messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
     const damage = this.calculateEffectValue(this.effects[0]);
+
     character.additionalMetadata.minimumPossibleHp = 1;
     character.adjustStat(-5, StatsEnum.DEF);
 
@@ -304,13 +305,16 @@ export const a_lastStand = new Card({
         name: "Impending Lightning",
         description: `Strike for ${damage} damage.`,
         turnDuration: 2,
+        metadata: { removableBySorganeil: true },
+        executeEndOfTimedEffectActionOnRemoval: false,
         activateEndOfTurnActionThisTurn: false,
         endOfTimedEffectAction: (game, characterIndex) => {
           messageCache.push(
             `[⠀](https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif)`,
             TCGThread.Gameroom
           );
-          game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
+          game.characters[characterIndex].adjustStat(-2, StatsEnum.Ability);
+          game.characters[characterIndex].adjustStat(-20, StatsEnum.HP);
           messageCache.push(
             `${character.name} performs Lightning Strike!`,
             TCGThread.Gameroom
@@ -325,16 +329,18 @@ export const a_lastStand = new Card({
 
     game.characters[characterIndex].timedEffects.push(
       new TimedEffect({
-        name: "Sturdy",
-        description: `HP cannot fall below 1 this turn.`,
+        name: "A Warrior's Last Stand",
+        description: `DEF-5. HP cannot fall below 1 this turn.`,
         turnDuration: 2,
         priority: -1,
-        metadata: { removableBySorganeil: false },
+        metadata: { removableBySorganeil: true },
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: (_game, _characterIndex) => {
           messageCache.push(
             `${character.name} let out all ${character.cosmetic.pronouns.personal} has. ${character.name} is no longer Sturdy.`,
             TCGThread.Gameroom
           );
+          game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
           character.additionalMetadata.minimumPossibleHp = undefined;
         },
       })

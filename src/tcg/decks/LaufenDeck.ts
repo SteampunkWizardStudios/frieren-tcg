@@ -8,7 +8,7 @@ const a_staffStrike = new Card({
   title: "Staff Strike",
   cardMetadata: { nature: Nature.Attack },
   description: ([spd, dmg]) =>
-    `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/7 with SPDDiff% Pierce.`,
+    `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/8 with SPDDiff% Pierce.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [3, 7],
   hpCost: 7,
@@ -32,7 +32,7 @@ const a_staffStrike = new Card({
     sendToGameroom(`${name} struck with ${possessive} staff!`);
     selfStat(0, StatsEnum.SPD);
 
-    const damage = calcEffect(1) + selfStats.SPD / 7;
+    const damage = calcEffect(1) + selfStats.SPD / 8;
 
     const spdDiffPercentage = (selfStats.SPD - opponentStats.SPD) / 100;
     const pierceFactor = Math.max(spdDiffPercentage, 0);
@@ -44,7 +44,7 @@ const a_staffBash = new Card({
   title: "Staff Bash",
   cardMetadata: { nature: Nature.Attack },
   description: ([spd, dmg]) =>
-    `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/6 with SPDDiff% Pierce.`,
+    `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/6 with (SPDDiff / 2)% Pierce.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [2, 8],
   hpCost: 7,
@@ -70,7 +70,7 @@ const a_staffBash = new Card({
 
     const damage = calcEffect(1) + selfStats.SPD / 6;
     const spdDiffPercentage = (selfStats.SPD - opponentStats.SPD) / 100;
-    const pierceFactor = Math.max(spdDiffPercentage, 0);
+    const pierceFactor = Math.max(spdDiffPercentage / 2, 0);
     flatAttack(damage, pierceFactor);
   },
 });
