@@ -97,6 +97,19 @@ const stilleCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1361940199583780864/IMG_3171.gif?ex=6807d567&is=680683e7&hm=55cb8759a21dc4e1d852861c8856dd068b299cb289a109cd4be8cdd27cca4e2f&",
 } as const;
 
+const wirbelCardLinks = {
+  wirbel_concentratedZoltraakBolt_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1377705979642253352/GIF_1544925494.gif?ex=683a98ee&is=6839476e&hm=5dfc16e4cf0f4e50cb5507c8b721f7399558d0e24588f3d2c8e0c940636b5e7d&",
+  wirbel_sorganeil_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1377705939737509979/GIF_3393146172.gif?ex=683a98e4&is=68394764&hm=a8b1636e7988d36ca7257d800c5ad254b3adac8605217c3a72cd703bce97f91a&",
+  wirbel_tacticalRetreat_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1377705898667147426/GIF_2380761569.gif?ex=683a98da&is=6839475a&hm=54b23eca14ae00f5076190a89e4119fa7d93bdb2c5cd03ed9b8ecb6e838f6c1b&",
+  wirbel_ehreDoragate_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1377705876441530418/GIF_1317219752.gif?ex=683a98d5&is=68394755&hm=53bb242bc2ee896620d9ae07c5c6db4433910fe95d1e2570c9ef28c5aec48686&",
+  wirbel_spearRush_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1377705828643115128/GIF_2399541750.gif?ex=683a98ca&is=6839474a&hm=24987e08dc3aeecfa0f3729bdf252acac2f236835f81ff8fc702c6ac90aedebd&",
+} as const;
+
 const mediaLinks = {
   ...characterPortraits,
   ...vangerisuCards,
@@ -104,6 +117,7 @@ const mediaLinks = {
   ...edelCardLinks,
   ...frierenCardLinks,
   ...stilleCardLinks,
+  ...wirbelCardLinks,
 } as const;
 
 export default mediaLinks;

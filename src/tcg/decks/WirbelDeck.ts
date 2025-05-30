@@ -4,6 +4,7 @@ import { StatsEnum } from "@tcg/stats";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import { CharacterName } from "../characters/metadata/CharacterName";
 import { GameMessageContext } from "../gameContextProvider";
+import mediaLinks from "../formatting/mediaLinks";
 
 export const tacticalRetreat = new Card({
   title: "Tactical Retreat",
@@ -12,6 +13,9 @@ export const tacticalRetreat = new Card({
     `TrueDEF+${trueDef} for 2 turns. Using an attack aside from "Ehre: Hailstorm - Doragate" will cost an additional 10HP while the effect is active, and will end the effect.`,
   effects: [10],
   emoji: CardEmoji.WIRBEL_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_tacticalRetreat_gif,
+  },
   cardAction: function (
     this: Card,
     { self, name, sendToGameroom, selfStat, calcEffect }
@@ -151,6 +155,9 @@ const a_spearRush = new Card({
   emoji: CardEmoji.WIRBEL_CARD,
   effects: [2, 3],
   hpCost: 7,
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_spearRush_gif,
+  },
   cardAction: function (
     this: Card,
     { name, sendToGameroom, calcEffect, possessive, flatAttack, selfStat }
@@ -217,6 +224,9 @@ export const a_ehreDoragate = new Card({
     `DMG ${dmg}. At the end of the next 2 turns, DMG ${dmg}. Pierces 30% of DEF.`,
   emoji: CardEmoji.WIRBEL_CARD,
   effects: [1],
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_ehreDoragate_gif,
+  },
   cardAction: function (
     this: Card,
     { self, name, sendToGameroom, calcEffect, flatAttack }
@@ -261,6 +271,9 @@ export const perfectSorganeil = new Card({
   emoji: CardEmoji.WIRBEL_CARD,
   priority: -1,
   effects: [1],
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_sorganeil_gif,
+  },
   cardAction: function (this: Card, context: GameMessageContext) {
     const {
       self,
@@ -329,6 +342,9 @@ export const a_concentratedZoltraakBolt = new Card({
   emoji: CardEmoji.WIRBEL_CARD,
   effects: [18],
   hpCost: 12,
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_concentratedZoltraakBolt_gif,
+  },
   cardAction: function (this: Card, { name, sendToGameroom, basicAttack }) {
     sendToGameroom(`${name} shot forth a deadly Zoltraak Bolt!`);
     if (Math.random() < 0.5) {
