@@ -315,6 +315,7 @@ export const a_lastStand = new Card({
           );
           game.characters[characterIndex].adjustStat(-2, StatsEnum.Ability);
           game.characters[characterIndex].adjustStat(-20, StatsEnum.HP);
+          game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
           messageCache.push(
             `${character.name} performs Lightning Strike!`,
             TCGThread.Gameroom
@@ -330,7 +331,7 @@ export const a_lastStand = new Card({
     game.characters[characterIndex].timedEffects.push(
       new TimedEffect({
         name: "A Warrior's Last Stand",
-        description: `DEF-5. HP cannot fall below 1 this turn.`,
+        description: `HP cannot fall below 1 this turn.`,
         turnDuration: 2,
         priority: -1,
         metadata: { removableBySorganeil: true },
@@ -340,7 +341,6 @@ export const a_lastStand = new Card({
             `${character.name} let out all ${character.cosmetic.pronouns.personal} has. ${character.name} is no longer Sturdy.`,
             TCGThread.Gameroom
           );
-          game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
           character.additionalMetadata.minimumPossibleHp = undefined;
         },
       })

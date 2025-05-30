@@ -22,14 +22,15 @@ type CardMetadata = {
   signature?: boolean;
   analysis?: number;
   postAnalysis?: number;
-  waldgoseDamage?: number;
+  resolve?: number;
+  teaTime?: number;
+  theory?: boolean;
 
   heiter?: boolean;
   eisen?: boolean;
   frieren?: boolean;
 
-  teaTime?: number;
-  resolve?: number;
+  waldgoseDamage?: number;
   signatureMoveOf?: CharacterName;
   ubelFailureRate?: number;
   isEhreDoragate?: boolean;
@@ -37,6 +38,7 @@ type CardMetadata = {
   empathized?: boolean;
   imitated?: boolean;
   temporary?: boolean;
+  removeOnPlay?: boolean;
   hidePriority?: boolean;
   hideHpCost?: boolean;
   hideEmpower?: boolean;

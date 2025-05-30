@@ -83,6 +83,9 @@ export const scharfJubelade = new Card({
   effects: [4],
   emoji: CardEmoji.WIRBEL_CARD,
   priority: 2,
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_jubelade_gif,
+  },
   cardAction: function (
     this: Card,
     { self, name, selfStat, sendToGameroom, calcEffect }
@@ -181,6 +184,9 @@ const a_captainsOrderBase = new Card({
   emoji: CardEmoji.WIRBEL_CARD,
   effects: [3, 1, 2, 10],
   hpCost: 4,
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_captainsOrder_gif,
+  },
   cardAction: function (this: Card, context) {
     const { opponentStats, selfStats, selfStat, basicAttack } = context;
 

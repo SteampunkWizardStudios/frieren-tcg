@@ -194,36 +194,24 @@ export default class Character {
       const statDescription =
         stat === StatsEnum.Ability ? "Ability Counter" : stat;
       const statUpdateLines: string[] = [];
+
       if (adjustValue < 0) {
         statUpdateLines.push(
           `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`
         );
-        if (
-          !(
-            stat === StatsEnum.HP &&
-            (this.additionalMetadata.manaSuppressed ||
-              this.additionalMetadata.deceitful)
-          )
-        ) {
-          statUpdateLines.push(
-            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`
-          );
-        }
       } else {
         statUpdateLines.push(
           `${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`
         );
-        if (
-          !(
-            stat === StatsEnum.HP &&
-            (this.additionalMetadata.manaSuppressed ||
-              this.additionalMetadata.deceitful)
-          )
-        ) {
-          statUpdateLines.push(
-            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`
-          );
-        }
+      }
+
+      if (
+        !(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed) &&
+        !this.additionalMetadata.deceitful
+      ) {
+        statUpdateLines.push(
+          `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`
+        );
       }
 
       this.messageCache.push(statUpdateLines.join(" "), TCGThread.Gameroom);

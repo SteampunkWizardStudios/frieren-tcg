@@ -14,7 +14,7 @@ import { a_geisel } from "@decks/StilleDeck";
 import { a_lastStand } from "@decks/StarkDeck";
 import { a_malevolentShrine } from "./ubelSignature";
 import { perfectSorganeil } from "../WirbelDeck";
-import { fieldOfFlower } from "../FlammeDeck";
+import { incantationFieldOfFlowers } from "../FlammeDeck";
 
 export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Denken]: bareHandedBlock,
@@ -31,7 +31,7 @@ export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Serie]: ancientBarrierMagic,
   [CharacterName.Ubel]: a_malevolentShrine,
   [CharacterName.Wirbel]: perfectSorganeil,
-  [CharacterName.Flamme]: fieldOfFlower,
+  [CharacterName.Flamme]: incantationFieldOfFlowers,
 };
 
 export const SIGNATURE_MOVES_LIST = Object.entries(signatureMoves);

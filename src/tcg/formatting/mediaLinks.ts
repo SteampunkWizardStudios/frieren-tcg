@@ -110,6 +110,10 @@ const wirbelCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1377705876441530418/GIF_1317219752.gif?ex=683a98d5&is=68394755&hm=53bb242bc2ee896620d9ae07c5c6db4433910fe95d1e2570c9ef28c5aec48686&",
   wirbel_spearRush_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1377705828643115128/GIF_2399541750.gif?ex=683a98ca&is=6839474a&hm=24987e08dc3aeecfa0f3729bdf252acac2f236835f81ff8fc702c6ac90aedebd&",
+  wirbel_jubelade_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378124835984507071/GIF_2194611837.gif?ex=683b7645&is=683a24c5&hm=59a1ddac5b8a79067a0bbbab32462850c302f3fc2043645fc3cda2b42020917f&",
+  wirbel_captainsOrder_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378130084178694315/GIF_1598346001.gif?ex=683b7b28&is=683a29a8&hm=e06d2c3811dbcb30eb34d3641d01a7eba34dc248592a6ecf3069150b3c4ec69c&",
 } as const;
 
 const mediaLinks = {

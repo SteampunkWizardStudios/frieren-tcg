@@ -174,23 +174,11 @@ const disapprovingPout = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { name, sendToGameroom, selfStat, opponentStat }
   ) {
-    const character = game.getCharacter(characterIndex);
-    const opponent = game.getCharacter(1 - characterIndex);
-    messageCache.push(
-      `${character.name} looks down on the opponent.`,
-      TCGThread.Gameroom
-    );
-
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP
-    );
-    opponent.adjustStat(
-      -1 * this.calculateEffectValue(this.effects[1]),
-      StatsEnum.ATK
-    );
+    sendToGameroom(`${name} looks down on the opponent.`);
+    selfStat(0, StatsEnum.HP);
+    opponentStat(1, StatsEnum.ATK, -1);
   },
 });
 
@@ -274,43 +262,31 @@ export const spellToCreateManaButterflies = new Card({
   effects: [6, 2],
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { self, name, sendToGameroom, selfStat, calcEffect, flatSelfStat }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} conjured a field of mana butterflies.`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} conjured a field of mana butterflies.`);
+    selfStat(0, StatsEnum.HP);
 
-    const initialHealing = this.calculateEffectValue(this.effects[0]);
-    const endOfTurnHealing = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(initialHealing, StatsEnum.HP);
+    const endOfTurnHealing = calcEffect(1);
 
-    character.timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Field of Butterflies",
-        description: `Heal ${endOfTurnHealing} HP`,
+        description: `Heal ${endOfTurnHealing} HP. Gain 1 Barrage count.`,
         turnDuration: 4,
         executeEndOfTimedEffectActionOnRemoval: true,
-        endOfTurnAction: (game, characterIndex, messageCache) => {
-          messageCache.push(
-            `The Mana Butterflies soothe ${character.name}.`,
-            TCGThread.Gameroom
-          );
-          game.characters[characterIndex].adjustStat(
-            endOfTurnHealing,
-            StatsEnum.HP
-          );
+        endOfTurnAction: (_game, _characterIndex, _messageCache) => {
+          sendToGameroom(`The Mana Butterflies soothe ${name}.`);
+          flatSelfStat(endOfTurnHealing, StatsEnum.HP);
 
-          character.additionalMetadata.fernBarrage =
-            (character.additionalMetadata.fernBarrage ?? 0) + 0.5;
-          messageCache.push(
-            `${character.name} gained 0.5 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
-            TCGThread.Gameroom
+          self.additionalMetadata.fernBarrage =
+            (self.additionalMetadata.fernBarrage ?? 0) + 0.5;
+          sendToGameroom(
+            `${name} gained 0.5 Barrage count. Current Barrage count: **${self.additionalMetadata.fernBarrage}**.`
           );
         },
-        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
-          messageCache.push("The Mana Butterflies fade.", TCGThread.Gameroom);
+        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+          sendToGameroom("The Mana Butterflies fade.");
         },
       })
     );

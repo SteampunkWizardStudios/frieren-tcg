@@ -76,6 +76,9 @@ export const printCharacter = (
   if (meta.fernBarrage && meta.fernBarrage > 0) {
     printStack.push(`**Barrage**: ${meta.fernBarrage}`);
   }
+  if (meta.flammeSigil && meta.flammeSigil > 0) {
+    printStack.push(`**Sigils**: ${meta.flammeSigil}`);
+  }
   if (meta.forcedDiscards > 0) {
     printStack.push(`**Forced Discards**: ${meta.forcedDiscards}`);
   }

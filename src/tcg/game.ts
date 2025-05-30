@@ -1,6 +1,9 @@
 import Card from "@tcg/card";
 import Character from "@tcg/character";
-import { GameAdditionalMetadata } from "@tcg/additionalMetadata/gameAdditionalMetadata";
+import {
+  FlammeTheory,
+  GameAdditionalMetadata,
+} from "@tcg/additionalMetadata/gameAdditionalMetadata";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
@@ -43,6 +46,12 @@ export default class Game {
       forfeited: {
         0: false,
         1: false,
+      },
+      flammeTheory: {
+        [FlammeTheory.Irreversibility]: false,
+        [FlammeTheory.Balance]: false,
+        [FlammeTheory.Prescience]: false,
+        [FlammeTheory.Soul]: false,
       },
     };
     this.turnCount = 0;
