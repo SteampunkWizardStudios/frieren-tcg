@@ -130,7 +130,7 @@ const a_fernConcentratedZoltraakSnipe = new Card({
     `Deal ${baseDmg} + ${dmg} DMG x Barrage count, with 50% Pierce. Reset Barrage count to 0.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [6, 2],
-  hpCost: 12,
+  hpCost: 8,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364357151111385098/GIF_1619936813.gif?ex=6809601d&is=68080e9d&hm=d315925c27f678c96ed238bcc826abd1c209e5e1dae651b445b7fa4760e0cf09&",
