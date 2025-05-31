@@ -33,14 +33,12 @@ export const printGameState = (
 export const printTheory = (
   flammeTheories: Record<FlammeTheory, boolean>
 ): string | undefined => {
-  let flammeTheoriesDiscoveryState = "";
-  Object.entries(flammeTheories).forEach(([theory, isDiscovered]) => {
-    if (isDiscovered) {
-      flammeTheoriesDiscoveryState += `**${theory}**: Discovered  `;
-    }
-  });
+  const flammeDiscoveredTheories = Object.entries(flammeTheories)
+    .filter(([, isDiscovered]) => isDiscovered)
+    .map(([theory]) => `**${theory}**`)
+    .join(", ");
 
-  if (flammeTheoriesDiscoveryState.length > 0) {
-    return `### Flamme's Theories:\n${flammeTheoriesDiscoveryState}`;
-  }
+  return flammeDiscoveredTheories
+    ? `### Flamme's Discovered Theories:\n${flammeDiscoveredTheories}`
+    : "";
 };

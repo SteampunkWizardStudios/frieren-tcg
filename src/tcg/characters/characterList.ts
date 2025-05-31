@@ -3,6 +3,7 @@ import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import Denken from "@characters/Denken";
 import Edel from "@characters/Edel";
 import Fern from "@characters/Fern";
+import Flamme from "@characters/Flamme";
 import Frieren from "@characters/Frieren";
 import Himmel from "@characters/Himmel";
 import Laufen from "@characters/Laufen";
@@ -14,12 +15,12 @@ import Stark from "@characters/Stark";
 import Stille from "@characters/Stille";
 import Ubel from "@characters/Ubel";
 import Wirbel from "@characters/Wirbel";
-import Flamme from "@characters/Flamme";
 
 export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
   [CharacterName.Denken]: Denken,
   [CharacterName.Edel]: Edel,
   [CharacterName.Fern]: Fern,
+  [CharacterName.Flamme]: Flamme,
   [CharacterName.Frieren]: Frieren,
   [CharacterName.Himmel]: Himmel,
   [CharacterName.Laufen]: Laufen,
@@ -31,7 +32,6 @@ export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
   [CharacterName.Stille]: Stille,
   [CharacterName.Ubel]: Ubel,
   [CharacterName.Wirbel]: Wirbel,
-  [CharacterName.Flamme]: Flamme,
 } as const;
 
 export const CHARACTER_LIST: CharacterData[] = Object.values(CHARACTER_MAP);

@@ -75,7 +75,7 @@ export function formatAbility(ability: Ability) {
     ability.subAbilities && ability.subAbilities.length > 0
       ? "\n\n" +
         ability.subAbilities
-          .map((sub) => `**Sub-Ability -  ${sub.name}** - ${sub.description}`)
+          .map((sub) => `**Sub-Ability - ${sub.name}** - ${sub.description}`)
           .join("\n")
       : ""
   }`;
