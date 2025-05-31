@@ -46,15 +46,18 @@ export const printCharacter = (
   printStack.push(lines.join("\n"));
 
   const statuses: string[] = [];
-  const [sleepyCount, mesmerizedCount, weakenedCount] = character.hand.reduce(
-    (acc, card) => {
-      if (card.title === "Sleepy") acc[0]++;
-      else if (card.title === "Mesmerized") acc[1]++;
-      else if (card.title === "Weakened") acc[2]++;
-      return acc;
-    },
-    [0, 0, 0]
-  );
+  const [sleepyCount, mesmerizedCount, weakenedCount] = character
+    .getAllCards()
+    .reduce(
+      (acc, card) => {
+        if (card.title === "Sleepy") acc[0]++;
+        else if (card.title === "Mesmerized") acc[1]++;
+        else if (card.title === "Weakened") acc[2]++;
+        return acc;
+      },
+      [0, 0, 0]
+    );
+
   if (sleepyCount > 0) {
     statuses.push(`**Sleepy**: ${sleepyCount}`);
   }

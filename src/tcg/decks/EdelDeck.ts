@@ -252,7 +252,7 @@ const kneel = new Card({
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
   description: ([dmg]) =>
-    `DMG ${dmg} + three per each card you've forced your opponent to discard this match. Ignores defense. At the end of the turn, if your opponent has forcibly discarded over 10 cards, and have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
+    `DMG ${dmg} + three per each card you've forced your opponent to discard this match. Ignores defense. At the end of the turn, if your opponent has forcibly discarded over 10 cards, and have Sleepy, Mesmerized and Weakened in their hand, active or discard pile, they lose.`,
   effects: [10],
   hpCost: 10,
   cosmetic: {
@@ -276,7 +276,7 @@ const kneel = new Card({
     flatAttack(dmg);
 
     const statusCon = ["Sleepy", "Mesmerized", "Weakened"].every((status) =>
-      opponent.hand.some((card) => card.title === status)
+      opponent.getAllCards().some((card) => card.title === status)
     );
 
     const winCon = statusCon && discards > 10;

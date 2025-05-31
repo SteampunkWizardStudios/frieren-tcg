@@ -31,15 +31,6 @@ export default class Deck {
     this.discardPile.push(card);
   }
 
-  removeCard(card: Card): boolean {
-    const index = this.activePile.indexOf(card);
-    if (index == -1) {
-      return false;
-    }
-    this.activePile.splice(index, 1);
-    return false;
-  }
-
   // per card, randomly select another card in the deck and swap the two
   private shuffle() {
     for (let i = 0; i < this.activePile.length; i++) {
