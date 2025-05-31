@@ -64,7 +64,7 @@
 //       damage,
 //     });
 
-//     character.adjustStat(dealtDamage / 2, StatsEnum.HP);
+//     character.adjustStat(dealtDamage / 2, StatsEnum.HP, game);
 //   },
 // });
 

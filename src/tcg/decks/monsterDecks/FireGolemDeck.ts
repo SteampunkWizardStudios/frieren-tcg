@@ -70,10 +70,10 @@
 //       TCGThread.Gameroom
 //     );
 
-//     character.adjustStat(-10, StatsEnum.ATK);
+//     character.adjustStat(-10, StatsEnum.ATK, game);
 
 //     const def = this.calculateEffectValue(this.effects[0]);
-//     character.adjustStat(def, StatsEnum.DEF);
+//     character.adjustStat(def, StatsEnum.DEF, game);
 //     character.timedEffects.push(
 //       new TimedEffect({
 //         name: "Extinguish",
@@ -82,7 +82,7 @@
 //         turnDuration: 2,
 //         metadata: { removableBySorganeil: false },
 //         endOfTimedEffectAction: (_game, _characterIndex) => {
-//           character.adjustStat(-def, StatsEnum.DEF);
+//           character.adjustStat(-def, StatsEnum.DEF, game);
 //         },
 //       })
 //     );

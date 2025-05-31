@@ -52,7 +52,7 @@ const Wirbel = new CharacterData({
           `Wirbel feels the need to steel his resolve.`,
           TCGThread.Gameroom
         );
-        character.adjustStat(resolveAttackGain, StatsEnum.ATK);
+        character.adjustStat(resolveAttackGain, StatsEnum.ATK, game);
       }
     },
   },

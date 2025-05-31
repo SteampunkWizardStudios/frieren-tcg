@@ -168,15 +168,17 @@ export const mugOfBeer = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP
+      StatsEnum.HP,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.ATK
+      StatsEnum.ATK,
+      game
     );
 
-    character.adjustStat(-2, StatsEnum.DEF);
-    character.adjustStat(-2, StatsEnum.SPD);
+    character.adjustStat(-2, StatsEnum.DEF, game);
+    character.adjustStat(-2, StatsEnum.SPD, game);
 
     character.timedEffects.push(
       new TimedEffect({
@@ -189,8 +191,8 @@ export const mugOfBeer = new Card({
             `${character.name}'s drowsiness faded.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(2, StatsEnum.DEF);
-          character.adjustStat(2, StatsEnum.SPD);
+          character.adjustStat(2, StatsEnum.DEF, game);
+          character.adjustStat(2, StatsEnum.SPD, game);
         },
       })
     );
@@ -222,15 +224,18 @@ export const smokeBreak = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.ATK
+      StatsEnum.ATK,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.DEF
+      StatsEnum.DEF,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD
+      StatsEnum.SPD,
+      game
     );
   },
 });
@@ -256,15 +261,18 @@ export const awakening = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.ATK
+      StatsEnum.ATK,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.DEF
+      StatsEnum.DEF,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD
+      StatsEnum.SPD,
+      game
     );
   },
 });
@@ -292,7 +300,8 @@ export const poisonCure = new Card({
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP
+      StatsEnum.HP,
+      game
     );
   },
 });
@@ -329,7 +338,7 @@ export const braceYourself = new Card({
     }
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF);
+    character.adjustStat(def, StatsEnum.TrueDEF, game);
     character.timedEffects.push(
       new TimedEffect({
         name: "Brace Yourself",
@@ -338,7 +347,7 @@ export const braceYourself = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.TrueDEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );

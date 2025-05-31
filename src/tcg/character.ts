@@ -136,10 +136,15 @@ export default class Character {
     const indexToUsableCardMap: Record<string, Card> = {};
 
     // roll 4d6
-    const rolls = [];
-    for (let i = 0; i < 4; i++) {
-      rolls.push(Rolls.rollD6());
+    let rolls = [];
+    if (game.additionalMetadata.flammeTheory.Prescience) {
+      rolls = [0, 1, 2, 3];
+    } else {
+      for (let i = 0; i < 4; i++) {
+        rolls.push(Rolls.rollD6());
+      }
     }
+
     this.messageCache.push(`\n### Draws: ${rolls.sort().join(", ")}`, channel);
     for (const roll of rolls) {
       if (roll < this.hand.length) {
@@ -185,8 +190,22 @@ export default class Character {
   // adjust a character's stat
   // returns whether the operation was a success
   // there is no failure condition for now
-  adjustStat(adjustValue: number, stat: StatsEnum): boolean {
-    const roundedAdjustValue = Number(adjustValue.toFixed(2));
+  adjustStat(adjustValue: number, stat: StatsEnum, game: Game): boolean {
+    const roundedInitialAdjustValue = Number(adjustValue.toFixed(2));
+
+    let roundedAdjustValue = roundedInitialAdjustValue;
+    if (game.additionalMetadata.flammeTheory.Irreversibility) {
+      if (stat !== StatsEnum.Ability) {
+        if (stat === StatsEnum.HP) {
+          if (roundedAdjustValue > 0) {
+            roundedAdjustValue = 0;
+          }
+        } else {
+          roundedAdjustValue /= 2;
+        }
+      }
+    }
+
     const roundedStatValue = Number(
       (this.stats.stats[stat] + roundedAdjustValue).toFixed(2)
     );

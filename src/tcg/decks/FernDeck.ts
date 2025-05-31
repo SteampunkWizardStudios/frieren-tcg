@@ -103,7 +103,7 @@ export const a_fernBarrage = new Card({
               `${character.name} lost 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
               TCGThread.Gameroom
             );
-            character.adjustStat(-4, StatsEnum.HP);
+            character.adjustStat(-4, StatsEnum.HP, game);
             CommonCardAction.commonAttack(game, characterIndex, {
               damage,
               isTimedEffectAttack: true,
@@ -174,11 +174,11 @@ const disapprovingPout = new Card({
   },
   cardAction: function (
     this: Card,
-    { name, sendToGameroom, selfStat, opponentStat }
+    { game, name, sendToGameroom, selfStat, opponentStat }
   ) {
     sendToGameroom(`${name} looks down on the opponent.`);
-    selfStat(0, StatsEnum.HP);
-    opponentStat(1, StatsEnum.ATK, -1);
+    selfStat(0, StatsEnum.HP, game);
+    opponentStat(1, StatsEnum.ATK, game, -1);
   },
 });
 
@@ -201,11 +201,13 @@ export const manaConcealment = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.ATK
+      StatsEnum.ATK,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.DEF
+      StatsEnum.DEF,
+      game
     );
 
     character.ability.abilitySelectedMoveModifierEffect = function (
@@ -262,10 +264,10 @@ export const spellToCreateManaButterflies = new Card({
   effects: [6, 2],
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, selfStat, calcEffect, flatSelfStat }
+    { game, self, name, sendToGameroom, selfStat, calcEffect, flatSelfStat }
   ) {
     sendToGameroom(`${name} conjured a field of mana butterflies.`);
-    selfStat(0, StatsEnum.HP);
+    selfStat(0, StatsEnum.HP, game);
 
     const endOfTurnHealing = calcEffect(1);
 
@@ -277,7 +279,7 @@ export const spellToCreateManaButterflies = new Card({
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           sendToGameroom(`The Mana Butterflies soothe ${name}.`);
-          flatSelfStat(endOfTurnHealing, StatsEnum.HP);
+          flatSelfStat(endOfTurnHealing, StatsEnum.HP, game);
 
           self.additionalMetadata.fernBarrage =
             (self.additionalMetadata.fernBarrage ?? 0) + 0.5;
@@ -316,7 +318,7 @@ export const commonDefensiveMagic = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF);
+    character.adjustStat(def, StatsEnum.TrueDEF, game);
     character.additionalMetadata.fernBarrage = Math.max(
       0,
       (character.additionalMetadata.fernBarrage ?? 0) - 1
@@ -334,7 +336,7 @@ export const commonDefensiveMagic = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          character.adjustStat(-def, StatsEnum.TrueDEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );

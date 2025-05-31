@@ -27,7 +27,7 @@
 //     CommonCardAction.commonAttack(game, characterIndex, { damage });
 
 //     const spdLoss = this.calculateEffectValue(this.effects[1]);
-//     opponent.adjustStat(-spdLoss, StatsEnum.SPD);
+//     opponent.adjustStat(-spdLoss, StatsEnum.SPD, game);
 //   },
 // });
 
@@ -50,8 +50,8 @@
 //     );
 
 //     const def = this.calculateEffectValue(this.effects[0]);
-//     character.adjustStat(def, StatsEnum.DEF);
-//     character.adjustStat(-15, StatsEnum.ATK);
+//     character.adjustStat(def, StatsEnum.DEF, game);
+//     character.adjustStat(-15, StatsEnum.ATK, game);
 //     character.timedEffects.push(
 //       new TimedEffect({
 //         name: "Hide",
@@ -64,8 +64,8 @@
 //             `${character.name} breaks out of ${character.cosmetic.pronouns.possessive} crystalization.`,
 //             TCGThread.Gameroom
 //           );
-//           character.adjustStat(-def, StatsEnum.DEF);
-//           character.adjustStat(15, StatsEnum.ATK);
+//           character.adjustStat(-def, StatsEnum.DEF, game);
+//           character.adjustStat(15, StatsEnum.ATK, game);
 //         },
 //       })
 //     );

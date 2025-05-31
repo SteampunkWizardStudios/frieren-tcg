@@ -25,9 +25,9 @@ const madness = new Card({
     messageCache.push(randomMessage, TCGThread.Gameroom);
 
     const atk = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(atk, StatsEnum.ATK);
+    character.adjustStat(atk, StatsEnum.ATK, game);
     const def = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.DEF, game);
   },
 });
 
@@ -50,10 +50,11 @@ const earPiercingScream = new Card({
     messageCache.push(randomMessage, TCGThread.Gameroom);
     messageCache.push(`You hear an ear-piercing scream.`, TCGThread.Gameroom);
 
-    character.adjustStat(-2, StatsEnum.HP);
+    character.adjustStat(-2, StatsEnum.HP, game);
     opponent.adjustStat(
       -1 * this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF
+      StatsEnum.DEF,
+      game
     );
   },
 });
@@ -77,7 +78,7 @@ export const solitude = new Card({
     messageCache.push(randomMessage, TCGThread.Gameroom);
 
     const hp = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(hp, StatsEnum.HP);
+    character.adjustStat(hp, StatsEnum.HP, game);
   },
 });
 
@@ -100,7 +101,7 @@ export const a_curse = new Card({
     });
     messageCache.push(randomMessage, TCGThread.Gameroom);
 
-    character.adjustStat(-11, StatsEnum.HP);
+    character.adjustStat(-11, StatsEnum.HP, game);
     const damage = this.calculateEffectValue(this.effects[0]);
     character.timedEffects.push(
       new TimedEffect({
@@ -142,9 +143,9 @@ const guiltTrip = new Card({
 
     const opponent = game.getCharacter(1 - characterIndex);
     const def = this.calculateEffectValue(this.effects[0]);
-    opponent.adjustStat(-def, StatsEnum.DEF);
+    opponent.adjustStat(-def, StatsEnum.DEF, game);
     const spd = this.calculateEffectValue(this.effects[1]);
-    opponent.adjustStat(-spd, StatsEnum.SPD);
+    opponent.adjustStat(-spd, StatsEnum.SPD, game);
   },
 });
 
@@ -190,7 +191,7 @@ export const a_solitaryPractice = new Card({
     const character = game.getCharacter(characterIndex);
     messageCache.push(`solitary practice`, TCGThread.Gameroom);
     const endOfTurnDamage = this.calculateEffectValue(this.effects[0]);
-    if (character.adjustStat(-1 * 40, StatsEnum.HP)) {
+    if (character.adjustStat(-1 * 40, StatsEnum.HP, game)) {
       character.timedEffects.push(
         new TimedEffect({
           name: "Impending: Solitary Practice",
@@ -206,8 +207,8 @@ export const a_solitaryPractice = new Card({
               damage: endOfTurnDamage,
               isTimedEffectAttack: true,
             });
-            character.adjustStat(-20, StatsEnum.DEF);
-            character.adjustStat(-20, StatsEnum.SPD);
+            character.adjustStat(-20, StatsEnum.DEF, game);
+            character.adjustStat(-20, StatsEnum.SPD, game);
           },
         })
       );

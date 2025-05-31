@@ -201,7 +201,7 @@ const a_EisenTheEnemysOpen = new Card({
     }
     const def = this.calculateEffectValue(this.effects[0]);
     const damage = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.DEF, game);
 
     const endOfTimedEffectAction = function (
       _game: Game,
@@ -213,7 +213,7 @@ const a_EisenTheEnemysOpen = new Card({
         `${isHimmel ? "Eisen shifted his stance." : `${otherCharacter.name} shifted ${otherCharacter.cosmetic.pronouns.possessive} stance.`}`,
         TCGThread.Gameroom
       );
-      character.adjustStat(-def, StatsEnum.DEF);
+      character.adjustStat(-def, StatsEnum.DEF, game);
     };
 
     CommonCardAction.replaceOrAddNewTimedEffect(
@@ -271,7 +271,7 @@ const a_EisenCoverMyBack = new Card({
     }
     const def = this.calculateEffectValue(this.effects[0]);
     const counterDmg = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.DEF, game);
 
     character.additionalMetadata.himmelEisenReadyToCounter = true;
 
@@ -304,7 +304,7 @@ const a_EisenCoverMyBack = new Card({
         `${isHimmel ? "Eisen shifted his stance." : `${otherCharacter.name} shifted ${otherCharacter.cosmetic.pronouns.possessive} stance.`}`,
         TCGThread.Gameroom
       );
-      character.adjustStat(-def, StatsEnum.DEF);
+      character.adjustStat(-def, StatsEnum.DEF, game);
       character.ability.abilityCounterEffect = undefined;
       character.additionalMetadata.himmelEisenReadyToCounter = false;
     };
@@ -355,7 +355,7 @@ const eisenHoldTheLine = new Card({
       );
     }
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.DEF, game);
 
     const endOfTimedEffectAction = function (
       _game: Game,
@@ -367,7 +367,7 @@ const eisenHoldTheLine = new Card({
         `${isHimmel ? "Eisen" : `${otherCharacter.name}`} backed down.`,
         TCGThread.Gameroom
       );
-      character.adjustStat(-def, StatsEnum.DEF);
+      character.adjustStat(-def, StatsEnum.DEF, game);
     };
 
     CommonCardAction.replaceOrAddNewTimedEffect(
@@ -412,7 +412,7 @@ const heiterEmergency = new Card({
       );
     }
     const heal = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(heal, StatsEnum.HP);
+    character.adjustStat(heal, StatsEnum.HP, game);
 
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
@@ -430,7 +430,7 @@ const heiterEmergency = new Card({
             `${isHimmel ? "Heiter provides" : `${otherCharacter.name} applies`} first-aid!`,
             TCGThread.Gameroom
           );
-          character.adjustStat(heal, StatsEnum.HP);
+          character.adjustStat(heal, StatsEnum.HP, game);
         },
       })
     );
@@ -512,8 +512,8 @@ const heiterTrustYou = new Card({
       );
     }
     const atkSpd = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(atkSpd, StatsEnum.ATK);
-    character.adjustStat(atkSpd, StatsEnum.SPD);
+    character.adjustStat(atkSpd, StatsEnum.ATK, game);
+    character.adjustStat(atkSpd, StatsEnum.SPD, game);
 
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
@@ -530,16 +530,16 @@ const heiterTrustYou = new Card({
             `${isHimmel ? "Heiter needs to take a breather." : "The goddess' aura fades."}`,
             TCGThread.Gameroom
           );
-          character.adjustStat(-atkSpd, StatsEnum.ATK);
-          character.adjustStat(-atkSpd, StatsEnum.SPD);
+          character.adjustStat(-atkSpd, StatsEnum.ATK, game);
+          character.adjustStat(-atkSpd, StatsEnum.SPD, game);
         },
         replacedAction: function (this, _game, _characterIndex) {
           messageCache.push(
             `${isHimmel ? "Heiter halted his support." : "The goddess' aura fades."}`,
             TCGThread.Gameroom
           );
-          character.adjustStat(-atkSpd, StatsEnum.ATK);
-          character.adjustStat(-atkSpd, StatsEnum.SPD);
+          character.adjustStat(-atkSpd, StatsEnum.ATK, game);
+          character.adjustStat(-atkSpd, StatsEnum.SPD, game);
         },
       })
     );
@@ -565,7 +565,7 @@ export const quickBlock = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF);
+    character.adjustStat(def, StatsEnum.TrueDEF, game);
     character.timedEffects.push(
       new TimedEffect({
         name: "Quick Block",
@@ -574,7 +574,7 @@ export const quickBlock = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.TrueDEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -611,9 +611,9 @@ const rally = new Card({
       this.calculateEffectValue(this.effects[0]) +
       activeAllies * this.calculateEffectValue(this.effects[1]);
 
-    character.adjustStat(stat, StatsEnum.ATK);
-    character.adjustStat(stat, StatsEnum.DEF);
-    character.adjustStat(stat, StatsEnum.SPD);
+    character.adjustStat(stat, StatsEnum.ATK, game);
+    character.adjustStat(stat, StatsEnum.DEF, game);
+    character.adjustStat(stat, StatsEnum.SPD, game);
   },
 });
 

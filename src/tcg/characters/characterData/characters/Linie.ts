@@ -54,7 +54,7 @@ const Linie = new CharacterData({
         } else {
           messageCache.push("Linie continued her chain", TCGThread.Gameroom);
         }
-        character.adjustStat(1, StatsEnum.Ability);
+        character.adjustStat(1, StatsEnum.Ability, game);
       } else {
         if (character.stats.stats.Ability > 0) {
           messageCache.push("Linie ended her chain", TCGThread.Gameroom);

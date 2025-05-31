@@ -16,11 +16,11 @@ const a_peck = new Card({
   effects: [5],
   cardAction: function (
     this: Card,
-    { name, self, sendToGameroom, basicAttack }
+    { game, name, self, sendToGameroom, basicAttack }
   ) {
     sendToGameroom(`${name} pecked the opposition!`);
 
-    self.adjustStat(-2, StatsEnum.SPD);
+    self.adjustStat(-2, StatsEnum.SPD, game);
     self.discardCard(Rolls.rollDAny(5));
     self.drawCard();
     basicAttack(0);
@@ -38,12 +38,20 @@ const a_ironFeather = new Card({
   },
   cardAction: function (
     this: Card,
-    { reflexive, name, sendToGameroom, basicAttack, flatSelfStat, selfStat }
+    {
+      game,
+      reflexive,
+      name,
+      sendToGameroom,
+      basicAttack,
+      flatSelfStat,
+      selfStat,
+    }
   ) {
     sendToGameroom(`${name} sharpened ${reflexive} feathers!`);
 
-    flatSelfStat(-3, StatsEnum.SPD);
-    selfStat(0, StatsEnum.DEF);
+    flatSelfStat(-3, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.DEF, game);
 
     basicAttack(1);
   },
@@ -60,12 +68,12 @@ const hide = new Card({
   },
   cardAction: function (
     this: Card,
-    { name, reflexive, selfStat, flatSelfStat, sendToGameroom }
+    { game, name, reflexive, selfStat, flatSelfStat, sendToGameroom }
   ) {
     sendToGameroom(`${name} hid ${reflexive} and flew to safety!`);
 
-    flatSelfStat(-3, StatsEnum.SPD);
-    selfStat(0, StatsEnum.DEF);
+    flatSelfStat(-3, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.DEF, game);
   },
 });
 
@@ -80,13 +88,13 @@ const roost = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, selfStat, flatSelfStat }
+    { game, self, name, sendToGameroom, selfStat, flatSelfStat }
   ) {
     sendToGameroom(`${name} landed on the ground.`);
 
-    flatSelfStat(-5, StatsEnum.SPD);
-    flatSelfStat(-3, StatsEnum.DEF);
-    selfStat(0, StatsEnum.HP);
+    flatSelfStat(-5, StatsEnum.SPD, game);
+    flatSelfStat(-3, StatsEnum.DEF, game);
+    selfStat(0, StatsEnum.HP, game);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -96,7 +104,7 @@ const roost = new Card({
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(`${name} opened its wings.`, TCGThread.Gameroom);
-          self.adjustStat(3, StatsEnum.DEF);
+          self.adjustStat(3, StatsEnum.DEF, game);
         },
       })
     );
@@ -109,7 +117,7 @@ const roost = new Card({
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
           messageCache.push(`${name} took flight again!`, TCGThread.Gameroom);
-          self.adjustStat(5, StatsEnum.SPD);
+          self.adjustStat(5, StatsEnum.SPD, game);
         },
       })
     );
@@ -126,12 +134,12 @@ export const deflect = new Card({
   priority: 2,
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, calcEffect }
+    { game, self, name, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(`${name} prepares to deflect an attack!`);
 
     const def = calcEffect(0);
-    self.adjustStat(def, StatsEnum.TrueDEF);
+    self.adjustStat(def, StatsEnum.TrueDEF, game);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -141,7 +149,7 @@ export const deflect = new Card({
         priority: -1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          self.adjustStat(-def, StatsEnum.TrueDEF);
+          self.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -160,12 +168,12 @@ const flyAway = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, calcEffect }
+    { game, self, name, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(`${name} flew away!`);
 
     const spd = calcEffect(0);
-    self.adjustStat(spd, StatsEnum.SPD);
+    self.adjustStat(spd, StatsEnum.SPD, game);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -175,7 +183,7 @@ const flyAway = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          self.adjustStat(-spd, StatsEnum.SPD);
+          self.adjustStat(-spd, StatsEnum.SPD, game);
         },
       })
     );
@@ -195,11 +203,11 @@ export const a_geisel = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, calcEffect }
+    { game, self, name, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(`${name} called its fellow friends the Geisel for help!`);
 
-    self.adjustStat(-20, StatsEnum.SPD);
+    self.adjustStat(-20, StatsEnum.SPD, game);
     const damage = calcEffect(0);
 
     self.timedEffects.push(

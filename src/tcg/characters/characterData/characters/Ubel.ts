@@ -57,8 +57,8 @@ function missAttack(
       messageCache.push("Yet Übel keeps rushing forward!", TCGThread.Gameroom);
 
       const atkSpdBuff = card.calculateEffectValue(card.effects[1]);
-      character.adjustStat(atkSpdBuff, StatsEnum.ATK);
-      character.adjustStat(atkSpdBuff, StatsEnum.SPD);
+      character.adjustStat(atkSpdBuff, StatsEnum.ATK, game);
+      character.adjustStat(atkSpdBuff, StatsEnum.SPD, game);
     }
   }
 }

@@ -24,15 +24,18 @@ const a_jab = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF
+      StatsEnum.DEF,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.ATK
+      StatsEnum.ATK,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD
+      StatsEnum.SPD,
+      game
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[3]),
@@ -58,11 +61,13 @@ const a_hook = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.SPD
+      StatsEnum.SPD,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.ATK
+      StatsEnum.ATK,
+      game
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
@@ -93,11 +98,13 @@ const a_uppercut = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.ATK
+      StatsEnum.ATK,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.SPD
+      StatsEnum.SPD,
+      game
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
@@ -124,10 +131,10 @@ export const bareHandedBlock = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.DEF, game);
 
     const tempDef = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(tempDef, StatsEnum.TrueDEF);
+    character.adjustStat(tempDef, StatsEnum.TrueDEF, game);
 
     character.timedEffects.push(
       new TimedEffect({
@@ -137,7 +144,7 @@ export const bareHandedBlock = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-tempDef, StatsEnum.TrueDEF);
+          character.adjustStat(-tempDef, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -172,10 +179,10 @@ export const a_waldgoseBase = new Card({
         ...a_jab,
         empowerLevel: this.empowerLevel,
       });
-      flatSelfStat(-jab.hpCost, StatsEnum.HP);
+      flatSelfStat(-jab.hpCost, StatsEnum.HP, game);
       jab.cardAction(context);
     } else {
-      flatSelfStat(-waldgoseHpCost, StatsEnum.HP);
+      flatSelfStat(-waldgoseHpCost, StatsEnum.HP, game);
       messageCache.push(
         `${character.name} whipped up a tornado!`,
         TCGThread.Gameroom
@@ -255,10 +262,10 @@ export const a_daosdorgBase = new Card({
         ...a_hook,
         empowerLevel: this.empowerLevel,
       });
-      flatSelfStat(-hook.hpCost, StatsEnum.HP);
+      flatSelfStat(-hook.hpCost, StatsEnum.HP, game);
       hook.cardAction(context);
     } else {
-      flatSelfStat(-daosdorgHpCost, StatsEnum.HP);
+      flatSelfStat(-daosdorgHpCost, StatsEnum.HP, game);
       messageCache.push(
         `${character.name} set the sky aflame.`,
         TCGThread.Gameroom
@@ -339,6 +346,7 @@ export const a_catastraviaBase = new Card({
   cardAction: function (this: Card, context) {
     const {
       self,
+      game,
       name,
       sendToGameroom,
       selfStats,
@@ -356,10 +364,10 @@ export const a_catastraviaBase = new Card({
         empowerLevel: this.empowerLevel,
       });
 
-      flatSelfStat(-uppercut.hpCost, StatsEnum.HP);
+      flatSelfStat(-uppercut.hpCost, StatsEnum.HP, game);
       uppercut.cardAction(context);
     } else {
-      flatSelfStat(-catastraviaHpCost, StatsEnum.HP);
+      flatSelfStat(-catastraviaHpCost, StatsEnum.HP, game);
       sendToGameroom(`${name} covered the sky in stars.`);
       basicAttack(0);
 
@@ -437,7 +445,7 @@ const elementaryDefensiveMagicBase = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF);
+    character.adjustStat(def, StatsEnum.TrueDEF, game);
     character.timedEffects.push(
       new TimedEffect({
         name: "Elementary Defensive Magic",
@@ -446,7 +454,7 @@ const elementaryDefensiveMagicBase = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.TrueDEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -531,15 +539,15 @@ export const thisIsNoPlaceToGiveUp = new Card({
       `${character.name} resolves himself.`,
       TCGThread.Gameroom
     );
-    character.adjustStat(healingFirst, StatsEnum.HP);
+    character.adjustStat(healingFirst, StatsEnum.HP, game);
 
     if (healAdditional) {
       messageCache.push(
         `${character.name} cannot give up!`,
         TCGThread.Gameroom
       );
-      character.adjustStat(healingSecond, StatsEnum.HP);
-      character.adjustStat(1, StatsEnum.Ability);
+      character.adjustStat(healingSecond, StatsEnum.HP, game);
+      character.adjustStat(1, StatsEnum.Ability, game);
     }
   },
 });

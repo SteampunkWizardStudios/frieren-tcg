@@ -38,7 +38,11 @@ const Stark = new CharacterData({
     ) {
       const character = game.getCharacter(characterIndex);
       if (card.cardMetadata.resolve) {
-        character.adjustStat(card.cardMetadata.resolve, StatsEnum.Ability);
+        character.adjustStat(
+          card.cardMetadata.resolve,
+          StatsEnum.Ability,
+          game
+        );
       }
     },
     abilityAttackEffect: function (game, characterIndex) {

@@ -41,7 +41,7 @@ import { CharacterName } from "../characters/metadata/CharacterName";
 //   ) {
 //     sendToGameroom(`${name} conjured a field of flowers!`);
 
-//     selfStat(0, StatsEnum.HP);
+//     selfStat(0, StatsEnum.HP, game);
 //     const endOfTurnHealing = calcEffect(1);
 
 //     self.timedEffects.push(
@@ -118,8 +118,8 @@ import { CharacterName } from "../characters/metadata/CharacterName";
 //     { name, sendToGameroom, selfStat, opponentStat }
 //   ) {
 //     sendToGameroom(`${name} analyzed the opponent's defense!`);
-//     selfStat(0, StatsEnum.ATK);
-//     selfStat(1, StatsEnum.SPD);
+//     selfStat(0, StatsEnum.ATK, game);
+//     selfStat(1, StatsEnum.SPD, game);
 //     opponentStat(2, StatsEnum.DEF, -1);
 //   },
 // });
@@ -136,9 +136,9 @@ import { CharacterName } from "../characters/metadata/CharacterName";
 //   effects: [2, 2, 1],
 //   cardAction: function (this: Card, { name, sendToGameroom, selfStat }) {
 //     sendToGameroom(`${name} analyzed ancient demon's magic!`);
-//     selfStat(0, StatsEnum.ATK);
-//     selfStat(1, StatsEnum.SPD);
-//     selfStat(2, StatsEnum.DEF);
+//     selfStat(0, StatsEnum.ATK, game);
+//     selfStat(1, StatsEnum.SPD, game);
+//     selfStat(2, StatsEnum.DEF, game);
 //   },
 // });
 
@@ -161,7 +161,7 @@ import { CharacterName } from "../characters/metadata/CharacterName";
 //     sendToGameroom(`${name} cast ordinary defensive magic!`);
 
 //     const def = calcEffect(0);
-//     self.adjustStat(def, StatsEnum.TrueDEF);
+//     self.adjustStat(def, StatsEnum.TrueDEF, game);
 
 //     self.timedEffects.push(
 //       new TimedEffect({
@@ -171,7 +171,7 @@ import { CharacterName } from "../characters/metadata/CharacterName";
 //         turnDuration: 1,
 //         metadata: { removableBySorganeil: false },
 //         endOfTimedEffectAction: (_game, _characterIndex) => {
-//           self.adjustStat(-def, StatsEnum.TrueDEF);
+//           self.adjustStat(-def, StatsEnum.TrueDEF, game);
 //         },
 //       })
 //     );
@@ -204,8 +204,8 @@ import { CharacterName } from "../characters/metadata/CharacterName";
 //     sendToGameroom("The Height of Magic is on display.");
 //     basicAttack(0);
 
-//     self.adjustStat(-20, StatsEnum.DEF);
-//     self.adjustStat(-20, StatsEnum.SPD);
+//     self.adjustStat(-20, StatsEnum.DEF, game);
+//     self.adjustStat(-20, StatsEnum.SPD, game);
 //     self.setStat(1, StatsEnum.HP);
 //   },
 // });
@@ -243,10 +243,10 @@ export const incantationFieldOfFlowers = new Card({
   effects: [5, 3],
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, selfStat, calcEffect, flatSelfStat }
+    { game, self, name, sendToGameroom, selfStat, calcEffect, flatSelfStat }
   ) {
     sendToGameroom(`${name} conjured a field of flowers.`);
-    selfStat(0, StatsEnum.HP);
+    selfStat(0, StatsEnum.HP, game);
 
     const endOfTurnHealing = calcEffect(1);
 
@@ -258,7 +258,7 @@ export const incantationFieldOfFlowers = new Card({
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           sendToGameroom(`The Field of Flowers soothe ${name}.`);
-          flatSelfStat(endOfTurnHealing, StatsEnum.HP);
+          flatSelfStat(endOfTurnHealing, StatsEnum.HP, game);
 
           self.additionalMetadata.flammeSigil =
             (self.additionalMetadata.flammeSigil ?? 0) + 1;
@@ -283,12 +283,12 @@ const incantationSeductionTechnique = new Card({
   effects: [3, 2, 1],
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, selfStat, opponentStat }
+    { game, self, name, sendToGameroom, selfStat, opponentStat }
   ) {
     sendToGameroom(`${name} showcases her seduction technique.`);
-    selfStat(0, StatsEnum.HP);
-    opponentStat(1, StatsEnum.ATK, -1);
-    opponentStat(2, StatsEnum.SPD, -1);
+    selfStat(0, StatsEnum.HP, game);
+    opponentStat(1, StatsEnum.ATK, game, -1);
+    opponentStat(2, StatsEnum.SPD, game, -1);
 
     self.additionalMetadata.flammeSigil =
       (self.additionalMetadata.flammeSigil ?? 0) + 1;
@@ -317,7 +317,9 @@ const theoryOfIrreversibility = new Card({
       );
     } else {
       if (!game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility]) {
-        sendToGameroom(`${name} discovered the Theory of Irreversibility.`);
+        sendToGameroom(
+          `${name} discovered the Theory of Irreversibility. All stat changes for both players are halved. HP can no longer be recovered.`
+        );
         game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility] =
           true;
       } else {
@@ -348,7 +350,9 @@ const theoryOfBalance = new Card({
       );
     } else {
       if (!game.additionalMetadata.flammeTheory[FlammeTheory.Balance]) {
-        sendToGameroom(`${name} discovered the Theory of Balance.`);
+        sendToGameroom(
+          `${name} discovered the Theory of Balance. The Empower level for all card is now equal to the Turn Count.`
+        );
         game.additionalMetadata.flammeTheory[FlammeTheory.Balance] = true;
       } else {
         sendToGameroom(
@@ -378,7 +382,9 @@ const theoryOfPrescience = new Card({
       );
     } else {
       if (!game.additionalMetadata.flammeTheory[FlammeTheory.Prescience]) {
-        sendToGameroom(`${name} discovered the Theory of Prescience.`);
+        sendToGameroom(
+          `${name} discovered the Theory of Prescience. The roll of the first 4 dices for both players for which cards are active for any given turn will always be 0, 1, 2, 3.`
+        );
         game.additionalMetadata.flammeTheory[FlammeTheory.Prescience] = true;
       } else {
         sendToGameroom(
@@ -401,15 +407,29 @@ const theoryOfSoul = new Card({
     `This card can only be used by Flamme. Both players swap their own active and discard piles. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
-  cardAction: function (this: Card, { game, name, personal, sendToGameroom }) {
+  cardAction: function (
+    this: Card,
+    { game, name, personal, sendToGameroom, self, opponent }
+  ) {
     if (name !== CharacterName.Flamme) {
       sendToGameroom(
         `${name} attempted to discover the Theory of Soul. But ${personal} failed!`
       );
     } else {
       if (!game.additionalMetadata.flammeTheory[FlammeTheory.Soul]) {
-        sendToGameroom(`${name} discovered the Theory of Soul.`);
+        sendToGameroom(
+          `${name} discovered the Theory of Soul. Both players swap their own active and discard piles.`
+        );
         game.additionalMetadata.flammeTheory[FlammeTheory.Soul] = true;
+
+        [self.deck.activePile, self.deck.discardPile] = [
+          self.deck.discardPile,
+          self.deck.activePile,
+        ];
+        [opponent.deck.activePile, opponent.deck.discardPile] = [
+          opponent.deck.discardPile,
+          opponent.deck.activePile,
+        ];
       } else {
         sendToGameroom(
           `${name} attempted to discover the Theory of Soul. But seems like it's already been discovered by someone else...`

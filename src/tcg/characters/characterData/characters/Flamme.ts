@@ -19,13 +19,13 @@ export const a_pinnacleOfHumanitysMagic = new Card({
   effects: [100],
   cardAction: function (
     this: Card,
-    { sendToGameroom, selfStat, flatSelfStat, basicAttack }
+    { game, sendToGameroom, selfStat, flatSelfStat, basicAttack }
   ) {
     sendToGameroom(`The Pinnacle of Humanity's Magic is on display.`);
-    flatSelfStat(1, StatsEnum.Ability);
-    selfStat(0, StatsEnum.ATK);
-    selfStat(0, StatsEnum.DEF);
-    selfStat(0, StatsEnum.SPD);
+    flatSelfStat(1, StatsEnum.Ability, game);
+    selfStat(0, StatsEnum.ATK, game);
+    selfStat(0, StatsEnum.DEF, game);
+    selfStat(0, StatsEnum.SPD, game);
     basicAttack(0);
   },
 });
@@ -67,7 +67,7 @@ const Flamme = new CharacterData({
     ) {
       const character = game.getCharacter(characterIndex);
       if (card.cardMetadata.theory) {
-        character.adjustStat(1, StatsEnum.Ability);
+        character.adjustStat(1, StatsEnum.Ability, game);
       }
     },
     abilityEndOfTurnEffect: function (

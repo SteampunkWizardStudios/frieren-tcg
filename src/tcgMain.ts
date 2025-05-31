@@ -188,6 +188,12 @@ export const tcgMain = async (
         characterIndex,
         messageCache
       );
+
+      if (game.additionalMetadata.flammeTheory.Balance) {
+        character.hand.forEach((card) => {
+          card.empowerLevel = game.turnCount;
+        });
+      }
     });
     printGameState(game, messageCache);
 
@@ -415,7 +421,7 @@ export const tcgMain = async (
 
           // use hpCost
           if (card.hpCost && card.hpCost !== 0) {
-            character.adjustStat(-card.hpCost, StatsEnum.HP);
+            character.adjustStat(-card.hpCost, StatsEnum.HP, game);
           }
 
           if (character.ability.abilityOwnCardEffectWrapper) {

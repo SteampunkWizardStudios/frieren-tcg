@@ -57,7 +57,7 @@ const Sein = new CharacterData({
         TCGThread.Gameroom
       );
       const character = game.characters[characterIndex];
-      character.adjustStat(character.stats.stats.Ability, StatsEnum.HP);
+      character.adjustStat(character.stats.stats.Ability, StatsEnum.HP, game);
     },
   },
   additionalMetadata: {

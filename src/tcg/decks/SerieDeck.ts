@@ -19,7 +19,7 @@ const useRandomCard = function (props: {
   context: GameMessageContext;
 }): Card {
   const { cardPool, empowerLevel, context } = props;
-  const { name, sendToGameroom, flatSelfStat } = context;
+  const { game, name, sendToGameroom, flatSelfStat } = context;
 
   sendToGameroom(`${name} found an interesting magic.`);
 
@@ -31,7 +31,7 @@ const useRandomCard = function (props: {
 
   sendToGameroom(`${name} used **${newCard.getTitle()}**.`);
   if (newCard.hpCost && newCard.hpCost !== 0) {
-    flatSelfStat(-newCard.hpCost, StatsEnum.HP);
+    flatSelfStat(-newCard.hpCost, StatsEnum.HP, game);
   }
 
   return newCard;
@@ -150,13 +150,13 @@ export const mock = new Card({
   effects: [3, 2, 1],
   cardAction: function (
     this: Card,
-    { name, sendToGameroom, selfStat, opponentStat }
+    { game, name, sendToGameroom, selfStat, opponentStat }
   ) {
     sendToGameroom(`${name} mocked the opponent.`);
 
-    selfStat(0, StatsEnum.HP);
-    selfStat(1, StatsEnum.SPD);
-    opponentStat(2, StatsEnum.DEF, -1);
+    selfStat(0, StatsEnum.HP, game);
+    selfStat(1, StatsEnum.SPD, game);
+    opponentStat(2, StatsEnum.DEF, game, -1);
   },
 });
 
@@ -174,12 +174,12 @@ export const basicDefensiveMagic = new Card({
   priority: 2,
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, calcEffect }
+    { game, self, name, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(`${name} cast a basic defensive magic!`);
 
     const def = calcEffect(0);
-    self.adjustStat(def, StatsEnum.TrueDEF);
+    self.adjustStat(def, StatsEnum.TrueDEF, game);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -189,7 +189,7 @@ export const basicDefensiveMagic = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-def, StatsEnum.TrueDEF);
+          self.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -210,7 +210,16 @@ export const unbreakableBarrier = new Card({
   hpCost: 5,
   cardAction: function (
     this: Card,
-    { self, name, opponent, sendToGameroom, selfStat, opponentStat, calcEffect }
+    {
+      game,
+      self,
+      name,
+      opponent,
+      sendToGameroom,
+      selfStat,
+      opponentStat,
+      calcEffect,
+    }
   ) {
     sendToGameroom(`${name} deployed an unbreakable barrier.`);
 
@@ -218,9 +227,9 @@ export const unbreakableBarrier = new Card({
     const defBuff = calcEffect(1);
     const spdDebuff = calcEffect(2);
 
-    selfStat(0, StatsEnum.ATK);
-    selfStat(1, StatsEnum.DEF);
-    opponentStat(2, StatsEnum.SPD, -1);
+    selfStat(0, StatsEnum.ATK, game);
+    selfStat(1, StatsEnum.DEF, game);
+    opponentStat(2, StatsEnum.SPD, game, -1);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -231,13 +240,13 @@ export const unbreakableBarrier = new Card({
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex) => {
           sendToGameroom("The unbreakable barrier looms...");
-          self.adjustStat(-2, StatsEnum.HP);
+          self.adjustStat(-2, StatsEnum.HP, game);
         },
         endOfTimedEffectAction: (_game, _characterIndex) => {
           sendToGameroom("The barrier dissipated");
-          self.adjustStat(-1 * atkBuff, StatsEnum.ATK);
-          self.adjustStat(-1 * defBuff, StatsEnum.DEF);
-          opponent.adjustStat(spdDebuff, StatsEnum.SPD);
+          self.adjustStat(-1 * atkBuff, StatsEnum.ATK, game);
+          self.adjustStat(-1 * defBuff, StatsEnum.DEF, game);
+          opponent.adjustStat(spdDebuff, StatsEnum.SPD, game);
         },
       })
     );

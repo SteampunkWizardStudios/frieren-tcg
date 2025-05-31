@@ -90,7 +90,7 @@ const Sense = new CharacterData({
           `${character.name} continued to observe peacefully.`,
           TCGThread.Gameroom
         );
-        character.adjustStat(1, StatsEnum.Ability);
+        character.adjustStat(1, StatsEnum.Ability, game);
 
         if (character.stats.stats.Ability === PROCTOR_STACK_COUNT) {
           messageCache.push(

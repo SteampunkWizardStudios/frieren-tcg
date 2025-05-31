@@ -39,13 +39,13 @@ const offensiveStance = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, selfStat, possessive }
+    { game, self, name, sendToGameroom, selfStat, possessive }
   ) {
     sendToGameroom(`${name} took an offensive stance!`);
 
-    selfStat(0, StatsEnum.ATK);
-    self.adjustStat(-2, StatsEnum.DEF);
-    selfStat(1, StatsEnum.SPD);
+    selfStat(0, StatsEnum.ATK, game);
+    self.adjustStat(-2, StatsEnum.DEF, game);
+    selfStat(1, StatsEnum.SPD, game);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -55,7 +55,7 @@ const offensiveStance = new Card({
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           sendToGameroom(`${name} shifts ${possessive} stance.`);
-          self.adjustStat(2, StatsEnum.DEF);
+          self.adjustStat(2, StatsEnum.DEF, game);
         },
       })
     );
@@ -71,13 +71,13 @@ const defensiveStance = new Card({
   effects: [2, 2],
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, selfStat, possessive }
+    { game, self, name, sendToGameroom, selfStat, possessive }
   ) {
     sendToGameroom(`${name} took a defensive stance!`);
 
-    self.adjustStat(-2, StatsEnum.ATK);
-    selfStat(0, StatsEnum.DEF);
-    selfStat(1, StatsEnum.SPD);
+    self.adjustStat(-2, StatsEnum.ATK, game);
+    selfStat(0, StatsEnum.DEF, game);
+    selfStat(1, StatsEnum.SPD, game);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -87,7 +87,7 @@ const defensiveStance = new Card({
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           sendToGameroom(`${name} shifts ${possessive} stance.`);
-          self.adjustStat(2, StatsEnum.ATK);
+          self.adjustStat(2, StatsEnum.ATK, game);
         },
       })
     );
@@ -116,11 +116,12 @@ const jumboBerrySpecialBreak = new Card({
     );
 
     const defChange = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(-2, StatsEnum.SPD);
-    character.adjustStat(defChange, StatsEnum.DEF);
+    character.adjustStat(-2, StatsEnum.SPD, game);
+    character.adjustStat(defChange, StatsEnum.DEF, game);
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.HP
+      StatsEnum.HP,
+      game
     );
 
     character.timedEffects.push(
@@ -134,12 +135,17 @@ const jumboBerrySpecialBreak = new Card({
             `The break is over. ${character.name} recomposes ${character.cosmetic.pronouns.reflexive}.`,
             TCGThread.Gameroom
           );
-          game.characters[characterIndex].adjustStat(2, StatsEnum.SPD);
+          game.characters[characterIndex].adjustStat(2, StatsEnum.SPD, game);
           game.characters[characterIndex].adjustStat(
             -1 * defChange,
-            StatsEnum.DEF
+            StatsEnum.DEF,
+            game
           );
-          game.characters[characterIndex].adjustStat(1, StatsEnum.Ability);
+          game.characters[characterIndex].adjustStat(
+            1,
+            StatsEnum.Ability,
+            game
+          );
         },
       })
     );
@@ -169,7 +175,7 @@ export const block = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF);
+    character.adjustStat(def, StatsEnum.TrueDEF, game);
     character.timedEffects.push(
       new TimedEffect({
         name: "Block",
@@ -178,7 +184,7 @@ export const block = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.TrueDEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -195,9 +201,9 @@ const concentration = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360979639362781304/IMG_3087.gif?ex=68084b4f&is=6806f9cf&hm=98d20b75a63aca3116965b33fac4adac213feaefa4895cf0751976527dd483a0&",
   },
-  cardAction: function (this: Card, { name, sendToGameroom, selfStat }) {
+  cardAction: function (this: Card, { game, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} concentrates on the battle.`);
-    selfStat(0, StatsEnum.SPD);
+    selfStat(0, StatsEnum.SPD, game);
   },
 });
 
@@ -240,8 +246,8 @@ const fearBroughtMeThisFar = new Card({
     );
 
     const atkDef = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(atkDef, StatsEnum.ATK);
-    character.adjustStat(atkDef, StatsEnum.DEF);
+    character.adjustStat(atkDef, StatsEnum.ATK, game);
+    character.adjustStat(atkDef, StatsEnum.DEF, game);
   },
 });
 
@@ -298,7 +304,7 @@ export const a_lastStand = new Card({
     const damage = this.calculateEffectValue(this.effects[0]);
 
     character.additionalMetadata.minimumPossibleHp = 1;
-    character.adjustStat(-5, StatsEnum.DEF);
+    character.adjustStat(-5, StatsEnum.DEF, game);
 
     game.characters[characterIndex].timedEffects.push(
       new TimedEffect({
@@ -313,9 +319,13 @@ export const a_lastStand = new Card({
             `[⠀](https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif)`,
             TCGThread.Gameroom
           );
-          game.characters[characterIndex].adjustStat(-2, StatsEnum.Ability);
-          game.characters[characterIndex].adjustStat(-20, StatsEnum.HP);
-          game.characters[characterIndex].adjustStat(5, StatsEnum.DEF);
+          game.characters[characterIndex].adjustStat(
+            -2,
+            StatsEnum.Ability,
+            game
+          );
+          game.characters[characterIndex].adjustStat(-20, StatsEnum.HP, game);
+          game.characters[characterIndex].adjustStat(5, StatsEnum.DEF, game);
           messageCache.push(
             `${character.name} performs Lightning Strike!`,
             TCGThread.Gameroom

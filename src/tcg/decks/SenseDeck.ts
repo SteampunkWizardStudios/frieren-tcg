@@ -14,6 +14,7 @@ export const a_hairWhip = new Card({
   cardAction: function (
     this: Card,
     {
+      game,
       name,
       selfStats,
       possessive,
@@ -25,7 +26,7 @@ export const a_hairWhip = new Card({
   ) {
     sendToGameroom(`${name} whipped ${possessive} hair!`);
 
-    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.DEF, game);
 
     const damage = calcEffect(1) + selfStats.DEF / 4;
     flatAttack(damage);
@@ -41,13 +42,13 @@ export const sharpen = new Card({
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
-    { name, possessive, sendToGameroom, selfStat }
+    { game, name, possessive, sendToGameroom, selfStat }
   ) {
     sendToGameroom(`${name} sharpened ${possessive} hair drills!`);
 
-    selfStat(0, StatsEnum.DEF);
-    selfStat(1, StatsEnum.ATK);
-    selfStat(2, StatsEnum.SPD);
+    selfStat(0, StatsEnum.DEF, game);
+    selfStat(1, StatsEnum.ATK, game);
+    selfStat(2, StatsEnum.SPD, game);
   },
 });
 
@@ -60,8 +61,8 @@ export const sharpen = new Card({
 //   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
 //     sendToGameroom(`${name} rests up.`);
 
-//     self.adjustStat(-2, StatsEnum.DEF);
-//     selfStat(0, StatsEnum.HP);
+//     self.adjustStat(-2, StatsEnum.DEF, game);
+//     selfStat(0, StatsEnum.HP, game);
 
 //     self.timedEffects.push(
 //       new TimedEffect({
@@ -88,11 +89,11 @@ export const a_pierce = new Card({
   emoji: CardEmoji.PUNCH,
   cardAction: function (
     this: Card,
-    { name, selfStats, sendToGameroom, selfStat, flatAttack, calcEffect }
+    { game, name, selfStats, sendToGameroom, selfStat, flatAttack, calcEffect }
   ) {
     sendToGameroom(`${name} pierced the opponent!`);
 
-    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.DEF, game);
 
     const damage = calcEffect(1) + selfStats.DEF / 4;
     flatAttack(damage, 0.25);
@@ -113,14 +114,23 @@ export const hairBarrier = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, name, possessive, reflexive, selfStat, sendToGameroom, calcEffect }
+    {
+      game,
+      self,
+      name,
+      possessive,
+      reflexive,
+      selfStat,
+      sendToGameroom,
+      calcEffect,
+    }
   ) {
     sendToGameroom(
       `${name} surrounded ${reflexive} in ${possessive} hair barrier!`
     );
 
     const def = calcEffect(0);
-    selfStat(0, StatsEnum.TrueDEF);
+    selfStat(0, StatsEnum.TrueDEF, game);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -130,7 +140,7 @@ export const hairBarrier = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-1 * def, StatsEnum.TrueDEF);
+          self.adjustStat(-1 * def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -150,20 +160,20 @@ export const teaTime = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, opponent, name, selfStat, sendToGameroom, calcEffect }
+    { game, self, opponent, name, selfStat, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(
       `${name} and ${opponent.name} enjoyed a refreshing cup of tea. Both characters' hands are empowered!`
     );
 
-    selfStat(0, StatsEnum.SPD);
+    selfStat(0, StatsEnum.SPD, game);
 
     self.empowerHand();
     opponent.empowerHand();
 
     const hpHeal = calcEffect(1);
-    self.adjustStat(hpHeal, StatsEnum.HP);
-    opponent.adjustStat(hpHeal, StatsEnum.HP);
+    self.adjustStat(hpHeal, StatsEnum.HP, game);
+    opponent.adjustStat(hpHeal, StatsEnum.HP, game);
   },
 });
 
@@ -180,13 +190,13 @@ export const teaParty = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, opponent, name, selfStat, sendToGameroom, calcEffect }
+    { game, self, opponent, name, selfStat, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(
       `${name} and ${opponent.name} held a tea party! Both characters' hands are greatly empowered!`
     );
 
-    selfStat(0, StatsEnum.SPD);
+    selfStat(0, StatsEnum.SPD, game);
 
     for (let i = 0; i < 2; i++) {
       self.empowerHand();
@@ -194,8 +204,8 @@ export const teaParty = new Card({
     }
 
     const hpHeal = calcEffect(1);
-    self.adjustStat(hpHeal, StatsEnum.HP);
-    opponent.adjustStat(hpHeal, StatsEnum.HP);
+    self.adjustStat(hpHeal, StatsEnum.HP, game);
+    opponent.adjustStat(hpHeal, StatsEnum.HP, game);
   },
 });
 
