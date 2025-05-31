@@ -253,7 +253,6 @@ const thousandYearSanctuary = new Card({
       sendToGameroom,
       calcEffect,
       flatOpponentStat,
-      flatSelfStat,
     }
   ) {
     sendToGameroom(`${name} raises a towering sanctuary.`);
@@ -315,7 +314,7 @@ const treeOfLife = new Card({
   effects: [10],
   cardAction: function (
     this: Card,
-    { self, game, selfIndex, name, sendToGameroom, selfStat, flatSelfStat }
+    { self, game, selfIndex, name, sendToGameroom, selfStat }
   ) {
     sendToGameroom(`${name} plants a sapling for someone 1000 years from now.`);
     selfStat(0, StatsEnum.HP, game);

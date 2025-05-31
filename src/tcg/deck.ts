@@ -28,9 +28,7 @@ export default class Deck {
   }
 
   discardCard(card: Card) {
-    if (!card.cardMetadata.removeOnPlay) {
-      this.discardPile.push(card);
-    }
+    this.discardPile.push(card);
   }
 
   removeCard(card: Card): boolean {

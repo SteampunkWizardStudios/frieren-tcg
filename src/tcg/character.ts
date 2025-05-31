@@ -81,10 +81,24 @@ export default class Character {
     return drawnCard;
   }
 
-  discardCard(handIndex: number): Card {
+  // discard a card and empower all other cards in hand
+  playCard(handIndex: number): Card {
+    const discardedCard = this.discardCard(handIndex, true);
+
+    // empower remaining cards
+    this.empowerHand();
+
+    // draw a new card
+    this.drawCard();
+    return discardedCard;
+  }
+
+  discardCard(handIndex: number, playedCard?: boolean): Card {
     if (handIndex < this.hand.length) {
       const discardedCard = this.hand.splice(handIndex, 1)[0];
-      this.deck.discardCard(discardedCard);
+      if (!playedCard || !discardedCard.cardMetadata.removeOnPlay) {
+        this.deck.discardCard(discardedCard);
+      };
 
       const pushDiscardMessage = (message: string) => {
         this.messageCache.push(message, this.characterThread);
@@ -93,7 +107,7 @@ export default class Character {
             `${this.name}: ${message}`,
             TCGThread.Gameroom
           );
-        }
+        };
       };
 
       const discardMessage = `Discarded ${discardedCard.title} + ${discardedCard.empowerLevel}`;
@@ -108,18 +122,6 @@ export default class Character {
   discardRandomCard(): Card {
     const randomIndex = Math.floor(Math.random() * this.hand.length);
     return this.discardCard(randomIndex);
-  }
-
-  // discard a card and empower all other cards in hand
-  playCard(handIndex: number): Card {
-    const discardedCard = this.discardCard(handIndex);
-
-    // empower remaining cards
-    this.empowerHand();
-
-    // draw a new card
-    this.drawCard();
-    return discardedCard;
   }
 
   getUsableCardsForRound(
