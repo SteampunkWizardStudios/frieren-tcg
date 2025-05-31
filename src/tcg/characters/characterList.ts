@@ -13,7 +13,8 @@ import Serie from "@characters/Serie";
 import Stark from "@characters/Stark";
 import Stille from "@characters/Stille";
 import Ubel from "@characters/Ubel";
-import Wirbel from "./characterData/characters/Wirbel";
+import Wirbel from "@characters/Wirbel";
+import Flamme from "@characters/Flamme";
 
 export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
   [CharacterName.Denken]: Denken,
@@ -30,6 +31,7 @@ export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
   [CharacterName.Stille]: Stille,
   [CharacterName.Ubel]: Ubel,
   [CharacterName.Wirbel]: Wirbel,
+  [CharacterName.Flamme]: Flamme,
 } as const;
 
 export const CHARACTER_LIST: CharacterData[] = Object.values(CHARACTER_MAP);

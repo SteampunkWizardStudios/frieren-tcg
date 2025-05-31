@@ -40,10 +40,12 @@ export const createCharacterDropdown = async (
       name: "Available Characters",
       value: [
         ...sortedCharacters.favouritedCharacter.map(
-          (char: CharacterData) => `1. ⭐ ${char.cosmetic.emoji} ${char.name}`
+          (char: CharacterData) =>
+            `1. ⭐ ${char.cosmetic.emoji} ${char.characterName}`
         ),
         ...sortedCharacters.nonFavouritedCharacter.map(
-          (char: CharacterData) => `1. ${char.cosmetic.emoji} ${char.name}`
+          (char: CharacterData) =>
+            `1. ${char.cosmetic.emoji} ${char.characterName}`
         ),
         "?. 🎲 Random Character",
         "?. ✨ Random Favourite Character",

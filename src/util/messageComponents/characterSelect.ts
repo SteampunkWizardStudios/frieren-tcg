@@ -23,8 +23,8 @@ export default function characterSelect({
     .setPlaceholder("Select a Character")
     .addOptions(
       characterList.map((char, i) => ({
-        label: char.name,
-        value: nameValues ? char.name : `${i}`,
+        label: char.characterName,
+        value: nameValues ? char.characterName : `${i}`,
         emoji: char.cosmetic.emoji,
       }))
     );

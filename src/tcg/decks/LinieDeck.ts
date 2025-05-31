@@ -54,16 +54,16 @@ export const adapt = new Card({
   },
   cardAction: function (
     this: Card,
-    { selfStats, name, sendToGameroom, selfStat }
+    { game, selfStats, name, sendToGameroom, selfStat }
   ) {
     sendToGameroom(`${name} adapts to the situation.`);
-    selfStat(0, StatsEnum.SPD);
+    selfStat(0, StatsEnum.SPD, game);
 
     if (selfStats.HP > 50) {
-      selfStat(1, StatsEnum.ATK);
-      selfStat(1, StatsEnum.DEF);
+      selfStat(1, StatsEnum.ATK, game);
+      selfStat(1, StatsEnum.DEF, game);
     } else {
-      selfStat(2, StatsEnum.HP);
+      selfStat(2, StatsEnum.HP, game);
     }
   },
 });
@@ -82,18 +82,19 @@ export const manaDetectionBaseCardAction = function (
   const opponent = game.getCharacter(1 - characterIndex);
   character.adjustStat(
     this.calculateEffectValue(this.effects[0]),
-    StatsEnum.SPD
+    StatsEnum.SPD,
+    game
   );
 
   const bigNumber = this.calculateEffectValue(this.effects[1]);
   const smallNumber = this.calculateEffectValue(this.effects[2]);
 
   if (opponent.stats.stats.DEF >= opponent.stats.stats.ATK) {
-    character.adjustStat(bigNumber, StatsEnum.ATK);
-    character.adjustStat(smallNumber, StatsEnum.DEF);
+    character.adjustStat(bigNumber, StatsEnum.ATK, game);
+    character.adjustStat(smallNumber, StatsEnum.DEF, game);
   } else {
-    character.adjustStat(smallNumber, StatsEnum.ATK);
-    character.adjustStat(bigNumber, StatsEnum.DEF);
+    character.adjustStat(smallNumber, StatsEnum.ATK, game);
+    character.adjustStat(bigNumber, StatsEnum.DEF, game);
   }
 
   // reveal empower
@@ -137,7 +138,7 @@ const parry = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF);
+    character.adjustStat(def, StatsEnum.TrueDEF, game);
     character.timedEffects.push(
       new TimedEffect({
         name: "Parry",
@@ -146,7 +147,11 @@ const parry = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (game, characterIndex) => {
-          game.characters[characterIndex].adjustStat(-def, StatsEnum.TrueDEF);
+          game.characters[characterIndex].adjustStat(
+            -def,
+            StatsEnum.TrueDEF,
+            game
+          );
         },
       })
     );

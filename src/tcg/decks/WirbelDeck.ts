@@ -18,12 +18,12 @@ export const tacticalRetreat = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, name, sendToGameroom, selfStat, calcEffect }
+    { game, self, name, sendToGameroom, selfStat, calcEffect }
   ) {
     sendToGameroom(`${name} performed a tactical retreat.`);
 
     const trueDef = calcEffect(0);
-    selfStat(0, StatsEnum.TrueDEF);
+    selfStat(0, StatsEnum.TrueDEF, game);
 
     self.ability.abilityOwnCardEffectWrapper = function (
       context: GameMessageContext,
@@ -48,7 +48,7 @@ export const tacticalRetreat = new Card({
         for (const timedEffect of self.timedEffects) {
           if (timedEffect.metadata.wirbelIsTacticalRetreat) {
             sendToGameroom(`${name} abruptly returned to the battlefield.`);
-            flatSelfStat(-10, StatsEnum.HP);
+            flatSelfStat(-10, StatsEnum.HP, game);
             timedEffect.endOfTimedEffectAction?.(game, selfIndex, messageCache);
           } else {
             newTimedEffects.push(timedEffect);
@@ -69,7 +69,7 @@ export const tacticalRetreat = new Card({
         metadata: { removableBySorganeil: true, wirbelIsTacticalRetreat: true },
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-1 * trueDef, StatsEnum.TrueDEF);
+          self.adjustStat(-1 * trueDef, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -83,11 +83,14 @@ export const scharfJubelade = new Card({
   effects: [4],
   emoji: CardEmoji.WIRBEL_CARD,
   priority: 2,
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_jubelade_gif,
+  },
   cardAction: function (
     this: Card,
-    { self, name, selfStat, sendToGameroom, calcEffect }
+    { game, self, name, characterName, selfStat, sendToGameroom, calcEffect }
   ) {
-    const isWirbel = name === CharacterName.Wirbel;
+    const isWirbel = characterName === CharacterName.Wirbel;
     if (isWirbel) {
       sendToGameroom(
         `Wirbel commanded Scharf to put up a Barrier of Steel Petals!`
@@ -97,7 +100,7 @@ export const scharfJubelade = new Card({
     }
 
     const def = calcEffect(0);
-    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.DEF, game);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -108,7 +111,7 @@ export const scharfJubelade = new Card({
         metadata: { removableBySorganeil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-1 * def, StatsEnum.DEF);
+          self.adjustStat(-1 * def, StatsEnum.DEF, game);
         },
       })
     );
@@ -125,12 +128,12 @@ export const emergencyDefensiveBarrier = new Card({
   priority: 2,
   cardAction: function (
     this: Card,
-    { self, name, selfStat, sendToGameroom, calcEffect }
+    { game, self, name, selfStat, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(`${name} erected an emergency barrier!`);
 
     const def = calcEffect(0);
-    selfStat(0, StatsEnum.TrueDEF);
+    selfStat(0, StatsEnum.TrueDEF, game);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -140,7 +143,7 @@ export const emergencyDefensiveBarrier = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-1 * def, StatsEnum.TrueDEF);
+          self.adjustStat(-1 * def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -160,10 +163,10 @@ const a_spearRush = new Card({
   },
   cardAction: function (
     this: Card,
-    { name, sendToGameroom, calcEffect, possessive, flatAttack, selfStat }
+    { game, name, sendToGameroom, calcEffect, possessive, flatAttack, selfStat }
   ) {
     sendToGameroom(`${name} rushed forward with ${possessive} spear!`);
-    selfStat(0, StatsEnum.SPD);
+    selfStat(0, StatsEnum.SPD, game);
 
     const damage = calcEffect(1);
     const pierceFactor = 0.15;
@@ -181,13 +184,16 @@ const a_captainsOrderBase = new Card({
   emoji: CardEmoji.WIRBEL_CARD,
   effects: [3, 1, 2, 10],
   hpCost: 4,
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_captainsOrder_gif,
+  },
   cardAction: function (this: Card, context) {
-    const { opponentStats, selfStats, selfStat, basicAttack } = context;
+    const { game, opponentStats, selfStats, selfStat, basicAttack } = context;
 
     if (opponentStats.DEF > selfStats.ATK) {
-      selfStat(0, StatsEnum.ATK);
-      selfStat(1, StatsEnum.DEF);
-      selfStat(2, StatsEnum.SPD);
+      selfStat(0, StatsEnum.ATK, game);
+      selfStat(1, StatsEnum.DEF, game);
+      selfStat(2, StatsEnum.SPD, game);
     } else {
       basicAttack(3);
     }
@@ -301,7 +307,7 @@ export const perfectSorganeil = new Card({
     basicAttack(0);
     opponent.skipTurn = true;
     const opponentOriginalSpeedDiff = opponentStats.SPD - 1;
-    flatOpponentStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD);
+    flatOpponentStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD, game);
 
     const newTimedEffects: TimedEffect[] = [];
     opponent.timedEffects.map((timedEffect) => {
@@ -328,7 +334,7 @@ export const perfectSorganeil = new Card({
           sendToGameroom(
             `${name} averted ${possessive} gaze. ${opponentName} got free from ${name}'s Sorganeil.`
           );
-          flatOpponentStat(opponentOriginalSpeedDiff, StatsEnum.SPD);
+          flatOpponentStat(opponentOriginalSpeedDiff, StatsEnum.SPD, game);
         },
       })
     );

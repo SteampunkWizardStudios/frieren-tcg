@@ -1,11 +1,16 @@
 import Card from "@tcg/card";
 
-export interface GameAdditionalMetadataProps {
-  attackMissed: Record<number, boolean>;
-  attackModifier: Record<number, number>;
-  currentDraws: Record<number, Record<string, Card>>;
-  lastUsedCards: Record<number, Card>;
-  forfeited: Record<number, boolean>;
+export enum FlammeTheory {
+  Irreversibility = "Irreversibility",
+  Balance = "Balance",
+  Prescience = "Prescience",
+  Soul = "Soul",
+}
+
+export enum FlammeResearch {
+  MilleniumBarrier = "Millenium Barrier",
+  ThousandYearSanctuary = "Thousand Year Sanctuary",
+  TreeOfLife = "Tree of Life",
 }
 
 export type GameAdditionalMetadata = {
@@ -15,4 +20,6 @@ export type GameAdditionalMetadata = {
   currentDraws: Record<number, Record<string, Card>>;
   lastUsedCards: Record<number, Card>;
   forfeited: Record<number, boolean>;
+  flammeTheory: Record<FlammeTheory, boolean>;
+  flammeResearch: Record<number, Record<FlammeResearch, boolean>>;
 };

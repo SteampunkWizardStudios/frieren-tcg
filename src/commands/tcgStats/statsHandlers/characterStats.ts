@@ -129,7 +129,9 @@ async function overviewCase(): Promise<EmbedBuilder> {
       return winrateB - winrateA;
     })
     .filter((char) =>
-      VISIBLE_CHARACTERS.some((visibleChar) => visibleChar.name === char.name)
+      VISIBLE_CHARACTERS.some(
+        (visibleChar) => visibleChar.characterName === char.name
+      )
     );
 
   const description = sortedCharacters.map((char) => {

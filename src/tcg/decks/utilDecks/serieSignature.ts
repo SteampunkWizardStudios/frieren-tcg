@@ -33,9 +33,9 @@ export const ancientBarrierMagic = new Card({
     const defDebuff = this.calculateEffectValue(this.effects[1]);
     const spdDebuff = this.calculateEffectValue(this.effects[2]);
 
-    character.adjustStat(atkBuff, StatsEnum.ATK);
-    opponent.adjustStat(-1 * defDebuff, StatsEnum.DEF);
-    opponent.adjustStat(-1 * spdDebuff, StatsEnum.SPD);
+    character.adjustStat(atkBuff, StatsEnum.ATK, game);
+    opponent.adjustStat(-1 * defDebuff, StatsEnum.DEF, game);
+    opponent.adjustStat(-1 * spdDebuff, StatsEnum.SPD, game);
 
     character.timedEffects.push(
       new TimedEffect({
@@ -49,14 +49,14 @@ export const ancientBarrierMagic = new Card({
             `An ominous barrier envelopes the battlefield...`,
             TCGThread.Gameroom
           );
-          character.adjustStat(-2, StatsEnum.HP);
+          character.adjustStat(-2, StatsEnum.HP, game);
         },
         endOfTimedEffectAction: (_game, _characterIndex) => {
           messageCache.push("The barrier dissipated.", TCGThread.Gameroom);
 
-          character.adjustStat(-1 * atkBuff, StatsEnum.ATK);
-          opponent.adjustStat(defDebuff, StatsEnum.DEF);
-          opponent.adjustStat(spdDebuff, StatsEnum.SPD);
+          character.adjustStat(-1 * atkBuff, StatsEnum.ATK, game);
+          opponent.adjustStat(defDebuff, StatsEnum.DEF, game);
+          opponent.adjustStat(spdDebuff, StatsEnum.SPD, game);
         },
       })
     );

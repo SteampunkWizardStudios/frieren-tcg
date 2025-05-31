@@ -16,7 +16,7 @@ const fernStats = new Stats({
 });
 
 const Fern = new CharacterData({
-  name: CharacterName.Fern,
+  characterName: CharacterName.Fern,
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FERN,

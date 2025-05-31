@@ -29,6 +29,7 @@ export enum CharacterEmoji {
   STILLE = "🐦‍🔥",
   UBEL = "<:UbelSnipsnip:1140592823243112468>",
   WIRBEL = "<:WirbelSmug:1208067233411240068>",
+  FLAMME = "<:FlammeSmile2:1159196263930146879>",
 
   STONE_GEISEL = "🐦‍⬛",
   FIRE_GOLEM = "❤️‍🔥",
@@ -58,6 +59,7 @@ export const characterNameToEmoji: Record<CharacterName, CharacterEmoji> = {
   [CharacterName.Stille]: CharacterEmoji.STILLE,
   [CharacterName.Ubel]: CharacterEmoji.UBEL,
   [CharacterName.Wirbel]: CharacterEmoji.WIRBEL,
+  [CharacterName.Flamme]: CharacterEmoji.FLAMME,
 };
 
 export enum CardEmoji {
@@ -85,6 +87,7 @@ export enum CardEmoji {
   STILLE_CARD = "<:StilleCard:1347722643922751624>",
   UBEL_CARD = "<:UbelCard:1362910824133562679>",
   WIRBEL_CARD = "<:WirbelCard:1377726387326287882>",
+  FLAMME_CARD = "<:FlammeCard:1378048592912056540>",
 
   FLOWER_FIELD = "<:FlowerFieldCard:1347719503290695803>",
   MANA_CARD = "<:ManaCard:1363597189229576322>",

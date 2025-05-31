@@ -24,10 +24,11 @@ function characterBasedContext(game: Game, characterIndex: number) {
     target: Character,
     amount: number,
     stat: StatsEnum,
+    game: Game,
     multiplier: number = 1
   ) => {
     const change = amount * multiplier;
-    target.adjustStat(change, stat);
+    target.adjustStat(change, stat, game);
     return change;
   };
 
@@ -44,6 +45,8 @@ function characterBasedContext(game: Game, characterIndex: number) {
     selfIndex: characterIndex,
     selfStats: self.stats.stats,
     name: self.name,
+    characterName: self.characterName,
+    personal: self.cosmetic.pronouns.personal,
     reflexive: self.cosmetic.pronouns.reflexive,
     possessive: self.cosmetic.pronouns.possessive,
 
@@ -84,6 +87,7 @@ export function gameContextProvider(
     target: Character,
     effectIndex: number,
     stat: StatsEnum,
+    game: Game,
     multiplier: number = 1
   ) => {
     const empowered = calculateEffectValue(
@@ -91,7 +95,7 @@ export function gameContextProvider(
       this.empowerLevel
     );
     const change = empowered * multiplier;
-    target.adjustStat(change, stat);
+    target.adjustStat(change, stat, game);
     return change;
   };
 

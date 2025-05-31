@@ -17,6 +17,7 @@ import { User } from "discord.js";
 import Game from "./game";
 import { CharacterName } from "./characters/metadata/CharacterName";
 import { DENKEN_DEATH_HP } from "./characters/characterData/characters/Denken";
+import { FlammeResearch } from "./additionalMetadata/gameAdditionalMetadata";
 
 export interface CharacterProps {
   characterData: CharacterData;
@@ -26,7 +27,8 @@ export interface CharacterProps {
 }
 
 export default class Character {
-  name: CharacterName;
+  characterName: CharacterName;
+  name: string;
   cosmetic: CharacterCosmetic;
 
   stats: Stats;
@@ -45,7 +47,7 @@ export default class Character {
   characterThread: TCGThread;
 
   constructor(characterProps: CharacterProps) {
-    this.name = characterProps.characterData.name;
+    this.characterName = characterProps.characterData.characterName;
     this.cosmetic = characterProps.characterData.cosmetic;
     this.stats = characterProps.characterData.stats;
     this.cards = characterProps.characterData.cards;
@@ -63,6 +65,8 @@ export default class Character {
     this.characterThread = characterProps.characterThread;
 
     this.stats.stats.HP = characterProps.characterData.stats.startingHp;
+
+    this.name = `${this.characterName} (${this.characterUser.displayName})`;
   }
 
   drawStartingHand() {
@@ -101,6 +105,11 @@ export default class Character {
     }
   }
 
+  discardRandomCard(): Card {
+    const randomIndex = Math.floor(Math.random() * this.hand.length);
+    return this.discardCard(randomIndex);
+  }
+
   // discard a card and empower all other cards in hand
   playCard(handIndex: number): Card {
     const discardedCard = this.discardCard(handIndex);
@@ -136,10 +145,30 @@ export default class Character {
     const indexToUsableCardMap: Record<string, Card> = {};
 
     // roll 4d6
-    const rolls = [];
-    for (let i = 0; i < 4; i++) {
-      rolls.push(Rolls.rollD6());
+    let rolls = [];
+    if (game.additionalMetadata.flammeTheory.Prescience) {
+      rolls = [0, 1, 2, 3];
+      if (
+        game.additionalMetadata.flammeResearch[characterIndex][
+          FlammeResearch.TreeOfLife
+        ]
+      ) {
+        rolls.push(5);
+      }
+    } else {
+      let rollCount = 4;
+      if (
+        game.additionalMetadata.flammeResearch[characterIndex][
+          FlammeResearch.TreeOfLife
+        ]
+      ) {
+        rollCount += 1;
+      }
+      for (let i = 0; i < rollCount; i++) {
+        rolls.push(Rolls.rollD6());
+      }
     }
+
     this.messageCache.push(`\n### Draws: ${rolls.sort().join(", ")}`, channel);
     for (const roll of rolls) {
       if (roll < this.hand.length) {
@@ -185,8 +214,29 @@ export default class Character {
   // adjust a character's stat
   // returns whether the operation was a success
   // there is no failure condition for now
-  adjustStat(adjustValue: number, stat: StatsEnum): boolean {
-    const roundedAdjustValue = Number(adjustValue.toFixed(2));
+  adjustStat(adjustValue: number, stat: StatsEnum, game: Game): boolean {
+    const roundedInitialAdjustValue = Number(adjustValue.toFixed(2));
+
+    let roundedAdjustValue = roundedInitialAdjustValue;
+    if (game.additionalMetadata.flammeTheory.Irreversibility) {
+      if (stat !== StatsEnum.Ability) {
+        if (
+          this.additionalMetadata.opponentMilleniumBarrierActive &&
+          roundedAdjustValue > 0
+        ) {
+          roundedAdjustValue = 0;
+        } else {
+          roundedAdjustValue /= 2;
+
+          if (stat === StatsEnum.HP) {
+            if (roundedAdjustValue > 0) {
+              roundedAdjustValue = 0;
+            }
+          }
+        }
+      }
+    }
+
     const roundedStatValue = Number(
       (this.stats.stats[stat] + roundedAdjustValue).toFixed(2)
     );
@@ -194,28 +244,24 @@ export default class Character {
       const statDescription =
         stat === StatsEnum.Ability ? "Ability Counter" : stat;
       const statUpdateLines: string[] = [];
+
       if (adjustValue < 0) {
         statUpdateLines.push(
           `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`
         );
-        if (
-          !(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed)
-        ) {
-          statUpdateLines.push(
-            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`
-          );
-        }
       } else {
         statUpdateLines.push(
           `${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`
         );
-        if (
-          !(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed)
-        ) {
-          statUpdateLines.push(
-            `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`
-          );
-        }
+      }
+
+      if (
+        !(stat === StatsEnum.HP && this.additionalMetadata.manaSuppressed) &&
+        !this.additionalMetadata.deceitful
+      ) {
+        statUpdateLines.push(
+          `${this.name}'s new ${statDescription}: **${this.stats.stats[stat]}**`
+        );
       }
 
       this.messageCache.push(statUpdateLines.join(" "), TCGThread.Gameroom);

@@ -22,7 +22,7 @@ const wirbelStats = new Stats({
 });
 
 const Wirbel = new CharacterData({
-  name: CharacterName.Wirbel,
+  characterName: CharacterName.Wirbel,
   cosmetic: {
     pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.WIRBEL,
@@ -52,7 +52,7 @@ const Wirbel = new CharacterData({
           `Wirbel feels the need to steel his resolve.`,
           TCGThread.Gameroom
         );
-        character.adjustStat(resolveAttackGain, StatsEnum.ATK);
+        character.adjustStat(resolveAttackGain, StatsEnum.ATK, game);
       }
     },
   },

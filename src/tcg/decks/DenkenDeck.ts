@@ -24,15 +24,18 @@ const a_jab = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.DEF
+      StatsEnum.DEF,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.ATK
+      StatsEnum.ATK,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD
+      StatsEnum.SPD,
+      game
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[3]),
@@ -58,11 +61,13 @@ const a_hook = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.SPD
+      StatsEnum.SPD,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.ATK
+      StatsEnum.ATK,
+      game
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage: this.calculateEffectValue(this.effects[2]),
@@ -93,11 +98,13 @@ const a_uppercut = new Card({
 
     character.adjustStat(
       this.calculateEffectValue(this.effects[0]),
-      StatsEnum.ATK
+      StatsEnum.ATK,
+      game
     );
     character.adjustStat(
       this.calculateEffectValue(this.effects[1]),
-      StatsEnum.SPD
+      StatsEnum.SPD,
+      game
     );
     CommonCardAction.commonAttack(game, characterIndex, {
       damage,
@@ -124,10 +131,10 @@ export const bareHandedBlock = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.DEF);
+    character.adjustStat(def, StatsEnum.DEF, game);
 
     const tempDef = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(tempDef, StatsEnum.TrueDEF);
+    character.adjustStat(tempDef, StatsEnum.TrueDEF, game);
 
     character.timedEffects.push(
       new TimedEffect({
@@ -137,7 +144,7 @@ export const bareHandedBlock = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-tempDef, StatsEnum.TrueDEF);
+          character.adjustStat(-tempDef, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -172,10 +179,10 @@ export const a_waldgoseBase = new Card({
         ...a_jab,
         empowerLevel: this.empowerLevel,
       });
-      flatSelfStat(-jab.hpCost, StatsEnum.HP);
+      flatSelfStat(-jab.hpCost, StatsEnum.HP, game);
       jab.cardAction(context);
     } else {
-      flatSelfStat(-waldgoseHpCost, StatsEnum.HP);
+      flatSelfStat(-waldgoseHpCost, StatsEnum.HP, game);
       messageCache.push(
         `${character.name} whipped up a tornado!`,
         TCGThread.Gameroom
@@ -255,10 +262,10 @@ export const a_daosdorgBase = new Card({
         ...a_hook,
         empowerLevel: this.empowerLevel,
       });
-      flatSelfStat(-hook.hpCost, StatsEnum.HP);
+      flatSelfStat(-hook.hpCost, StatsEnum.HP, game);
       hook.cardAction(context);
     } else {
-      flatSelfStat(-daosdorgHpCost, StatsEnum.HP);
+      flatSelfStat(-daosdorgHpCost, StatsEnum.HP, game);
       messageCache.push(
         `${character.name} set the sky aflame.`,
         TCGThread.Gameroom
@@ -325,12 +332,12 @@ const a_daosdorg = new Card({
 });
 
 export const a_catastraviaBase = new Card({
-  title: "Lights of Judgment: Catastravia",
+  title: "Lights of Judgement: Catastravia",
   cardMetadata: { nature: Nature.Attack },
-  description: ([dmg0, dmg1, dmg2, dmg3, dmg4]) =>
-    `HP-15. DMG ${dmg0}, ${dmg1}, ${dmg2}, ${dmg3}, ${dmg4}. Treat this card as "Uppercut" if the user's HP is <= 0.`,
+  description: ([initDmg, turn2DMG, turn3DMG]) =>
+    `HP-15. DMG ${initDmg}. At the end of the next 2 turns, deal DMG ${turn2DMG}x2 and DMG ${turn3DMG}x3 respectively. Treat this card as "Uppercut" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
-  effects: [2, 3, 4, 5, 6],
+  effects: [9, 3, 3],
   hpCost: 0, // hpCost variable at cast time
   cosmetic: {
     cardGif:
@@ -338,36 +345,61 @@ export const a_catastraviaBase = new Card({
   },
   cardAction: function (this: Card, context) {
     const {
+      self,
       game,
-      selfIndex: characterIndex,
-      self: character,
-      messageCache,
+      name,
+      sendToGameroom,
+      selfStats,
       flatSelfStat,
+      basicAttack,
+      calcEffect,
+      flatAttack,
     } = context;
 
     const catastraviaHpCost = 15;
 
-    if (character.stats.stats.HP <= 0) {
+    if (selfStats.HP <= 0) {
       const uppercut = new Card({
         ...a_uppercut,
         empowerLevel: this.empowerLevel,
       });
 
-      flatSelfStat(-uppercut.hpCost, StatsEnum.HP);
+      flatSelfStat(-uppercut.hpCost, StatsEnum.HP, game);
       uppercut.cardAction(context);
     } else {
-      flatSelfStat(-catastraviaHpCost, StatsEnum.HP);
-      messageCache.push(
-        `${character.name} covered the sky in stars.`,
-        TCGThread.Gameroom
+      flatSelfStat(-catastraviaHpCost, StatsEnum.HP, game);
+      sendToGameroom(`${name} covered the sky in stars.`);
+      basicAttack(0);
+
+      const turn2Damage = calcEffect(1);
+      self.timedEffects.push(
+        new TimedEffect({
+          name: "Catastravia: Stream of Cosmic Debris",
+          description: `Deal ${turn2Damage} x2 damage at the end of the Timed Effect.`,
+          turnDuration: 2,
+          endOfTimedEffectAction: () => {
+            sendToGameroom("The lights of judgement lit up the sky.");
+            for (let i = 0; i < 2; i++) {
+              flatAttack(turn2Damage);
+            }
+          },
+        })
       );
 
-      for (let i = 0; i < 5; i++) {
-        const damage = this.calculateEffectValue(this.effects[i]);
-        CommonCardAction.commonAttack(game, characterIndex, {
-          damage,
-        });
-      }
+      const turn3Damage = calcEffect(2);
+      self.timedEffects.push(
+        new TimedEffect({
+          name: "Catastravia: Dawn of Judgement",
+          description: `Deal ${turn3Damage} x3 damage at the end of the Timed Effect.`,
+          turnDuration: 3,
+          endOfTimedEffectAction: () => {
+            sendToGameroom("The lights of judgement lit up the sky.");
+            for (let i = 0; i < 3; i++) {
+              flatAttack(turn3Damage);
+            }
+          },
+        })
+      );
     }
   },
 });
@@ -413,7 +445,7 @@ const elementaryDefensiveMagicBase = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF);
+    character.adjustStat(def, StatsEnum.TrueDEF, game);
     character.timedEffects.push(
       new TimedEffect({
         name: "Elementary Defensive Magic",
@@ -422,7 +454,7 @@ const elementaryDefensiveMagicBase = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.TrueDEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -507,15 +539,15 @@ export const thisIsNoPlaceToGiveUp = new Card({
       `${character.name} resolves himself.`,
       TCGThread.Gameroom
     );
-    character.adjustStat(healingFirst, StatsEnum.HP);
+    character.adjustStat(healingFirst, StatsEnum.HP, game);
 
     if (healAdditional) {
       messageCache.push(
         `${character.name} cannot give up!`,
         TCGThread.Gameroom
       );
-      character.adjustStat(healingSecond, StatsEnum.HP);
-      character.adjustStat(1, StatsEnum.Ability);
+      character.adjustStat(healingSecond, StatsEnum.HP, game);
+      character.adjustStat(1, StatsEnum.Ability, game);
     }
   },
 });

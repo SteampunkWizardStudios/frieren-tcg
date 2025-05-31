@@ -40,7 +40,7 @@
 //       TCGThread.Gameroom
 //     );
 
-//     character.adjustStat(-2, StatsEnum.HP);
+//     character.adjustStat(-2, StatsEnum.HP, game);
 //     opponent.adjustStat(
 //       -1 * this.calculateEffectValue(this.effects[0]),
 //       StatsEnum.DEF
@@ -66,7 +66,7 @@
 //     );
 
 //     const def = this.calculateEffectValue(this.effects[0]);
-//     character.adjustStat(def, StatsEnum.DEF);
+//     character.adjustStat(def, StatsEnum.DEF, game);
 //     character.timedEffects.push(
 //       new TimedEffect({
 //         name: "Hide",
@@ -75,7 +75,7 @@
 //         turnDuration: 1,
 //         metadata: { removableBySorganeil: false },
 //         endOfTimedEffectAction: (_game, _characterIndex) => {
-//           character.adjustStat(-def, StatsEnum.DEF);
+//           character.adjustStat(-def, StatsEnum.DEF, game);
 //         },
 //       })
 //     );

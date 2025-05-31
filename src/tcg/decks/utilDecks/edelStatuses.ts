@@ -57,12 +57,15 @@ export const weakened = new Card({
     );
     self.deck.removeCard(this);
   },
-  onNotPlayed: function (this: Card, { self, name, selfStat, sendToGameroom }) {
+  onNotPlayed: function (
+    this: Card,
+    { game, self, name, selfStat, sendToGameroom }
+  ) {
     sendToGameroom(`${name} felt weakened!`);
     self.deck.removeCard(this);
 
     [StatsEnum.ATK, StatsEnum.DEF, StatsEnum.SPD].forEach((stat) => {
-      selfStat(0, stat, -1);
+      selfStat(0, stat, game, -1);
     });
   },
 });

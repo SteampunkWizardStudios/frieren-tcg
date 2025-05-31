@@ -11,9 +11,9 @@ export default class DefaultCards {
     effects: [],
     emoji: CardEmoji.RECYCLE,
     cardAction: ({ self, selfIndex, name, sendToGameroom, game }) => {
-      self.adjustStat(1, StatsEnum.ATK);
-      self.adjustStat(1, StatsEnum.DEF);
-      self.adjustStat(1, StatsEnum.SPD);
+      self.adjustStat(1, StatsEnum.ATK, game);
+      self.adjustStat(1, StatsEnum.DEF, game);
+      self.adjustStat(1, StatsEnum.SPD, game);
 
       const handsIndicesDescending = Object.keys(
         game.additionalMetadata.currentDraws[selfIndex]
@@ -38,12 +38,12 @@ export default class DefaultCards {
       "Heals 10 HP. Empower all cards in your hand afterwards.",
     effects: [],
     emoji: CardEmoji.WAIT,
-    cardAction: ({ name, self, sendToGameroom }) => {
+    cardAction: ({ game, name, self, sendToGameroom }) => {
       self.empowerHand();
       sendToGameroom(
         `${name} waited it out! All cards in ${name}'s hand are empowered!`
       );
-      self.adjustStat(10, StatsEnum.HP);
+      self.adjustStat(10, StatsEnum.HP, game);
     },
   });
 

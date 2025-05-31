@@ -27,6 +27,7 @@ import {
 import { CharacterSelectionType } from "./tcgChatInteractions/handleCharacterSelection";
 import goddessDeck from "@decks/utilDecks/goddessDeck";
 import { StatsEnum } from "@tcg/stats";
+import { FlammeResearch } from "./tcg/additionalMetadata/gameAdditionalMetadata";
 
 const TURN_LIMIT = 50;
 
@@ -102,8 +103,8 @@ export const tcgMain = async (
   if (!challengerSelection || !opponentSelection) {
     return result;
   }
-  const challengerCharacterName = challengerSelection.char.name;
-  const opponentCharacterName = opponentSelection.char.name;
+  const challengerCharacterName = challengerSelection.char.characterName;
+  const opponentCharacterName = opponentSelection.char.characterName;
 
   result.challengerCharacter = challengerCharacterName;
   result.opponentCharacter = opponentCharacterName;
@@ -161,13 +162,13 @@ export const tcgMain = async (
 
     switch (selection.selectionType) {
       case CharacterSelectionType.Random:
-        message = `## ${username} rolled the dice and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+        message = `## ${username} rolled the dice and got ${selection.char.cosmetic.emoji} **${selection.char.characterName}**!`;
         break;
       case CharacterSelectionType.FavouriteRandom:
-        message = `## ${username} rolled the dice from their favourite characters and got ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+        message = `## ${username} rolled the dice from their favourite characters and got ${selection.char.cosmetic.emoji} **${selection.char.characterName}**!`;
         break;
       default:
-        message = `## ${username} selected ${selection.char.cosmetic.emoji} **${selection.char.name}**!`;
+        message = `## ${username} selected ${selection.char.cosmetic.emoji} **${selection.char.characterName}**!`;
         break;
     }
 
@@ -176,7 +177,20 @@ export const tcgMain = async (
 
   // game loop
   while (!game.gameOver) {
-    game.turnCount += 1;
+    if (
+      !game.additionalMetadata.flammeTheory.Balance ||
+      !(
+        game.additionalMetadata.flammeResearch?.[0]?.[
+          FlammeResearch.ThousandYearSanctuary
+        ] ||
+        game.additionalMetadata.flammeResearch?.[1]?.[
+          FlammeResearch.ThousandYearSanctuary
+        ]
+      )
+    ) {
+      game.turnCount += 1;
+    }
+
     messageCache.push(`# Turn ${game.turnCount}`, TCGThread.Gameroom);
 
     // start of turn resolution
@@ -188,6 +202,24 @@ export const tcgMain = async (
         characterIndex,
         messageCache
       );
+
+      if (game.additionalMetadata.flammeTheory.Balance) {
+        character.hand.forEach((card) => {
+          card.empowerLevel = game.turnCount;
+        });
+      }
+
+      if (game.additionalMetadata.flammeTheory.Irreversibility) {
+        if (
+          game.additionalMetadata.flammeResearch[1 - characterIndex][
+            FlammeResearch.MilleniumBarrier
+          ]
+        ) {
+          character.additionalMetadata.opponentMilleniumBarrierActive = true;
+        } else {
+          character.additionalMetadata.opponentMilleniumBarrierActive = false;
+        }
+      }
     });
     printGameState(game, messageCache);
 
@@ -226,7 +258,7 @@ export const tcgMain = async (
       game.characters.map(async (character, index) => {
         const useChannel =
           index === 0 ? TCGThread.ChallengerThread : TCGThread.OpponentThread;
-        messageCache.push(printCharacter(character, false), useChannel);
+        messageCache.push(printCharacter(game, character, false), useChannel);
         await sendToThread(
           messageCache.flush(useChannel),
           useChannel,
@@ -396,7 +428,7 @@ export const tcgMain = async (
           const character = game.getCharacter(characterIndex);
           const opponentCharacter = game.getCharacter(1 - characterIndex);
           messageCache.push(
-            `## ${character.cosmetic.emoji} ${character.name} (${characterIndex === 0 ? `${challenger.displayName}` : `${opponent.displayName}`}) used **${card.emoji} ${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[⠀](${card.cosmetic?.cardImageUrl})` : "!"}`,
+            `## ${character.cosmetic.emoji} ${character.name} used **${card.emoji} ${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[⠀](${card.cosmetic?.cardImageUrl})` : "!"}`,
             TCGThread.Gameroom
           );
           if (card.cosmetic?.cardGif) {
@@ -415,7 +447,7 @@ export const tcgMain = async (
 
           // use hpCost
           if (card.hpCost && card.hpCost !== 0) {
-            character.adjustStat(-card.hpCost, StatsEnum.HP);
+            character.adjustStat(-card.hpCost, StatsEnum.HP, game);
           }
 
           if (character.ability.abilityOwnCardEffectWrapper) {

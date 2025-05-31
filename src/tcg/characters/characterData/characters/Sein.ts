@@ -21,7 +21,7 @@ const seinStats = new Stats({
 });
 
 const Sein = new CharacterData({
-  name: CharacterName.Sein,
+  characterName: CharacterName.Sein,
   cosmetic: {
     pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.SEIN,
@@ -57,7 +57,7 @@ const Sein = new CharacterData({
         TCGThread.Gameroom
       );
       const character = game.characters[characterIndex];
-      character.adjustStat(character.stats.stats.Ability, StatsEnum.HP);
+      character.adjustStat(character.stats.stats.Ability, StatsEnum.HP, game);
     },
   },
   additionalMetadata: {

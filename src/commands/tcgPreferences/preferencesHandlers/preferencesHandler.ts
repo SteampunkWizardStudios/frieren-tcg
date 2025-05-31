@@ -40,7 +40,7 @@ export async function handlePlayerPreferences(
         response += `Text Speed: \`${preferences.tcgTextSpeed} ms\`\n`;
 
         if (preferences.favouriteCharacters.length > 0) {
-          response += `Favourite Characters: ${favouriteCharacterData.map((char) => `${char.cosmetic.emoji} ${char.name}`).join(", ")}\n`;
+          response += `Favourite Characters: ${favouriteCharacterData.map((char) => `${char.cosmetic.emoji} ${char.characterName}`).join(", ")}\n`;
         } else {
           response += `Favourite Characters: None\n`;
         }
@@ -70,11 +70,11 @@ export async function handlePlayerPreferences(
         const options: SelectMenuComponentOptionData[] = VISIBLE_CHARACTERS.map(
           (char) => {
             return {
-              label: char.name,
-              value: char.name,
+              label: char.characterName,
+              value: char.characterName,
               emoji: char.cosmetic.emoji,
               default: preferences?.favouriteCharacters.some(
-                (fav) => fav.name === char.name
+                (fav) => fav.name === char.characterName
               ),
             };
           }

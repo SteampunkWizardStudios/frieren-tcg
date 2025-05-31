@@ -20,7 +20,7 @@ const denkenStats = new Stats({
 });
 
 const Denken = new CharacterData({
-  name: CharacterName.Denken,
+  characterName: CharacterName.Denken,
   cosmetic: {
     pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.DENKEN,
@@ -44,10 +44,10 @@ const Denken = new CharacterData({
       const character = game.characters[characterIndex];
 
       if (character.stats.stats.HP <= 0) {
-        character.adjustStat(-1, StatsEnum.Ability);
+        character.adjustStat(-1, StatsEnum.Ability, game);
 
         if (character.stats.stats.HP <= DENKEN_DEATH_HP / 2) {
-          character.adjustStat(-1, StatsEnum.Ability);
+          character.adjustStat(-1, StatsEnum.Ability, game);
         }
 
         if (character.stats.stats.Ability > 0) {

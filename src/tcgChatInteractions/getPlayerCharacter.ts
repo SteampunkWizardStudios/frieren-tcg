@@ -95,13 +95,13 @@ export const getPlayerCharacter = async (
 
               const characterSelectedEmbed = new EmbedBuilder()
                 .setTitle(
-                  `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.name}**`
+                  `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.characterName}**`
                 )
                 .setColor(selectedCharacter.cosmetic.color)
                 .setImage(selectedCharacter.cosmetic.imageUrl);
 
               await i.editReply({
-                content: `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.name}**\n\n${shouldSendErrorMessage ? errorMessage : ""}`,
+                content: `You selected ${selectedCharacter.cosmetic.emoji} **${selectedCharacter.characterName}**\n\n${shouldSendErrorMessage ? errorMessage : ""}`,
                 embeds: [characterSelectedEmbed],
                 components: [],
               });

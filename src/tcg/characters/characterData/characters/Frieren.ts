@@ -33,7 +33,7 @@ const afterAttackEffect = function (
 };
 
 const Frieren = new CharacterData({
-  name: CharacterName.Frieren,
+  characterName: CharacterName.Frieren,
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FRIEREN,
@@ -67,7 +67,11 @@ const Frieren = new CharacterData({
     ) {
       const character = game.getCharacter(characterIndex);
       if (card.cardMetadata.analysis) {
-        character.adjustStat(card.cardMetadata.analysis, StatsEnum.Ability);
+        character.adjustStat(
+          card.cardMetadata.analysis,
+          StatsEnum.Ability,
+          game
+        );
         if (character.stats.stats.Ability > ANALYSIS_STACK_CAP) {
           character.setStat(ANALYSIS_STACK_CAP, StatsEnum.Ability);
         }
@@ -86,7 +90,7 @@ const Frieren = new CharacterData({
                 "Frieren performed her analysis.",
                 TCGThread.Gameroom
               );
-              character.adjustStat(postAnalysis, StatsEnum.Ability);
+              character.adjustStat(postAnalysis, StatsEnum.Ability, game);
             },
           })
         );
@@ -114,7 +118,7 @@ const Frieren = new CharacterData({
           "Frieren continues her Analysis.",
           TCGThread.Gameroom
         );
-        character.adjustStat(1, StatsEnum.Ability);
+        character.adjustStat(1, StatsEnum.Ability, game);
       }
     },
   },

@@ -1,6 +1,10 @@
 import Card from "@tcg/card";
 import Character from "@tcg/character";
-import { GameAdditionalMetadata } from "@tcg/additionalMetadata/gameAdditionalMetadata";
+import {
+  FlammeResearch,
+  FlammeTheory,
+  GameAdditionalMetadata,
+} from "@tcg/additionalMetadata/gameAdditionalMetadata";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
@@ -43,6 +47,24 @@ export default class Game {
       forfeited: {
         0: false,
         1: false,
+      },
+      flammeTheory: {
+        [FlammeTheory.Irreversibility]: false,
+        [FlammeTheory.Balance]: false,
+        [FlammeTheory.Prescience]: false,
+        [FlammeTheory.Soul]: false,
+      },
+      flammeResearch: {
+        0: {
+          [FlammeResearch.MilleniumBarrier]: false,
+          [FlammeResearch.ThousandYearSanctuary]: false,
+          [FlammeResearch.TreeOfLife]: false,
+        },
+        1: {
+          [FlammeResearch.MilleniumBarrier]: false,
+          [FlammeResearch.ThousandYearSanctuary]: false,
+          [FlammeResearch.TreeOfLife]: false,
+        },
       },
     };
     this.turnCount = 0;
@@ -135,9 +157,11 @@ export default class Game {
       );
 
       defender.stats.stats.HP = defenderRemainingHp;
-      const hpLeft: string = defender.additionalMetadata.manaSuppressed
-        ? ""
-        : `${defender.name} has ${defender.stats.stats.HP} left!`;
+      const hpLeft: string =
+        defender.additionalMetadata.manaSuppressed ||
+        defender.additionalMetadata.deceitful
+          ? ""
+          : `${defender.name} has ${defender.stats.stats.HP} left!`;
       this.messageCache.push(
         `# ${attacker.cosmetic.emoji} ${attacker.name} attacks ${defender.cosmetic.emoji} ${defender.name} for ${actualDamage.toFixed(2)} damage! ${hpLeft}`,
         TCGThread.Gameroom
@@ -268,12 +292,12 @@ export default class Game {
 
     if (
       character.stats.stats.HP <= 0 &&
-      character.name !== CharacterName.Denken
+      character.characterName !== CharacterName.Denken
     ) {
       characterDefeated = true;
     }
 
-    if (character.name === CharacterName.Denken) {
+    if (character.characterName === CharacterName.Denken) {
       if (character.stats.stats.HP <= DENKEN_DEATH_HP) {
         characterDefeated = true;
       }

@@ -7,7 +7,7 @@ import Pronouns from "@src/tcg/pronoun";
 import mediaLinks from "@src/tcg/formatting/mediaLinks";
 
 const starkStats = new Stats({
-  [StatsEnum.HP]: 140.0,
+  [StatsEnum.HP]: 125.0,
   [StatsEnum.ATK]: 10.0,
   [StatsEnum.DEF]: 10.0,
   [StatsEnum.TrueDEF]: 0.0,
@@ -16,7 +16,7 @@ const starkStats = new Stats({
 });
 
 const Stark = new CharacterData({
-  name: CharacterName.Stark,
+  characterName: CharacterName.Stark,
   cosmetic: {
     pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.STARK,
@@ -38,7 +38,11 @@ const Stark = new CharacterData({
     ) {
       const character = game.getCharacter(characterIndex);
       if (card.cardMetadata.resolve) {
-        character.adjustStat(card.cardMetadata.resolve, StatsEnum.Ability);
+        character.adjustStat(
+          card.cardMetadata.resolve,
+          StatsEnum.Ability,
+          game
+        );
       }
     },
     abilityAttackEffect: function (game, characterIndex) {

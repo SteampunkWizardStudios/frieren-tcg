@@ -68,7 +68,7 @@ export async function showCharacterInfo(
           );
           const characterEmbed = new EmbedBuilder()
             .setColor(char.cosmetic.color)
-            .setTitle(`${char.cosmetic.emoji} ${char.name}`)
+            .setTitle(`${char.cosmetic.emoji} ${char.characterName}`)
             .setTimestamp()
             .setThumbnail(char.cosmetic.imageUrl)
             .addFields(

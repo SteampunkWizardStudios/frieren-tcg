@@ -20,7 +20,7 @@ const laufenStats = new Stats({
 });
 
 const Laufen = new CharacterData({
-  name: CharacterName.Laufen,
+  characterName: CharacterName.Laufen,
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.LAUFEN,

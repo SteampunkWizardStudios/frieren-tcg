@@ -46,8 +46,8 @@
 
 //     const atk = this.calculateEffectValue(this.effects[0]);
 //     const def = this.calculateEffectValue(this.effects[1]);
-//     character.adjustStat(atk, StatsEnum.ATK);
-//     character.adjustStat(def, StatsEnum.DEF);
+//     character.adjustStat(atk, StatsEnum.ATK, game);
+//     character.adjustStat(def, StatsEnum.DEF, game);
 //     character.timedEffects.push(
 //       new TimedEffect({
 //         name: "Camouflage",
@@ -59,8 +59,8 @@
 //             `${character.name} came out of ${character.cosmetic.pronouns.possessive} camouflage!`,
 //             TCGThread.Gameroom
 //           );
-//           character.adjustStat(-atk, StatsEnum.ATK);
-//           character.adjustStat(-def, StatsEnum.DEF);
+//           character.adjustStat(-atk, StatsEnum.ATK, game);
+//           character.adjustStat(-def, StatsEnum.DEF, game);
 //         },
 //       })
 //     );

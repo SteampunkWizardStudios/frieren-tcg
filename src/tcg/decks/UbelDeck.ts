@@ -121,7 +121,7 @@ export const rushdown = new Card({
 
     const turnCount = 4;
     const spdIncrease = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(spdIncrease, StatsEnum.SPD);
+    character.adjustStat(spdIncrease, StatsEnum.SPD, game);
 
     CommonCardAction.replaceOrAddNewTimedEffect(
       game,
@@ -138,15 +138,15 @@ export const rushdown = new Card({
             `${character.name} is being reckless.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(-2, StatsEnum.HP);
+          character.adjustStat(-2, StatsEnum.HP, game);
         },
 
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           _messageCache.push(`${character.name} retreats.`, TCGThread.Gameroom);
-          character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
+          character.adjustStat(-1 * spdIncrease, StatsEnum.SPD, game);
         },
         replacedAction: function (this, _game, _characterIndex) {
-          character.adjustStat(-1 * spdIncrease, StatsEnum.SPD);
+          character.adjustStat(-1 * spdIncrease, StatsEnum.SPD, game);
         },
       })
     );
@@ -175,13 +175,13 @@ const slowdown = new Card({
     );
 
     const turnCount = 2;
-    character.adjustStat(-10, StatsEnum.SPD);
+    character.adjustStat(-10, StatsEnum.SPD, game);
 
     const defIncrease = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(defIncrease, StatsEnum.DEF);
+    character.adjustStat(defIncrease, StatsEnum.DEF, game);
 
     const hpIncrease = this.calculateEffectValue(this.effects[1]);
-    character.adjustStat(hpIncrease, StatsEnum.HP);
+    character.adjustStat(hpIncrease, StatsEnum.HP, game);
 
     const endOfTurnHpIncrease = this.calculateEffectValue(this.effects[2]);
     CommonCardAction.replaceOrAddNewTimedEffect(
@@ -199,7 +199,7 @@ const slowdown = new Card({
             `${character.name} took a break and recoups.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(endOfTurnHpIncrease, StatsEnum.HP);
+          character.adjustStat(endOfTurnHpIncrease, StatsEnum.HP, game);
         },
 
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
@@ -207,12 +207,12 @@ const slowdown = new Card({
             `${character.name} has recomposed ${character.cosmetic.pronouns.reflexive}.`,
             TCGThread.Gameroom
           );
-          character.adjustStat(10, StatsEnum.SPD);
-          character.adjustStat(-defIncrease, StatsEnum.DEF);
+          character.adjustStat(10, StatsEnum.SPD, game);
+          character.adjustStat(-defIncrease, StatsEnum.DEF, game);
         },
         replacedAction: function (this, _game, _characterIndex) {
-          character.adjustStat(10, StatsEnum.SPD);
-          character.adjustStat(-defIncrease, StatsEnum.DEF);
+          character.adjustStat(10, StatsEnum.SPD, game);
+          character.adjustStat(-defIncrease, StatsEnum.DEF, game);
         },
       })
     );
@@ -242,7 +242,7 @@ export const defend = new Card({
     );
 
     const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF);
+    character.adjustStat(def, StatsEnum.TrueDEF, game);
     character.timedEffects.push(
       new TimedEffect({
         name: "Defend",
@@ -251,7 +251,7 @@ export const defend = new Card({
         priority: -1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.TrueDEF);
+          character.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -287,7 +287,7 @@ export const sorganeil = new Card({
 
     opponent.skipTurn = true;
     const opponentOriginalSpeedDiff = opponent.stats.stats.SPD - 1;
-    opponent.adjustStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD);
+    opponent.adjustStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD, game);
     messageCache.push(
       `${character.name} traps ${opponent.name} in ${character.cosmetic.pronouns.possessive} gaze!`,
       TCGThread.Gameroom
@@ -323,7 +323,7 @@ export const sorganeil = new Card({
             `${character.name} averted ${character.cosmetic.pronouns.possessive} gaze. ${opponent.name} got free from ${character.name}'s Sorganeil.`,
             TCGThread.Gameroom
           );
-          opponent.adjustStat(opponentOriginalSpeedDiff, StatsEnum.SPD);
+          opponent.adjustStat(opponentOriginalSpeedDiff, StatsEnum.SPD, game);
         },
       })
     );
@@ -359,7 +359,7 @@ export const empathy = new Card({
       });
     } else {
       const opponent = game.getCharacter(1 - characterIndex);
-      const signatureCard = signatureMoves[opponent.name];
+      const signatureCard = signatureMoves[opponent.characterName];
       return new Card({
         ...signatureCard,
         empowerLevel: this.empowerLevel - 2,

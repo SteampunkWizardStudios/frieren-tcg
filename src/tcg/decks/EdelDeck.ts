@@ -66,6 +66,7 @@ export const one_step_ahead = new Card({
   priority: 3,
   cardAction: ({
     self,
+    game,
     opponent,
     name,
     calcEffect,
@@ -75,7 +76,7 @@ export const one_step_ahead = new Card({
     basicAttack,
   }) => {
     sendToGameroom(`${name} put up a full coverage defense.`);
-    selfStat(0, StatsEnum.TrueDEF);
+    selfStat(0, StatsEnum.TrueDEF, game);
 
     const def = calcEffect(0);
 
@@ -87,7 +88,11 @@ export const one_step_ahead = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (game, characterIndex) => {
-          game.characters[characterIndex].adjustStat(-def, StatsEnum.TrueDEF);
+          game.characters[characterIndex].adjustStat(
+            -def,
+            StatsEnum.TrueDEF,
+            game
+          );
         },
       })
     );
@@ -102,7 +107,7 @@ export const one_step_ahead = new Card({
     sendToGameroom(
       `${opponent.name} is playing a defensive card. ${name} read ${opponent.cosmetic.pronouns.possessive} mind!`
     );
-    opponentStat(1, StatsEnum.SPD, -1);
+    opponentStat(1, StatsEnum.SPD, game, -1);
     redrawRandom(opponent, self);
     basicAttack(2, 1);
   },
@@ -122,6 +127,7 @@ const mental_fog = new Card({
   cardAction: ({
     name,
     self,
+    game,
     opponent,
     opponentStat,
     sendToGameroom,
@@ -131,9 +137,9 @@ const mental_fog = new Card({
       `${name} hypnotizes ${opponent.name} and ${opponent.cosmetic.pronouns.personal} starts to blank out.`
     );
 
-    self.adjustStat(1, StatsEnum.Ability);
+    self.adjustStat(1, StatsEnum.Ability, game);
 
-    opponentStat(0, StatsEnum.SPD, -1);
+    opponentStat(0, StatsEnum.SPD, game, -1);
     redrawRandom(opponent, self);
     redrawRandom(opponent, self);
 
@@ -169,6 +175,7 @@ const clear_mind = new Card({
   },
   cardAction: ({
     name,
+    game,
     possessive,
     sendToGameroom,
     selfStat,
@@ -177,10 +184,10 @@ const clear_mind = new Card({
   }) => {
     sendToGameroom(`${name} focuses and clears ${possessive} mind.`);
 
-    self.adjustStat(1, StatsEnum.Ability);
+    self.adjustStat(1, StatsEnum.Ability, game);
 
-    selfStat(0, StatsEnum.HP);
-    selfStat(1, StatsEnum.SPD);
+    selfStat(0, StatsEnum.HP, game);
+    selfStat(1, StatsEnum.SPD, game);
 
     [opponent, self].forEach((player, index) => {
       const initialHandSize = player.hand.length;
@@ -206,10 +213,10 @@ const hypnosis_sleep = new Card({
   description: () =>
     `Eye Contact next 2 turns. Your opponent discards two cards, draws Sleepy and one other card.`,
   effects: [],
-  cardAction: ({ name, self, sendToGameroom, opponent }) => {
+  cardAction: ({ name, self, sendToGameroom, game, opponent }) => {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
 
-    self.adjustStat(2, StatsEnum.Ability);
+    self.adjustStat(2, StatsEnum.Ability, game);
 
     pushStatus(opponent, self, sleepy);
     redrawRandom(opponent, self);
@@ -223,12 +230,12 @@ const hypnosis_mesmerize = new Card({
   description: () =>
     `Eye Contact next 2 turns. Your opponent discards two cards, draws Mesmerized and one other card.`,
   effects: [],
-  cardAction: ({ name, self, sendToGameroom, opponent }) => {
+  cardAction: ({ name, self, sendToGameroom, game, opponent }) => {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *Look into my eyes*`
     );
 
-    self.adjustStat(2, StatsEnum.Ability);
+    self.adjustStat(2, StatsEnum.Ability, game);
 
     pushStatus(opponent, self, mesmerized);
     redrawRandom(opponent, self);
@@ -242,12 +249,15 @@ const hypnosis_weaken = new Card({
   description: () =>
     `Eye Contact next 2 turns. Your opponent discards two cards, draws Weakened at this empower and one other card.`,
   effects: [],
-  cardAction: function (this: Card, { name, self, sendToGameroom, opponent }) {
+  cardAction: function (
+    this: Card,
+    { name, self, sendToGameroom, game, opponent }
+  ) {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *You are feeling weak*`
     );
 
-    self.adjustStat(2, StatsEnum.Ability);
+    self.adjustStat(2, StatsEnum.Ability, game);
 
     pushStatus(opponent, self, weakened);
     redrawRandom(opponent, self);

@@ -37,11 +37,11 @@ export const fieldOfFlower = new Card({
   effects: [5, 3],
   cardAction: function (
     this: Card,
-    { self, name, selfStat, sendToGameroom, calcEffect }
+    { game, self, name, selfStat, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(`${name} conjured a field of flowers!`);
 
-    selfStat(0, StatsEnum.HP);
+    selfStat(0, StatsEnum.HP, game);
     const endOfTurnHealing = calcEffect(1);
 
     self.timedEffects.push(
@@ -57,7 +57,8 @@ export const fieldOfFlower = new Card({
           );
           game.characters[characterIndex].adjustStat(
             endOfTurnHealing,
-            StatsEnum.HP
+            StatsEnum.HP,
+            game
           );
         },
         endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
@@ -115,12 +116,12 @@ export const barrierMagicAnalysis = new Card({
   effects: [2, 1, 1],
   cardAction: function (
     this: Card,
-    { name, sendToGameroom, selfStat, opponentStat }
+    { game, name, sendToGameroom, selfStat, opponentStat }
   ) {
     sendToGameroom(`${name} analyzed the opponent's defense!`);
-    selfStat(0, StatsEnum.ATK);
-    selfStat(1, StatsEnum.SPD);
-    opponentStat(2, StatsEnum.DEF, -1);
+    selfStat(0, StatsEnum.ATK, game);
+    selfStat(1, StatsEnum.SPD, game);
+    opponentStat(2, StatsEnum.DEF, game, -1);
   },
 });
 
@@ -134,11 +135,11 @@ export const demonMagicAnalysis = new Card({
     cardGif: mediaLinks.demonAnalysis_gif,
   },
   effects: [2, 2, 1],
-  cardAction: function (this: Card, { name, sendToGameroom, selfStat }) {
+  cardAction: function (this: Card, { game, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} analyzed ancient demon's magic!`);
-    selfStat(0, StatsEnum.ATK);
-    selfStat(1, StatsEnum.SPD);
-    selfStat(2, StatsEnum.DEF);
+    selfStat(0, StatsEnum.ATK, game);
+    selfStat(1, StatsEnum.SPD, game);
+    selfStat(2, StatsEnum.DEF, game);
   },
 });
 
@@ -156,12 +157,12 @@ export const ordinaryDefensiveMagic = new Card({
   priority: 2,
   cardAction: function (
     this: Card,
-    { name, self, sendToGameroom, calcEffect }
+    { game, name, self, sendToGameroom, calcEffect }
   ) {
     sendToGameroom(`${name} cast ordinary defensive magic!`);
 
     const def = calcEffect(0);
-    self.adjustStat(def, StatsEnum.TrueDEF);
+    self.adjustStat(def, StatsEnum.TrueDEF, game);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -171,7 +172,7 @@ export const ordinaryDefensiveMagic = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-def, StatsEnum.TrueDEF);
+          self.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -192,7 +193,7 @@ export const a_theHeightOfMagicBase = new Card({
   effects: [30],
   cardAction: function (
     this: Card,
-    { self, name, selfStats, sendToGameroom, basicAttack }
+    { game, self, name, selfStats, sendToGameroom, basicAttack }
   ) {
     sendToGameroom(`${name} used "The Height of Magic"`);
 
@@ -204,8 +205,8 @@ export const a_theHeightOfMagicBase = new Card({
     sendToGameroom("The Height of Magic is on display.");
     basicAttack(0);
 
-    self.adjustStat(-20, StatsEnum.DEF);
-    self.adjustStat(-20, StatsEnum.SPD);
+    self.adjustStat(-20, StatsEnum.DEF, game);
+    self.adjustStat(-20, StatsEnum.SPD, game);
     self.setStat(1, StatsEnum.HP);
   },
 });
