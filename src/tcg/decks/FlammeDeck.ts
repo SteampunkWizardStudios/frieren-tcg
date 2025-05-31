@@ -393,7 +393,7 @@ const flammesNote = new Card({
       const [pile, pileIndex] = theoriesIndices[randomTheoryIndex];
 
       const theoryCard = pile.splice(pileIndex, 1)[0];
-      sendToGameroom(`${name} formulated the ${theoryCard.title}.`);
+      sendToGameroom(`${name} formulated the **${theoryCard.title}**.`);
       self.hand.push(theoryCard);
 
       if (!game.additionalMetadata.flammeTheory.Soul) {
@@ -453,26 +453,19 @@ const theoryOfIrreversibility = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `This card can only be used by Flamme. All stat changes for both players are halved. HP can no longer be recovered. Remove this card from the deck once it is used.`,
+    `All stat changes for both players are halved. HP can no longer be recovered. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cardAction: function (this: Card, { game, name, personal, sendToGameroom }) {
-    if (name !== CharacterName.Flamme) {
+    if (!game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility]) {
       sendToGameroom(
-        `${name} attempted to discover the Theory of Irreversibility. But ${personal} failed!`
+        `${name} discovered the Theory of Irreversibility. **All stat changes for both players are halved. HP can no longer be recovered.**`
       );
+      game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility] = true;
     } else {
-      if (!game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility]) {
-        sendToGameroom(
-          `${name} discovered the Theory of Irreversibility. **All stat changes for both players are halved. HP can no longer be recovered.**`
-        );
-        game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility] =
-          true;
-      } else {
-        sendToGameroom(
-          `${name} attempted to discover the Theory of Irreversibility. But seems like it's already been discovered by someone else...`
-        );
-      }
+      sendToGameroom(
+        `${name} attempted to discover the Theory of Irreversibility. But seems like it's already been discovered by someone else...`
+      );
     }
   },
 });
@@ -486,25 +479,19 @@ const theoryOfBalance = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `This card can only be used by Flamme. The Empower level for all card is now equal to the Turn Count. Remove this card from the deck once it is used.`,
+    `The Empower level for all card is now equal to the Turn Count. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cardAction: function (this: Card, { game, name, personal, sendToGameroom }) {
-    if (name !== CharacterName.Flamme) {
+    if (!game.additionalMetadata.flammeTheory[FlammeTheory.Balance]) {
       sendToGameroom(
-        `${name} attempted to discover the Theory of Balance. But ${personal} failed!`
+        `${name} discovered the Theory of Balance. **The Empower level for all card is now equal to the Turn Count.**`
       );
+      game.additionalMetadata.flammeTheory[FlammeTheory.Balance] = true;
     } else {
-      if (!game.additionalMetadata.flammeTheory[FlammeTheory.Balance]) {
-        sendToGameroom(
-          `${name} discovered the Theory of Balance. **The Empower level for all card is now equal to the Turn Count.**`
-        );
-        game.additionalMetadata.flammeTheory[FlammeTheory.Balance] = true;
-      } else {
-        sendToGameroom(
-          `${name} attempted to discover the Theory of Balance. But seems like it's already been discovered by someone else...`
-        );
-      }
+      sendToGameroom(
+        `${name} attempted to discover the Theory of Balance. But seems like it's already been discovered by someone else...`
+      );
     }
   },
 });
@@ -518,25 +505,19 @@ const theoryOfPrescience = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `This card can only be used by Flamme. The roll of the first 4 dices for both players for which cards are active for any given turn will always be 0, 1, 2, 3. Remove this card from the deck once it is used.`,
+    `The roll of the first 4 dices for both players for which cards are active for any given turn will always be 0, 1, 2, 3. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cardAction: function (this: Card, { game, name, personal, sendToGameroom }) {
-    if (name !== CharacterName.Flamme) {
+    if (!game.additionalMetadata.flammeTheory[FlammeTheory.Prescience]) {
       sendToGameroom(
-        `${name} attempted to discover the Theory of Prescience. But ${personal} failed!`
+        `${name} discovered the Theory of Prescience. **The roll of the first 4 dices for both players for which cards are active for any given turn will always be 0, 1, 2, 3.**`
       );
+      game.additionalMetadata.flammeTheory[FlammeTheory.Prescience] = true;
     } else {
-      if (!game.additionalMetadata.flammeTheory[FlammeTheory.Prescience]) {
-        sendToGameroom(
-          `${name} discovered the Theory of Prescience. **The roll of the first 4 dices for both players for which cards are active for any given turn will always be 0, 1, 2, 3.**`
-        );
-        game.additionalMetadata.flammeTheory[FlammeTheory.Prescience] = true;
-      } else {
-        sendToGameroom(
-          `${name} attempted to discover the Theory of Prescience. But seems like it's already been discovered by someone else...`
-        );
-      }
+      sendToGameroom(
+        `${name} attempted to discover the Theory of Prescience. But seems like it's already been discovered by someone else...`
+      );
     }
   },
 });
@@ -550,37 +531,31 @@ const theoryOfSoul = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `This card can only be used by Flamme. Both players swap their own active and discard piles. Remove this card from the deck once it is used.`,
+    `Both players swap their own active and discard piles. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cardAction: function (
     this: Card,
     { game, name, personal, sendToGameroom, self, opponent }
   ) {
-    if (name !== CharacterName.Flamme) {
+    if (!game.additionalMetadata.flammeTheory[FlammeTheory.Soul]) {
       sendToGameroom(
-        `${name} attempted to discover the Theory of Soul. But ${personal} failed!`
+        `${name} discovered the Theory of Soul. **Both players swap their own active and discard piles.**`
       );
-    } else {
-      if (!game.additionalMetadata.flammeTheory[FlammeTheory.Soul]) {
-        sendToGameroom(
-          `${name} discovered the Theory of Soul. **Both players swap their own active and discard piles.**`
-        );
-        game.additionalMetadata.flammeTheory[FlammeTheory.Soul] = true;
+      game.additionalMetadata.flammeTheory[FlammeTheory.Soul] = true;
 
-        [self.deck.activePile, self.deck.discardPile] = [
-          self.deck.discardPile,
-          self.deck.activePile,
-        ];
-        [opponent.deck.activePile, opponent.deck.discardPile] = [
-          opponent.deck.discardPile,
-          opponent.deck.activePile,
-        ];
-      } else {
-        sendToGameroom(
-          `${name} attempted to discover the Theory of Soul. But seems like it's already been discovered by someone else...`
-        );
-      }
+      [self.deck.activePile, self.deck.discardPile] = [
+        self.deck.discardPile,
+        self.deck.activePile,
+      ];
+      [opponent.deck.activePile, opponent.deck.discardPile] = [
+        opponent.deck.discardPile,
+        opponent.deck.activePile,
+      ];
+    } else {
+      sendToGameroom(
+        `${name} attempted to discover the Theory of Soul. But seems like it's already been discovered by someone else...`
+      );
     }
   },
 });
