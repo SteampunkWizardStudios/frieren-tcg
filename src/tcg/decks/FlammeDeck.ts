@@ -360,7 +360,7 @@ const flammesNote = new Card({
   effects: [8],
   cardAction: function (
     this: Card,
-    { self, game, messageCache, name, characterName, personal, sendToGameroom }
+    { self, game, messageCache, name, characterName, personal, selfStat, sendToGameroom }
   ) {
     const isFlamme = characterName === CharacterName.Flamme;
     if (isFlamme) {
@@ -371,6 +371,7 @@ const flammesNote = new Card({
       );
     }
     self.discardRandomCard();
+    selfStat(0, StatsEnum.HP, game);
 
     // collect theory
     const theoriesIndices: Array<[Card[], number]> = [];
