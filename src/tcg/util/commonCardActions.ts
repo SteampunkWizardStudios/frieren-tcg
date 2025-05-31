@@ -1,5 +1,6 @@
 import Game from "@tcg/game";
 import TimedEffect from "@tcg/timedEffect";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 
 export default class CommonCardAction {
   // common attack function that returns the attack's damage
@@ -52,5 +53,32 @@ export default class CommonCardAction {
     } else {
       character.timedEffects.push(newTimedEffect);
     }
+  }
+
+  // function used by sorganeil and sleep to remove opponent's timed effect
+  static removeCharacterTimedEffect(
+    game: Game,
+    characterIndex: number,
+    messageCache: MessageCache
+  ) {
+    const character = game.getCharacter(characterIndex);
+    const newTimedEffects: TimedEffect[] = [];
+    character.timedEffects.map((timedEffect) => {
+      if (!timedEffect.metadata.removableBySorganeil) {
+        newTimedEffects.push(timedEffect);
+      } else {
+        if (
+          timedEffect.executeEndOfTimedEffectActionOnRemoval &&
+          timedEffect.endOfTimedEffectAction
+        ) {
+          timedEffect.endOfTimedEffectAction(
+            game,
+            1 - characterIndex,
+            messageCache
+          );
+        }
+      }
+    });
+    character.timedEffects = newTimedEffects;
   }
 }

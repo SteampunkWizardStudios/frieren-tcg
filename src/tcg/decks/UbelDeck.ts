@@ -293,24 +293,11 @@ export const sorganeil = new Card({
       TCGThread.Gameroom
     );
 
-    const newTimedEffects: TimedEffect[] = [];
-    opponent.timedEffects.map((timedEffect) => {
-      if (!timedEffect.metadata.removableBySorganeil) {
-        newTimedEffects.push(timedEffect);
-      } else {
-        if (
-          timedEffect.executeEndOfTimedEffectActionOnRemoval &&
-          timedEffect.endOfTimedEffectAction
-        ) {
-          timedEffect.endOfTimedEffectAction(
-            game,
-            1 - characterIndex,
-            messageCache
-          );
-        }
-      }
-    });
-    opponent.timedEffects = newTimedEffects;
+    CommonCardAction.removeCharacterTimedEffect(
+      game,
+      1 - characterIndex,
+      messageCache
+    );
 
     character.timedEffects.push(
       new TimedEffect({

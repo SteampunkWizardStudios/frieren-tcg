@@ -42,7 +42,7 @@ export default class Game {
         0: 1,
         1: 1,
       },
-      currentDraws: {},
+      currentPlayableMoves: {},
       lastUsedCards: {},
       forfeited: {
         0: false,

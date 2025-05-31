@@ -5,6 +5,7 @@ import { CardEmoji } from "@tcg/formatting/emojis";
 import { CharacterName } from "../characters/metadata/CharacterName";
 import { GameMessageContext } from "../gameContextProvider";
 import mediaLinks from "../formatting/mediaLinks";
+import CommonCardAction from "../util/commonCardActions";
 
 export const tacticalRetreat = new Card({
   title: "Tactical Retreat",
@@ -126,6 +127,9 @@ export const emergencyDefensiveBarrier = new Card({
   effects: [20],
   emoji: CardEmoji.WIRBEL_CARD,
   priority: 2,
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_emergencyDefensiveBarrier_gif,
+  },
   cardAction: function (
     this: Card,
     { game, self, name, selfStat, sendToGameroom, calcEffect }
@@ -309,20 +313,11 @@ export const perfectSorganeil = new Card({
     const opponentOriginalSpeedDiff = opponentStats.SPD - 1;
     flatOpponentStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD, game);
 
-    const newTimedEffects: TimedEffect[] = [];
-    opponent.timedEffects.map((timedEffect) => {
-      if (!timedEffect.metadata.removableBySorganeil) {
-        newTimedEffects.push(timedEffect);
-      } else {
-        if (
-          timedEffect.executeEndOfTimedEffectActionOnRemoval &&
-          timedEffect.endOfTimedEffectAction
-        ) {
-          timedEffect.endOfTimedEffectAction(game, opponentIndex, messageCache);
-        }
-      }
-    });
-    opponent.timedEffects = newTimedEffects;
+    CommonCardAction.removeCharacterTimedEffect(
+      game,
+      opponentIndex,
+      messageCache
+    );
 
     self.timedEffects.push(
       new TimedEffect({

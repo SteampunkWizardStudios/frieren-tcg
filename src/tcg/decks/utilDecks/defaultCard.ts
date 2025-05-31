@@ -16,7 +16,7 @@ export default class DefaultCards {
       self.adjustStat(1, StatsEnum.SPD, game);
 
       const handsIndicesDescending = Object.keys(
-        game.additionalMetadata.currentDraws[selfIndex]
+        game.additionalMetadata.currentPlayableMoves[selfIndex]
       )
         .map((stringIndex: string) => parseInt(stringIndex))
         .filter((a) => a < 6)

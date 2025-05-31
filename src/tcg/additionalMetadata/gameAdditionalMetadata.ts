@@ -17,7 +17,7 @@ export type GameAdditionalMetadata = {
   attackMissed: Record<number, boolean>;
   attackCountered: Record<number, boolean>;
   attackModifier: Record<number, number>;
-  currentDraws: Record<number, Record<string, Card>>;
+  currentPlayableMoves: Record<number, Record<string, Card>>;
   lastUsedCards: Record<number, Card>;
   forfeited: Record<number, boolean>;
   flammeTheory: Record<FlammeTheory, boolean>;

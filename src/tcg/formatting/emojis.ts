@@ -94,6 +94,7 @@ export enum CardEmoji {
   DONUT_CARD = "<:DonutCard:1365436094191239228>",
   JUMBO_BERRY_CARD = "<:IceCreamCard:1365436733088596048>",
   ROOST_CARD = "<:NestCard:1365437097481343027>",
+  EDEL_STATUS_CARD = "<:EdelStatusCard:1378404191159976138>",
 }
 
 export enum ProgressBarEmoji {

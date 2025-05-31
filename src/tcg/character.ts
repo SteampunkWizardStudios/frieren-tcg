@@ -124,6 +124,34 @@ export default class Character {
     return this.discardCard(randomIndex);
   }
 
+  // remove the first occurrence of a card
+  removeCard(card: Card): boolean {
+    const cardHandIndex = this.hand.indexOf(card);
+    if (cardHandIndex !== -1) {
+      this.hand.splice(cardHandIndex, 1);
+      this.drawCard();
+      return true;
+    } else {
+      const discardPileIndex = this.deck.discardPile.indexOf(card);
+      if (discardPileIndex !== -1) {
+        this.deck.discardPile.splice(discardPileIndex, 1);
+        return true;
+      } else {
+        const activePileIndex = this.deck.activePile.indexOf(card);
+        if (activePileIndex !== -1) {
+          this.deck.activePile.splice(activePileIndex, 1);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  }
+
+  getAllCards(): Card[] {
+    return this.hand.concat(this.deck.activePile).concat(this.deck.discardPile);
+  }
+
   getUsableCardsForRound(
     channel: TCGThread,
     game: Game,

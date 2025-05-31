@@ -15,6 +15,8 @@ import { handleCharacterSelection } from "@src/tcgChatInteractions/handleCharact
 import { getPlayer } from "@src/util/db/getPlayer";
 import { getPlayerPreferences } from "@src/util/db/preferences";
 import { formatAbility } from "@src/tcg/ability";
+import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
+import { edelStatusCards } from "@src/tcg/decks/utilDecks/edelStatuses";
 
 export async function showCharacterInfo(
   interaction: ChatInputCommandInteraction
@@ -103,6 +105,22 @@ export async function showCharacterInfo(
                 };
               })
             );
+
+          if (char.characterName === CharacterName.Edel) {
+            characterEmbed
+              .addFields({
+                name: "Edel's Status Cards",
+                value: "",
+              })
+              .addFields(
+                edelStatusCards.map((card: Card) => {
+                  return {
+                    name: `${card.emoji} **${card.title}** `,
+                    value: `${card.getDescription()}`,
+                  };
+                })
+              );
+          }
 
           await i.update({
             embeds: [characterEmbed],

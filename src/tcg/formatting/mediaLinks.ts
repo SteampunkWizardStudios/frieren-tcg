@@ -114,6 +114,8 @@ const wirbelCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1378124835984507071/GIF_2194611837.gif?ex=683b7645&is=683a24c5&hm=59a1ddac5b8a79067a0bbbab32462850c302f3fc2043645fc3cda2b42020917f&",
   wirbel_captainsOrder_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1378130084178694315/GIF_1598346001.gif?ex=683b7b28&is=683a29a8&hm=e06d2c3811dbcb30eb34d3641d01a7eba34dc248592a6ecf3069150b3c4ec69c&",
+  wirbel_emergencyDefensiveBarrier_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378420634744520715/GIF_2221307157.gif?ex=683c89c1&is=683b3841&hm=ff9319b4c60221662111d74c362046307caffd0f9c6bc8025a63ebafa5f273bb&",
 } as const;
 
 const flammeCardLinks = {
@@ -125,6 +127,9 @@ const flammeCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1378383008490324131/GIF_0325338485.gif?ex=683c66b6&is=683b1536&hm=562c173fc7ca82e93ee4ca409c850979dd377fec0860a49594bc7bba0070c1dd&",
   flamme_sanctuary_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1378383622318592072/GIF_0295228606.gif?ex=683c6748&is=683b15c8&hm=e68662933a2ce8c0f5c4f8a6ec1ee382231dc520b70a31558636f592c3684120&",
+  flamme_seduction_gif: "https://c.tenor.com/EC6mBMhIRugAAAAC/tenor.gif",
+  flamme_theory_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378420857839554651/GIF_0406338443.gif?ex=683c89f6&is=683b3876&hm=9a8cdeafacbf67abd81c32ecbb32a415dec4c65e78654cf2eb11c40802d80df0&",
 };
 
 const mediaLinks = {
