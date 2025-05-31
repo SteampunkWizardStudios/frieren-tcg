@@ -44,7 +44,7 @@ const incantationExperimentalNotes = new Card({
   title: "Incantation: Experimental Notes",
   cardMetadata: { nature: Nature.Util },
   description: ([hp]) =>
-    `Heal ${hp} HP. Gain 2 Sigils. If you have less than 2 Flamme's Note cards in your hand, discard a random card, add 1 Flamme's Note from the active or discard pile to your hand.`,
+    `Heal ${hp} HP. Gain 3 Sigils. If you have less than 2 Flamme's Note cards in your hand, discard a random card, add 1 Flamme's Note from the active or discard pile to your hand.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [5],
   cardAction: function (this: Card, context) {
@@ -59,7 +59,7 @@ const incantationExperimentalNotes = new Card({
     } = context;
     sendToGameroom(`${name} experiments with ${possessive} findings.`);
     selfStat(0, StatsEnum.HP, game);
-    incantationIncreaseSigil(self, messageCache, 2);
+    incantationIncreaseSigil(self, messageCache, 3);
 
     const flammesNoteCount = self.hand.filter(
       (card) => card.cardMetadata.isFlammesNote
@@ -143,7 +143,7 @@ const incantationSeductionTechnique = new Card({
   title: "Incantation: Seduction Technique",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, oppAtkDecrease, oppSpdDecrease]) =>
-    `Heal ${hp} HP. Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}. Gain 1 Sigil.`,
+    `Heal ${hp} HP. Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}. Gain 2 Sigils.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [3, 2, 1],
   cardAction: function (this: Card, context) {
@@ -161,7 +161,7 @@ const incantationSeductionTechnique = new Card({
     opponentStat(1, StatsEnum.ATK, game, -1);
     opponentStat(2, StatsEnum.SPD, game, -1);
 
-    incantationIncreaseSigil(self, messageCache, 1);
+    incantationIncreaseSigil(self, messageCache, 2);
   },
 });
 
