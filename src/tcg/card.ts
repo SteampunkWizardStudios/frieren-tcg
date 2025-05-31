@@ -20,21 +20,6 @@ type CardMetadata = {
   nature: Nature;
   seriePool?: "Common" | "Rare" | "Ultra-rare";
   signature?: boolean;
-  analysis?: number;
-  postAnalysis?: number;
-  resolve?: number;
-  teaTime?: number;
-  theory?: boolean;
-
-  heiter?: boolean;
-  eisen?: boolean;
-  frieren?: boolean;
-
-  waldgoseDamage?: number;
-  signatureMoveOf?: CharacterName;
-  ubelFailureRate?: number;
-  isEhreDoragate?: boolean;
-
   empathized?: boolean;
   imitated?: boolean;
   temporary?: boolean;
@@ -42,6 +27,28 @@ type CardMetadata = {
   hidePriority?: boolean;
   hideHpCost?: boolean;
   hideEmpower?: boolean;
+
+  analysis?: number;
+  postAnalysis?: number;
+
+  resolve?: number;
+
+  teaTime?: number;
+
+  heiter?: boolean;
+  eisen?: boolean;
+  frieren?: boolean;
+
+  waldgoseDamage?: number;
+
+  signatureMoveOf?: CharacterName;
+  ubelFailureRate?: number;
+
+  isEhreDoragate?: boolean;
+
+  theory?: boolean;
+  isFlammesNote?: boolean;
+  isPinnacle?: boolean;
 };
 
 export type CardProps = {

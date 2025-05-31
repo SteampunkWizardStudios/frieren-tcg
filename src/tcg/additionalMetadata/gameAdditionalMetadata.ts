@@ -7,6 +7,12 @@ export enum FlammeTheory {
   Soul = "Soul",
 }
 
+export enum FlammeResearch {
+  MilleniumBarrier = "Millenium Barrier",
+  ThousandYearSanctuary = "Thousand Year Sanctuary",
+  TreeOfLife = "Tree of Life",
+}
+
 export type GameAdditionalMetadata = {
   attackMissed: Record<number, boolean>;
   attackCountered: Record<number, boolean>;
@@ -15,4 +21,5 @@ export type GameAdditionalMetadata = {
   lastUsedCards: Record<number, Card>;
   forfeited: Record<number, boolean>;
   flammeTheory: Record<FlammeTheory, boolean>;
+  flammeResearch: Record<number, Record<FlammeResearch, boolean>>;
 };

@@ -82,7 +82,7 @@ const Flamme = new CharacterData({
           TCGThread.Gameroom
         );
         messageCache.push(
-          "*Pinnacle of Humanity's Magic* is added to the character's Discard pile.",
+          `*Pinnacle of Humanity's Magic* has been added to ${character.name}'s Discard pile.`,
           TCGThread.Gameroom
         );
         character.deck.discardPile.push(a_pinnacleOfHumanitysMagic.clone());

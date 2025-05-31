@@ -1,6 +1,7 @@
 import Card from "@tcg/card";
 import Character from "@tcg/character";
 import {
+  FlammeResearch,
   FlammeTheory,
   GameAdditionalMetadata,
 } from "@tcg/additionalMetadata/gameAdditionalMetadata";
@@ -52,6 +53,18 @@ export default class Game {
         [FlammeTheory.Balance]: false,
         [FlammeTheory.Prescience]: false,
         [FlammeTheory.Soul]: false,
+      },
+      flammeResearch: {
+        0: {
+          [FlammeResearch.MilleniumBarrier]: false,
+          [FlammeResearch.ThousandYearSanctuary]: false,
+          [FlammeResearch.TreeOfLife]: false,
+        },
+        1: {
+          [FlammeResearch.MilleniumBarrier]: false,
+          [FlammeResearch.ThousandYearSanctuary]: false,
+          [FlammeResearch.TreeOfLife]: false,
+        },
       },
     };
     this.turnCount = 0;

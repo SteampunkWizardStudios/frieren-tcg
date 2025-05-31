@@ -17,6 +17,7 @@ import { User } from "discord.js";
 import Game from "./game";
 import { CharacterName } from "./characters/metadata/CharacterName";
 import { DENKEN_DEATH_HP } from "./characters/characterData/characters/Denken";
+import { FlammeResearch } from "./additionalMetadata/gameAdditionalMetadata";
 
 export interface CharacterProps {
   characterData: CharacterData;
@@ -101,6 +102,11 @@ export default class Character {
     }
   }
 
+  discardRandomCard(): Card {
+    const randomIndex = Math.floor(Math.random() * this.hand.length);
+    return this.discardCard(randomIndex);
+  }
+
   // discard a card and empower all other cards in hand
   playCard(handIndex: number): Card {
     const discardedCard = this.discardCard(handIndex);
@@ -139,8 +145,23 @@ export default class Character {
     let rolls = [];
     if (game.additionalMetadata.flammeTheory.Prescience) {
       rolls = [0, 1, 2, 3];
+      if (
+        game.additionalMetadata.flammeResearch[characterIndex][
+          FlammeResearch.TreeOfLife
+        ]
+      ) {
+        rolls.push(4);
+      }
     } else {
-      for (let i = 0; i < 4; i++) {
+      let rollCount = 4;
+      if (
+        game.additionalMetadata.flammeResearch[characterIndex][
+          FlammeResearch.TreeOfLife
+        ]
+      ) {
+        rollCount += 1;
+      }
+      for (let i = 0; i < rollCount; i++) {
         rolls.push(Rolls.rollD6());
       }
     }
@@ -196,12 +217,12 @@ export default class Character {
     let roundedAdjustValue = roundedInitialAdjustValue;
     if (game.additionalMetadata.flammeTheory.Irreversibility) {
       if (stat !== StatsEnum.Ability) {
+        roundedAdjustValue /= 2;
+
         if (stat === StatsEnum.HP) {
           if (roundedAdjustValue > 0) {
             roundedAdjustValue = 0;
           }
-        } else {
-          roundedAdjustValue /= 2;
         }
       }
     }
