@@ -2,6 +2,7 @@ export enum CharacterName {
   Denken = "Denken",
   Edel = "Edel",
   Fern = "Fern",
+  Flamme = "Flamme",
   Frieren = "Frieren",
   Himmel = "Himmel",
   Laufen = "Laufen",
@@ -13,5 +14,4 @@ export enum CharacterName {
   Stille = "Stille",
   Ubel = "Übel",
   Wirbel = "Wirbel",
-  Flamme = "Flamme",
 }
