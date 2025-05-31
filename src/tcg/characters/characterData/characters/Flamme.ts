@@ -16,6 +16,7 @@ export const a_pinnacleOfHumanitysMagic = new Card({
   description: ([stat]) =>
     `ATK+${stat} DEF+${stat} SPD+${stat}. Deal ${stat} DMG.`,
   emoji: CardEmoji.FLAMME_CARD,
+  priority: 100,
   effects: [100],
   cardAction: function (
     this: Card,
@@ -51,7 +52,7 @@ const Flamme = new CharacterData({
   cards: flammeDeck,
   ability: {
     abilityName: "Founder of Humanity's Magic",
-    abilityEffectString: `After playing 4 Theory cards, add 1 "Pinnacle of Humanity's Magic" to your Discard pile.\n*Pinnacle of Humanity's Magic*: ATK+**100** DEF+**100** SPD+**100**. Deal **100** DMG.`,
+    abilityEffectString: `After playing 4 Theory cards, add 1 "Pinnacle of Humanity's Magic" to your Discard pile.\n*Pinnacle of Humanity's Magic*: Priority+100. ATK+**100** DEF+**100** SPD+**100**. Deal **100** DMG.`,
     subAbilities: [
       {
         name: "Deceitful",
