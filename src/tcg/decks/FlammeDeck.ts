@@ -169,7 +169,7 @@ const milleniumBarrier = new Card({
   title: "Millenium Barrier",
   cardMetadata: { nature: Nature.Util },
   description: ([def, spd]) =>
-    `DEF+${def} and SPD+${spd}. If Theory of Irreversibilty is active, all opponent's stat changes are set to 0. At the end of every turn, HP-3, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
+    `DEF+${def} and SPD+${spd}. If Theory of Irreversibilty is active, all opponent's stat increases are set to 0. At the end of every turn, HP-3, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [5, 5],
   cardAction: function (
@@ -190,7 +190,7 @@ const milleniumBarrier = new Card({
     self.timedEffects.push(
       new TimedEffect({
         name: "Millenium Barrier",
-        description: `DEF+${defIncrease}. SPD+${spdIncrease}. If Theory of Irreversibilty is active, all opponent's stat changes are set to 0.`,
+        description: `DEF+${defIncrease}. SPD+${spdIncrease}. If Theory of Irreversibilty is active, all opponent's stat increases are set to 0.`,
         turnDuration: sigilCount,
         metadata: { removableBySorganeil: true },
         executeEndOfTimedEffectActionOnRemoval: true,

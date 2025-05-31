@@ -220,7 +220,7 @@ export default class Character {
     let roundedAdjustValue = roundedInitialAdjustValue;
     if (game.additionalMetadata.flammeTheory.Irreversibility) {
       if (stat !== StatsEnum.Ability) {
-        if (this.additionalMetadata.opponentMilleniumBarrierActive) {
+        if (this.additionalMetadata.opponentMilleniumBarrierActive && roundedAdjustValue > 0) {
           roundedAdjustValue = 0;
         } else {
           roundedAdjustValue /= 2;
