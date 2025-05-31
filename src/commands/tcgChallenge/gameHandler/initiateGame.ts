@@ -2,6 +2,7 @@ import {
   ChannelType,
   ChatInputCommandInteraction,
   EmbedBuilder,
+  MessageType,
   PrivateThreadChannel,
   PublicThreadChannel,
   TextChannel,
@@ -33,10 +34,29 @@ export const initiateGame = async (
       const gameThread = (await channel.threads.create({
         name: `${ranked ? "Ranked " : ""}TCG Game Thread: ${challenger.displayName} vs ${opponent.displayName} (ID: ${gameId})`,
         autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-        type: ChannelType.PublicThread,
       })) as PublicThreadChannel<false>;
       await gameThread.members.add(challenger.id);
       await gameThread.members.add(opponent.id);
+
+      (async () => {
+        try {
+          const messages = await channel.messages.fetch({
+            limit: 10,
+            after: gameId,
+          });
+          const systemMessage = messages.find(
+            (msg) =>
+              msg.type === MessageType.ThreadCreated &&
+              msg.author.id === interaction.client.user.id
+          );
+
+          if (systemMessage) {
+            await systemMessage.delete();
+          }
+        } catch (error) {
+          console.error("Failed to delete system message:", error);
+        }
+      })();
 
       const challengerThread = (await channel.threads.create({
         name: `TCG Move Select: ${challenger.displayName}'s Move Selection Thread (ID: ${gameId})`,
