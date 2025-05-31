@@ -313,12 +313,13 @@ export const perfectSorganeil = new Card({
     opponent.timedEffects.map((timedEffect) => {
       if (!timedEffect.metadata.removableBySorganeil) {
         newTimedEffects.push(timedEffect);
-      }
-      if (
-        timedEffect.executeEndOfTimedEffectActionOnRemoval &&
-        timedEffect.endOfTimedEffectAction
-      ) {
-        timedEffect.endOfTimedEffectAction(game, opponentIndex, messageCache);
+      } else {
+        if (
+          timedEffect.executeEndOfTimedEffectActionOnRemoval &&
+          timedEffect.endOfTimedEffectAction
+        ) {
+          timedEffect.endOfTimedEffectAction(game, opponentIndex, messageCache);
+        }
       }
     });
     opponent.timedEffects = newTimedEffects;

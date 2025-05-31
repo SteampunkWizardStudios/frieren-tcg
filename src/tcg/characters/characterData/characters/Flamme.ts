@@ -9,6 +9,7 @@ import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import Game from "@src/tcg/game";
 import Card, { Nature } from "@src/tcg/card";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import TimedEffect from "@src/tcg/timedEffect";
 
 export const a_pinnacleOfHumanitysMagic = new Card({
   title: "Pinnacle of Humanity's Magic",
@@ -88,6 +89,29 @@ const Flamme = new CharacterData({
         );
         character.deck.discardPile.push(a_pinnacleOfHumanitysMagic.clone());
         character.setStat(99, StatsEnum.Ability);
+      }
+
+      // sigil timed effects cleanup
+      character.additionalMetadata.flammeSigil ??= 0;
+      if (character.additionalMetadata.flammeSigil <= 0) {
+        const newTimedEffects: TimedEffect[] = [];
+        character.timedEffects.map((timedEffect) => {
+          if (!timedEffect.metadata.consumesFlammeSigil) {
+            newTimedEffects.push(timedEffect);
+          } else {
+            if (
+              timedEffect.executeEndOfTimedEffectActionOnRemoval &&
+              timedEffect.endOfTimedEffectAction
+            ) {
+              timedEffect.endOfTimedEffectAction(
+                game,
+                characterIndex,
+                messageCache
+              );
+            }
+          }
+        });
+        character.timedEffects = newTimedEffects;
       }
     },
   },

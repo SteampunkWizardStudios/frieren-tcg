@@ -297,16 +297,17 @@ export const sorganeil = new Card({
     opponent.timedEffects.map((timedEffect) => {
       if (!timedEffect.metadata.removableBySorganeil) {
         newTimedEffects.push(timedEffect);
-      }
-      if (
-        timedEffect.executeEndOfTimedEffectActionOnRemoval &&
-        timedEffect.endOfTimedEffectAction
-      ) {
-        timedEffect.endOfTimedEffectAction(
-          game,
-          1 - characterIndex,
-          messageCache
-        );
+      } else {
+        if (
+          timedEffect.executeEndOfTimedEffectActionOnRemoval &&
+          timedEffect.endOfTimedEffectAction
+        ) {
+          timedEffect.endOfTimedEffectAction(
+            game,
+            1 - characterIndex,
+            messageCache
+          );
+        }
       }
     });
     opponent.timedEffects = newTimedEffects;

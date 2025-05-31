@@ -43,6 +43,8 @@ type TimedEffectMetadata = {
   wirbelIsTacticalRetreat?: boolean;
 
   ubelSpeedModifiers?: number;
+
+  consumesFlammeSigil?: boolean;
 };
 
 const defaultMetadata: TimedEffectMetadata = {

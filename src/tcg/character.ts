@@ -98,7 +98,7 @@ export default class Character {
       const discardedCard = this.hand.splice(handIndex, 1)[0];
       if (!playedCard || !discardedCard.cardMetadata.removeOnPlay) {
         this.deck.discardCard(discardedCard);
-      };
+      }
 
       const pushDiscardMessage = (message: string) => {
         this.messageCache.push(message, this.characterThread);
@@ -107,7 +107,7 @@ export default class Character {
             `${this.name}: ${message}`,
             TCGThread.Gameroom
           );
-        };
+        }
       };
 
       const discardMessage = `Discarded ${discardedCard.title} + ${discardedCard.empowerLevel}`;
