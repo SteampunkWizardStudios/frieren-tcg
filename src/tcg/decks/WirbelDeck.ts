@@ -126,6 +126,9 @@ export const emergencyDefensiveBarrier = new Card({
   effects: [20],
   emoji: CardEmoji.WIRBEL_CARD,
   priority: 2,
+  cosmetic: {
+    cardGif: mediaLinks.wirbel_emergencyDefensiveBarrier_gif,
+  },
   cardAction: function (
     this: Card,
     { game, self, name, selfStat, sendToGameroom, calcEffect }

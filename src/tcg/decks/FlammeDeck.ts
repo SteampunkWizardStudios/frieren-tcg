@@ -167,6 +167,9 @@ const incantationSeductionTechnique = new Card({
     `Heal ${hp} HP. Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}. Gain 3 Sigils.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [3, 2, 1],
+  cosmetic: {
+    cardGif: mediaLinks.flamme_seduction_gif,
+  },
   cardAction: function (this: Card, context) {
     const {
       self,

@@ -244,7 +244,6 @@ export const tcgMain = async (
     }
 
     // display playable cards
-    const characterToPlayableMoveMap: Record<number, Record<string, Card>> = {};
     const characterToDetailsString: Record<
       number,
       { draw: string; hand: string }
@@ -284,16 +283,14 @@ export const tcgMain = async (
           game,
           index
         );
-        characterToPlayableMoveMap[index] = currUsableCards;
 
         // executeAfterCardRolls, but before display to ensure the player sees the effects
-        game.characters.forEach((char, index) => {
-          char.timedEffects.forEach((timedEffect) => {
-            if (timedEffect.executeAfterCardRolls) {
-              const context = timedEffectContext(game, index, messageCache);
-              timedEffect.executeAfterCardRolls(context);
-            }
-          });
+        game.additionalMetadata.currentPlayableMoves[index] = currUsableCards;
+        character.timedEffects.forEach((timedEffect) => {
+          if (timedEffect.executeAfterCardRolls) {
+            const context = timedEffectContext(game, index, messageCache);
+            timedEffect.executeAfterCardRolls(context);
+          }
         });
 
         await sendToThread(
@@ -368,20 +365,18 @@ export const tcgMain = async (
     }
 
     // move selection step
-    game.additionalMetadata.currentDraws = characterToPlayableMoveMap;
-
     const challengerSelectedMovePromise = playSelectedMove(
       challenger,
       challengerThread,
       game.characters[0],
-      characterToPlayableMoveMap[0],
+      game.additionalMetadata.currentPlayableMoves[0],
       gameSettings.turnDurationSeconds
     );
     const opponentSelectedMovePromise = playSelectedMove(
       opponent,
       opponentThread,
       game.characters[1],
-      characterToPlayableMoveMap[1],
+      game.additionalMetadata.currentPlayableMoves[1],
       gameSettings.turnDurationSeconds
     );
     const [challengerSelectedMove, opponentSelectedMove] = await Promise.all([
@@ -499,7 +494,9 @@ export const tcgMain = async (
 
     // run effects for unplayed playable cards
     game.characters.forEach((_, index) => {
-      const playableCards = Object.values(characterToPlayableMoveMap[index]);
+      const playableCards = Object.values(
+        game.additionalMetadata.currentPlayableMoves[index]
+      );
       const selectedCard = characterToSelectedMoveMap[index];
       playableCards.forEach((card) => {
         if (card !== selectedCard && card.onNotPlayed) {

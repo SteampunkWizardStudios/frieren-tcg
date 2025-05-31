@@ -21,8 +21,11 @@ const pushStatus = (opponent: Character, self: Character, card: Card) => {
   self.additionalMetadata.forcedDiscards++;
 };
 
-const getHighestEmpower = (game: Game, characterIndex: number) => {
-  const currentDraws = game.additionalMetadata.currentDraws;
+const getHighestEmpowerFromCurrentDraws = (
+  game: Game,
+  characterIndex: number
+) => {
+  const currentDraws = game.additionalMetadata.currentPlayableMoves;
   const possible = currentDraws[characterIndex];
 
   return Object.entries(possible).reduce<[string, Card]>(
@@ -134,7 +137,7 @@ const mental_fog = new Card({
     calcEffect,
   }) => {
     sendToGameroom(
-      `${name} hypnotizes ${opponent.name} and ${opponent.cosmetic.pronouns.personal} starts to blank out.`
+      `${name} hypnotizes ${opponent.name}. ${opponent.name} starts blanking out.`
     );
     opponentStat(0, StatsEnum.SPD, game, -1);
     redrawRandom(opponent, self);
@@ -145,15 +148,24 @@ const mental_fog = new Card({
     opponent.timedEffects.push(
       new TimedEffect({
         name: "Mental Fog",
-        description: `The highest empowered card you draw will cost ${cost} additional HP for the next 5 turns.`,
-        turnDuration: 5,
+        description: `The highest empowered card you draw costs ${cost} additional HP.`,
+        turnDuration: 6,
+        activateEndOfTurnActionThisTurn: false,
         executeAfterCardRolls: ({ game, selfIndex }) => {
-          const highestEmpoweredCard = getHighestEmpower(game, selfIndex);
+          const highestEmpoweredCard = getHighestEmpowerFromCurrentDraws(
+            game,
+            selfIndex
+          );
           highestEmpoweredCard.hpCost += cost;
+          console.log(highestEmpoweredCard);
         },
         endOfTurnAction: (game, characterIndex) => {
-          const highestEmpoweredCard = getHighestEmpower(game, characterIndex);
+          const highestEmpoweredCard = getHighestEmpowerFromCurrentDraws(
+            game,
+            characterIndex
+          );
           highestEmpoweredCard.hpCost -= cost;
+          console.log(highestEmpoweredCard);
         },
       })
     );
@@ -252,7 +264,7 @@ const kneel = new Card({
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
   description: ([dmg]) =>
-    `DMG ${dmg} + three per each card you've forced your opponent to discard this match. Ignores defense. At the end of the turn, if your opponent has forcibly discarded over 10 cards, and have Sleepy, Mesmerized and Weakened in their hand, active or discard pile, they lose.`,
+    `DMG ${dmg} + Forced Discards x 3. Ignores defense. At the end of the turn, if your opponent has forcibly discarded over 10 cards, and have Sleepy, Mesmerized and Weakened in their deck, they lose.`,
   effects: [10],
   hpCost: 10,
   cosmetic: {
@@ -291,7 +303,7 @@ const kneel = new Card({
 const edelDeck = [
   { card: telekinesis, count: 2 },
   { card: one_step_ahead, count: 2 },
-  { card: mental_fog, count: 2 },
+  { card: mental_fog, count: 200 },
   { card: clear_mind, count: 2 },
   { card: hypnosis_sleep, count: 2 },
   { card: hypnosis_mesmerize, count: 2 },
