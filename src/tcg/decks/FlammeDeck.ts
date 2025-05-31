@@ -215,9 +215,9 @@ const milleniumBarrier = new Card({
             sendToGameroom("The legacy of someone long gone remains unbroken.");
           } else {
             sendToGameroom("The barrier crumbles. It is yet strong enough.");
-            flatSelfStat(defIncrease, StatsEnum.ATK, game, -1);
-            flatSelfStat(spdIncrease, StatsEnum.SPD, game, -1);
           }
+          flatSelfStat(defIncrease, StatsEnum.ATK, game, -1);
+          flatSelfStat(spdIncrease, StatsEnum.SPD, game, -1);
           game.additionalMetadata.flammeResearch[selfIndex][
             FlammeResearch.MilleniumBarrier
           ] = false;
@@ -233,7 +233,7 @@ const thousandYearSanctuary = new Card({
   description: ([oppAtkDecrease, oppSpdDecrease]) =>
     `Opp's ATK-${oppAtkDecrease} and SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing. At the end of every turn, HP-2, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [3, 3],
+  effects: [5, 5],
   cardAction: function (
     this: Card,
     {
@@ -286,10 +286,9 @@ const thousandYearSanctuary = new Card({
             sendToGameroom("The sanctuary watches quietly over the land.");
           } else {
             sendToGameroom("The sanctuary collapses. It is yet strong enough.");
-            flatOpponentStat(oppAtkDecrease, StatsEnum.ATK, game);
-            flatOpponentStat(oppSpdDecrease, StatsEnum.SPD, game);
           }
-
+          flatOpponentStat(oppAtkDecrease, StatsEnum.ATK, game);
+          flatOpponentStat(oppSpdDecrease, StatsEnum.SPD, game);
           game.additionalMetadata.flammeResearch[selfIndex][
             FlammeResearch.ThousandYearSanctuary
           ] = false;
@@ -355,13 +354,13 @@ const treeOfLife = new Card({
 const flammesNote = new Card({
   title: "Flamme's Note",
   cardMetadata: { nature: Nature.Util, isFlammesNote: true, hideEmpower: true },
-  description: () =>
-    `Discard a random card. If there is no Theory card in your deck, draw 1 card. Otherwise, add a random Theory card to your hand, and if Theory of Souls is not active, -1 Sigil.`,
+  description: ([hp]) =>
+    `HP+${hp}. Discard a random card. If there is no Theory card in your deck, draw 1 card. Otherwise, add a random Theory card to your hand, and if Theory of Souls is not active, -1 Sigil.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [],
+  effects: [8],
   cardAction: function (
     this: Card,
-    { self, game, messageCache, name, characterName, sendToGameroom }
+    { self, game, messageCache, name, characterName, personal, sendToGameroom }
   ) {
     const isFlamme = characterName === CharacterName.Flamme;
     if (isFlamme) {
@@ -400,6 +399,9 @@ const flammesNote = new Card({
         researchDecreaseSigil(self, messageCache, 1);
       }
     } else {
+      sendToGameroom(
+        `It doesn't seem like ${personal} found anything ${personal} doesn't already know. ${name} draws 1 card.`
+      );
       self.drawCard();
     }
   },
@@ -453,13 +455,13 @@ const theoryOfIrreversibility = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `All stat changes for both players are halved. HP can no longer be recovered. Remove this card from the deck once it is used.`,
+    `All stat changes for both players are halved. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cardAction: function (this: Card, { game, name, personal, sendToGameroom }) {
     if (!game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility]) {
       sendToGameroom(
-        `${name} discovered the Theory of Irreversibility. **All stat changes for both players are halved. HP can no longer be recovered.**`
+        `${name} discovered the Theory of Irreversibility. **All stat changes for both players are halved.**`
       );
       game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility] = true;
     } else {

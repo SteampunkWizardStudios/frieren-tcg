@@ -227,12 +227,6 @@ export default class Character {
           roundedAdjustValue = 0;
         } else {
           roundedAdjustValue /= 2;
-
-          if (stat === StatsEnum.HP) {
-            if (roundedAdjustValue > 0) {
-              roundedAdjustValue = 0;
-            }
-          }
         }
       }
     }
