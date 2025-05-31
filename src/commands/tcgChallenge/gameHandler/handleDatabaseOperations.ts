@@ -1,27 +1,43 @@
-import { EmbedBuilder, User, type ThreadChannel } from "discord.js";
+import { User, type ThreadChannel } from "discord.js";
 import { GameMode } from "./gameSettings";
 import prismaClient from "../../../../prisma/client";
 import { getOrCreatePlayers } from "@src/util/db/getPlayer";
 import { getOrCreateCharacters } from "@src/util/db/getCharacter";
 import { getCharacterMasteries } from "@src/util/db/getCharacterMastery";
 import { getLadderRanks } from "@src/util/db/getLadderRank";
-import { getRank, updateMemberRoles } from "./rankScoresToRankTitleMapping";
+import {
+  getRank,
+  updateMemberRoles,
+  Rank,
+} from "./rankScoresToRankTitleMapping";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { createMatch } from "@src/util/db/createMatch";
 import { getLatestLadderReset } from "@src/util/db/getLatestLadderReset";
 
 const BASE_RANKED_POINT_GAIN = 20;
 
-export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
+export type DatabaseOperationResult = {
+  winnerRank: Rank | null;
+  loserRank: Rank | null;
+  winnerNewRank: Rank | null;
+  loserNewRank: Rank | null;
+  winnerRankedUp: boolean;
+  loserRankedDown: boolean;
+  winnerScoreGain: number;
+  loserScoreLoss: number;
+  winnerNewPoints: number;
+  loserNewPoints: number;
+};
+
+export const handleDatabaseOperations = async (props: {
   winner: User;
   loser: User;
   winnerCharacter: CharacterName;
   loserCharacter: CharacterName;
   ranked: boolean;
   gameMode: GameMode;
-  resultEmbed: EmbedBuilder;
   gameThread: ThreadChannel;
-}): Promise<EmbedBuilder> => {
+}): Promise<DatabaseOperationResult> => {
   const {
     winner,
     loser,
@@ -29,9 +45,19 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
     loserCharacter,
     ranked,
     gameMode,
-    resultEmbed,
     gameThread,
   } = props;
+
+  let winnerRank: Rank | null = null,
+    loserRank: Rank | null = null,
+    winnerRankedUp: boolean = false,
+    loserRankedDown: boolean = false,
+    winnerNewRank: Rank | null = null,
+    loserNewRank: Rank | null = null,
+    winnerScoreGain: number = 0,
+    loserScoreLoss: number = 0,
+    winnerNewPoints: number = 0,
+    loserNewPoints: number = 0;
 
   const client = gameThread.client;
 
@@ -89,23 +115,21 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
 
         if (winnerLadderRank && loserLadderRank) {
           // score gain and loss calculation
-          const winnerRank = getRank(winnerLadderRank.rankPoints);
-          const loserRank = getRank(loserLadderRank.rankPoints);
+          winnerRank = getRank(winnerLadderRank.rankPoints);
+          loserRank = getRank(loserLadderRank.rankPoints);
 
           const rankDiff = loserRank.rankLevel - winnerRank.rankLevel;
           const cappedRankDiff = Math.min(1, Math.max(-2, rankDiff));
-          const winnerScoreGain = BASE_RANKED_POINT_GAIN * 2 ** cappedRankDiff;
-          const loserScoreLoss =
-            loserRank.rankLevel >= 3 ? winnerScoreGain / 2 : 0;
+          winnerScoreGain = BASE_RANKED_POINT_GAIN * 2 ** cappedRankDiff;
+          loserScoreLoss = loserRank.rankLevel >= 3 ? winnerScoreGain / 2 : 0;
 
-          // update embed
-          const winnerNewPoints = winnerLadderRank.rankPoints + winnerScoreGain;
-          const loserNewPoints = loserLadderRank.rankPoints - loserScoreLoss;
-          const winnerNewRank = getRank(winnerNewPoints);
-          const loserNewRank = getRank(loserNewPoints);
+          winnerNewPoints = winnerLadderRank.rankPoints + winnerScoreGain;
+          loserNewPoints = loserLadderRank.rankPoints - loserScoreLoss;
+          winnerNewRank = getRank(winnerNewPoints);
+          loserNewRank = getRank(loserNewPoints);
 
-          const winnerRankedUp = winnerNewRank.rankLevel > winnerRank.rankLevel;
-          const loserRankedDown = loserNewRank.rankLevel < loserRank.rankLevel;
+          winnerRankedUp = winnerNewRank.rankLevel > winnerRank.rankLevel;
+          loserRankedDown = loserNewRank.rankLevel < loserRank.rankLevel;
 
           if (winnerRankedUp) {
             await updateMemberRoles(client, winner, winnerNewRank);
@@ -115,7 +139,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
             await updateMemberRoles(client, loser, loserNewRank);
           }
 
-          resultEmbed.addFields(
+          /*           resultEmbed.addFields(
             {
               name: `Winner: ${winner.displayName}`,
               value: `Rank Points: ${winnerNewPoints} (${winnerScoreGain > 0 ? `+**${winnerScoreGain}**` : "Unchanged"}) ${winnerRankedUp ? `(Rank Up! New Rank: **${winnerNewRank.rankTitle}**)` : ""}`,
@@ -124,7 +148,7 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
               name: `Loser: ${loser.displayName}`,
               value: `Rank Points: ${loserNewPoints} (${loserScoreLoss > 0 ? `-**${loserScoreLoss}**` : "Unchanged"}) ${loserRankedDown ? `(Rank Down... New Rank: **${loserNewRank.rankTitle}**)` : ""}`,
             }
-          );
+          ); */
 
           // update ladder rank
           prismaClient.$transaction(async (tx) => {
@@ -241,5 +265,16 @@ export const handleDatabaseOperationsWithResultEmbedSideEffect = async (props: {
     throw new Error(`No active ladder reset found for gameMode ${gameMode}`);
   }
 
-  return resultEmbed;
+  return {
+    winnerRank,
+    loserRank,
+	winnerNewRank,
+	loserNewRank,
+    winnerRankedUp,
+    loserRankedDown,
+    winnerScoreGain,
+    loserScoreLoss,
+    winnerNewPoints,
+    loserNewPoints,
+  };
 };

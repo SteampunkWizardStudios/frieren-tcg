@@ -13,7 +13,7 @@ import {
 } from "discord.js";
 import { GameMode, GameSettings } from "./gameSettings";
 import { tcgMain } from "@src/tcgMain";
-import { handleDatabaseOperationsWithResultEmbedSideEffect } from "./handleDatabaseOperations";
+import { handleDatabaseOperations } from "./handleDatabaseOperations";
 import { charWithEmoji } from "@tcg/formatting/emojis";
 
 export const initiateGame = async (
@@ -82,14 +82,7 @@ export const initiateGame = async (
       })) as ThreadChannel;
       await opponentThread.members.add(opponent.id);
 
-      const {
-        winner,
-        winnerCharacter,
-        loser,
-        loserCharacter,
-        challengerCharacter,
-        opponentCharacter,
-      } = await tcgMain(
+      const gameRes = await tcgMain(
         challenger,
         opponent,
         gameThread,
@@ -98,6 +91,15 @@ export const initiateGame = async (
         gameSettings,
         textSpeedMs
       );
+
+      const {
+        winner,
+        loser,
+        challengerCharacter,
+        opponentCharacter,
+        winnerCharacter,
+        loserCharacter,
+      } = gameRes;
 
       // thread cleanup
       await Promise.all([
@@ -117,7 +119,7 @@ export const initiateGame = async (
         ? charWithEmoji(opponentCharacter)
         : "Unselected";
 
-      let resultEmbed = new EmbedBuilder()
+      const resultEmbed = new EmbedBuilder()
         .setColor(0xc5c3cc)
         .setTitle(
           `Frieren TCG - Results: ${challenger.displayName} vs ${opponent.displayName}`
@@ -133,18 +135,15 @@ export const initiateGame = async (
       // handle database operations
       if (winner && winnerCharacter && loser && loserCharacter && gameMode) {
         try {
-          resultEmbed = await handleDatabaseOperationsWithResultEmbedSideEffect(
-            {
-              winner,
-              winnerCharacter,
-              loser,
-              loserCharacter,
-              ranked,
-              gameMode,
-              resultEmbed,
-              gameThread,
-            }
-          );
+          const dbRes = await handleDatabaseOperations({
+            winner,
+            winnerCharacter,
+            loser,
+            loserCharacter,
+            ranked,
+            gameMode,
+            gameThread,
+          });
         } catch (error) {
           console.error(
             `Error in database operation calculation for Winner UserID ${winner.id} vs Loser UserID ${loser.id}`
