@@ -353,7 +353,7 @@ const treeOfLife = new Card({
 
 const flammesNote = new Card({
   title: "Flamme's Note",
-  cardMetadata: { nature: Nature.Util, isFlammesNote: true, hideEmpower: true },
+  cardMetadata: { nature: Nature.Util, isFlammesNote: true },
   description: ([hp]) =>
     `HP+${hp}. Discard a random card. If there is no Theory card in your deck, draw 1 card. Otherwise, add a random Theory card to your hand, and if Theory of Souls is not active, -1 Sigil.`,
   emoji: CardEmoji.FLAMME_CARD,
