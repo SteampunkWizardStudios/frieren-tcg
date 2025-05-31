@@ -20,7 +20,7 @@ const linieStats = new Stats({
 });
 
 const Linie = new CharacterData({
-  name: CharacterName.Linie,
+  characterName: CharacterName.Linie,
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.LINIE,

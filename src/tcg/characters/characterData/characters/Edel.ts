@@ -17,7 +17,7 @@ const edelStats = new Stats({
 });
 
 const Edel = new CharacterData({
-  name: CharacterName.Edel,
+  characterName: CharacterName.Edel,
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.EDEL,

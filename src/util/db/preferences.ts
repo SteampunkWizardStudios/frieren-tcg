@@ -230,7 +230,7 @@ export async function getSortedCharactersForPlayer(playerId: number): Promise<{
     const nonFavouritedOnly = [];
 
     for (const character of VISIBLE_CHARACTERS) {
-      if (favouritedCharacterNames.has(character.name)) {
+      if (favouritedCharacterNames.has(character.characterName)) {
         favouritedOnly.push(character);
       } else {
         nonFavouritedOnly.push(character);

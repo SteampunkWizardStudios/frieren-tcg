@@ -18,7 +18,7 @@ const himmelStats = new Stats({
 });
 
 const Himmel = new CharacterData({
-  name: CharacterName.Himmel,
+  characterName: CharacterName.Himmel,
   cosmetic: {
     pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.HIMMEL,

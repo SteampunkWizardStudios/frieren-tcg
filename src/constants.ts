@@ -12,8 +12,8 @@ export const MIN_TEXT_SPEED = 100;
 export const CHAR_OPTIONS = Object.entries(VISIBLE_CHARACTERS)
   .filter(([, character]) => character.additionalMetadata.hidden !== true)
   .map(([, character]) => ({
-    name: character.name,
-    value: character.name,
+    name: character.characterName,
+    value: character.characterName,
   }))
   .sort((a, b) => a.name.localeCompare(b.name));
 

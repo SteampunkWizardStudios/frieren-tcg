@@ -20,7 +20,7 @@ const denkenStats = new Stats({
 });
 
 const Denken = new CharacterData({
-  name: CharacterName.Denken,
+  characterName: CharacterName.Denken,
   cosmetic: {
     pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.DENKEN,

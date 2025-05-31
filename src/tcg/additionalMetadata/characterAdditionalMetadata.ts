@@ -27,6 +27,7 @@ export type CharacterAdditionalMetadata = {
   ubelSlashMovesPierceFactor?: number;
   fernBarrage?: number;
   flammeSigil?: number;
+  opponentMilleniumBarrierActive?: boolean;
   forcedDiscards: number;
 
   hidden?: boolean;

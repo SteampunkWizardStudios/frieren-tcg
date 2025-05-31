@@ -16,7 +16,7 @@ const starkStats = new Stats({
 });
 
 const Stark = new CharacterData({
-  name: CharacterName.Stark,
+  characterName: CharacterName.Stark,
   cosmetic: {
     pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.STARK,

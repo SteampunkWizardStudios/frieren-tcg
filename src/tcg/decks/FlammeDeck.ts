@@ -20,7 +20,7 @@ const incantationIncreaseSigil = (
   self.additionalMetadata.flammeSigil =
     (self.additionalMetadata.flammeSigil ?? 0) + sigilCount;
   messageCache.push(
-    `${name} performed an incantation. ${name} **gained ${sigilCount}** Sigil.Current Sigil count: **${self.additionalMetadata.flammeSigil}**.`,
+    `${name} performed an incantation.\n${name} **gained ${sigilCount}** Sigil. Current Sigil count: **${self.additionalMetadata.flammeSigil}**.`,
     TCGThread.Gameroom
   );
 };
@@ -35,7 +35,7 @@ const researchDecreaseSigil = (
   self.additionalMetadata.flammeSigil =
     (self.additionalMetadata.flammeSigil ?? 0) - sigilCount;
   messageCache.push(
-    `${name} performed ${possessive} research. ${name} *lost ${sigilCount}* Sigil.\nCurrent Sigil count: **${self.additionalMetadata.flammeSigil}**.`,
+    `${name} performed ${possessive} research.\n${name} *lost ${sigilCount}* Sigil. Current Sigil count: **${self.additionalMetadata.flammeSigil}**.`,
     TCGThread.Gameroom
   );
 };
@@ -165,6 +165,68 @@ const incantationSeductionTechnique = new Card({
   },
 });
 
+const milleniumBarrier = new Card({
+  title: "Millenium Barrier",
+  cardMetadata: { nature: Nature.Util },
+  description: ([def, spd]) =>
+    `DEF+${def} and SPD+${spd}. If Theory of Irreversibilty is active, all opponent's stat changes are set to 0. At the end of every turn, HP-3, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
+  emoji: CardEmoji.FLAMME_CARD,
+  effects: [5, 5],
+  cardAction: function (
+    this: Card,
+    { self, game, selfIndex, sendToGameroom, calcEffect, flatSelfStat }
+  ) {
+    sendToGameroom(`A barrier blankets the land.`);
+    const defIncrease = calcEffect(0);
+    const spdIncrease = calcEffect(1);
+    flatSelfStat(defIncrease, StatsEnum.DEF, game);
+    flatSelfStat(spdIncrease, StatsEnum.SPD, game);
+
+    const sigilCount = self.additionalMetadata.flammeSigil ?? 0;
+    game.additionalMetadata.flammeResearch[selfIndex][
+      FlammeResearch.MilleniumBarrier
+    ] = true;
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Millenium Barrier",
+        description: `DEF+${defIncrease}. SPD+${spdIncrease}. If Theory of Irreversibilty is active, all opponent's stat changes are set to 0.`,
+        turnDuration: sigilCount,
+        metadata: { removableBySorganeil: true },
+        executeEndOfTimedEffectActionOnRemoval: true,
+        endOfTurnAction: function (
+          this: TimedEffect,
+          game,
+          _characterIndex,
+          messageCache
+        ) {
+          self.additionalMetadata.flammeSigil ??= 0;
+
+          if (self.additionalMetadata.flammeSigil > 0) {
+            sendToGameroom("The barrier takes in mana.");
+            researchDecreaseSigil(self, messageCache, 1);
+            flatSelfStat(-3, StatsEnum.HP, game);
+          }
+
+          this.turnDuration = self.additionalMetadata.flammeSigil;
+        },
+        endOfTimedEffectAction: function () {
+          if (game.additionalMetadata.flammeTheory.Irreversibility) {
+            sendToGameroom("The legacy of someone long gone remains unbroken.");
+          } else {
+            sendToGameroom("The barrier crumbles. It is yet strong enough.");
+            flatSelfStat(defIncrease, StatsEnum.ATK, game, -1);
+            flatSelfStat(spdIncrease, StatsEnum.SPD, game, -1);
+          }
+          game.additionalMetadata.flammeResearch[selfIndex][
+            FlammeResearch.MilleniumBarrier
+          ] = false;
+        },
+      })
+    );
+  },
+});
+
 const thousandYearSanctuary = new Card({
   title: "Thousand Year Sanctuary",
   cardMetadata: { nature: Nature.Util },
@@ -199,7 +261,7 @@ const thousandYearSanctuary = new Card({
     self.timedEffects.push(
       new TimedEffect({
         name: "Thousand Year Sanctuary",
-        description: `Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}.`,
+        description: `Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing.`,
         turnDuration: sigilCount,
         metadata: { removableBySorganeil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
@@ -220,9 +282,14 @@ const thousandYearSanctuary = new Card({
           this.turnDuration = self.additionalMetadata.flammeSigil / 2;
         },
         endOfTimedEffectAction: function () {
-          sendToGameroom("The sanctuary watches over the land.");
-          flatOpponentStat(oppAtkDecrease, StatsEnum.ATK, game);
-          flatOpponentStat(oppSpdDecrease, StatsEnum.SPD, game);
+          if (game.additionalMetadata.flammeTheory.Irreversibility) {
+            sendToGameroom("The sanctuary watches quietly over the land.");
+          } else {
+            sendToGameroom("The sanctuary collapses. It is yet strong enough.");
+            flatOpponentStat(oppAtkDecrease, StatsEnum.ATK, game);
+            flatOpponentStat(oppSpdDecrease, StatsEnum.SPD, game);
+          }
+
           game.additionalMetadata.flammeResearch[selfIndex][
             FlammeResearch.ThousandYearSanctuary
           ] = false;
@@ -236,7 +303,7 @@ const treeOfLife = new Card({
   title: "Tree of Life",
   cardMetadata: { nature: Nature.Util },
   description: ([hp]) =>
-    `Heal ${hp} HP. Roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 4. At the end of every turn, HP-1, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
+    `Heal ${hp} HP. Roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 5. At the end of every turn, HP-1, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [10],
   cardAction: function (
@@ -254,7 +321,7 @@ const treeOfLife = new Card({
     self.timedEffects.push(
       new TimedEffect({
         name: "Tree of Life",
-        description: `Roll an additional dice during card activation phase.`,
+        description: `Roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 5.`,
         turnDuration: sigilCount,
         metadata: { removableBySorganeil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
@@ -294,9 +361,9 @@ const flammesNote = new Card({
   effects: [],
   cardAction: function (
     this: Card,
-    { self, game, messageCache, name, sendToGameroom }
+    { self, game, messageCache, name, characterName, sendToGameroom }
   ) {
-    const isFlamme = name === CharacterName.Flamme;
+    const isFlamme = characterName === CharacterName.Flamme;
     if (isFlamme) {
       sendToGameroom(`Flamme formulated a theory and notes down her research.`);
     } else {
@@ -522,6 +589,7 @@ const flammeDeck = [
   { card: incantationExperimentalNotes, count: 3 },
   { card: incantationFieldOfFlowers, count: 2 },
   { card: incantationSeductionTechnique, count: 2 },
+  { card: milleniumBarrier, count: 1 },
   { card: thousandYearSanctuary, count: 2 },
   { card: treeOfLife, count: 2 },
   { card: flammesNote, count: 2 },

@@ -121,7 +121,7 @@ function wrapEmpathizedCard(
 }
 
 const Ubel = new CharacterData({
-  name: CharacterName.Ubel,
+  characterName: CharacterName.Ubel,
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.UBEL,

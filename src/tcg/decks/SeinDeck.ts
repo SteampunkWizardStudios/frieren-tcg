@@ -24,7 +24,7 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    if (character.name === CharacterName.Sein) {
+    if (character.characterName === CharacterName.Sein) {
       messageCache.push(
         `${character.name} called on help from Frieren!`,
         TCGThread.Gameroom
@@ -64,7 +64,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    if (character.name === CharacterName.Sein) {
+    if (character.characterName === CharacterName.Sein) {
       messageCache.push(
         `${character.name} called on help from Fern!`,
         TCGThread.Gameroom
@@ -119,7 +119,7 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    if (character.name === CharacterName.Sein) {
+    if (character.characterName === CharacterName.Sein) {
       messageCache.push(
         `${character.name} called on help from Stark!`,
         TCGThread.Gameroom
@@ -325,7 +325,7 @@ export const braceYourself = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    if (character.name === CharacterName.Sein) {
+    if (character.characterName === CharacterName.Sein) {
       messageCache.push(
         `${character.name} called on ${character.cosmetic.pronouns.possessive} allies to brace themselves!`,
         TCGThread.Gameroom

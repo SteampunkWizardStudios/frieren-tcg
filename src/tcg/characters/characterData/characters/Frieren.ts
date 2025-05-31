@@ -33,7 +33,7 @@ const afterAttackEffect = function (
 };
 
 const Frieren = new CharacterData({
-  name: CharacterName.Frieren,
+  characterName: CharacterName.Frieren,
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FRIEREN,

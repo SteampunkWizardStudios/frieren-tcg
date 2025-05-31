@@ -359,7 +359,7 @@ export const empathy = new Card({
       });
     } else {
       const opponent = game.getCharacter(1 - characterIndex);
-      const signatureCard = signatureMoves[opponent.name];
+      const signatureCard = signatureMoves[opponent.characterName];
       return new Card({
         ...signatureCard,
         empowerLevel: this.empowerLevel - 2,

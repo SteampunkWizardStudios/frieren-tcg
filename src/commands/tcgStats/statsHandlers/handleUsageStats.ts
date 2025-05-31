@@ -38,7 +38,7 @@ export default async function handleUsageStats(
 
   const usageMap = visibleMap.reduce(
     (map, [, character]) => {
-      map[character.name] = {
+      map[character.characterName] = {
         wins: 0,
         losses: 0,
       };

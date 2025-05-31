@@ -27,7 +27,8 @@ export interface CharacterProps {
 }
 
 export default class Character {
-  name: CharacterName;
+  characterName: CharacterName;
+  name: string;
   cosmetic: CharacterCosmetic;
 
   stats: Stats;
@@ -46,7 +47,7 @@ export default class Character {
   characterThread: TCGThread;
 
   constructor(characterProps: CharacterProps) {
-    this.name = characterProps.characterData.name;
+    this.characterName = characterProps.characterData.characterName;
     this.cosmetic = characterProps.characterData.cosmetic;
     this.stats = characterProps.characterData.stats;
     this.cards = characterProps.characterData.cards;
@@ -64,6 +65,8 @@ export default class Character {
     this.characterThread = characterProps.characterThread;
 
     this.stats.stats.HP = characterProps.characterData.stats.startingHp;
+
+    this.name = `${this.characterName} (${this.characterUser.displayName})`;
   }
 
   drawStartingHand() {
@@ -150,7 +153,7 @@ export default class Character {
           FlammeResearch.TreeOfLife
         ]
       ) {
-        rolls.push(4);
+        rolls.push(5);
       }
     } else {
       let rollCount = 4;
@@ -217,11 +220,15 @@ export default class Character {
     let roundedAdjustValue = roundedInitialAdjustValue;
     if (game.additionalMetadata.flammeTheory.Irreversibility) {
       if (stat !== StatsEnum.Ability) {
-        roundedAdjustValue /= 2;
+        if (this.additionalMetadata.opponentMilleniumBarrierActive) {
+          roundedAdjustValue = 0;
+        } else {
+          roundedAdjustValue /= 2;
 
-        if (stat === StatsEnum.HP) {
-          if (roundedAdjustValue > 0) {
-            roundedAdjustValue = 0;
+          if (stat === StatsEnum.HP) {
+            if (roundedAdjustValue > 0) {
+              roundedAdjustValue = 0;
+            }
           }
         }
       }

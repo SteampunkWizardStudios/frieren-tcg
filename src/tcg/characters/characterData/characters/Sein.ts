@@ -21,7 +21,7 @@ const seinStats = new Stats({
 });
 
 const Sein = new CharacterData({
-  name: CharacterName.Sein,
+  characterName: CharacterName.Sein,
   cosmetic: {
     pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.SEIN,

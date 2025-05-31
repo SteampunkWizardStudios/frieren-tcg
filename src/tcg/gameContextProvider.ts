@@ -45,6 +45,7 @@ function characterBasedContext(game: Game, characterIndex: number) {
     selfIndex: characterIndex,
     selfStats: self.stats.stats,
     name: self.name,
+    characterName: self.characterName,
     personal: self.cosmetic.pronouns.personal,
     reflexive: self.cosmetic.pronouns.reflexive,
     possessive: self.cosmetic.pronouns.possessive,

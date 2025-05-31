@@ -88,9 +88,9 @@ export const scharfJubelade = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, self, name, selfStat, sendToGameroom, calcEffect }
+    { game, self, name, characterName, selfStat, sendToGameroom, calcEffect }
   ) {
-    const isWirbel = name === CharacterName.Wirbel;
+    const isWirbel = characterName === CharacterName.Wirbel;
     if (isWirbel) {
       sendToGameroom(
         `Wirbel commanded Scharf to put up a Barrier of Steel Petals!`

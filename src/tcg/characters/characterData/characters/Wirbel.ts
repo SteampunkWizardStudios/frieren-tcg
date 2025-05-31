@@ -22,7 +22,7 @@ const wirbelStats = new Stats({
 });
 
 const Wirbel = new CharacterData({
-  name: CharacterName.Wirbel,
+  characterName: CharacterName.Wirbel,
   cosmetic: {
     pronouns: Pronouns.Masculine,
     emoji: CharacterEmoji.WIRBEL,

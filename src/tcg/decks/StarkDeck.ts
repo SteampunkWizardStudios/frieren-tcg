@@ -267,7 +267,7 @@ const a_eisensAxeCleave = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
-    if (character.name === CharacterName.Stark) {
+    if (character.characterName === CharacterName.Stark) {
       messageCache.push(
         `${character.name} recalls memory of ${character.cosmetic.pronouns.possessive} master's Axe Cleave!`,
         TCGThread.Gameroom

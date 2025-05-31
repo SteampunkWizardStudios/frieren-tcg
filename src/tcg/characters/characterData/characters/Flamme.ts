@@ -40,7 +40,7 @@ const flammeStats = new Stats({
 });
 
 const Flamme = new CharacterData({
-  name: CharacterName.Flamme,
+  characterName: CharacterName.Flamme,
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.FLAMME,

@@ -25,7 +25,7 @@ const senseStats = new Stats({
 });
 
 const Sense = new CharacterData({
-  name: CharacterName.Sense,
+  characterName: CharacterName.Sense,
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.SENSE,

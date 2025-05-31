@@ -32,7 +32,7 @@ const afterAttackEffect = function (
 };
 
 const Serie = new CharacterData({
-  name: CharacterName.Serie,
+  characterName: CharacterName.Serie,
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.SERIE,

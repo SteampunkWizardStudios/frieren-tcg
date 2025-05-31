@@ -24,7 +24,7 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
         `${character.name} called on help from Frieren!`,
@@ -79,7 +79,7 @@ const a_FrierenBackMeUp = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
         `${character.name} called on help from Frieren!`,
@@ -140,7 +140,7 @@ export const a_FrierenNow = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
         `${character.name} called on help from Frieren!`,
@@ -190,7 +190,7 @@ const a_EisenTheEnemysOpen = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
         `${character.name} called on help from Eisen!`,
@@ -257,7 +257,7 @@ const a_EisenCoverMyBack = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
         `${character.name} called on help from Eisen!`,
@@ -342,7 +342,7 @@ const eisenHoldTheLine = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
         `${character.name} called on help from Eisen!`,
@@ -399,7 +399,7 @@ const heiterEmergency = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
         `${character.name} called on help from Heiter!`,
@@ -449,7 +449,7 @@ const a_heiterThreeSpears = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
         `${character.name} called on help from Heiter!`,
@@ -499,7 +499,7 @@ const heiterTrustYou = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
         `${character.name} called on help from Heiter!`,
@@ -593,7 +593,7 @@ const rally = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.characters[characterIndex];
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     if (isHimmel) {
       messageCache.push(
         `${character.name} rallied ${character.cosmetic.pronouns.possessive} allies!`,
@@ -662,7 +662,7 @@ export const a_realHeroSwing = new Card({
     { game, selfIndex: characterIndex, messageCache }
   ) {
     const character = game.getCharacter(characterIndex);
-    const isHimmel = character.name === CharacterName.Himmel;
+    const isHimmel = character.characterName === CharacterName.Himmel;
     messageCache.push(
       `${isHimmel ? "The Hero " : ""}${character.name} heaved ${character.cosmetic.pronouns.possessive} sword!`,
       TCGThread.Gameroom

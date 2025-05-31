@@ -13,7 +13,7 @@ export const printGameState = (
 ) => {
   game.characters.forEach((character: Character) => {
     messageCache.push(
-      printCharacter(character, obfuscateInformation),
+      printCharacter(game, character, obfuscateInformation),
       TCGThread.Gameroom
     );
     if (character.skipTurn) {
@@ -24,13 +24,15 @@ export const printGameState = (
     }
   });
 
-  printTheory(game.additionalMetadata.flammeTheory, messageCache);
+  const theoryText = printTheory(game.additionalMetadata.flammeTheory);
+  if (theoryText) {
+    messageCache.push(theoryText, TCGThread.Gameroom);
+  }
 };
 
 export const printTheory = (
-  flammeTheories: Record<FlammeTheory, boolean>,
-  messageCache: MessageCache
-) => {
+  flammeTheories: Record<FlammeTheory, boolean>
+): string | undefined => {
   let flammeTheoriesDiscoveryState = "";
   Object.entries(flammeTheories).forEach(([theory, isDiscovered]) => {
     if (isDiscovered) {
@@ -39,9 +41,6 @@ export const printTheory = (
   });
 
   if (flammeTheoriesDiscoveryState.length > 0) {
-    messageCache.push(
-      `### Flamme's Theories:\n${flammeTheoriesDiscoveryState}`,
-      TCGThread.Gameroom
-    );
+    return `### Flamme's Theories:\n${flammeTheoriesDiscoveryState}`;
   }
 };

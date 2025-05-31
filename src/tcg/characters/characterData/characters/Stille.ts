@@ -21,7 +21,7 @@ const stilleStats = new Stats({
 });
 
 const Stille = new CharacterData({
-  name: CharacterName.Stille,
+  characterName: CharacterName.Stille,
   cosmetic: {
     pronouns: Pronouns.Impersonal,
     emoji: CharacterEmoji.STILLE,

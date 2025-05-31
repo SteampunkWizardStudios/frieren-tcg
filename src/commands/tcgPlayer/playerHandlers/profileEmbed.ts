@@ -62,7 +62,7 @@ export default async function profileEmbed(profile: PlayerProfile, user: User) {
       ]);
 
       const character = CHARACTER_LIST.find(
-        (character) => character.name === mastery.character.name
+        (character) => character.characterName === mastery.character.name
       );
       const emojiLine = character?.cosmetic.emoji + " " || "";
 

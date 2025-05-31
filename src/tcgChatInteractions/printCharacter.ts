@@ -3,8 +3,11 @@ import Character from "@tcg/character";
 import { statDetails } from "@tcg/formatting/emojis";
 import { ProgressBarBuilder } from "@tcg/formatting/percentBar";
 import { StatsEnum } from "@tcg/stats";
+import { printTheory } from "./printGameState";
+import Game from "@src/tcg/game";
 
 export const printCharacter = (
+  game: Game,
   character: Character,
   obfuscateInformation: boolean
 ): string => {
@@ -30,7 +33,7 @@ export const printCharacter = (
   const activePileCount = character.deck.activePile.length;
   const discardPileCount = character.deck.discardPile.length;
   const lines = [
-    `# ${character.name} (${character.characterUser.displayName}) [⠀](${character.cosmetic.imageUrl})`,
+    `# ${character.name} [⠀](${character.cosmetic.imageUrl})`,
     `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
     `- ${statDetails[StatsEnum.ATK].emoji} **ATK**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.ATK}`,
     `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.DEF}`,
@@ -87,6 +90,12 @@ export const printCharacter = (
     character.timedEffects.forEach((effect) => {
       printStack.push(effect.printEffect());
     });
+  }
+  if (!obfuscateInformation) {
+    const theoryText = printTheory(game.additionalMetadata.flammeTheory);
+    if (theoryText) {
+      printStack.push(theoryText);
+    }
   }
   return printStack.join("\n");
 };

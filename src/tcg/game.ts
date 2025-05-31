@@ -292,12 +292,12 @@ export default class Game {
 
     if (
       character.stats.stats.HP <= 0 &&
-      character.name !== CharacterName.Denken
+      character.characterName !== CharacterName.Denken
     ) {
       characterDefeated = true;
     }
 
-    if (character.name === CharacterName.Denken) {
+    if (character.characterName === CharacterName.Denken) {
       if (character.stats.stats.HP <= DENKEN_DEATH_HP) {
         characterDefeated = true;
       }

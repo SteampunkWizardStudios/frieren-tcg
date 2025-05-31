@@ -29,7 +29,7 @@ export interface CharacterCosmetic {
 }
 
 export interface CharacterDataProps {
-  name: CharacterName;
+  characterName: CharacterName;
   cosmetic: CharacterCosmetic;
   stats: Stats;
   cards: { card: Card; count: number }[];
@@ -38,7 +38,7 @@ export interface CharacterDataProps {
 }
 
 export class CharacterData {
-  name: CharacterName;
+  characterName: CharacterName;
   cosmetic: CharacterCosmetic;
   stats: Stats;
   cards: { card: Card; count: number }[];
@@ -47,7 +47,7 @@ export class CharacterData {
   additionalMetadata: CharacterAdditionalMetadata;
 
   constructor(characterDataProps: CharacterDataProps) {
-    this.name = characterDataProps.name;
+    this.characterName = characterDataProps.characterName;
     this.cosmetic = characterDataProps.cosmetic;
     this.stats = characterDataProps.stats;
     this.cards = characterDataProps.cards;
@@ -60,7 +60,7 @@ export class CharacterData {
 
   clone(): CharacterData {
     return new CharacterData({
-      name: this.name,
+      characterName: this.characterName,
       cosmetic: this.cosmetic,
       stats: this.stats.clone(),
       cards: this.cards,
