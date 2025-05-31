@@ -80,15 +80,23 @@ export default async function profileEmbed(profile: PlayerProfile, user: User) {
           },
         ];
 
-  const masteryField = {
-    name: "Character Masteries",
-    value:
-      characterLines.length > 0
-        ? characterLines.join("\n")
-        : "This player has no character masteries",
-  };
+  const masteryFields = [];
+  if (characterLines.length > 0) {
+    for (let i = 0; i < characterLines.length; i += 4) {
+      const chunk = characterLines.slice(i, i + 4);
+      masteryFields.push({
+        name: `${i === 0 ? "Character Masteries" : ""}`,
+        value: chunk.join("\n"),
+      });
+    }
+  } else {
+    masteryFields.push({
+      name: "Character Masteries",
+      value: "This player has no character masteries",
+    });
+  }
 
-  const fields = [achievementField, ...ladderFields, masteryField].filter(
+  const fields = [achievementField, ...ladderFields, ...masteryFields].filter(
     (f) => f !== null
   );
 
