@@ -116,6 +116,17 @@ const wirbelCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1378130084178694315/GIF_1598346001.gif?ex=683b7b28&is=683a29a8&hm=e06d2c3811dbcb30eb34d3641d01a7eba34dc248592a6ecf3069150b3c4ec69c&",
 } as const;
 
+const flammeCardLinks = {
+  flamme_fieldOfFlower_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378365073780903966/GIF_1700041363.gif?ex=683c5602&is=683b0482&hm=6283ea064ff706029f5b86bb1c339b9c1523e05b5aef0428a53919b5eb02a1b3&",
+  flamme_flammesNotes_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378365347987591280/GIF_1360657389.gif?ex=683c5643&is=683b04c3&hm=cf4ecdb77666383ef27ec4a8e9f2037c20d451a541ae491ffec5aeee7e7037e4&",
+  flamme_treeOfLife_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378383008490324131/GIF_0325338485.gif?ex=683c66b6&is=683b1536&hm=562c173fc7ca82e93ee4ca409c850979dd377fec0860a49594bc7bba0070c1dd&",
+  flamme_sanctuary_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378383622318592072/GIF_0295228606.gif?ex=683c6748&is=683b15c8&hm=e68662933a2ce8c0f5c4f8a6ec1ee382231dc520b70a31558636f592c3684120&",
+};
+
 const mediaLinks = {
   ...characterPortraits,
   ...vangerisuCards,
@@ -124,6 +135,7 @@ const mediaLinks = {
   ...frierenCardLinks,
   ...stilleCardLinks,
   ...wirbelCardLinks,
+  ...flammeCardLinks,
 } as const;
 
 export default mediaLinks;

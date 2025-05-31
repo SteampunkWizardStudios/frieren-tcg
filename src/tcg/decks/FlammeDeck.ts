@@ -10,6 +10,7 @@ import { CharacterName } from "../characters/metadata/CharacterName";
 import Character from "../character";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import mediaLinks from "../formatting/mediaLinks";
 
 const incantationIncreaseSigil = (
   self: Character,
@@ -117,6 +118,9 @@ export const incantationFieldOfFlowers = new Card({
     `Heal ${hp} HP. Gain 3 Sigils. At the next 3 turns' ends, heal ${endHp} HP. Gain 2 Sigils at the end of every turn.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [5, 3],
+  cosmetic: {
+    cardGif: mediaLinks.flamme_fieldOfFlower_gif,
+  },
   cardAction: function (
     this: Card,
     {
@@ -215,7 +219,7 @@ const milleniumBarrier = new Card({
     self.timedEffects.push(
       new TimedEffect({
         name: "Millenium Barrier",
-        description: `DEF+${defIncrease}. SPD+${spdIncrease}. If Theory of Irreversibilty is active, all opponent's stat increases are set to 0.`,
+        description: `DEF+${defIncrease}. SPD+${spdIncrease}. If Theory of Irreversibilty is active, all opponent's stat increases are set to 0. -1 Sigil if attacked this turn.`,
         turnDuration: sigilCount,
         metadata: { removableBySorganeil: true, consumesFlammeSigil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
@@ -270,6 +274,9 @@ const thousandYearSanctuary = new Card({
     `Opp's ATK-${oppAtkDecrease} and SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing. If you were attacked this turn, -1 Sigil. At the end of every turn, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [5, 5],
+  cosmetic: {
+    cardGif: mediaLinks.flamme_sanctuary_gif,
+  },
   cardAction: function (
     this: Card,
     {
@@ -297,7 +304,7 @@ const thousandYearSanctuary = new Card({
     self.timedEffects.push(
       new TimedEffect({
         name: "Thousand Year Sanctuary",
-        description: `Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing.`,
+        description: `Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing. -1 Sigil if attacked this turn.`,
         turnDuration: sigilCount,
         metadata: { removableBySorganeil: true, consumesFlammeSigil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
@@ -352,6 +359,9 @@ const treeOfLife = new Card({
     `Heal ${hp} HP. Roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 5. If you were attacked this turn, -1 Sigil. At the end of every turn, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [10],
+  cosmetic: {
+    cardGif: mediaLinks.flamme_treeOfLife_gif,
+  },
   cardAction: function (
     this: Card,
     { self, game, selfIndex, name, sendToGameroom, selfStat, opponent }
@@ -367,7 +377,7 @@ const treeOfLife = new Card({
     self.timedEffects.push(
       new TimedEffect({
         name: "Tree of Life",
-        description: `Roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 5.`,
+        description: `Roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 5. -1 Sigil if attacked this turn.`,
         turnDuration: sigilCount,
         metadata: { removableBySorganeil: true, consumesFlammeSigil: true },
         priority: -2,
@@ -411,6 +421,9 @@ const flammesNote = new Card({
     `HP+${hp}. Discard a random card. If there is no Theory card in your deck, draw 1 card. Otherwise, add a random Theory card to your hand, and if Theory of Souls is not active, -1 Sigil.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [8],
+  cosmetic: {
+    cardGif: mediaLinks.flamme_flammesNotes_gif,
+  },
   cardAction: function (
     this: Card,
     {
