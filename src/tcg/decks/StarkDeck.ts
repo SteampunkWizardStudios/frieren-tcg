@@ -289,7 +289,7 @@ const a_eisensAxeCleave = new Card({
 export const a_lastStand = new Card({
   title: "Last Stand",
   description: ([dmg]) =>
-    `DEF-5 for 2 turns. This character's HP cannot drop below 1 for 2 turns. At the end of next turn, HP-20, use 2 Resolves, strike for DMG ${dmg}. This attack cannot be interrupted by Sorganeil.`,
+    `DEF-5 for 2 turns. This character's HP cannot drop below 1 for 2 turns. At the end of next turn, HP-20, use 2 Resolves, strike for DMG ${dmg}. This attack cannot be interrupted.`,
   emoji: CardEmoji.STARK_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [25],

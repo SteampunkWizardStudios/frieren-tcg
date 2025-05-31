@@ -13,9 +13,9 @@ import Card from "@src/tcg/card";
 const edelStats = new Stats({
   [StatsEnum.HP]: 80,
   [StatsEnum.ATK]: 8,
-  [StatsEnum.DEF]: 9,
+  [StatsEnum.DEF]: 8,
   [StatsEnum.TrueDEF]: 0.0,
-  [StatsEnum.SPD]: 11,
+  [StatsEnum.SPD]: 10,
   [StatsEnum.Ability]: 0,
 });
 
