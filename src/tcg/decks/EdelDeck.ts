@@ -301,14 +301,14 @@ const kneel = new Card({
 });
 
 const edelDeck = [
-  { card: telekinesis, count: 2 },
+  { card: telekinesis, count: 3 },
   { card: one_step_ahead, count: 2 },
-  { card: mental_fog, count: 200 },
+  { card: mental_fog, count: 2 },
   { card: clear_mind, count: 2 },
   { card: hypnosis_sleep, count: 2 },
   { card: hypnosis_mesmerize, count: 2 },
   { card: hypnosis_weaken, count: 2 },
-  { card: kneel, count: 2 },
+  { card: kneel, count: 1 },
 ];
 
 export default edelDeck;

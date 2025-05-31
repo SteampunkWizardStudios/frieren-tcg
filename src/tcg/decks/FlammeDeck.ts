@@ -537,6 +537,9 @@ const theoryOfIrreversibility = new Card({
     `All stat changes for both players are halved. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
+  cosmetic: {
+    cardGif: mediaLinks.flamme_theory_gif,
+  },
   cardAction: function (this: Card, { game, name, sendToGameroom }) {
     if (!game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility]) {
       sendToGameroom(
@@ -563,6 +566,9 @@ const theoryOfBalance = new Card({
     `The Empower level for all card is now equal to the Turn Count. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
+  cosmetic: {
+    cardGif: mediaLinks.flamme_theory_gif,
+  },
   cardAction: function (this: Card, { game, name, sendToGameroom }) {
     if (!game.additionalMetadata.flammeTheory[FlammeTheory.Balance]) {
       sendToGameroom(
@@ -589,6 +595,9 @@ const theoryOfPrescience = new Card({
     `The roll of the first 4 dices for both players for which cards are active for any given turn will always be 0, 1, 2, 3. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
+  cosmetic: {
+    cardGif: mediaLinks.flamme_theory_gif,
+  },
   cardAction: function (this: Card, { game, name, sendToGameroom }) {
     if (!game.additionalMetadata.flammeTheory[FlammeTheory.Prescience]) {
       sendToGameroom(
@@ -615,6 +624,9 @@ const theoryOfSoul = new Card({
     `Both players swap their own active and discard piles. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
+  cosmetic: {
+    cardGif: mediaLinks.flamme_theory_gif,
+  },
   cardAction: function (
     this: Card,
     { game, name, sendToGameroom, self, opponent }
