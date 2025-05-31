@@ -115,7 +115,7 @@ export const one_step_ahead = new Card({
 
 const mental_fog = new Card({
   title: "Mental Fog",
-  cardMetadata: { nature: Nature.Util },
+  cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
   emoji: CardEmoji.EDEL_CARD,
   description: ([spd, cost]) =>
     `Eye Contact next turn. Opponent's SPD-${spd} and they redraw two cards. Their highest empowered card they draw will cost ${cost} additional HP for the next 5 turns.`,
@@ -136,9 +136,6 @@ const mental_fog = new Card({
     sendToGameroom(
       `${name} hypnotizes ${opponent.name} and ${opponent.cosmetic.pronouns.personal} starts to blank out.`
     );
-
-    self.adjustStat(1, StatsEnum.Ability, game);
-
     opponentStat(0, StatsEnum.SPD, game, -1);
     redrawRandom(opponent, self);
     redrawRandom(opponent, self);
@@ -165,7 +162,7 @@ const mental_fog = new Card({
 
 const clear_mind = new Card({
   title: "Clear Mind",
-  cardMetadata: { nature: Nature.Util },
+  cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
   emoji: CardEmoji.EDEL_CARD,
   description: ([hp, spd]) =>
     `Heal ${hp} HP. SPD+${spd}. Eye Contact next turn. Both players redraw their hand.`,
@@ -183,8 +180,6 @@ const clear_mind = new Card({
     opponent,
   }) => {
     sendToGameroom(`${name} focuses and clears ${possessive} mind.`);
-
-    self.adjustStat(1, StatsEnum.Ability, game);
 
     selfStat(0, StatsEnum.HP, game);
     selfStat(1, StatsEnum.SPD, game);
@@ -208,16 +203,13 @@ const clear_mind = new Card({
 
 const hypnosis_sleep = new Card({
   title: "Hypnosis: *Sleep*",
-  cardMetadata: { nature: Nature.Util, hideEmpower: true },
+  cardMetadata: { nature: Nature.Util, hideEmpower: true, edelEyeContact: 2 },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
     `Eye Contact next 2 turns. Your opponent discards two cards, draws Sleepy and one other card.`,
   effects: [],
-  cardAction: ({ name, self, sendToGameroom, game, opponent }) => {
+  cardAction: ({ name, self, sendToGameroom, opponent }) => {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
-
-    self.adjustStat(2, StatsEnum.Ability, game);
-
     pushStatus(opponent, self, sleepy);
     redrawRandom(opponent, self);
   },
@@ -225,18 +217,15 @@ const hypnosis_sleep = new Card({
 
 const hypnosis_mesmerize = new Card({
   title: "Hypnosis: *Mesmerize*",
-  cardMetadata: { nature: Nature.Util, hideEmpower: true },
+  cardMetadata: { nature: Nature.Util, hideEmpower: true, edelEyeContact: 2 },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
     `Eye Contact next 2 turns. Your opponent discards two cards, draws Mesmerized and one other card.`,
   effects: [],
-  cardAction: ({ name, self, sendToGameroom, game, opponent }) => {
+  cardAction: ({ name, self, sendToGameroom, opponent }) => {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *Look into my eyes*`
     );
-
-    self.adjustStat(2, StatsEnum.Ability, game);
-
     pushStatus(opponent, self, mesmerized);
     redrawRandom(opponent, self);
   },
@@ -244,21 +233,15 @@ const hypnosis_mesmerize = new Card({
 
 const hypnosis_weaken = new Card({
   title: "Hypnosis: *Weaken*",
-  cardMetadata: { nature: Nature.Util },
+  cardMetadata: { nature: Nature.Util, edelEyeContact: 2 },
   emoji: CardEmoji.EDEL_CARD,
   description: () =>
     `Eye Contact next 2 turns. Your opponent discards two cards, draws Weakened at this empower and one other card.`,
   effects: [],
-  cardAction: function (
-    this: Card,
-    { name, self, sendToGameroom, game, opponent }
-  ) {
+  cardAction: function (this: Card, { name, self, sendToGameroom, opponent }) {
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *You are feeling weak*`
     );
-
-    self.adjustStat(2, StatsEnum.Ability, game);
-
     pushStatus(opponent, self, weakened);
     redrawRandom(opponent, self);
   },

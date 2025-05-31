@@ -49,6 +49,8 @@ type CardMetadata = {
   theory?: boolean;
   isFlammesNote?: boolean;
   isPinnacle?: boolean;
+
+  edelEyeContact?: number;
 };
 
 export type CardProps = {

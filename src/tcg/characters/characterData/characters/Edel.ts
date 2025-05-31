@@ -6,6 +6,9 @@ import edelDeck from "@tcg/decks/EdelDeck";
 import Pronouns from "@src/tcg/pronoun";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import mediaLinks from "@src/tcg/formatting/mediaLinks";
+import Game from "@src/tcg/game";
+import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import Card from "@src/tcg/card";
 
 const edelStats = new Stats({
   [StatsEnum.HP]: 80,
@@ -61,6 +64,21 @@ const Edel = new CharacterData({
         };
       } else {
         self.ability.abilitySelectedMoveModifierEffect = undefined;
+      }
+    },
+    abilityAfterOwnCardUse: function (
+      game: Game,
+      characterIndex: number,
+      _messageCache: MessageCache,
+      card: Card
+    ) {
+      const character = game.getCharacter(characterIndex);
+      if (card.cardMetadata.edelEyeContact) {
+        character.adjustStat(
+          card.cardMetadata.edelEyeContact,
+          StatsEnum.Ability,
+          game
+        );
       }
     },
   },
