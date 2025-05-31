@@ -49,12 +49,14 @@ export const buildChallengeButtonRespond = async (
 
   const editReply = async (
     interaction: ChatInputCommandInteraction,
-    statusMessage: string
+    statusMessage: string,
+    threadId?: string
   ) => {
     const newContainer = buildChallengeRequest({
       ...containerOpts,
       statusMessage,
       includeButtons: false,
+      threadId,
     });
     return await interaction.editReply({
       flags: MessageFlags.IsComponentsV2,
@@ -74,12 +76,7 @@ export const buildChallengeButtonRespond = async (
       max: 1,
       time: 120_000, // 2 minutes timeout
       filter: async (i) =>
-        validateMatchButtonInteractions(
-          i,
-          challenger,
-          opponent,
-          ranked,
-        ),
+        validateMatchButtonInteractions(i, challenger, opponent, ranked),
     });
 
     // handle button clicks
@@ -91,16 +88,19 @@ export const buildChallengeButtonRespond = async (
 
         await updateStatus(buttonInteraction, acceptMessage);
 
+		const addThreadFunc = editReply.bind(null, interaction, acceptMessage)
+
         // start game
         await initiateGame(
           interaction,
+		  addThreadFunc,
           response.id,
           challenger,
           opponent ?? buttonInteraction.user,
           gameSettings,
           ranked,
           textSpeedMs,
-          gameMode
+          gameMode,
         );
       } else if (buttonInteraction.customId === DECLINE_BUTTON_ID) {
         await updateStatus(

@@ -5,8 +5,10 @@ import {
   ButtonBuilder,
   ActionRowBuilder,
   ButtonStyle,
+  SectionBuilder,
 } from "discord.js";
 import { GameSettings } from "@src/commands/tcgChallenge/gameHandler/gameSettings";
+import { buildThreadLink } from "@src/util/formatting/links";
 
 export type ChallengeRequestOptions = {
   requesterId: string;
@@ -16,6 +18,7 @@ export type ChallengeRequestOptions = {
   textSpeedMs: number;
   statusMessage?: string;
   includeButtons?: boolean;
+  threadId?: string;
 };
 
 export const ACCEPT_BUTTON_ID = "tcg-accept";
@@ -30,6 +33,7 @@ export default function buildChallengeRequest({
   requesterId,
   opponentId,
   includeButtons = true,
+  threadId,
 }: ChallengeRequestOptions) {
   const { turnDurationSeconds, revealHand, revealDraw, goddessMode } =
     gameOptions;
@@ -63,14 +67,30 @@ export default function buildChallengeRequest({
         .setStyle(ButtonStyle.Secondary)
         .setCustomId(CANCEL_OPEN_INVITE_BUTTON_ID);
 
+  const optsDisplay = new TextDisplayBuilder().setContent(optsText);
+
   const container = new ContainerBuilder()
     .addTextDisplayComponents(
       new TextDisplayBuilder().setContent(title),
       new TextDisplayBuilder().setContent(statusMessage)
     )
     .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
-    .addTextDisplayComponents(new TextDisplayBuilder().setContent(optsText))
     .setAccentColor(0xffffff);
+
+  if (threadId) {
+    container.addSectionComponents(
+      new SectionBuilder()
+        .addTextDisplayComponents(optsDisplay)
+        .setButtonAccessory(
+          new ButtonBuilder()
+            .setStyle(ButtonStyle.Link)
+            .setLabel("Thread")
+            .setURL(buildThreadLink(threadId))
+        )
+    );
+  } else {
+	container.addTextDisplayComponents(optsDisplay);
+  }
 
   if (includeButtons) {
     container.addActionRowComponents(

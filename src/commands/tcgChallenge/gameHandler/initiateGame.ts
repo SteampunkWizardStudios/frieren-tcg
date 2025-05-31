@@ -9,6 +9,7 @@ import {
   ThreadAutoArchiveDuration,
   ThreadChannel,
   User,
+  Message,
 } from "discord.js";
 import { GameMode, GameSettings } from "./gameSettings";
 import { tcgMain } from "@src/tcgMain";
@@ -17,6 +18,7 @@ import { charWithEmoji } from "@tcg/formatting/emojis";
 
 export const initiateGame = async (
   interaction: ChatInputCommandInteraction,
+  addThreadFunc: (threadId?: string | undefined) => Promise<Message<boolean>>,
   gameId: string,
   challenger: User,
   opponent: User,
@@ -35,8 +37,14 @@ export const initiateGame = async (
         name: `${ranked ? "Ranked " : ""}TCG Game Thread: ${challenger.displayName} vs ${opponent.displayName} (ID: ${gameId})`,
         autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
       })) as PublicThreadChannel<false>;
-      await gameThread.members.add(challenger.id);
-      await gameThread.members.add(opponent.id);
+      await Promise.all([
+        gameThread.members.add(challenger.id),
+        gameThread.members.add(opponent.id),
+      ]);
+
+      addThreadFunc(gameThread.id).catch((error) => {
+        console.error("Failed to add thread link:", error);
+      });
 
       (async () => {
         try {
