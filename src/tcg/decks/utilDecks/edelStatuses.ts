@@ -69,3 +69,5 @@ export const weakened = new Card({
     });
   },
 });
+
+export const edelStatusCards = [sleepy, mesmerized, weakened];
