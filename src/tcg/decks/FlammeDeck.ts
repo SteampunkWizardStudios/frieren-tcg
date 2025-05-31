@@ -165,6 +165,73 @@ const incantationSeductionTechnique = new Card({
   },
 });
 
+const thousandYearSanctuary = new Card({
+  title: "Thousand Year Sanctuary",
+  cardMetadata: { nature: Nature.Util },
+  description: ([oppAtkDecrease, oppSpdDecrease]) =>
+    `Opp's ATK-${oppAtkDecrease} and SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing. At the end of every turn, HP-2, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
+  emoji: CardEmoji.FLAMME_CARD,
+  effects: [3, 3],
+  cardAction: function (
+    this: Card,
+    {
+      self,
+      game,
+      selfIndex,
+      name,
+      sendToGameroom,
+      calcEffect,
+      flatOpponentStat,
+      flatSelfStat,
+    }
+  ) {
+    sendToGameroom(`${name} raises a towering sanctuary.`);
+    const oppAtkDecrease = calcEffect(0);
+    const oppSpdDecrease = calcEffect(1);
+    flatOpponentStat(oppAtkDecrease, StatsEnum.ATK, game, -1);
+    flatOpponentStat(oppSpdDecrease, StatsEnum.SPD, game, -1);
+
+    const sigilCount = self.additionalMetadata.flammeSigil ?? 0;
+    game.additionalMetadata.flammeResearch[selfIndex][
+      FlammeResearch.ThousandYearSanctuary
+    ] = true;
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Thousand Year Sanctuary",
+        description: `Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}.`,
+        turnDuration: sigilCount,
+        metadata: { removableBySorganeil: true },
+        executeEndOfTimedEffectActionOnRemoval: true,
+        endOfTurnAction: function (
+          this: TimedEffect,
+          game,
+          _characterIndex,
+          messageCache
+        ) {
+          self.additionalMetadata.flammeSigil ??= 0;
+
+          if (self.additionalMetadata.flammeSigil > 0) {
+            sendToGameroom("The sanctuary approaches equilibrium.");
+            researchDecreaseSigil(self, messageCache, 1);
+            flatSelfStat(-2, StatsEnum.HP, game);
+          }
+
+          this.turnDuration = self.additionalMetadata.flammeSigil / 2;
+        },
+        endOfTimedEffectAction: function () {
+          sendToGameroom("The sanctuary watches over the land.");
+          flatOpponentStat(oppAtkDecrease, StatsEnum.ATK, game);
+          flatOpponentStat(oppSpdDecrease, StatsEnum.SPD, game);
+          game.additionalMetadata.flammeResearch[selfIndex][
+            FlammeResearch.ThousandYearSanctuary
+          ] = false;
+        },
+      })
+    );
+  },
+});
+
 const treeOfLife = new Card({
   title: "Tree of Life",
   cardMetadata: { nature: Nature.Util },
@@ -187,7 +254,7 @@ const treeOfLife = new Card({
     self.timedEffects.push(
       new TimedEffect({
         name: "Tree of Life",
-        description: `Roll an additional dice during card activation phase. If Theory of Prescience is active, this will always be 4. HP-1, -1 Sigil at turn end.`,
+        description: `Roll an additional dice during card activation phase.`,
         turnDuration: sigilCount,
         metadata: { removableBySorganeil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
@@ -455,6 +522,7 @@ const flammeDeck = [
   { card: incantationExperimentalNotes, count: 3 },
   { card: incantationFieldOfFlowers, count: 2 },
   { card: incantationSeductionTechnique, count: 2 },
+  { card: thousandYearSanctuary, count: 2 },
   { card: treeOfLife, count: 2 },
   { card: flammesNote, count: 2 },
   { card: primitiveDefensiveTechnique, count: 2 },

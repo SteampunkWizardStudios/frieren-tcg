@@ -27,6 +27,7 @@ import {
 import { CharacterSelectionType } from "./tcgChatInteractions/handleCharacterSelection";
 import goddessDeck from "@decks/utilDecks/goddessDeck";
 import { StatsEnum } from "@tcg/stats";
+import { FlammeResearch } from "./tcg/additionalMetadata/gameAdditionalMetadata";
 
 const TURN_LIMIT = 50;
 
@@ -176,7 +177,20 @@ export const tcgMain = async (
 
   // game loop
   while (!game.gameOver) {
-    game.turnCount += 1;
+    if (
+      !game.additionalMetadata.flammeTheory.Balance ||
+      !(
+        game.additionalMetadata.flammeResearch?.[0]?.[
+          FlammeResearch.ThousandYearSanctuary
+        ] ||
+        game.additionalMetadata.flammeResearch?.[1]?.[
+          FlammeResearch.ThousandYearSanctuary
+        ]
+      )
+    ) {
+      game.turnCount += 1;
+    }
+
     messageCache.push(`# Turn ${game.turnCount}`, TCGThread.Gameroom);
 
     // start of turn resolution
