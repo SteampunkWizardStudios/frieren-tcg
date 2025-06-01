@@ -111,7 +111,7 @@ export async function handlePlayerPreferences(
         });
 
         const collector = reply.createMessageComponentCollector({
-          time: 60_000,
+          time: 60_000, // 1 minute
         });
         collector.on("collect", async (i: StringSelectMenuInteraction) => {
           try {

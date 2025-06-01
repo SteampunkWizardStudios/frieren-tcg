@@ -74,7 +74,7 @@ export const buildChallengeButtonRespond = async (
   if (response) {
     const collector = response.createMessageComponentCollector({
       max: 1,
-      time: 120_000, // 2 minutes timeout
+      time: 300_000, // 5 minutes
       filter: async (i) =>
         validateMatchButtonInteractions(i, challenger, opponent, ranked),
     });

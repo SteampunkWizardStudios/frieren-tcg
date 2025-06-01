@@ -42,7 +42,7 @@ export async function handleCharacterStats(
 
   const collector = response.createMessageComponentCollector({
     componentType: ComponentType.StringSelect,
-    time: 450_000,
+    time: 300_000, // 5 minutes
     filter: (i) => i.customId === charStatSelectMenuCustomId,
   });
 

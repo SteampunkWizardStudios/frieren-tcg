@@ -266,7 +266,7 @@ export const command: Command<ChatInputCommandInteraction> = {
               i.user.id === interaction.user.id &&
               i.customId === CONFIRM_LADDER_RESET_BUTTON_ID,
             max: 1,
-            time: 120_000,
+            time: 120_000, // 2 minutes
           });
           collector.on("collect", async (i: ButtonInteraction) => {
             try {
