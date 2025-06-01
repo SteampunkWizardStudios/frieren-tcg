@@ -1,7 +1,7 @@
 import { VISIBLE_CHARACTERS } from "@tcg/characters/characterList";
 import type { Rank } from "./commands/tcgChallenge/gameHandler/rankScoresToRankTitleMapping";
 
-export const FRIEREN_DISCORD_SERVER_AUBERST_CHANNEL_ID = "738445835234181211";
+export const FRIEREN_DISCORD_SERVER_AUBERST_CHANNEL_ID = "1357179037428088862";
 export const FRIEREN_DISCORD_SERVER =
   process.env["MAIN_GUILD_ID"] ?? "738445835234181211";
 
