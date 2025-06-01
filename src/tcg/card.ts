@@ -155,6 +155,10 @@ export default class Card implements CardProps {
   }
 
   clone(): Card {
-    return new Card({ ...this });
+    return new Card({
+      ...this,
+      cardMetadata: { ...this.cardMetadata },
+      effects: [...this.effects],
+    });
   }
 }

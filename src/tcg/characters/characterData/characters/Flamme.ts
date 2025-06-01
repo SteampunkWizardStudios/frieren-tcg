@@ -17,7 +17,7 @@ const flammeStats = new Stats({
   [StatsEnum.DEF]: 12.0,
   [StatsEnum.TrueDEF]: 0.0,
   [StatsEnum.SPD]: 12.0,
-  [StatsEnum.Ability]: 4.0,
+  [StatsEnum.Ability]: 0.0,
 });
 
 const Flamme = new CharacterData({
