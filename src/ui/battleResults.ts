@@ -122,15 +122,16 @@ const perPlayerSectionLogic = ({
       ? `Rank ${isFirst ? "up!" : "down..."} New rank: **${newRank.rankTitle}**`
       : null;
 
-  const rankPointsLine = scoreChange
-    ? `Rank Points: ${newScore}${
-        scoreChange > 0
-          ? ` (+**${scoreChange}**)`
-          : scoreChange < 0
-            ? ` (-**${Math.abs(scoreChange)}**)`
+  const rankPointsLine =
+    newScore !== null && newScore !== undefined
+      ? `Rank Points: ${newScore}${
+          scoreChange && scoreChange !== 0
+            ? scoreChange > 0
+              ? ` (+**${scoreChange}**)`
+              : ` (-**${Math.abs(scoreChange)}**)`
             : ""
-      }`
-    : null;
+        }`
+      : null;
 
   const charFormatted = character ? charWithEmoji(character) : "Unselected";
   const charLink = character
