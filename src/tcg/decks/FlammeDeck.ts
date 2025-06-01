@@ -564,7 +564,7 @@ const theoryOfBalance = new Card({
   cardAction: function (this: Card, { game, name, sendToGameroom }) {
     if (!game.additionalMetadata.flammeTheory[FlammeTheory.Balance]) {
       sendToGameroom(
-        `${name} discovered the Theory of Balance. **The Empower level for all card is now equal to the Turn Count.**`
+        `${name} discovered the Theory of Balance. **The Empower level for all card is now equal to half of the Turn Count.**`
       );
       game.additionalMetadata.flammeTheory[FlammeTheory.Balance] = true;
     } else {

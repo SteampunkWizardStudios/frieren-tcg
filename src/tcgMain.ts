@@ -506,6 +506,9 @@ export const tcgMain = async (
             messageCache,
             index
           );
+          console.log("onNotPlayed");
+          console.log(selectedCard);
+          console.log(card);
           card.onNotPlayed(context);
         }
       });

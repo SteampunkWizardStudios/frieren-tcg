@@ -34,7 +34,7 @@ export const mesmerized = new Card({
     `If you play this card on the first turn it is playable, it is removed from your deck. Otherwise, until the end of the game, at each turn's end, lose ${hp}HP, your opponent heals ${hp}HP, and this card can no longer be removed from your deck.`,
   effects: [2],
   cardAction: function (this: Card, { self, name, opponent, sendToGameroom }) {
-    if (this.cardMetadata.temporary) {
+    if (!this.cardMetadata.temporary) {
       sendToGameroom(
         `${name} was mesmerized by ${opponent.name}'s eyes but snapped out of it!`
       );

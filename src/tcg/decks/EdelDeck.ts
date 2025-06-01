@@ -70,7 +70,7 @@ export const one_step_ahead = new Card({
   cardMetadata: { nature: Nature.Defense },
   emoji: CardEmoji.EDEL_CARD,
   description: ([def, spd, dmg]) =>
-    `TrueDEF+${def} for 1 turn. If this card is played the same turn your opponent plays a defensive card, their SPD-${spd}, they redraw 2 cards. Attack with DMG ${dmg} + Forced Discards / 2, ignoring defense.`,
+    `TrueDEF+${def} for 1 turn. If this card is played the same turn your opponent plays a defensive card, their SPD-${spd}, they redraw 2 cards. Attack with DMG ${dmg} + Forced Discards, ignoring defense.`,
   effects: [20, 2, 10],
   priority: 3,
   cardAction: ({
@@ -288,7 +288,7 @@ const kneel = new Card({
     const discards = self.additionalMetadata.forcedDiscards;
 
     const dmg = calcEffect(0) + discards * 2;
-    flatAttack(dmg);
+    flatAttack(dmg, 1);
 
     const statusCon = ["Sleepy", "Mesmerized", "Weakened"].every((status) =>
       opponent.getAllCards().some((card) => card.title === status)
