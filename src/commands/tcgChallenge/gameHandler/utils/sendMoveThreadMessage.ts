@@ -11,7 +11,7 @@ import {
   MessageFlags,
 } from "discord.js";
 
-const sendMoveThreadMessage = (thread: ThreadChannel, user: User) => {
+const sendMoveThreadMessage = (thread: ThreadChannel, user: User, selectionThread: ThreadChannel) => {
   thread.send({
     components: [
       new ContainerBuilder().addSectionComponents(
@@ -20,7 +20,7 @@ const sendMoveThreadMessage = (thread: ThreadChannel, user: User) => {
             new ButtonBuilder()
               .setLabel("Move Thread")
               .setStyle(ButtonStyle.Link)
-              .setURL(buildThreadLink(thread.id))
+              .setURL(buildThreadLink(selectionThread.id))
           )
           .addTextDisplayComponents(
             new TextDisplayBuilder().setContent(`${user}, choose your move!`)

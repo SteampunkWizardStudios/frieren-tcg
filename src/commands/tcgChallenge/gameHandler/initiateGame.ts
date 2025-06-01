@@ -86,8 +86,8 @@ export const initiateGame = async (
       })) as ThreadChannel;
       await opponentThread.members.add(opponent.id);
 
-      sendMoveThreadMessage(gameThread, challenger);
-      sendMoveThreadMessage(gameThread, opponent);
+      sendMoveThreadMessage(gameThread, challenger, challengerThread);
+      sendMoveThreadMessage(gameThread, opponent, opponentThread);
 
       const gameRes = await tcgMain(
         challenger,
