@@ -89,7 +89,7 @@ export default function buildChallengeRequest({
         )
     );
   } else {
-	container.addTextDisplayComponents(optsDisplay);
+    container.addTextDisplayComponents(optsDisplay);
   }
 
   if (includeButtons) {

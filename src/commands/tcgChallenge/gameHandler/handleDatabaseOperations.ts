@@ -268,8 +268,8 @@ export const handleDatabaseOperations = async (props: {
   return {
     winnerRank,
     loserRank,
-	winnerNewRank,
-	loserNewRank,
+    winnerNewRank,
+    loserNewRank,
     winnerRankedUp,
     loserRankedDown,
     winnerScoreGain,

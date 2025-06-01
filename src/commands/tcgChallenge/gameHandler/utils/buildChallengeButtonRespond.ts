@@ -88,19 +88,19 @@ export const buildChallengeButtonRespond = async (
 
         await updateStatus(buttonInteraction, acceptMessage);
 
-		const addThreadFunc = editReply.bind(null, interaction, acceptMessage)
+        const addThreadFunc = editReply.bind(null, interaction, acceptMessage);
 
         // start game
         await initiateGame(
           interaction,
-		  addThreadFunc,
+          addThreadFunc,
           response.id,
           challenger,
           opponent ?? buttonInteraction.user,
           gameSettings,
           ranked,
           textSpeedMs,
-          gameMode,
+          gameMode
         );
       } else if (buttonInteraction.customId === DECLINE_BUTTON_ID) {
         await updateStatus(
