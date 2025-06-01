@@ -18,6 +18,7 @@ import {
   DatabaseOperationResult,
 } from "./handleDatabaseOperations";
 import buildBattleResults from "@src/ui/battleResults";
+import sendMoveThreadMessage from "./utils/sendMoveThreadMessage";
 
 export const initiateGame = async (
   interaction: ChatInputCommandInteraction,
@@ -84,6 +85,9 @@ export const initiateGame = async (
           : ChannelType.PrivateThread,
       })) as ThreadChannel;
       await opponentThread.members.add(opponent.id);
+
+      sendMoveThreadMessage(gameThread, challenger);
+      sendMoveThreadMessage(gameThread, opponent);
 
       const gameRes = await tcgMain(
         challenger,
