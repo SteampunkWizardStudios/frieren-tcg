@@ -18,17 +18,6 @@ export default function characterSelect({
     });
   }
 
-  charSelect
-    .setCustomId(customId)
-    .setPlaceholder("Select a Character")
-    .addOptions(
-      characterList.map((char, i) => ({
-        label: char.characterName,
-        value: nameValues ? char.characterName : `${i}`,
-        emoji: char.cosmetic.emoji,
-      }))
-    );
-
   if (includeRandom) {
     charSelect.addOptions(
       {
@@ -43,6 +32,17 @@ export default function characterSelect({
       }
     );
   }
+
+  charSelect
+    .setCustomId(customId)
+    .setPlaceholder("Select a Character")
+    .addOptions(
+      characterList.map((char, i) => ({
+        label: char.characterName,
+        value: nameValues ? char.characterName : `${i}`,
+        emoji: char.cosmetic.emoji,
+      }))
+    );
 
   const charSelectActionRow =
     new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(charSelect);

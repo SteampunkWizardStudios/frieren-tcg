@@ -23,7 +23,7 @@ const sendMoveThreadMessage = (thread: ThreadChannel, user: User, selectionThrea
               .setURL(buildThreadLink(selectionThread.id))
           )
           .addTextDisplayComponents(
-            new TextDisplayBuilder().setContent(`${user}, choose your move!`)
+            new TextDisplayBuilder().setContent(`${user}, choose your character!`)
           )
       ),
     ],

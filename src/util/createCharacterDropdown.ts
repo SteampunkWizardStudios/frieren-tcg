@@ -39,6 +39,8 @@ export const createCharacterDropdown = async (
     .addFields({
       name: "Available Characters",
       value: [
+        "🎲 Random Character",
+        "✨ Random Favorite Character", // Still using british spelling in the codebase
         ...sortedCharacters.favouritedCharacter.map(
           (char: CharacterData) =>
             `1. ⭐ ${char.cosmetic.emoji} ${char.characterName}`
@@ -47,8 +49,6 @@ export const createCharacterDropdown = async (
           (char: CharacterData) =>
             `1. ${char.cosmetic.emoji} ${char.characterName}`
         ),
-        "?. 🎲 Random Character",
-        "?. ✨ Random Favourite Character",
       ].join("\n"),
     });
 
