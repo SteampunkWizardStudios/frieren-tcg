@@ -489,8 +489,7 @@ const flammesNote = new Card({
 const primitiveDefensiveTechnique = new Card({
   title: "Primitive Defensive Technique",
   cardMetadata: { nature: Nature.Defense },
-  description: ([def]) =>
-    `TrueDEF+${def} for 1 turn.`,
+  description: ([def]) => `TrueDEF+${def} for 1 turn.`,
   emoji: CardEmoji.FLAMME_CARD,
   priority: 2,
   effects: [20],

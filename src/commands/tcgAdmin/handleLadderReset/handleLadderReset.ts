@@ -1,9 +1,7 @@
-import { ButtonInteraction, MessageFlags } from "discord.js";
+import { ButtonInteraction } from "discord.js";
 import prismaClient from "@prismaClient";
 
 export default async function handleLadderReset(i: ButtonInteraction) {
-  await i.deferReply({ flags: MessageFlags.Ephemeral });
-
   try {
     await prismaClient.$transaction(async (tx) => {
       const activeResets = await tx.ladderReset.findMany({

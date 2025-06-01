@@ -270,6 +270,7 @@ export const command: Command<ChatInputCommandInteraction> = {
           });
           collector.on("collect", async (i: ButtonInteraction) => {
             try {
+              await i.deferReply({ flags: MessageFlags.Ephemeral });
               await removeAllServerRankRoles(i.client);
               await handleLadderReset(i);
             } catch (error) {
