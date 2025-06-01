@@ -14,7 +14,7 @@ import { a_geisel } from "@decks/StilleDeck";
 import { a_lastStand } from "@decks/StarkDeck";
 import { a_malevolentShrine } from "./ubelSignature";
 import { perfectSorganeil } from "../WirbelDeck";
-import { incantationFieldOfFlowers } from "../FlammeDeck";
+import incantationFieldOfFlowers from "./flammeSignature";
 
 export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Denken]: bareHandedBlock,

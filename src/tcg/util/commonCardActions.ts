@@ -1,6 +1,9 @@
 import Game from "@tcg/game";
 import TimedEffect from "@tcg/timedEffect";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
+import Card from "../card";
+import { GameMessageContext } from "../gameContextProvider";
+import { StatsEnum } from "../stats";
 
 export default class CommonCardAction {
   // common attack function that returns the attack's damage
@@ -80,5 +83,29 @@ export default class CommonCardAction {
       }
     });
     character.timedEffects = newTimedEffects;
+  }
+
+  static useRandomCard(props: {
+    cardPool: Card[];
+    empowerLevel: number;
+    context: GameMessageContext;
+  }): Card {
+    const { cardPool, empowerLevel, context } = props;
+    const { game, name, sendToGameroom, flatSelfStat } = context;
+
+    sendToGameroom(`${name} found an interesting magic.`);
+
+    const baseCard = cardPool[Math.floor(Math.random() * cardPool.length)];
+    const newCard = new Card({
+      ...baseCard,
+      empowerLevel,
+    });
+
+    sendToGameroom(`${name} used **${newCard.getTitle()}**.`);
+    if (newCard.hpCost && newCard.hpCost !== 0) {
+      flatSelfStat(-newCard.hpCost, StatsEnum.HP, game);
+    }
+
+    return newCard;
   }
 }

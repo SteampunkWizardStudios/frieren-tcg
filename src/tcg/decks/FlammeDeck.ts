@@ -11,8 +11,16 @@ import Character from "../character";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import mediaLinks from "../formatting/mediaLinks";
+import {
+  a_foundationOfHumanitysMagicBase,
+  a_firstPageOfHumanitysMagicBase,
+  a_secondPageOfHumanitysMagicBase,
+  a_lastPageOfHumanitysMagicBase,
+  a_pinnacleOfHumanitysMagicBase,
+} from "./utilDecks/flammeFoundationStage";
+import incantationFieldOfFlowers from "./utilDecks/flammeSignature";
 
-const incantationIncreaseSigil = (
+export const incantationIncreaseSigil = (
   self: Character,
   messageCache: MessageCache,
   sigilCount: number
@@ -21,7 +29,7 @@ const incantationIncreaseSigil = (
   self.additionalMetadata.flammeSigil =
     (self.additionalMetadata.flammeSigil ?? 0) + sigilCount;
   messageCache.push(
-    `${name} performed an incantation.\n${name} **gained ${sigilCount}** Sigil. Current Sigil count: **${self.additionalMetadata.flammeSigil}**.`,
+    `${name} performed an incantation. ${name} **gained ${sigilCount}** Sigil. Current Sigil count: **${self.additionalMetadata.flammeSigil}**.`,
     TCGThread.Gameroom
   );
 };
@@ -43,7 +51,7 @@ const researchDecreaseSigil = (
     message += `${name} performed ${possessive} research.`;
   }
   messageCache.push(
-    `${message}\n${name} *lost ${sigilCount}* Sigil. Current Sigil count: **${self.additionalMetadata.flammeSigil}**.`,
+    `${message} ${name} *lost ${sigilCount}* Sigil. Current Sigil count: **${self.additionalMetadata.flammeSigil}**.`,
     TCGThread.Gameroom
   );
 };
@@ -108,55 +116,6 @@ const incantationExperimentalNotes = new Card({
         self.drawCard();
       }
     }
-  },
-});
-
-export const incantationFieldOfFlowers = new Card({
-  title: "Incantation: Field of Flowers",
-  cardMetadata: { nature: Nature.Util, signature: true },
-  description: ([hp, endHp]) =>
-    `Heal ${hp} HP. Gain 3 Sigils. At the next 3 turns' ends, heal ${endHp} HP. Gain 2 Sigils at the end of every turn.`,
-  emoji: CardEmoji.FLAMME_CARD,
-  effects: [5, 3],
-  cosmetic: {
-    cardGif: mediaLinks.flamme_fieldOfFlower_gif,
-  },
-  cardAction: function (
-    this: Card,
-    {
-      game,
-      self,
-      name,
-      sendToGameroom,
-      selfStat,
-      calcEffect,
-      messageCache,
-      flatSelfStat,
-    }
-  ) {
-    sendToGameroom(`${name} conjured a field of flowers.`);
-    selfStat(0, StatsEnum.HP, game);
-
-    const endOfTurnHealing = calcEffect(1);
-    incantationIncreaseSigil(self, messageCache, 3);
-
-    self.timedEffects.push(
-      new TimedEffect({
-        name: "Field of Flowers",
-        description: `Heal ${endOfTurnHealing} HP. Gain 2 Sigils.`,
-        turnDuration: 3,
-        executeEndOfTimedEffectActionOnRemoval: true,
-        endOfTurnAction: (game, characterIndex, messageCache) => {
-          const character = game.getCharacter(characterIndex);
-          sendToGameroom(`The Field of Flowers soothe ${name}.`);
-          flatSelfStat(endOfTurnHealing, StatsEnum.HP, game);
-          incantationIncreaseSigil(character, messageCache, 2);
-        },
-        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          sendToGameroom("The Field of Flowers fade.");
-        },
-      })
-    );
   },
 });
 
@@ -645,12 +604,53 @@ const theoryOfSoul = new Card({
   },
 });
 
+export const a_foundationOfHumanitysMagic = new Card({
+  title: "Foundation of Humanity's Magic",
+  cardMetadata: { nature: Nature.Attack },
+  description: () =>
+    "This card's effect changes based on how many Theory cards you have played.",
+  emoji: CardEmoji.FLAMME_CARD,
+  effects: [],
+  cardAction: () => {},
+  conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
+    const character = game.characters[characterIndex];
+
+    if (character.stats.stats.Ability === 0) {
+      return new Card({
+        ...a_foundationOfHumanitysMagicBase,
+        empowerLevel: this.empowerLevel,
+      });
+    } else if (character.stats.stats.Ability === 1) {
+      return new Card({
+        ...a_firstPageOfHumanitysMagicBase,
+        empowerLevel: this.empowerLevel,
+      });
+    } else if (character.stats.stats.Ability === 2) {
+      return new Card({
+        ...a_secondPageOfHumanitysMagicBase,
+        empowerLevel: this.empowerLevel,
+      });
+    } else if (character.stats.stats.Ability === 3) {
+      return new Card({
+        ...a_lastPageOfHumanitysMagicBase,
+        empowerLevel: this.empowerLevel,
+      });
+    } else {
+      return new Card({
+        ...a_pinnacleOfHumanitysMagicBase,
+        empowerLevel: this.empowerLevel,
+      });
+    }
+  },
+});
+
 const flammeDeck = [
-  { card: incantationExperimentalNotes, count: 3 },
+  { card: a_foundationOfHumanitysMagic, count: 3 },
+  { card: incantationExperimentalNotes, count: 2 },
   { card: incantationFieldOfFlowers, count: 2 },
   { card: incantationSeductionTechnique, count: 2 },
-  { card: milleniumBarrier, count: 2 },
-  { card: thousandYearSanctuary, count: 2 },
+  { card: milleniumBarrier, count: 1 },
+  { card: thousandYearSanctuary, count: 1 },
   { card: treeOfLife, count: 1 },
   { card: flammesNote, count: 2 },
   { card: primitiveDefensiveTechnique, count: 2 },

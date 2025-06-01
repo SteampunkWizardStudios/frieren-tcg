@@ -17,6 +17,7 @@ import { getPlayerPreferences } from "@src/util/db/preferences";
 import { formatAbility } from "@src/tcg/ability";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { edelStatusCards } from "@src/tcg/decks/utilDecks/edelStatuses";
+import { flammeFoundationStage } from "@src/tcg/decks/utilDecks/flammeFoundationStage";
 
 export async function showCharacterInfo(
   interaction: ChatInputCommandInteraction
@@ -116,6 +117,23 @@ export async function showCharacterInfo(
                 edelStatusCards.map((card: Card) => {
                   return {
                     name: `${card.emoji} **${card.title}** `,
+                    value: `${card.getDescription()}`,
+                  };
+                })
+              );
+          }
+
+          if (char.characterName === CharacterName.Flamme) {
+            characterEmbed
+              .addFields({
+                name: "Stages of Humanity's Magic",
+                value:
+                  "`Foundation of Humanity's Magic`'s effect changes based on how many Theory card you played.",
+              })
+              .addFields(
+                flammeFoundationStage.map((card: Card, i: number) => {
+                  return {
+                    name: `${i} Played: ${card.emoji} **${card.title}** `,
                     value: `${card.getDescription()}`,
                   };
                 })

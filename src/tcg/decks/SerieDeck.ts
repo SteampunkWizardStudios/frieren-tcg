@@ -11,31 +11,7 @@ import TimedEffect from "@tcg/timedEffect";
 import { fieldOfFlower } from "./FrierenDeck";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import { ancientBarrierMagic } from "./utilDecks/serieSignature";
-import { GameMessageContext } from "@tcg/gameContextProvider";
-
-const useRandomCard = function (props: {
-  cardPool: Card[];
-  empowerLevel: number;
-  context: GameMessageContext;
-}): Card {
-  const { cardPool, empowerLevel, context } = props;
-  const { game, name, sendToGameroom, flatSelfStat } = context;
-
-  sendToGameroom(`${name} found an interesting magic.`);
-
-  const baseCard = cardPool[Math.floor(Math.random() * cardPool.length)];
-  const newCard = new Card({
-    ...baseCard,
-    empowerLevel,
-  });
-
-  sendToGameroom(`${name} used **${newCard.getTitle()}**.`);
-  if (newCard.hpCost && newCard.hpCost !== 0) {
-    flatSelfStat(-newCard.hpCost, StatsEnum.HP, game);
-  }
-
-  return newCard;
-};
+import CommonCardAction from "../util/commonCardActions";
 
 export const a_livingGrimoireOffenseCommon = new Card({
   title: "Living Grimoire: Offense Chapter. 3rd Class Magic Section.",
@@ -48,7 +24,7 @@ export const a_livingGrimoireOffenseCommon = new Card({
   },
   effects: [],
   cardAction: function (this: Card, context) {
-    const newCard = useRandomCard({
+    const newCard = CommonCardAction.useRandomCard({
       cardPool: serie_offensiveMagic_common,
       empowerLevel: this.empowerLevel,
       context,
@@ -68,7 +44,7 @@ export const a_livingGrimoireOffenseRare = new Card({
   },
   effects: [],
   cardAction: function (this: Card, context) {
-    const newCard = useRandomCard({
+    const newCard = CommonCardAction.useRandomCard({
       cardPool: serie_offensiveMagic_rare,
       empowerLevel: this.empowerLevel,
       context,
@@ -88,7 +64,7 @@ export const a_livingGrimoireOffenseUnusual = new Card({
   },
   effects: [],
   cardAction: function (this: Card, context) {
-    const newCard = useRandomCard({
+    const newCard = CommonCardAction.useRandomCard({
       cardPool: serie_offensiveMagic_unusual,
       empowerLevel: this.empowerLevel,
       context,
@@ -108,7 +84,7 @@ export const a_livingGrimoireUtilityTactics = new Card({
   },
   effects: [],
   cardAction: function (this: Card, context) {
-    const newCard = useRandomCard({
+    const newCard = CommonCardAction.useRandomCard({
       cardPool: serie_utilityMagic_tactics,
       empowerLevel: this.empowerLevel,
       context,
@@ -128,7 +104,7 @@ export const a_livingGrimoireUtilityRecovery = new Card({
   },
   effects: [],
   cardAction: function (this: Card, context) {
-    const newCard = useRandomCard({
+    const newCard = CommonCardAction.useRandomCard({
       cardPool: serie_utilityMagic_recovery,
       empowerLevel: this.empowerLevel,
       context,
