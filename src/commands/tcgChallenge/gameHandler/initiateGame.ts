@@ -138,12 +138,12 @@ export const initiateGame = async (
         gameRes: { ...gameRes, challenger, opponent },
         dbRes,
         threadId: gameThread.id,
+        gameId,
       });
 
       await channel.send({
         flags: MessageFlags.IsComponentsV2,
         components: [container],
-        reply: { messageReference: gameId },
       });
     } else {
       await interaction.editReply({

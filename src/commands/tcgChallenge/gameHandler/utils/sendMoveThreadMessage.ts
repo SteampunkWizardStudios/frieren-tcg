@@ -1,7 +1,7 @@
 import { buildThreadLink } from "@src/util/formatting/links";
 
 import {
-	  ContainerBuilder,
+  ContainerBuilder,
   SectionBuilder,
   TextDisplayBuilder,
   ButtonBuilder,
@@ -11,7 +11,11 @@ import {
   MessageFlags,
 } from "discord.js";
 
-const sendMoveThreadMessage = (thread: ThreadChannel, user: User, selectionThread: ThreadChannel) => {
+const sendMoveThreadMessage = (
+  thread: ThreadChannel,
+  user: User,
+  selectionThread: ThreadChannel
+) => {
   thread.send({
     components: [
       new ContainerBuilder().addSectionComponents(
@@ -23,11 +27,13 @@ const sendMoveThreadMessage = (thread: ThreadChannel, user: User, selectionThrea
               .setURL(buildThreadLink(selectionThread.id))
           )
           .addTextDisplayComponents(
-            new TextDisplayBuilder().setContent(`${user}, choose your character!`)
+            new TextDisplayBuilder().setContent(
+              `${user}, choose your character!`
+            )
           )
       ),
     ],
-	flags: MessageFlags.IsComponentsV2
+    flags: MessageFlags.IsComponentsV2,
   });
 };
 

@@ -8,7 +8,7 @@ import {
   User,
 } from "discord.js";
 
-import { buildThreadLink } from "@src/util/formatting/links";
+import { buildMessageLink, buildThreadLink } from "@src/util/formatting/links";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { TCGResult } from "@src/tcgMain";
 import { DatabaseOperationResult } from "@src/commands/tcgChallenge/gameHandler/handleDatabaseOperations";
@@ -23,12 +23,14 @@ type BattleResultsOptions = {
   };
   dbRes?: DatabaseOperationResult | null; // if undefined, it means the game was not ranked or was tied
   threadId: string;
+  gameId: string;
 };
 
 export default function buildBattleResults({
   gameRes,
   dbRes,
   threadId,
+  gameId,
 }: BattleResultsOptions) {
   const { challenger, opponent } = gameRes;
 
@@ -75,7 +77,9 @@ export default function buildBattleResults({
             .setURL(buildThreadLink(threadId))
         )
         .addTextDisplayComponents(
-          new TextDisplayBuilder().setContent(`-# Game ID: ${threadId}`)
+          new TextDisplayBuilder().setContent(
+            `-# [Game ID: ${gameId}](${buildMessageLink(gameId)})`
+          )
         )
     )
     .setAccentColor(0xffffff);
@@ -110,10 +114,6 @@ const perPlayerSectionLogic = ({
         ? `**Winner** <@${user.id}>`
         : `**Loser** <@${user.id}>`
       : `<@${user.id}>`
-  );
-
-  console.log(
-    `Rank: ${rank}, New Rank: ${newRank}, Ranked Change: ${rankedChange}, Score Change: ${scoreChange}, New Score: ${newScore}, Character: ${character}, User: ${user.username}`
   );
 
   const rankLine = rank
