@@ -191,9 +191,9 @@ const clear_mind = new Card({
   title: "Clear Mind",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
   emoji: CardEmoji.EDEL_CARD,
-  description: ([hp, forcedHeal, spd]) =>
-    `Eye Contact+1. Heal ${hp} HP. Heal an additional ${forcedHeal} per Forced Discard. SPD+${spd}.`,
-  effects: [10, 2, 2],
+  description: ([hp, spd]) =>
+    `Eye Contact+1. Heal ${hp} + Forced Discard x 2 HP. SPD+${spd}.`,
+  effects: [10, 2],
   cosmetic: {
     cardGif: mediaLinks.edel_clear_mind_gif,
   },
@@ -210,9 +210,9 @@ const clear_mind = new Card({
     sendToGameroom(`${name} focuses and clears ${possessive} mind.`);
 
     const hp =
-      calcEffect(0) + self.additionalMetadata.forcedDiscards * calcEffect(1);
+      calcEffect(0) + self.additionalMetadata.forcedDiscards * 2;
     flatSelfStat(hp, StatsEnum.HP, game);
-    selfStat(2, StatsEnum.SPD, game);
+    selfStat(1, StatsEnum.SPD, game);
   },
 });
 
