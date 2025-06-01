@@ -225,8 +225,8 @@ const hypnosis_sleep = new Card({
   effects: [],
   cardAction: function (this: Card, { name, self, sendToGameroom, opponent }) {
     sendToGameroom(`${name} stares right at ${opponent.name}.\n> *Sleep*`);
-    pushStatus(opponent, self, sleepy, this.empowerLevel);
     redrawRandom(opponent, self);
+    pushStatus(opponent, self, sleepy, this.empowerLevel);
   },
 });
 
@@ -241,8 +241,8 @@ const hypnosis_mesmerize = new Card({
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *Look into my eyes*`
     );
-    pushStatus(opponent, self, mesmerized, this.empowerLevel);
     redrawRandom(opponent, self);
+    pushStatus(opponent, self, mesmerized, this.empowerLevel);
   },
 });
 
@@ -257,8 +257,8 @@ const hypnosis_weaken = new Card({
     sendToGameroom(
       `${name} stares right at ${opponent.name}.\n> *You are feeling weak*`
     );
-    pushStatus(opponent, self, weakened, this.empowerLevel);
     redrawRandom(opponent, self);
+    pushStatus(opponent, self, weakened, this.empowerLevel);
   },
 });
 

@@ -22,7 +22,7 @@ const sendMoveThreadMessage = (
         new SectionBuilder()
           .setButtonAccessory(
             new ButtonBuilder()
-              .setLabel("Move Thread")
+              .setLabel("Go to Thread")
               .setStyle(ButtonStyle.Link)
               .setURL(buildThreadLink(selectionThread.id))
           )

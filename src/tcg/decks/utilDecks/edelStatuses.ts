@@ -49,6 +49,8 @@ export const mesmerized = new Card({
   ) {
     sendToGameroom(`${name} was mesmerized by ${opponent.name}'s eyes!`);
     this.cardMetadata.temporary = false;
+    this.description = ([hp]) =>
+      ` This card cannot be removed from your deck. If it's not played, until the end of the game, at each turn's end, lose ${hp}HP, your opponent heals ${hp}HP.`;
 
     const hp = calcEffect(0);
     self.timedEffects.push(

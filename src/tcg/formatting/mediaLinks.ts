@@ -130,6 +130,10 @@ const flammeCardLinks = {
   flamme_seduction_gif: "https://c.tenor.com/EC6mBMhIRugAAAAC/tenor.gif",
   flamme_theory_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1378420857839554651/GIF_0406338443.gif?ex=683c89f6&is=683b3876&hm=9a8cdeafacbf67abd81c32ecbb32a415dec4c65e78654cf2eb11c40802d80df0&",
+  flamme_theoryofSouls_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378471920546087002/IMG_6826.gif?ex=683cb984&is=683b6804&hm=d837cdeef81def136a5379af313be932d5d00cafd3d96a01a9031cc01d9a27ac&",
+  flamme_milleniumBarrier_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378507554509946911/GIF_2872451178.gif?ex=683cdab4&is=683b8934&hm=b2bc1a80599ea2daed73e9f475afd1707dbb56ef13da049afc4d29b266d4ea83&",
 };
 
 const mediaLinks = {
