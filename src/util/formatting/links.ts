@@ -4,7 +4,7 @@ import {
 } from "@src/constants";
 
 export function buildThreadLink(threadId: string): string {
-  return `https://discord.com/channels/${FRIEREN_DISCORD_SERVER_AUBERST_CHANNEL_ID}/${threadId}`;
+  return `https://discord.com/channels/${FRIEREN_DISCORD_SERVER}/${threadId}`;
 }
 
 export function buildMessageLink(messageId: string): string {
