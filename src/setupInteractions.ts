@@ -34,9 +34,10 @@ export const setupInteractions = async (
                 flags: MessageFlags.Ephemeral,
               });
             } else {
-              await interaction.editReply(
-                "Command not found or improperly configured."
-              );
+              await interaction.editReply({
+                content: "Command not found or improperly configured.",
+                components: [],
+              });
             }
             return;
           }
@@ -51,6 +52,7 @@ export const setupInteractions = async (
               await interaction.reply({
                 content: "There was an error executing this command.",
                 flags: MessageFlags.Ephemeral,
+                components: [],
               });
             } else {
               await interaction.editReply(

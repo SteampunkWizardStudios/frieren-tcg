@@ -490,7 +490,7 @@ const primitiveDefensiveTechnique = new Card({
   title: "Primitive Defensive Technique",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `TrueDEF+${def} for 1 turn. -1 Sigil. If "Pinnacle of Humanity's Magic" is in your hand, discard it, then draw 1 card.`,
+    `TrueDEF+${def} for 1 turn.`,
   emoji: CardEmoji.FLAMME_CARD,
   priority: 2,
   effects: [20],
@@ -502,13 +502,6 @@ const primitiveDefensiveTechnique = new Card({
 
     const def = calcEffect(0);
     self.adjustStat(def, StatsEnum.TrueDEF, game);
-    researchDecreaseSigil(self, game.messageCache, 1);
-
-    const index = self.hand.findIndex((card) => card.cardMetadata.isPinnacle);
-    if (index !== -1) {
-      self.discardCard(index);
-      self.drawCard();
-    }
 
     self.timedEffects.push(
       new TimedEffect({

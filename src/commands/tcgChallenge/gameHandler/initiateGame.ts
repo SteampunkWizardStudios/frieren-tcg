@@ -1,21 +1,28 @@
 import {
   ChannelType,
   ChatInputCommandInteraction,
-  EmbedBuilder,
+  MessageType,
   PrivateThreadChannel,
   PublicThreadChannel,
   TextChannel,
   ThreadAutoArchiveDuration,
   ThreadChannel,
   User,
+  Message,
+  MessageFlags,
 } from "discord.js";
 import { GameMode, GameSettings } from "./gameSettings";
 import { tcgMain } from "@src/tcgMain";
-import { handleDatabaseOperationsWithResultEmbedSideEffect } from "./handleDatabaseOperations";
-import { charWithEmoji } from "@tcg/formatting/emojis";
+import {
+  handleDatabaseOperations,
+  DatabaseOperationResult,
+} from "./handleDatabaseOperations";
+import buildBattleResults from "@src/ui/battleResults";
+import sendMoveThreadMessage from "./utils/sendMoveThreadMessage";
 
 export const initiateGame = async (
   interaction: ChatInputCommandInteraction,
+  addThreadFunc: (threadId?: string | undefined) => Promise<Message<boolean>>,
   gameId: string,
   challenger: User,
   opponent: User,
@@ -33,10 +40,35 @@ export const initiateGame = async (
       const gameThread = (await channel.threads.create({
         name: `${ranked ? "Ranked " : ""}TCG Game Thread: ${challenger.displayName} vs ${opponent.displayName} (ID: ${gameId})`,
         autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-        type: ChannelType.PublicThread,
       })) as PublicThreadChannel<false>;
-      await gameThread.members.add(challenger.id);
-      await gameThread.members.add(opponent.id);
+      await Promise.all([
+        gameThread.members.add(challenger.id),
+        gameThread.members.add(opponent.id),
+      ]);
+
+      addThreadFunc(gameThread.id).catch((error) => {
+        console.error("Failed to add thread link:", error);
+      });
+
+      (async () => {
+        try {
+          const messages = await channel.messages.fetch({
+            limit: 10,
+            after: gameId,
+          });
+          const systemMessage = messages.find(
+            (msg) =>
+              msg.type === MessageType.ThreadCreated &&
+              msg.author.id === interaction.client.user.id
+          );
+
+          if (systemMessage) {
+            await systemMessage.delete();
+          }
+        } catch (error) {
+          console.error("Failed to delete system message:", error);
+        }
+      })();
 
       const challengerThread = (await channel.threads.create({
         name: `TCG Move Select: ${challenger.displayName}'s Move Selection Thread (ID: ${gameId})`,
@@ -54,14 +86,10 @@ export const initiateGame = async (
       })) as ThreadChannel;
       await opponentThread.members.add(opponent.id);
 
-      const {
-        winner,
-        winnerCharacter,
-        loser,
-        loserCharacter,
-        challengerCharacter,
-        opponentCharacter,
-      } = await tcgMain(
+      sendMoveThreadMessage(gameThread, challenger, challengerThread);
+      sendMoveThreadMessage(gameThread, opponent, opponentThread);
+
+      const gameRes = await tcgMain(
         challenger,
         opponent,
         gameThread,
@@ -70,6 +98,8 @@ export const initiateGame = async (
         gameSettings,
         textSpeedMs
       );
+
+      const { winner, loser, winnerCharacter, loserCharacter } = gameRes;
 
       // thread cleanup
       await Promise.all([
@@ -82,41 +112,20 @@ export const initiateGame = async (
         opponentThread.members.remove(opponent.id),
       ]);
 
-      const challengerCharFormatted = challengerCharacter
-        ? charWithEmoji(challengerCharacter)
-        : "Unselected";
-      const opponentCharFormatted = opponentCharacter
-        ? charWithEmoji(opponentCharacter)
-        : "Unselected";
-
-      let resultEmbed = new EmbedBuilder()
-        .setColor(0xc5c3cc)
-        .setTitle(
-          `Frieren TCG - Results: ${challenger.displayName} vs ${opponent.displayName}`
-        )
-        .setFields({
-          name: "Characters",
-          value: `${challenger} as ${challengerCharFormatted}\n${opponent} as ${opponentCharFormatted}`,
-        })
-        .setFooter({
-          text: `Game ID: ${gameId}`,
-        });
+      let dbRes: DatabaseOperationResult | null = null;
 
       // handle database operations
       if (winner && winnerCharacter && loser && loserCharacter && gameMode) {
         try {
-          resultEmbed = await handleDatabaseOperationsWithResultEmbedSideEffect(
-            {
-              winner,
-              winnerCharacter,
-              loser,
-              loserCharacter,
-              ranked,
-              gameMode,
-              resultEmbed,
-              gameThread,
-            }
-          );
+          dbRes = await handleDatabaseOperations({
+            winner,
+            winnerCharacter,
+            loser,
+            loserCharacter,
+            ranked,
+            gameMode,
+            gameThread,
+          });
         } catch (error) {
           console.error(
             `Error in database operation calculation for Winner UserID ${winner.id} vs Loser UserID ${loser.id}`
@@ -125,23 +134,17 @@ export const initiateGame = async (
         }
       }
 
-      if (winner && loser) {
-        await channel.send({
-          embeds: [
-            resultEmbed.setDescription(
-              `Game over! ${winner} defeated ${loser}!`
-            ),
-          ],
-          reply: { messageReference: gameId },
-        });
-      } else {
-        await channel.send({
-          embeds: [
-            resultEmbed.setDescription(`Game over! The game ended in a tie!`),
-          ],
-          reply: { messageReference: gameId },
-        });
-      }
+      const container = buildBattleResults({
+        gameRes: { ...gameRes, challenger, opponent },
+        dbRes,
+        threadId: gameThread.id,
+        gameId,
+      });
+
+      await channel.send({
+        flags: MessageFlags.IsComponentsV2,
+        components: [container],
+      });
     } else {
       await interaction.editReply({
         content:

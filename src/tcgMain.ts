@@ -31,7 +31,7 @@ import { FlammeResearch } from "./tcg/additionalMetadata/gameAdditionalMetadata"
 
 const TURN_LIMIT = 50;
 
-type TCGResult = {
+export type TCGResult = {
   winner?: User;
   winnerCharacter?: CharacterName;
   loser?: User;

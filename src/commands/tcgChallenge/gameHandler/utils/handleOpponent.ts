@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, User } from "discord.js";
+import { ChatInputCommandInteraction, MessageFlags, User } from "discord.js";
 
 export const handleOpponent = async (
   interaction: ChatInputCommandInteraction,
