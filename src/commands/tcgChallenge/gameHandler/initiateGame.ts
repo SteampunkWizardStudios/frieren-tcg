@@ -1,7 +1,6 @@
 import {
   ChannelType,
   ChatInputCommandInteraction,
-  EmbedBuilder,
   MessageType,
   PrivateThreadChannel,
   PublicThreadChannel,
@@ -10,11 +9,15 @@ import {
   ThreadChannel,
   User,
   Message,
+  MessageFlags,
 } from "discord.js";
 import { GameMode, GameSettings } from "./gameSettings";
 import { tcgMain } from "@src/tcgMain";
-import { handleDatabaseOperations } from "./handleDatabaseOperations";
-import { charWithEmoji } from "@tcg/formatting/emojis";
+import {
+  handleDatabaseOperations,
+  DatabaseOperationResult,
+} from "./handleDatabaseOperations";
+import buildBattleResults from "@src/ui/battleResults";
 
 export const initiateGame = async (
   interaction: ChatInputCommandInteraction,
@@ -92,14 +95,7 @@ export const initiateGame = async (
         textSpeedMs
       );
 
-      const {
-        winner,
-        loser,
-        challengerCharacter,
-        opponentCharacter,
-        winnerCharacter,
-        loserCharacter,
-      } = gameRes;
+      const { winner, loser, winnerCharacter, loserCharacter } = gameRes;
 
       // thread cleanup
       await Promise.all([
@@ -112,30 +108,12 @@ export const initiateGame = async (
         opponentThread.members.remove(opponent.id),
       ]);
 
-      const challengerCharFormatted = challengerCharacter
-        ? charWithEmoji(challengerCharacter)
-        : "Unselected";
-      const opponentCharFormatted = opponentCharacter
-        ? charWithEmoji(opponentCharacter)
-        : "Unselected";
-
-      const resultEmbed = new EmbedBuilder()
-        .setColor(0xc5c3cc)
-        .setTitle(
-          `Frieren TCG - Results: ${challenger.displayName} vs ${opponent.displayName}`
-        )
-        .setFields({
-          name: "Characters",
-          value: `${challenger} as ${challengerCharFormatted}\n${opponent} as ${opponentCharFormatted}`,
-        })
-        .setFooter({
-          text: `Game ID: ${gameId}`,
-        });
+      let dbRes: DatabaseOperationResult | null = null;
 
       // handle database operations
       if (winner && winnerCharacter && loser && loserCharacter && gameMode) {
         try {
-          const dbRes = await handleDatabaseOperations({
+          dbRes = await handleDatabaseOperations({
             winner,
             winnerCharacter,
             loser,
@@ -152,23 +130,17 @@ export const initiateGame = async (
         }
       }
 
-      if (winner && loser) {
-        await channel.send({
-          embeds: [
-            resultEmbed.setDescription(
-              `Game over! ${winner} defeated ${loser}!`
-            ),
-          ],
-          reply: { messageReference: gameId },
-        });
-      } else {
-        await channel.send({
-          embeds: [
-            resultEmbed.setDescription(`Game over! The game ended in a tie!`),
-          ],
-          reply: { messageReference: gameId },
-        });
-      }
+      const container = buildBattleResults({
+        gameRes: { ...gameRes, challenger, opponent },
+        dbRes,
+        threadId: gameThread.id,
+      });
+
+      await channel.send({
+        flags: MessageFlags.IsComponentsV2,
+        components: [container],
+        reply: { messageReference: gameId },
+      });
     } else {
       await interaction.editReply({
         content:

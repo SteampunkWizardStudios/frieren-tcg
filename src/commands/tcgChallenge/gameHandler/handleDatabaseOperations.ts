@@ -23,10 +23,10 @@ export type DatabaseOperationResult = {
   loserNewRank: Rank | null;
   winnerRankedUp: boolean;
   loserRankedDown: boolean;
-  winnerScoreGain: number;
-  loserScoreLoss: number;
-  winnerNewPoints: number;
-  loserNewPoints: number;
+  winnerScoreGain: number | null;
+  loserScoreLoss: number | null;
+  winnerNewPoints: number | null;
+  loserNewPoints: number | null;
 };
 
 export const handleDatabaseOperations = async (props: {
@@ -54,10 +54,10 @@ export const handleDatabaseOperations = async (props: {
     loserRankedDown: boolean = false,
     winnerNewRank: Rank | null = null,
     loserNewRank: Rank | null = null,
-    winnerScoreGain: number = 0,
-    loserScoreLoss: number = 0,
-    winnerNewPoints: number = 0,
-    loserNewPoints: number = 0;
+    winnerScoreGain: number | null = null,
+    loserScoreLoss: number | null = null,
+    winnerNewPoints: number | null = null,
+    loserNewPoints: number | null = null;
 
   const client = gameThread.client;
 
@@ -159,7 +159,7 @@ export const handleDatabaseOperations = async (props: {
                 },
                 data: {
                   rankPoints: {
-                    increment: winnerScoreGain,
+                    increment: winnerScoreGain ?? 0,
                   },
                 },
               }),
@@ -169,7 +169,7 @@ export const handleDatabaseOperations = async (props: {
                 },
                 data: {
                   rankPoints: {
-                    decrement: loserScoreLoss,
+                    decrement: loserScoreLoss ?? 0,
                   },
                 },
               }),
@@ -186,7 +186,7 @@ export const handleDatabaseOperations = async (props: {
                   },
                   data: {
                     masteryPoints: {
-                      increment: winnerScoreGain,
+                      increment: winnerScoreGain ?? 0,
                     },
                     wins: {
                       increment: 1,
@@ -199,7 +199,7 @@ export const handleDatabaseOperations = async (props: {
                   },
                   data: {
                     masteryPoints: {
-                      decrement: loserScoreLoss,
+                      decrement: loserScoreLoss ?? 0,
                     },
                     losses: {
                       increment: 1,

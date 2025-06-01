@@ -21,7 +21,7 @@ type BattleResultsOptions = {
     challenger: User;
     opponent: User;
   };
-  dbRes?: DatabaseOperationResult; // if undefined, it means the game was not ranked or was tied
+  dbRes?: DatabaseOperationResult | null; // if undefined, it means the game was not ranked or was tied
   threadId: string;
 };
 
@@ -34,27 +34,33 @@ export default function buildBattleResults({
 
   const playerOneSection = perPlayerSectionLogic({
     isFirst: true,
+    notTied: gameRes.winner !== undefined,
     user: gameRes.winner ?? challenger,
     character: gameRes.winnerCharacter ?? gameRes.challengerCharacter,
     rank: dbRes?.winnerRank,
     rankedChange: dbRes?.winnerRankedUp,
     newRank: dbRes?.winnerNewRank,
     scoreChange: dbRes?.winnerScoreGain,
+    newScore: dbRes?.winnerNewPoints,
   });
 
   const playerTwoSection = perPlayerSectionLogic({
     isFirst: false,
+    notTied: gameRes.winner !== undefined,
     user: gameRes.loser ?? opponent,
     character: gameRes.loserCharacter ?? gameRes.opponentCharacter,
     rank: dbRes?.loserRank,
     rankedChange: dbRes?.loserRankedDown,
     newRank: dbRes?.loserNewRank,
     scoreChange: dbRes?.loserScoreLoss,
+    newScore: dbRes?.loserNewPoints,
   });
 
   const container = new ContainerBuilder()
     .addTextDisplayComponents(
-      new TextDisplayBuilder().setContent("### Battle Results")
+      new TextDisplayBuilder().setContent(
+        `### Battle Results${gameRes.winner ? "" : " - Tied"}`
+      )
     )
     .addTextDisplayComponents(playerOneSection.line)
     .addSectionComponents(playerOneSection.section)
@@ -79,38 +85,50 @@ export default function buildBattleResults({
 
 const perPlayerSectionLogic = ({
   isFirst,
+  notTied,
   user,
   character,
   rank,
   rankedChange,
   newRank,
   scoreChange,
+  newScore,
 }: {
   isFirst: boolean;
+  notTied: boolean;
   user: User;
   character: CharacterName | undefined;
   rank: Rank | null | undefined;
   rankedChange: boolean | undefined | null;
   newRank: Rank | null | undefined;
-  scoreChange: number | undefined;
+  scoreChange: number | undefined | null;
+  newScore: number | undefined | null;
 }) => {
   const line = new TextDisplayBuilder().setContent(
-    isFirst ? `**Winner** <@${user.id}>` : `**Loser** <@${user.id}>`
+    notTied
+      ? isFirst
+        ? `**Winner** <@${user.id}>`
+        : `**Loser** <@${user.id}>`
+      : `<@${user.id}>`
   );
 
-  const rankLine = rankedChange
-    ? `Rank ${isFirst ? "up!" : "down..."} New rank: **${newRank}**`
-    : rank
-      ? `Rank: ${rank}`
-      : "Unranked";
+  console.log(
+    `Rank: ${rank}, New Rank: ${newRank}, Ranked Change: ${rankedChange}, Score Change: ${scoreChange}, New Score: ${newScore}, Character: ${character}, User: ${user.username}`
+  );
 
-  const rankPointsLine = newRank
-    ? `Rank Points: ${newRank}${
-        scoreChange
-          ? scoreChange > 0
-            ? ` (+**${scoreChange}**)`
-            : ` (-**${Math.abs(scoreChange)}**)`
-          : ""
+  const rankLine = rank
+    ? `Rank: ${rank.rankTitle}`
+    : newRank && rankedChange
+      ? `Rank ${isFirst ? "up!" : "down..."} New rank: **${newRank.rankTitle}**`
+      : null;
+
+  const rankPointsLine = scoreChange
+    ? `Rank Points: ${newScore}${
+        scoreChange > 0
+          ? ` (+**${scoreChange}**)`
+          : scoreChange < 0
+            ? ` (-**${Math.abs(scoreChange)}**)`
+            : ""
       }`
     : null;
 
@@ -131,8 +149,8 @@ const perPlayerSectionLogic = ({
 
 const buildPlayerSection = (
   charFormatted: string,
-  rankLine?: string,
-  rankPointsLine?: string | null,
+  rankLine: string | null,
+  rankPointsLine: string | null,
   charLink?: string
 ) => {
   const section = new SectionBuilder();
