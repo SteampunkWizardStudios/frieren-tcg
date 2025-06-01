@@ -139,17 +139,6 @@ export const handleDatabaseOperations = async (props: {
             await updateMemberRoles(client, loser, loserNewRank);
           }
 
-          /*           resultEmbed.addFields(
-            {
-              name: `Winner: ${winner.displayName}`,
-              value: `Rank Points: ${winnerNewPoints} (${winnerScoreGain > 0 ? `+**${winnerScoreGain}**` : "Unchanged"}) ${winnerRankedUp ? `(Rank Up! New Rank: **${winnerNewRank.rankTitle}**)` : ""}`,
-            },
-            {
-              name: `Loser: ${loser.displayName}`,
-              value: `Rank Points: ${loserNewPoints} (${loserScoreLoss > 0 ? `-**${loserScoreLoss}**` : "Unchanged"}) ${loserRankedDown ? `(Rank Down... New Rank: **${loserNewRank.rankTitle}**)` : ""}`,
-            }
-          ); */
-
           // update ladder rank
           prismaClient.$transaction(async (tx) => {
             await Promise.all([
