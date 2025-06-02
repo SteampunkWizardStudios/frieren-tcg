@@ -654,7 +654,7 @@ const flammeDeck = [
   { card: treeOfLife, count: 1 },
   { card: flammesNote, count: 2 },
   { card: primitiveDefensiveTechnique, count: 2 },
-  { card: theoryOfIrreversibility, count: 100 },
+  { card: theoryOfIrreversibility, count: 1 },
   { card: theoryOfBalance, count: 1 },
   { card: theoryOfPrescience, count: 1 },
   { card: theoryOfSoul, count: 1 },
