@@ -93,6 +93,7 @@ const Flamme = new CharacterData({
     deceitful: true,
     ignoreManaSuppressed: true,
     defenderDamageScaling: 1,
+    flammeSigil: 3,
   },
 });
 
