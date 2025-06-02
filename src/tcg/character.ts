@@ -28,6 +28,9 @@ export interface CharacterProps {
 
 export default class Character {
   characterName: CharacterName;
+  /**
+   * See also: {@link Character.characterName}
+   */
   name: string;
   cosmetic: CharacterCosmetic;
 
