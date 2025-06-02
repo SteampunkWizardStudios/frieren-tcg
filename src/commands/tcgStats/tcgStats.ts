@@ -48,6 +48,7 @@ export const command: Command<ChatInputCommandInteraction> = {
                 }))
             )
         )
+        .addIntegerOption(seasonOption)
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -167,6 +168,10 @@ export const command: Command<ChatInputCommandInteraction> = {
         await interaction.respond(
           filtered.map((table) => ({ name: table, value: table }))
         );
+        break;
+      }
+      case "global-leaderboard": {
+        await seasonAutocomplete(interaction);
         break;
       }
       case "usage": {

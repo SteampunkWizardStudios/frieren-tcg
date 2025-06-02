@@ -1,5 +1,5 @@
 import { GameMode } from "@src/commands/tcgChallenge/gameHandler/gameSettings";
-import prismaClient from "../../../prisma/client";
+import prismaClient from "@prismaClient";
 
 export const getLatestLadderReset = async (props: {
   gamemode: GameMode;
