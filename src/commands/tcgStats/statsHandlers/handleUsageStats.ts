@@ -12,11 +12,11 @@ import { charWithEmoji } from "@src/tcg/formatting/emojis";
 export default async function handleUsageStats(
   interaction: ChatInputCommandInteraction
 ) {
-  const queryId = interaction.options.getInteger("season");
+  const seasonId = interaction.options.getInteger("season");
 
   const data = await prismaClient.match.findMany({
     where: {
-      ladderReset: queryId ? { id: queryId } : { endDate: null },
+      ladderReset: seasonId ? { id: seasonId } : { endDate: null },
     },
     select: {
       winnerCharacter: {

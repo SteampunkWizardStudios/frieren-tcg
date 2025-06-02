@@ -127,7 +127,8 @@ export const command: Command<ChatInputCommandInteraction> = {
         }
         case "character": {
           const character = interaction.options.getString("character");
-          await handleCharacterStats(interaction, character);
+          const seasonId = interaction.options.getInteger("season");
+          await handleCharacterStats(interaction, character, seasonId);
           break;
         }
         case "usage": {
