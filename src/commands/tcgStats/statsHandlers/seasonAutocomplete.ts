@@ -1,10 +1,17 @@
 import { AutocompleteInteraction, SlashCommandIntegerOption } from "discord.js";
 import prismaClient from "@prismaClient";
+import { GameMode } from "@src/commands/tcgChallenge/gameHandler/gameSettings";
 
 export default async function seasonAutocomplete(
   interaction: AutocompleteInteraction
 ) {
-  const data = await prismaClient.ladderReset.findMany();
+  const data = await prismaClient.ladderReset.findMany({
+    where: {
+      ladder: {
+        name: GameMode.CLASSIC,
+      },
+    },
+  });
 
   const focusedValue = interaction.options.getFocused();
 
@@ -13,7 +20,7 @@ export default async function seasonAutocomplete(
     const month = date.toLocaleString("default", { month: "long" });
     const year = date.getFullYear();
     return {
-      name: `${month} ${year} Season`,
+      name: `${month} ${year} Season - ID: ${season.id}`,
       value: season.id,
     };
   });
@@ -23,6 +30,8 @@ export default async function seasonAutocomplete(
       return options.name.toLowerCase().includes(focusedValue.toLowerCase());
     })
     .slice(0, 25);
+
+  console.log("Filtered Seasons:", filtered);
 
   await interaction.respond(filtered);
 }
