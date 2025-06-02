@@ -14,6 +14,9 @@ import { CHAR_OPTIONS } from "@src/constants";
 import handleUsageStats from "./statsHandlers/handleUsageStats";
 import getTables from "@src/util/db/getTables";
 import exportTable from "./statsHandlers/exportTable";
+import seasonAutocomplete, {
+  seasonOption,
+} from "./statsHandlers/seasonAutocomplete";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -83,7 +86,10 @@ export const command: Command<ChatInputCommandInteraction> = {
         )
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("usage").setDescription("Usage stats for characters")
+      subcommand
+        .setName("usage")
+        .setDescription("Usage stats for characters")
+        .addIntegerOption(seasonOption)
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -161,6 +167,10 @@ export const command: Command<ChatInputCommandInteraction> = {
         await interaction.respond(
           filtered.map((table) => ({ name: table, value: table }))
         );
+        break;
+      }
+      case "usage": {
+        await seasonAutocomplete(interaction);
         break;
       }
       default: {
