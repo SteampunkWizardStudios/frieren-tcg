@@ -209,8 +209,7 @@ const clear_mind = new Card({
   }) => {
     sendToGameroom(`${name} focuses and clears ${possessive} mind.`);
 
-    const hp =
-      calcEffect(0) + self.additionalMetadata.forcedDiscards * 2;
+    const hp = calcEffect(0) + self.additionalMetadata.forcedDiscards * 2;
     flatSelfStat(hp, StatsEnum.HP, game);
     selfStat(1, StatsEnum.SPD, game);
   },

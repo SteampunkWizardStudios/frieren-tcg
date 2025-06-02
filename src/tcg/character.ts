@@ -248,12 +248,17 @@ export default class Character {
   // adjust a character's stat
   // returns whether the operation was a success
   // there is no failure condition for now
+  private static IRREVERSIBILITY_IGNORED_STATS = new Set([
+    StatsEnum.Ability,
+    StatsEnum.HP,
+    StatsEnum.TrueDEF,
+  ]);
   adjustStat(adjustValue: number, stat: StatsEnum, game: Game): boolean {
     const roundedInitialAdjustValue = Number(adjustValue.toFixed(2));
 
     let roundedAdjustValue = roundedInitialAdjustValue;
     if (game.additionalMetadata.flammeTheory.Irreversibility) {
-      if (stat !== StatsEnum.Ability) {
+      if (!Character.IRREVERSIBILITY_IGNORED_STATS.has(stat)) {
         if (
           this.additionalMetadata.opponentMilleniumBarrierActive &&
           roundedAdjustValue > 0

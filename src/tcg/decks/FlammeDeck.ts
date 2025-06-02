@@ -485,7 +485,7 @@ const theoryOfIrreversibility = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `All stat changes for both players are halved. Remove this card from the deck once it is used.`,
+    `All ATK/DEF/SPD changes for both players are halved. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cosmetic: {
