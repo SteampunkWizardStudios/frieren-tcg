@@ -8,7 +8,7 @@ import {
   MessageFlags,
 } from "discord.js";
 import { sendInfoMessage } from "./util/sendInfoMessage";
-import { statDetails } from "@tcg/formatting/emojis";
+import { CardEmoji, statDetails } from "@tcg/formatting/emojis";
 import { createCharacterDropdown } from "@src/util/createCharacterDropdown";
 import Card from "@tcg/card";
 import { handleCharacterSelection } from "@src/tcgChatInteractions/handleCharacterSelection";
@@ -127,8 +127,7 @@ export async function showCharacterInfo(
             characterEmbed
               .addFields({
                 name: "Stages of Humanity's Magic",
-                value:
-                  "`Foundation of Humanity's Magic`'s effect changes based on how many Theory card you played.",
+                value: `${CardEmoji.FLAMME_CARD} **Foundation of Humanity's Magic**'s effect changes based on how many Theory card you played.`,
               })
               .addFields(
                 flammeFoundationStage.map((card: Card, i: number) => {
