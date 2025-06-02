@@ -485,7 +485,7 @@ const theoryOfIrreversibility = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `All stat changes for both players are halved. Remove this card from the deck once it is used.`,
+    `All ATK/DEF/SPD changes for both players are halved. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cosmetic: {
@@ -654,7 +654,7 @@ const flammeDeck = [
   { card: treeOfLife, count: 1 },
   { card: flammesNote, count: 2 },
   { card: primitiveDefensiveTechnique, count: 2 },
-  { card: theoryOfIrreversibility, count: 1 },
+  { card: theoryOfIrreversibility, count: 100 },
   { card: theoryOfBalance, count: 1 },
   { card: theoryOfPrescience, count: 1 },
   { card: theoryOfSoul, count: 1 },
