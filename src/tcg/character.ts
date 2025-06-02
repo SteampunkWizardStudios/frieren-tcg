@@ -29,7 +29,8 @@ export interface CharacterProps {
 export default class Character {
   characterName: CharacterName;
   /**
-   * See also: {@link Character.characterName}
+   * The name of the character with display name ex). "Frieren (Hexa)"
+   * See also: {@link Character.characterName} for just the character name
    */
   name: string;
   cosmetic: CharacterCosmetic;
