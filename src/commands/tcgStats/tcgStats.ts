@@ -81,9 +81,9 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setDescription(
               "Select the character to get stats for, defaults to an overview."
             )
-            .setRequired(false)
             .addChoices(CHAR_OPTIONS)
         )
+        .addIntegerOption(seasonOption)
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -171,6 +171,10 @@ export const command: Command<ChatInputCommandInteraction> = {
         break;
       }
       case "usage": {
+        await seasonAutocomplete(interaction);
+        break;
+      }
+      case "character": {
         await seasonAutocomplete(interaction);
         break;
       }
