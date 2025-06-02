@@ -39,7 +39,6 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setDescription(
               "Select the gamemode to get stats for. Defaults to Classic."
             )
-            .setRequired(false)
             .addChoices(
               Object.entries(GAME_SETTINGS)
                 .filter(([, game]) => game.optionName && game.allowedOption)

@@ -24,7 +24,7 @@ export type LadderRankWithPlayer = Prisma.LadderRankGetPayload<{
 
 export const getTopNPlayersInGamemode = async function (
   gamemode: GameMode,
-  count: number
+  count: number,
 ): Promise<LadderRankWithPlayer[] | null> {
   const currLadderReset = await getLatestLadderReset({ gamemode });
 
