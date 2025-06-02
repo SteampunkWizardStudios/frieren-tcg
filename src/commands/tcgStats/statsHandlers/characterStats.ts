@@ -8,6 +8,7 @@ import {
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { getWinrate } from "@src/util/utils";
 import characterSelect from "@src/util/messageComponents/characterSelect";
+import querySeason, { SeasonQuery } from "@src/util/db/querySeason";
 
 const charStatSelectMenuCustomId = "character-stat-select";
 
@@ -16,11 +17,13 @@ export async function handleCharacterStats(
   character: string | null,
   seasonId: number | null
 ) {
+  const seasonQuery = seasonId ? await querySeason(seasonId) : null;
+
   let embed: EmbedBuilder | null;
   if (character) {
-    embed = await breakdownCase(character, seasonId);
+    embed = await breakdownCase(character, seasonQuery);
   } else {
-    embed = await overviewCase(seasonId);
+    embed = await overviewCase(seasonQuery);
   }
 
   if (!embed) {
@@ -52,8 +55,8 @@ export async function handleCharacterStats(
       const selectedCharacter = i.values[0];
       const embed =
         selectedCharacter === "overview"
-          ? await overviewCase(seasonId)
-          : await breakdownCase(selectedCharacter, seasonId);
+          ? await overviewCase(seasonQuery)
+          : await breakdownCase(selectedCharacter, seasonQuery);
       if (!embed) {
         await i.update({
           content: "No data found for the specified character.",
@@ -84,7 +87,9 @@ export async function handleCharacterStats(
   });
 }
 
-async function overviewCase(seasonId: number | null): Promise<EmbedBuilder> {
+async function overviewCase(
+  seasonQuery: SeasonQuery | null
+): Promise<EmbedBuilder> {
   const characters = await prismaClient.character.findMany({
     select: {
       id: true,
@@ -94,7 +99,7 @@ async function overviewCase(seasonId: number | null): Promise<EmbedBuilder> {
           loserCharacterId: true,
         },
         where: {
-          ladderReset: seasonId ? { id: seasonId } : { endDate: null },
+          ladderReset: seasonQuery ?? { endDate: null },
         },
       },
       loserMatches: {
@@ -102,7 +107,7 @@ async function overviewCase(seasonId: number | null): Promise<EmbedBuilder> {
           winnerCharacterId: true,
         },
         where: {
-          ladderReset: seasonId ? { id: seasonId } : { endDate: null },
+          ladderReset: seasonQuery ?? { endDate: null },
         },
       },
     },
@@ -158,14 +163,14 @@ async function overviewCase(seasonId: number | null): Promise<EmbedBuilder> {
 
 async function breakdownCase(
   character: string,
-  seasonId: number | null
+  seasonQuery: SeasonQuery | null
 ): Promise<EmbedBuilder | null> {
   const data = await prismaClient.character.findUnique({
     where: { name: character },
     select: {
       winnerMatches: {
         where: {
-          ladderReset: seasonId ? { id: seasonId } : { endDate: null },
+          ladderReset: seasonQuery ?? { endDate: null },
           loserCharacter: { name: { not: character } },
         },
         include: {
@@ -176,7 +181,7 @@ async function breakdownCase(
       },
       loserMatches: {
         where: {
-          ladderReset: seasonId ? { id: seasonId } : { endDate: null },
+          ladderReset: seasonQuery ?? { endDate: null },
           winnerCharacter: { name: { not: character } },
         },
         include: {
