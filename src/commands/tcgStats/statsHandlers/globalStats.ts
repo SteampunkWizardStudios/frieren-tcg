@@ -15,7 +15,7 @@ import {
   type PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
 import { countPlayerMatches } from "@src/commands/tcgPlayer/playerHandlers/profileEmbed";
-import querySeason from "@src/util/db/querySeason";
+import querySeason, { SeasonQuery } from "@src/util/db/querySeason";
 
 const PAGE_SIZE = 12;
 
@@ -25,9 +25,14 @@ export type LadderRankWithPlayer = Prisma.LadderRankGetPayload<{
 
 export const getTopNPlayersInGamemode = async function (
   gamemode: GameMode,
-  count: number
+  count: number,
+  seasonQuery: SeasonQuery | null = null
 ): Promise<LadderRankWithPlayer[] | null> {
-  const currLadderReset = await getLatestLadderReset({ gamemode });
+  const currLadderReset = seasonQuery
+    ? await prismaClient.ladderReset.findFirst({
+        where: { ...seasonQuery, ladder: { name: gamemode } },
+      })
+    : await getLatestLadderReset({ gamemode });
 
   if (currLadderReset) {
     const topN = await prismaClient.ladderRank.findMany({
@@ -52,7 +57,11 @@ export async function handleGlobalStats(
     (interaction.options.getString("gamemode") as GameMode) ?? GameMode.CLASSIC;
   const season = interaction.options.getInteger("season");
 
-  const top100 = await getTopNPlayersInGamemode(gamemode, 100);
+  const top100 = await getTopNPlayersInGamemode(
+    gamemode,
+    100,
+    season ? await querySeason(season) : null
+  );
   if (!top100) {
     await interaction.editReply({
       content: "Failed to fetch Global Leaderboard.",
@@ -62,7 +71,7 @@ export async function handleGlobalStats(
 
   const currLadderReset = season
     ? await prismaClient.ladderReset.findFirst({
-        where: await querySeason(season),
+        where: { ...(await querySeason(season)), ladder: { name: gamemode } },
       })
     : await getLatestLadderReset({ gamemode });
 

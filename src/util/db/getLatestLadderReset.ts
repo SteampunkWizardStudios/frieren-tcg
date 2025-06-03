@@ -3,6 +3,7 @@ import prismaClient from "@prismaClient";
 
 export const getLatestLadderReset = async (props: {
   gamemode: GameMode;
+  season?: number | null;
 }): Promise<{ id: number } | null> => {
   const currLadder = await prismaClient.ladder.findFirst({
     where: {
