@@ -15,6 +15,7 @@ import {
   type PaginatedMessageMessageOptionsUnion,
 } from "@sapphire/discord.js-utilities";
 import { countPlayerMatches } from "@src/commands/tcgPlayer/playerHandlers/profileEmbed";
+import querySeason from "@src/util/db/querySeason";
 
 const PAGE_SIZE = 12;
 
@@ -49,6 +50,7 @@ export async function handleGlobalStats(
 ) {
   const gamemode: GameMode =
     (interaction.options.getString("gamemode") as GameMode) ?? GameMode.CLASSIC;
+  const season = interaction.options.getInteger("season");
 
   const top100 = await getTopNPlayersInGamemode(gamemode, 100);
   if (!top100) {
@@ -58,10 +60,15 @@ export async function handleGlobalStats(
     return;
   }
 
-  const currLadderReset = await getLatestLadderReset({ gamemode });
+  const currLadderReset = season
+    ? await prismaClient.ladderReset.findFirst({
+        where: await querySeason(season),
+      })
+    : await getLatestLadderReset({ gamemode });
+
   if (!currLadderReset) {
     await interaction.editReply({
-      content: "Failed to fetch current ladder reset.",
+      content: "Failed to fetch ladder reset.",
     });
     return;
   }

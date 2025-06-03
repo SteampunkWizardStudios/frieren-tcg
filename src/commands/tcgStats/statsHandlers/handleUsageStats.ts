@@ -8,15 +8,17 @@ import { CHARACTER_MAP } from "@tcg/characters/characterList";
 import prismaClient from "@prismaClient";
 import { CharacterName } from "@src/tcg/characters/metadata/CharacterName";
 import { charWithEmoji } from "@src/tcg/formatting/emojis";
+import querySeason from "@src/util/db/querySeason";
 
 export default async function handleUsageStats(
   interaction: ChatInputCommandInteraction
 ) {
+  const seasonId = interaction.options.getInteger("season");
+  const seasonQuery = seasonId ? await querySeason(seasonId) : null;
+
   const data = await prismaClient.match.findMany({
     where: {
-      ladderReset: {
-        endDate: null,
-      },
+      ladderReset: seasonQuery ?? { endDate: null },
     },
     select: {
       winnerCharacter: {

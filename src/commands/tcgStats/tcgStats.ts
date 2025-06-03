@@ -14,6 +14,9 @@ import { CHAR_OPTIONS } from "@src/constants";
 import handleUsageStats from "./statsHandlers/handleUsageStats";
 import getTables from "@src/util/db/getTables";
 import exportTable from "./statsHandlers/exportTable";
+import seasonAutocomplete, {
+  seasonOption,
+} from "./statsHandlers/seasonAutocomplete";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -36,7 +39,6 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setDescription(
               "Select the gamemode to get stats for. Defaults to Classic."
             )
-            .setRequired(false)
             .addChoices(
               Object.entries(GAME_SETTINGS)
                 .filter(([, game]) => game.optionName && game.allowedOption)
@@ -46,6 +48,7 @@ export const command: Command<ChatInputCommandInteraction> = {
                 }))
             )
         )
+        .addIntegerOption(seasonOption)
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -78,12 +81,15 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setDescription(
               "Select the character to get stats for, defaults to an overview."
             )
-            .setRequired(false)
             .addChoices(CHAR_OPTIONS)
         )
+        .addIntegerOption(seasonOption)
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("usage").setDescription("Usage stats for characters")
+      subcommand
+        .setName("usage")
+        .setDescription("Usage stats for characters")
+        .addIntegerOption(seasonOption)
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -121,7 +127,8 @@ export const command: Command<ChatInputCommandInteraction> = {
         }
         case "character": {
           const character = interaction.options.getString("character");
-          await handleCharacterStats(interaction, character);
+          const seasonId = interaction.options.getInteger("season");
+          await handleCharacterStats(interaction, character, seasonId);
           break;
         }
         case "usage": {
@@ -161,6 +168,18 @@ export const command: Command<ChatInputCommandInteraction> = {
         await interaction.respond(
           filtered.map((table) => ({ name: table, value: table }))
         );
+        break;
+      }
+      case "global-leaderboard": {
+        await seasonAutocomplete(interaction);
+        break;
+      }
+      case "usage": {
+        await seasonAutocomplete(interaction);
+        break;
+      }
+      case "character": {
+        await seasonAutocomplete(interaction);
         break;
       }
       default: {

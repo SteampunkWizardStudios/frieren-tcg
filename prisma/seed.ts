@@ -8,9 +8,9 @@ async function main() {
     await Promise.all(
       CHARACTER_LIST.map((character) =>
         tx.character.upsert({
-          where: { name: character.name },
+          where: { name: character.characterName },
           update: {},
-          create: { name: character.name },
+          create: { name: character.characterName },
         })
       )
     );

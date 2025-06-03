@@ -4,7 +4,6 @@ import TimedEffect from "@tcg/timedEffect";
 import CommonCardAction from "@tcg/util/commonCardActions";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { CardEmoji } from "@tcg/formatting/emojis";
-import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const a_axeSwipe = new Card({
   title: "Axe Swipe",
@@ -107,45 +106,26 @@ const jumboBerrySpecialBreak = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { sendToGameroom, name, self, calcEffect, game, selfStat, reflexive }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} chowed down on a Jumbo Berry Special!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} chowed down on a Jumbo Berry Special!`);
 
-    const defChange = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(-2, StatsEnum.SPD, game);
-    character.adjustStat(defChange, StatsEnum.DEF, game);
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[1]),
-      StatsEnum.HP,
-      game
-    );
+    const defChange = calcEffect(this.effects[0]);
+    self.adjustStat(-2, StatsEnum.SPD, game);
+    self.adjustStat(defChange, StatsEnum.DEF, game);
+    selfStat(1, StatsEnum.HP, game);
 
-    character.timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Jumbo Berry Special Break",
         description: `SPD-2 for 2 turns. DEF+${defChange} for 2 turns.`,
         turnDuration: 2,
         metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: (game, characterIndex, messageCache) => {
-          messageCache.push(
-            `The break is over. ${character.name} recomposes ${character.cosmetic.pronouns.reflexive}.`,
-            TCGThread.Gameroom
-          );
-          game.characters[characterIndex].adjustStat(2, StatsEnum.SPD, game);
-          game.characters[characterIndex].adjustStat(
-            -1 * defChange,
-            StatsEnum.DEF,
-            game
-          );
-          game.characters[characterIndex].adjustStat(
-            1,
-            StatsEnum.Ability,
-            game
-          );
+        endOfTimedEffectAction: (game, _characterIndex, _messageCache) => {
+          sendToGameroom(`The break is over. ${name} recomposes ${reflexive}.`);
+          self.adjustStat(2, StatsEnum.SPD, game);
+          self.adjustStat(-1 * defChange, StatsEnum.DEF, game);
+          self.adjustStat(1, StatsEnum.Ability, game);
         },
       })
     );
@@ -166,17 +146,13 @@ export const block = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { name, self, game, sendToGameroom, calcEffect }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} prepares to block an attack!`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} prepares to block an attack!`);
 
-    const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF, game);
-    character.timedEffects.push(
+    const def = calcEffect(this.effects[0]);
+    self.adjustStat(def, StatsEnum.TrueDEF, game);
+    self.timedEffects.push(
       new TimedEffect({
         name: "Block",
         description: `Increases TrueDEF by ${def} until the end of the turn.`,
@@ -184,7 +160,7 @@ export const block = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.TrueDEF, game);
+          self.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -235,19 +211,13 @@ const fearBroughtMeThisFar = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360983005946183957/IMG_3091.gif?ex=68084e72&is=6806fcf2&hm=5e9453189ccb1c31a4def06862e8dc7d2468c471eff0f8faa63d6288c8127c6c&",
   },
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name}'s hands can't stop shaking, but ${character.name} is determined.`,
-      TCGThread.Gameroom
+  cardAction: function (this: Card, { name, sendToGameroom, game, selfStat }) {
+    sendToGameroom(
+      `${name}'s hands can't stop shaking, but ${name} is determined.`
     );
 
-    const atkDef = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(atkDef, StatsEnum.ATK, game);
-    character.adjustStat(atkDef, StatsEnum.DEF, game);
+    selfStat(0, StatsEnum.ATK, game);
+    selfStat(0, StatsEnum.DEF, game);
   },
 });
 
@@ -264,25 +234,17 @@ const a_eisensAxeCleave = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { name, sendToGameroom, possessive, basicAttack }
   ) {
-    const character = game.getCharacter(characterIndex);
-    if (character.characterName === CharacterName.Stark) {
-      messageCache.push(
-        `${character.name} recalls memory of ${character.cosmetic.pronouns.possessive} master's Axe Cleave!`,
-        TCGThread.Gameroom
+    if (name === CharacterName.Stark) {
+      sendToGameroom(
+        `${name} recalls memory of ${possessive} master's Axe Cleave!`
       );
     } else {
-      messageCache.push(
-        `${character.name} cleaves ${character.cosmetic.pronouns.possessive} axe.`,
-        TCGThread.Gameroom
-      );
+      sendToGameroom(`${name} cleaves ${possessive} axe.`);
     }
 
-    const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-    });
+    basicAttack(0);
   },
 });
 
@@ -296,17 +258,15 @@ export const a_lastStand = new Card({
   priority: 1,
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { name, self, sendToGameroom, game, calcEffect, personal }
   ) {
-    const character = game.getCharacter(characterIndex);
+    sendToGameroom(`${name} winds up...`);
+    const damage = calcEffect(0);
 
-    messageCache.push(`${character.name} winds up...`, TCGThread.Gameroom);
-    const damage = this.calculateEffectValue(this.effects[0]);
+    self.additionalMetadata.minimumPossibleHp = 1;
+    self.adjustStat(-5, StatsEnum.DEF, game);
 
-    character.additionalMetadata.minimumPossibleHp = 1;
-    character.adjustStat(-5, StatsEnum.DEF, game);
-
-    game.characters[characterIndex].timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Impending Lightning",
         description: `Strike for ${damage} damage. Uninterruptable.`,
@@ -315,21 +275,11 @@ export const a_lastStand = new Card({
         executeEndOfTimedEffectActionOnRemoval: false,
         activateEndOfTurnActionThisTurn: false,
         endOfTimedEffectAction: (game, characterIndex) => {
-          messageCache.push(
-            `[⠀](https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif)`,
-            TCGThread.Gameroom
-          );
-          game.characters[characterIndex].adjustStat(
-            -2,
-            StatsEnum.Ability,
-            game
-          );
-          game.characters[characterIndex].adjustStat(-20, StatsEnum.HP, game);
-          game.characters[characterIndex].adjustStat(5, StatsEnum.DEF, game);
-          messageCache.push(
-            `${character.name} performs Lightning Strike!`,
-            TCGThread.Gameroom
-          );
+          sendToGameroom(`[⠀](https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif)`);
+          self.adjustStat(-2, StatsEnum.Ability, game);
+          self.adjustStat(-20, StatsEnum.HP, game);
+          self.adjustStat(5, StatsEnum.DEF, game);
+          sendToGameroom(`${name} performs Lightning Strike!`);
           CommonCardAction.commonAttack(game, characterIndex, {
             damage,
             isTimedEffectAttack: true,
@@ -338,7 +288,7 @@ export const a_lastStand = new Card({
       })
     );
 
-    game.characters[characterIndex].timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "A Warrior's Last Stand",
         description: `HP cannot fall below 1 this turn.`,
@@ -347,11 +297,10 @@ export const a_lastStand = new Card({
         metadata: { removableBySorganeil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          messageCache.push(
-            `${character.name} let out all ${character.cosmetic.pronouns.personal} has. ${character.name} is no longer Sturdy.`,
-            TCGThread.Gameroom
+          sendToGameroom(
+            `${name} let out all ${personal} has. ${name} is no longer Sturdy.`
           );
-          character.additionalMetadata.minimumPossibleHp = undefined;
+          self.additionalMetadata.minimumPossibleHp = undefined;
         },
       })
     );
