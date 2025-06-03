@@ -29,9 +29,9 @@ export const command: Command<ChatInputCommandInteraction> = {
     ])
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("global-leaderboard")
+        .setName("leaderboard")
         .setDescription(
-          "Get the global top player leaderboard for a certain gamemode."
+          "Get the top player leaderboard for a certain gamemode."
         )
         .addStringOption((option) =>
           option
@@ -113,7 +113,7 @@ export const command: Command<ChatInputCommandInteraction> = {
 
     try {
       switch (subcommand) {
-        case "global-leaderboard": {
+        case "leaderboard": {
           await handleGlobalStats(interaction);
           break;
         }
@@ -170,7 +170,7 @@ export const command: Command<ChatInputCommandInteraction> = {
         );
         break;
       }
-      case "global-leaderboard": {
+      case "leaderboard": {
         await seasonAutocomplete(interaction);
         break;
       }
