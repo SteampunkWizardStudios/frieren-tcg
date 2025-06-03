@@ -62,7 +62,7 @@ export async function handleGlobalStats(
 
   const currLadderReset = season
     ? await prismaClient.ladderReset.findFirst({
-        where: await querySeason(season),
+        where: { ...(await querySeason(season)), ladder: { name: gamemode } },
       })
     : await getLatestLadderReset({ gamemode });
 

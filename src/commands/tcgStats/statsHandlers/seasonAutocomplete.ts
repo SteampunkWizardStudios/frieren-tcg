@@ -31,8 +31,6 @@ export default async function seasonAutocomplete(
     })
     .slice(0, 25);
 
-  console.log("Filtered Seasons:", filtered);
-
   await interaction.respond(filtered);
 }
 

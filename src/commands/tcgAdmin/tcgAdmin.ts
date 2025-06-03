@@ -22,6 +22,7 @@ import {
 } from "./achievementHandler/handleManageAchievement";
 import handleLadderReset from "./handleLadderReset/handleLadderReset";
 import { removeAllServerRankRoles } from "../tcgChallenge/gameHandler/rankScoresToRankTitleMapping";
+import { FRIEREN_DISCORD_SERVER } from "@src/constants";
 
 const CONFIRM_LADDER_RESET_BUTTON_ID = "ladder-reset-confirm";
 
@@ -271,7 +272,9 @@ export const command: Command<ChatInputCommandInteraction> = {
           collector.on("collect", async (i: ButtonInteraction) => {
             try {
               await i.deferReply({ flags: MessageFlags.Ephemeral });
-              await removeAllServerRankRoles(i.client);
+              if (interaction.guildId === FRIEREN_DISCORD_SERVER) {
+                await removeAllServerRankRoles(i.client);
+              }
               await handleLadderReset(i);
             } catch (error) {
               console.error("Error in ladder reset:", error);
