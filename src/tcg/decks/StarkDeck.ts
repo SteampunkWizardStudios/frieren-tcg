@@ -110,7 +110,7 @@ const jumboBerrySpecialBreak = new Card({
   ) {
     sendToGameroom(`${name} chowed down on a Jumbo Berry Special!`);
 
-    const defChange = calcEffect(this.effects[0]);
+    const defChange = calcEffect(0);
     self.adjustStat(-2, StatsEnum.SPD, game);
     self.adjustStat(defChange, StatsEnum.DEF, game);
     selfStat(1, StatsEnum.HP, game);
