@@ -37,17 +37,18 @@ const Methode = new CharacterData({
       },
     ],
     abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
-      const self = game.getCharacter(characterIndex);
-      const opp = game.getCharacter(1 - characterIndex);
+      if (game.turnCount !== 1) return;
 
-      if (game.turnCount === 1 && opp.additionalMetadata.methodeFindsCute) {
-        messageCache.push(
-          `${self.name} finds ${opp.name} cute!`,
-          TCGThread.Gameroom
-        );
-        self.adjustStat(1, StatsEnum.ATK, game);
-        self.adjustStat(-1, StatsEnum.DEF, game);
-      }
+      const opp = game.getCharacter(1 - characterIndex);
+      if (!opp.additionalMetadata.methodeFindsCute) return;
+
+      const self = game.getCharacter(characterIndex);
+      messageCache.push(
+        `${self.name} finds ${opp.name} cute!`,
+        TCGThread.Gameroom
+      );
+      self.adjustStat(1, StatsEnum.ATK, game);
+      self.adjustStat(-1, StatsEnum.DEF, game);
     },
   },
 
