@@ -5,6 +5,7 @@ import Pronouns from "@tcg/pronoun";
 import { CharacterEmoji } from "@src/tcg/formatting/emojis";
 import mediaLinks from "@src/tcg/formatting/mediaLinks";
 import methodeDeck from "@src/tcg/decks/MethodeDeck";
+import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const methodeStats = new Stats({
   [StatsEnum.HP]: 100,
@@ -35,7 +36,21 @@ const Methode = new CharacterData({
         description: "ATK+1 and DEF-1 against Frieren, Fern, Serie and Edel",
       },
     ],
+    abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
+      const self = game.getCharacter(characterIndex);
+      const opp = game.getCharacter(1 - characterIndex);
+
+      if (game.turnCount === 1 && opp.additionalMetadata.methodeFindsCute) {
+        messageCache.push(
+          `${self.name} finds ${opp.name} cute!`,
+          TCGThread.Gameroom
+        );
+        self.adjustStat(1, StatsEnum.ATK, game);
+        self.adjustStat(-1, StatsEnum.DEF, game);
+      }
+    },
   },
+
   additionalMetadata: {
     rollsCount: 7,
   },
