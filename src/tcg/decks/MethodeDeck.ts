@@ -39,7 +39,7 @@ const polymath = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
   description: ([buff]) =>
-    `ATK+${buff}, DEF+${buff}, SPD+${buff}. Discard all cards in your hand and draw a new hand. Roll 1 additional dice the following turn.`,
+    `ATK+${buff}, DEF+${buff}, SPD+${buff}. Redraw your hand and roll 1 extra die next turn.`,
   effects: [],
   cardAction: () => {},
 });
@@ -102,7 +102,7 @@ const hypnoticCompulsion = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
   description: ([atkDebuff]) =>
-    `Opp's ATK-${atkDebuff}. The opponent repeats the move they used last turn on the following turn.`,
+    `Opponent's ATK-${atkDebuff}. They repeat the move they used last turn next turn.`,
   effects: [],
   cardAction: () => {},
 });
