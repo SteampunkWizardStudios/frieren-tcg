@@ -30,6 +30,7 @@ export type CharacterAdditionalMetadata = {
   opponentMilleniumBarrierActive?: boolean;
   forcedDiscards: number;
   rollsCount: number;
+  methodeFindsCute: boolean;
 
   hidden?: boolean;
   publicDiscards: boolean;

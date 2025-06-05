@@ -29,6 +29,12 @@ const Methode = new CharacterData({
   ability: {
     abilityName: "Jack-of-all-trades",
     abilityEffectString: "Roll an extra die",
+    subAbilities: [
+      {
+        name: '"I think you\'re cute"',
+        description: "ATK+1 and DEF-1 against Frieren, Fern, Serie and Edel",
+      },
+    ],
   },
   additionalMetadata: {
     rollsCount: 7,

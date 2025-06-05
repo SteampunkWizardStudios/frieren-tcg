@@ -1,5 +1,5 @@
 import Card, { Nature } from "@tcg/card";
-import { CardEmoji } from "../formatting/emojis";
+import { CardEmoji } from "@tcg/formatting/emojis";
 
 const scatterShot = new Card({
   title: "Scatter Shot",

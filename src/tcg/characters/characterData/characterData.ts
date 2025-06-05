@@ -17,6 +17,7 @@ const defaultMetadata: CharacterAdditionalMetadata = {
   pierceFactor: 0,
   forcedDiscards: 0,
   rollsCount: 6,
+  methodeFindsCute: false,
 
   hidden: false,
   publicDiscards: false,
