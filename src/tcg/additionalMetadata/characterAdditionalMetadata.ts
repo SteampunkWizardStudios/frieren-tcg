@@ -29,6 +29,7 @@ export type CharacterAdditionalMetadata = {
   flammeSigil?: number;
   opponentMilleniumBarrierActive?: boolean;
   forcedDiscards: number;
+  rollsCount: number;
 
   hidden?: boolean;
   publicDiscards: boolean;

@@ -16,6 +16,7 @@ const defaultMetadata: CharacterAdditionalMetadata = {
   defenderDamageScaling: 1,
   pierceFactor: 0,
   forcedDiscards: 0,
+  rollsCount: 6,
 
   hidden: false,
   publicDiscards: false,
