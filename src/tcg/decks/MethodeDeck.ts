@@ -193,7 +193,40 @@ const spotWeakness = new Card({
   description: ([spd, atk, bonusAtk]) =>
     `SPD+${spd} ATK+${atk}. If the opponent uses an attacking move this turn, ATK+${bonusAtk}.`,
   effects: [2, 1, 3],
-  cardAction: () => {},
+  cardAction: ({
+    self,
+    name,
+    opponent,
+    game,
+    selfStat,
+    sendToGameroom,
+    calcEffect,
+  }) => {
+    sendToGameroom(
+      `${name} is on the lookout for ${opponent.name}'s weaknesses.`
+    );
+    selfStat(0, StatsEnum.SPD, game);
+    selfStat(1, StatsEnum.ATK, game);
+
+    const bonusAtk = calcEffect(2);
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Spot Weakness",
+        description: `If the opponent attacks this turn, ATK+${bonusAtk}`,
+        turnDuration: 1,
+        metadata: { removableBySorganeil: false },
+        endOfTimedEffectAction: () => {
+          if (opponent.additionalMetadata.attackedThisTurn) {
+            sendToGameroom(
+              `${name} found an opening in ${opponent.name}'s attack!`
+            );
+            selfStat(2, StatsEnum.ATK, game);
+          }
+        },
+      })
+    );
+  },
 });
 
 const methodeDeck = [
