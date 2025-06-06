@@ -1,5 +1,7 @@
 import Card, { Nature } from "@tcg/card";
 import { CardEmoji } from "@tcg/formatting/emojis";
+import TimedEffect from "../timedEffect";
+import { StatsEnum } from "@tcg/stats";
 
 const scatterShot = new Card({
   title: "Scatter Shot",
@@ -51,7 +53,24 @@ const ordinaryDefensiveMagic = new Card({
   description: ([def]) => `TrueDEF+${def} for 1 turn.`,
   effects: [20],
   priority: 2,
-  cardAction: () => {},
+  cardAction: ({ self, name, game, sendToGameroom, calcEffect }) => {
+    sendToGameroom(`${name} puts up an ordinary barrier.`);
+    const def = calcEffect(0);
+    self.adjustStat(def, StatsEnum.TrueDEF, game);
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Ordinary Defensive Magic",
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
+        priority: -1,
+        turnDuration: 1,
+        metadata: { removableBySorganeil: false },
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          self.adjustStat(-def, StatsEnum.TrueDEF, game);
+        },
+      })
+    );
+  },
 });
 
 const manaDetection = new Card({
@@ -62,7 +81,37 @@ const manaDetection = new Card({
     `TrueDEF+${def} for 1 turn. If the opponent uses an attacking move this turn, next turn, all your moves have Priority+1.`,
   effects: [20],
   priority: 2,
-  cardAction: () => {},
+  cardAction: ({ name, opponent, sendToGameroom, self, game, calcEffect }) => {
+    sendToGameroom(`${name} detects ${opponent.name}'s mana.`);
+    const def = calcEffect(0);
+    self.adjustStat(def, StatsEnum.TrueDEF, game);
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Mana Detecting",
+        description: `Increases TrueDEF by ${def} until the end of the turn, ${name} is ready for the next attack.`,
+        priority: -1,
+        turnDuration: 1,
+        metadata: { removableBySorganeil: false },
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          self.adjustStat(-def, StatsEnum.TrueDEF, game);
+          if (opponent.additionalMetadata.attackedThisTurn) {
+            sendToGameroom(`${name} was ready for ${opponent.name}'s attack!`);
+            self.ability.abilitySelectedMoveModifierEffect = (
+              _game,
+              _charIdx,
+              _msgCache,
+              card
+            ) => {
+              card.priority += 1;
+              self.ability.abilitySelectedMoveModifierEffect = undefined;
+              return card;
+            };
+          }
+        },
+      })
+    );
+  },
 });
 
 const reversePolarity = new Card({
@@ -73,7 +122,37 @@ const reversePolarity = new Card({
     `TrueDEF+${def} for 1 turn. If the opponent uses an attacking move this turn, at this turn's end, attack with base DMG equal to the move's DMG.`,
   effects: [20],
   priority: 2,
-  cardAction: () => {},
+  cardAction: ({
+    sendToGameroom,
+    self,
+    opponent,
+    calcEffect,
+    game,
+    flatAttack,
+  }) => {
+    sendToGameroom(`${self.name} puts up a reflective barrier.`);
+    const def = calcEffect(0);
+    self.adjustStat(def, StatsEnum.TrueDEF, game);
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Reverse Polarity",
+        description: `Increases TrueDEF by ${def} until the end of the turn, reflects damage back at the attacker.`,
+        priority: -1,
+        turnDuration: 1,
+        metadata: { removableBySorganeil: false },
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          self.adjustStat(-def, StatsEnum.TrueDEF, game);
+          if (opponent.additionalMetadata.attackedThisTurn) {
+            sendToGameroom(`${self.name} reflects ${opponent.name}'s attack!`);
+            // who knows how to calc the damage
+            const dmg = 10;
+            flatAttack(dmg);
+          }
+        },
+      })
+    );
+  },
 });
 
 const goddessHealingMagic = new Card({
