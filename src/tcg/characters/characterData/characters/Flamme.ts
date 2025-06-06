@@ -1,6 +1,6 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import flammeDeck from "@src/tcg/decks/FlammeDeck";
+import flammeDeck, { researchDecreaseSigil } from "@src/tcg/decks/FlammeDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
@@ -86,6 +86,27 @@ const Flamme = new CharacterData({
           }
         });
         character.timedEffects = newTimedEffects;
+      }
+    },
+    // sigil sequence
+    abilityDefendEffect: (
+      game: Game,
+      characterIndex: number,
+      messageCache: MessageCache,
+      _attackDamage: number
+    ) => {
+      const character = game.getCharacter(characterIndex);
+      const lostFlammeSigil = character.timedEffects.filter(
+        (effect) => effect.metadata.consumesFlammeSigil
+      ).length;
+
+      if (lostFlammeSigil > 0) {
+        researchDecreaseSigil(
+          character,
+          messageCache,
+          lostFlammeSigil,
+          "The barriers stir."
+        );
       }
     },
   },
