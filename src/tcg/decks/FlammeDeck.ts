@@ -15,8 +15,8 @@ import {
   a_foundationOfHumanitysMagicBase,
   a_firstPageOfHumanitysMagicBase,
   a_secondPageOfHumanitysMagicBase,
+  a_thirdPageOfHumanitysMagicBase,
   a_lastPageOfHumanitysMagicBase,
-  a_pinnacleOfHumanitysMagicBase,
 } from "./utilDecks/flammeFoundationStage";
 import incantationFieldOfFlowers from "./utilDecks/flammeSignature";
 
@@ -595,12 +595,12 @@ export const a_foundationOfHumanitysMagic = new Card({
       });
     } else if (character.stats.stats.Ability === 3) {
       return new Card({
-        ...a_lastPageOfHumanitysMagicBase,
+        ...a_thirdPageOfHumanitysMagicBase,
         empowerLevel: this.empowerLevel,
       });
     } else {
       return new Card({
-        ...a_pinnacleOfHumanitysMagicBase,
+        ...a_lastPageOfHumanitysMagicBase,
         empowerLevel: this.empowerLevel,
       });
     }
