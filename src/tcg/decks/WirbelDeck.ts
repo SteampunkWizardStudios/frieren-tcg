@@ -83,7 +83,6 @@ export const scharfJubelade = new Card({
   description: ([def]) => `Increases DEF by ${def} for 3 turns.`,
   effects: [4],
   emoji: CardEmoji.WIRBEL_CARD,
-  priority: 2,
   cosmetic: {
     cardGif: mediaLinks.wirbel_jubelade_gif,
   },

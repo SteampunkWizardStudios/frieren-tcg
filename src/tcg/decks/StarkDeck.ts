@@ -150,7 +150,7 @@ export const block = new Card({
   ) {
     sendToGameroom(`${name} prepares to block an attack!`);
 
-    const def = calcEffect(this.effects[0]);
+    const def = calcEffect(0);
     self.adjustStat(def, StatsEnum.TrueDEF, game);
     self.timedEffects.push(
       new TimedEffect({
