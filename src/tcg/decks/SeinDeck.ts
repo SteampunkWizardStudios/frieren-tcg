@@ -155,7 +155,7 @@ export const mugOfBeer = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361017071886012681/GIF_3575013087.gif?ex=6807c56c&is=680673ec&hm=1e20739be8a75140974b9babb65729cf83c31d4f3d991bc35c90207fda41cd34&",
   },
-  effects: [8, 3],
+  effects: [7, 2],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -288,7 +288,7 @@ export const poisonCure = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361016416488390776/GIF_0966802288.gif?ex=6807c4d0&is=68067350&hm=2d09267ccc0505a949b0c57e6c9bb84fc99decb89d35637cadced435723f5904&",
   },
-  effects: [12],
+  effects: [10],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }

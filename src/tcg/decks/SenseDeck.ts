@@ -52,39 +52,12 @@ export const sharpen = new Card({
   },
 });
 
-// export const rest = new Card({
-//   title: "Rest",
-//   cardMetadata: { nature: Nature.Util },
-//   description: ([hp]) => `DEF-2 for 2 turns. Heal ${hp} HP`,
-//   effects: [10],
-//   emoji: CardEmoji.HEART,
-//   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
-//     sendToGameroom(`${name} rests up.`);
-
-//     self.adjustStat(-2, StatsEnum.DEF, game);
-//     selfStat(0, StatsEnum.HP, game);
-
-//     self.timedEffects.push(
-//       new TimedEffect({
-//         name: "Rest",
-//         description: `DEF-2 for 2 turns`,
-//         turnDuration: 2,
-//         metadata: { removableBySorganeil: false },
-//         endOfTimedEffectAction: (game, characterIndex, messageCache) => {
-//           messageCache.push(`${name} had a good rest.`, TCGThread.Gameroom);
-//           game.characters[characterIndex].adjustStat(2, StatsEnum.DEF);
-//         },
-//       })
-//     );
-//   },
-// });
-
 export const a_pierce = new Card({
   title: "Pierce",
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
     `DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
-  effects: [1, 10],
+  effects: [2, 10],
   hpCost: 7,
   emoji: CardEmoji.PUNCH,
   cardAction: function (

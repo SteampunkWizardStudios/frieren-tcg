@@ -129,7 +129,7 @@ const a_fernConcentratedZoltraakSnipe = new Card({
   description: ([baseDmg, dmg]) =>
     `Deal ${baseDmg} + ${dmg} DMG x Barrage count, with 50% Pierce. Reset Barrage count to 0.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [6, 2],
+  effects: [7, 3],
   hpCost: 8,
   cosmetic: {
     cardGif:
@@ -185,10 +185,10 @@ const disapprovingPout = new Card({
 export const manaConcealment = new Card({
   title: "Mana Concealment",
   cardMetadata: { nature: Nature.Util },
-  description: ([atk, def]) =>
-    `ATK+${atk}. DEF+${def}. Next turn, receive Priority+1 and additional 50% Pierce on attacks.`,
+  description: ([atk, def, spd]) =>
+    `ATK+${atk}. DEF+${def}. SPD+${spd}. Next turn, receive Priority+1 and additional 50% Pierce on attacks.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [1, 2],
+  effects: [1, 2, 2],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
