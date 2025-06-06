@@ -39,14 +39,13 @@ export async function handlePlayerPreferences(
         );
         let response = "";
         response += `Text Speed: \`${preferences.tcgTextSpeed} ms\`\n`;
+        response += `Lite Mode: \`${preferences.tcgLiteMode ? "Enabled" : "Disabled"}\`\n`;
 
         if (preferences.favouriteCharacters.length > 0) {
           response += `Favourite Characters: ${favouriteCharacterData.map((char) => `${char.cosmetic.emoji} ${char.name}`).join(", ")}\n`;
         } else {
           response += `Favourite Characters: None\n`;
         }
-
-        response += `Lite Mode: \`${preferences.tcgLiteMode ? "Enabled" : "Disabled"}\`\n`;
 
         await interaction.editReply({
           embeds: [

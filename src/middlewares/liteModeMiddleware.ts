@@ -11,21 +11,23 @@ const liteModeMiddleware: Middleware = async (
   interaction: Interaction,
   next: NextMiddleware
 ) => {
-  if (interaction.isChatInputCommand()) {
-    const subcommand = interaction.options.getSubcommand(true);
-    if (subcommand !== "lite-mode") {
-      return;
-    }
+  if (!interaction.isChatInputCommand()) {
+    return await next();
+  }
 
-    try {
-      const enabled = interaction.options.getBoolean("enabled", true);
-      const player = await getPlayer(interaction.user.id);
+  const subcommand = interaction.options.getSubcommand(true);
+  if (subcommand !== "lite-mode") {
+    return await next();
+  }
 
-      updateTcgLiteMode(player.id, enabled);
-    } catch (error) {
-      console.error("Error in textSpeedMiddleware:", error);
-      throw error;
-    }
+  try {
+    const enabled = interaction.options.getBoolean("enabled", true);
+    const player = await getPlayer(interaction.user.id);
+
+    updateTcgLiteMode(player.id, enabled);
+  } catch (error) {
+    console.error("Error in textSpeedMiddleware:", error);
+    throw error;
   }
 
   await next();
