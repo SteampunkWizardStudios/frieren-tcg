@@ -26,7 +26,6 @@ const Methode = new CharacterData({
   },
   stats: methodeStats,
   cards: methodeDeck,
-
   ability: {
     abilityName: "Jack-of-all-trades",
     abilityEffectString: "Roll an extra die",

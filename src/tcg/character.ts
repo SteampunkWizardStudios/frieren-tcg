@@ -74,7 +74,7 @@ export default class Character {
   }
 
   drawStartingHand() {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < this.additionalMetadata.rollsCount; i++) {
       this.drawCard();
     }
   }
@@ -199,7 +199,7 @@ export default class Character {
         rollCount += 1;
       }
       for (let i = 0; i < rollCount; i++) {
-        rolls.push(Rolls.rollD6());
+        rolls.push(Rolls.rollDAny(this.additionalMetadata.rollsCount));
       }
     }
 

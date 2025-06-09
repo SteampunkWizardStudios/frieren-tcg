@@ -42,8 +42,31 @@ const polymath = new Card({
   emoji: CardEmoji.METHODE_CARD,
   description: ([buff]) =>
     `ATK+${buff}, DEF+${buff}, SPD+${buff}. Redraw your hand and roll 1 extra die next turn.`,
-  effects: [],
-  cardAction: () => {},
+  effects: [1],
+  cardAction: ({ self, name, game, sendToGameroom, selfStat }) => {
+    sendToGameroom(`${name} used Polymath`);
+
+    selfStat(0, StatsEnum.ATK, game);
+    selfStat(0, StatsEnum.DEF, game);
+    selfStat(0, StatsEnum.SPD, game);
+
+    for (let i = 0; i < self.hand.length; i++) {
+      self.discardCard(0);
+      self.drawCard();
+    }
+
+    self.additionalMetadata.rollsCount += 1;
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Polymath",
+        description: "Roll an extra die this turn.",
+        turnDuration: 1,
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          self.additionalMetadata.rollsCount -= 1;
+        },
+      })
+    );
+  },
 });
 
 const ordinaryDefensiveMagic = new Card({
