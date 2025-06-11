@@ -209,6 +209,11 @@ export const manaConcealment = new Card({
       StatsEnum.DEF,
       game
     );
+    character.adjustStat(
+      this.calculateEffectValue(this.effects[2]),
+      StatsEnum.SPD,
+      game
+    );
 
     character.ability.abilitySelectedMoveModifierEffect = function (
       _game,
