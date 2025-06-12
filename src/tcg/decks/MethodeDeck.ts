@@ -240,7 +240,38 @@ const restraintMagic = new Card({
     `Set your DEF to 1 until this turn's end. Opp's ATK-${debuff}, DEF-${debuff}, SPD-${debuff} for the next 4 turns.`,
   effects: [4],
   priority: 1,
-  cardAction: () => {},
+  cardAction: ({
+    name,
+    game,
+    sendToGameroom,
+    opponent,
+    calcEffect,
+    flatSelfStat,
+    opponentStat,
+    selfStats,
+  }) => {
+    sendToGameroom(`${name} casts restraint magic on ${opponent.name}.`);
+    const defDebuff = selfStats.DEF - 1;
+    flatSelfStat(-defDebuff, StatsEnum.DEF, game);
+
+    opponentStat(0, StatsEnum.ATK, game, -1);
+    opponentStat(1, StatsEnum.DEF, game, -1);
+    opponentStat(2, StatsEnum.SPD, game, -1);
+
+    const restraint = calcEffect(0);
+    opponent.timedEffects.push(
+      new TimedEffect({
+        name: "Restrained",
+        description: `ATK-${restraint}, DEF-${restraint}, SPD-${restraint}.`,
+        turnDuration: 4,
+        endOfTimedEffectAction: () => {
+          opponentStat(0, StatsEnum.ATK, game);
+          opponentStat(1, StatsEnum.DEF, game);
+          opponentStat(2, StatsEnum.SPD, game);
+        },
+      })
+    );
+  },
 });
 
 const hypnoticCompulsion = new Card({
