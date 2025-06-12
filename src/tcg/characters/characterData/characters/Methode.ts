@@ -2,9 +2,9 @@ import Stats, { StatsEnum } from "@tcg/stats";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { CharacterData } from "@tcg/characters/characterData/characterData";
 import Pronouns from "@tcg/pronoun";
-import { CharacterEmoji } from "@src/tcg/formatting/emojis";
-import mediaLinks from "@src/tcg/formatting/mediaLinks";
-import methodeDeck from "@src/tcg/decks/MethodeDeck";
+import { CharacterEmoji } from "@tcg/formatting/emojis";
+import mediaLinks from "@tcg/formatting/mediaLinks";
+import methodeDeck from "@decks/MethodeDeck";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 const methodeStats = new Stats({

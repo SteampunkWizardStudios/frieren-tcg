@@ -1,10 +1,10 @@
-import Card, { Nature } from "@src/tcg/card";
-import { CardEmoji } from "@src/tcg/formatting/emojis";
-import { StatsEnum } from "@src/tcg/stats";
+import Card, { Nature } from "@tcg/card";
+import { CardEmoji } from "@tcg/formatting/emojis";
+import { StatsEnum } from "@tcg/stats";
 import { incantationIncreaseSigil } from "../FlammeDeck";
-import { GameMessageContext } from "@src/tcg/gameContextProvider";
+import { GameMessageContext } from "@tcg/gameContextProvider";
 import { serie_offensiveMagic_rare } from "./serieMagic";
-import CommonCardAction from "@src/tcg/util/commonCardActions";
+import CommonCardAction from "@tcg/util/commonCardActions";
 
 export const a_foundationOfHumanitysMagicBase = new Card({
   title: "Foundation of Humanity's Magic",

@@ -1,15 +1,15 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import flammeDeck from "@src/tcg/decks/FlammeDeck";
+import flammeDeck from "@tcg/decks/FlammeDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
-import mediaLinks from "@src/tcg/formatting/mediaLinks";
+import mediaLinks from "@tcg/formatting/mediaLinks";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
-import Game from "@src/tcg/game";
-import Card from "@src/tcg/card";
+import Game from "@tcg/game";
+import Card from "@tcg/card";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
-import TimedEffect from "@src/tcg/timedEffect";
+import TimedEffect from "@tcg/timedEffect";
 
 const flammeStats = new Stats({
   [StatsEnum.HP]: 100.0,
