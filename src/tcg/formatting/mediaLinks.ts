@@ -141,10 +141,10 @@ const mediaLinks = {
   ...vangerisuCards,
 
   ...edelCardLinks,
+  ...flammeCardLinks,
   ...frierenCardLinks,
   ...stilleCardLinks,
   ...wirbelCardLinks,
-  ...flammeCardLinks,
 } as const;
 
 export default mediaLinks;
