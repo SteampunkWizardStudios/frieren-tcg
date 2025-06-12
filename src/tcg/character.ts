@@ -168,8 +168,10 @@ export default class Character {
     } else if (this.skipTurn) {
       defaultCardOptions["12"] = DefaultCards.doNothing.clone();
     }
-    if (this.additionalMetadata.nextCardToPlay) {
-      defaultCardOptions["13"] = this.additionalMetadata.nextCardToPlay.clone();
+    const nextCard = this.additionalMetadata.nextCardToPlay;
+    if (nextCard) {
+      defaultCardOptions["13"] = nextCard.clone();
+      this.additionalMetadata.nextCardToPlay = undefined;
     }
     defaultCardOptions["14"] = DefaultCards.forfeitCard.clone();
 
