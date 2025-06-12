@@ -281,7 +281,23 @@ const hypnoticCompulsion = new Card({
   description: ([atkDebuff]) =>
     `Opponent's ATK-${atkDebuff}. They repeat the move they used last turn next turn.`,
   effects: [],
-  cardAction: () => {},
+  cardAction: ({ name, opponent, game, sendToGameroom, opponentStat }) => {
+    sendToGameroom(`${name} hypnotizes ${opponent.name}.`);
+    opponentStat(0, StatsEnum.ATK, game, -1);
+    opponent.skipTurn = true;
+    opponent.additionalMetadata.accessToDefaultCardOptions = false;
+
+    opponent.timedEffects.push(
+      new TimedEffect({
+        name: "Compelled",
+        description: `Use your last used move next turn.`,
+        turnDuration: 1,
+        endOfTimedEffectAction: () => {
+          opponent.additionalMetadata.accessToDefaultCardOptions = true;
+        },
+      })
+    );
+  },
 });
 
 const spotWeakness = new Card({
