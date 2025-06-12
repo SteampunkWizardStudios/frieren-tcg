@@ -11,7 +11,22 @@ const scatterShot = new Card({
     `${dmg} DMG. Deal DMG ${dmg} x2 at the end of next turn`,
   effects: [3],
   hpCost: 6,
-  cardAction: () => {},
+  cardAction: ({ self, name, calcEffect, basicAttack, sendToGameroom }) => {
+    sendToGameroom(`${name} fires a scatter shot!`);
+    const dmg = calcEffect(0);
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Scatter Shot",
+        description: `Deal ${dmg} x2 at the end of your turn.`,
+        turnDuration: 1,
+        endOfTimedEffectAction: () => {
+          sendToGameroom(`${name}'s scatter shot hits!`);
+          basicAttack(0);
+          basicAttack(0);
+        },
+      })
+    );
+  },
 });
 
 const delayedShot = new Card({
@@ -22,7 +37,23 @@ const delayedShot = new Card({
     `${dmg} DMG. Deal DMG ${dmg} x2 at the end of 2 turns from now.`,
   effects: [3],
   hpCost: 6,
-  cardAction: () => {},
+  cardAction: ({ self, name, calcEffect, basicAttack, sendToGameroom }) => {
+    sendToGameroom(`${name} fires a delayed shot!`);
+    const dmg = calcEffect(0);
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Delayed Shot",
+        description: `Deal ${dmg} x2 at the end of your turn.`,
+        turnDuration: 2,
+        endOfTimedEffectAction: () => {
+          sendToGameroom(`${name}'s delayed shot hits!`);
+          basicAttack(0);
+          basicAttack(0);
+        },
+      })
+    );
+  },
 });
 
 const piercingShot = new Card({
@@ -33,7 +64,13 @@ const piercingShot = new Card({
     `DMG ${dmg}. If this character did not use an attacking move last turn, deal an additional ${bonus} DMG with 50% pierce.`,
   effects: [9, 4],
   hpCost: 8,
-  cardAction: () => {},
+  cardAction: ({ name, sendToGameroom, opponent, basicAttack }) => {
+    sendToGameroom(`${name} fires a piercing shot!`);
+    basicAttack(0);
+    if (!opponent.additionalMetadata.attackedThisTurn) {
+      basicAttack(1, 0.5);
+    }
+  },
 });
 
 const polymath = new Card({
@@ -185,7 +222,14 @@ const goddessHealingMagic = new Card({
   description: ([hp, bonusHp, def]) =>
     `Heal ${hp} HP. Heal an additional ${bonusHp} HP and gain ${def} DEF if the opponent did not use an attacking move this turn.`,
   effects: [7, 3, 2],
-  cardAction: () => {},
+  cardAction: ({ name, opponent, game, sendToGameroom, selfStat }) => {
+    sendToGameroom(`${name} calls upon the Goddess for healing magic.`);
+    selfStat(0, StatsEnum.HP, game);
+    if (!opponent.additionalMetadata.attackedThisTurn) {
+      selfStat(1, StatsEnum.HP, game);
+      selfStat(2, StatsEnum.DEF, game);
+    }
+  },
 });
 
 const restraintMagic = new Card({
