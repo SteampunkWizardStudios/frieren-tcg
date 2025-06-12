@@ -286,7 +286,8 @@ const hypnoticCompulsion = new Card({
     opponentStat(0, StatsEnum.ATK, game, -1);
     opponent.skipTurn = true;
     opponent.additionalMetadata.accessToDefaultCardOptions = false;
-    opponent.additionalMetadata.nextCardToPlay = opponent.additionalMetadata.lastUsedCard;
+    opponent.additionalMetadata.nextCardToPlay =
+      opponent.additionalMetadata.lastUsedCard;
 
     opponent.timedEffects.push(
       new TimedEffect({

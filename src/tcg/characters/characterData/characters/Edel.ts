@@ -84,7 +84,7 @@ const Edel = new CharacterData({
   },
   additionalMetadata: {
     methodeFindsCute: true,
-  }
+  },
 });
 
 export default Edel;
