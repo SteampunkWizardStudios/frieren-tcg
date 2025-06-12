@@ -449,6 +449,7 @@ export const tcgMain = async (
             character.ability.abilityOwnCardEffectWrapper(context, card);
           } else {
             card.cardAction?.(context);
+            character.additionalMetadata.lastUsedCard = card;
           }
           if (opponentCharacter.ability.abilityAfterOpponentsMoveEffect) {
             opponentCharacter.ability.abilityAfterOpponentsMoveEffect(
