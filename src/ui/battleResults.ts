@@ -46,6 +46,7 @@ export default function buildBattleResults({
     newScore: dbRes?.winnerNewPoints,
   });
 
+  const loserScoreLoss = dbRes?.loserScoreLoss ?? 0;
   const playerTwoSection = perPlayerSectionLogic({
     isFirst: false,
     notTied: gameRes.winner !== undefined,
@@ -54,7 +55,7 @@ export default function buildBattleResults({
     rank: dbRes?.loserRank,
     rankedChange: dbRes?.loserRankedDown,
     newRank: dbRes?.loserNewRank,
-    scoreChange: dbRes?.loserScoreLoss,
+    scoreChange: -1 * loserScoreLoss,
     newScore: dbRes?.loserNewPoints,
   });
 

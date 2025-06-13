@@ -3,8 +3,9 @@ import { CardEmoji } from "@tcg/formatting/emojis";
 import { StatsEnum } from "@tcg/stats";
 import { incantationIncreaseSigil } from "../FlammeDeck";
 import { GameMessageContext } from "@tcg/gameContextProvider";
-import { serie_offensiveMagic_rare } from "./serieMagic";
+import { serie_offensiveMagic_rare, serie_offensiveMagic_unusual } from "./serieMagic";
 import CommonCardAction from "@tcg/util/commonCardActions";
+
 
 export const a_foundationOfHumanitysMagicBase = new Card({
   title: "Foundation of Humanity's Magic",
@@ -29,9 +30,9 @@ export const a_firstPageOfHumanitysMagicBase = new Card({
   title: "First Page of Humanity's Magic",
   cardMetadata: { nature: Nature.Attack },
   description: ([stat, dmg]) =>
-    `ATK+${stat} DEF+${stat} SPD+${stat}. DMG ${dmg}. Gain 1 Sigil.`,
+    `ATK+${stat} DEF+${stat} SPD+${stat}. DMG ${dmg}. Gain 2 Sigils.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [2, 7],
+  effects: [2, 8],
   hpCost: 4,
   cardAction: function (
     this: Card,
@@ -42,7 +43,7 @@ export const a_firstPageOfHumanitysMagicBase = new Card({
     selfStat(0, StatsEnum.DEF, game);
     selfStat(0, StatsEnum.SPD, game);
     basicAttack(1);
-    incantationIncreaseSigil(self, messageCache, 1);
+    incantationIncreaseSigil(self, messageCache, 2);
   },
 });
 
@@ -50,11 +51,11 @@ export const a_secondPageOfHumanitysMagicBase = new Card({
   title: "Second Page of Humanity's Magic",
   cardMetadata: { nature: Nature.Attack },
   description: ([stat]) =>
-    `ATK+${stat} DEF+${stat} SPD+${stat}. Use a random rare offensive magic.`,
+    `ATK+${stat} DEF+${stat} SPD+${stat}. Use a random rare offensive magic. Gain 2 Sigils.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [2],
+  effects: [3],
   cardAction: function (this: Card, context: GameMessageContext) {
-    const { game, selfStat } = context;
+    const { game, selfStat, self, messageCache } = context;
     selfStat(0, StatsEnum.ATK, game);
     selfStat(0, StatsEnum.DEF, game);
     selfStat(0, StatsEnum.SPD, game);
@@ -64,47 +65,49 @@ export const a_secondPageOfHumanitysMagicBase = new Card({
       context,
     });
     newCard.cardAction(context.duplicateContext(newCard));
+    incantationIncreaseSigil(self, messageCache, 2);
   },
 });
 
-export const a_lastPageOfHumanitysMagicBase = new Card({
-  title: "Last Page of Humanity's Magic",
+export const a_thirdPageOfHumanitysMagicBase = new Card({
+  title: "Third Page of Humanity's Magic",
   cardMetadata: { nature: Nature.Attack },
   description: ([stat, dmg]) =>
-    `ATK+${stat} DEF+${stat} SPD+${stat}. Deal ${dmg} DMG.`,
+    `ATK+${stat} DEF+${stat} SPD+${stat}. Deal ${dmg} DMG. Gain 1 Sigil.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [3, 17],
+  effects: [4, 17],
   hpCost: 10,
   cardAction: function (
     this: Card,
-    { game, name, sendToGameroom, selfStat, basicAttack }
+    { game, name, sendToGameroom, selfStat, basicAttack, self, messageCache }
   ) {
     sendToGameroom(`${name} called upon Hellfire.`);
     selfStat(0, StatsEnum.ATK, game);
     selfStat(0, StatsEnum.DEF, game);
     selfStat(0, StatsEnum.SPD, game);
     basicAttack(1);
+    incantationIncreaseSigil(self, messageCache, 1);
   },
 });
 
-export const a_pinnacleOfHumanitysMagicBase = new Card({
-  title: "Pinnacle of Humanity's Magic",
+export const a_lastPageOfHumanitysMagicBase = new Card({
+  title: "Last Page of Humanity's Magic",
   cardMetadata: { nature: Nature.Attack },
   description: ([stat]) =>
-    `ATK+${stat} DEF+${stat} SPD+${stat}. Deal ${stat} DMG.`,
+    `ATK+${stat} DEF+${stat} SPD+${stat}. Use a random unusual offensive magic.`,
   emoji: CardEmoji.FLAMME_CARD,
-  priority: 100,
-  effects: [100],
-  cardAction: function (
-    this: Card,
-    { game, sendToGameroom, selfStat, flatSelfStat, basicAttack }
-  ) {
-    sendToGameroom(`The Pinnacle of Humanity's Magic is on display.`);
-    flatSelfStat(1, StatsEnum.Ability, game);
+  effects: [5],
+  cardAction: function (this: Card, context: GameMessageContext) {
+    const { game, selfStat } = context;
     selfStat(0, StatsEnum.ATK, game);
     selfStat(0, StatsEnum.DEF, game);
     selfStat(0, StatsEnum.SPD, game);
-    basicAttack(0);
+    const newCard = CommonCardAction.useRandomCard({
+      cardPool: serie_offensiveMagic_unusual,
+      empowerLevel: this.empowerLevel,
+      context,
+    });
+    newCard.cardAction(context.duplicateContext(newCard));
   },
 });
 
@@ -112,6 +115,6 @@ export const flammeFoundationStage = [
   a_foundationOfHumanitysMagicBase,
   a_firstPageOfHumanitysMagicBase,
   a_secondPageOfHumanitysMagicBase,
+  a_thirdPageOfHumanitysMagicBase,
   a_lastPageOfHumanitysMagicBase,
-  a_pinnacleOfHumanitysMagicBase,
 ];

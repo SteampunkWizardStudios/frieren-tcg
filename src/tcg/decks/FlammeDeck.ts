@@ -15,8 +15,8 @@ import {
   a_foundationOfHumanitysMagicBase,
   a_firstPageOfHumanitysMagicBase,
   a_secondPageOfHumanitysMagicBase,
+  a_thirdPageOfHumanitysMagicBase,
   a_lastPageOfHumanitysMagicBase,
-  a_pinnacleOfHumanitysMagicBase,
 } from "./utilDecks/flammeFoundationStage";
 import incantationFieldOfFlowers from "./utilDecks/flammeSignature";
 
@@ -34,7 +34,7 @@ export const incantationIncreaseSigil = (
   );
 };
 
-const researchDecreaseSigil = (
+export const researchDecreaseSigil = (
   self: Character,
   messageCache: MessageCache,
   sigilCount: number,
@@ -157,15 +157,7 @@ const milleniumBarrier = new Card({
   effects: [5, 5],
   cardAction: function (
     this: Card,
-    {
-      self,
-      game,
-      selfIndex,
-      sendToGameroom,
-      calcEffect,
-      flatSelfStat,
-      opponent,
-    }
+    { self, game, selfIndex, sendToGameroom, calcEffect, flatSelfStat }
   ) {
     sendToGameroom(`A barrier blankets the land.`);
     const defIncrease = calcEffect(0);
@@ -194,17 +186,6 @@ const milleniumBarrier = new Card({
         ) {
           self.additionalMetadata.flammeSigil ??= 0;
 
-          if (
-            opponent.additionalMetadata.attackedThisTurn ||
-            opponent.additionalMetadata.timedEffectAttackedThisTurn
-          ) {
-            researchDecreaseSigil(
-              self,
-              messageCache,
-              1,
-              "The barrier stirs at the opposition's strike."
-            );
-          }
           if (self.additionalMetadata.flammeSigil > 0) {
             sendToGameroom("The barrier takes in mana.");
             researchDecreaseSigil(self, messageCache, 1);
@@ -249,7 +230,6 @@ const thousandYearSanctuary = new Card({
       sendToGameroom,
       calcEffect,
       flatOpponentStat,
-      opponent,
     }
   ) {
     sendToGameroom(`${name} raises a towering sanctuary.`);
@@ -279,17 +259,6 @@ const thousandYearSanctuary = new Card({
         ) {
           self.additionalMetadata.flammeSigil ??= 0;
 
-          if (
-            opponent.additionalMetadata.attackedThisTurn ||
-            opponent.additionalMetadata.timedEffectAttackedThisTurn
-          ) {
-            researchDecreaseSigil(
-              self,
-              messageCache,
-              1,
-              "The sanctuary silently rumbles at the opposition's advance."
-            );
-          }
           if (self.additionalMetadata.flammeSigil > 0) {
             sendToGameroom("The sanctuary approaches equilibrium.");
             researchDecreaseSigil(self, messageCache, 1);
@@ -326,7 +295,7 @@ const treeOfLife = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, game, selfIndex, name, sendToGameroom, selfStat, opponent }
+    { self, game, selfIndex, name, sendToGameroom, selfStat }
   ) {
     sendToGameroom(`${name} plants a sapling for someone 1000 years from now.`);
     selfStat(0, StatsEnum.HP, game);
@@ -352,12 +321,6 @@ const treeOfLife = new Card({
         ) {
           self.additionalMetadata.flammeSigil ??= 0;
 
-          if (
-            opponent.additionalMetadata.attackedThisTurn ||
-            opponent.additionalMetadata.timedEffectAttackedThisTurn
-          ) {
-            researchDecreaseSigil(self, messageCache, 1, "A leaf falls.");
-          }
           if (self.additionalMetadata.flammeSigil > 0) {
             sendToGameroom("The tree flutters.");
             researchDecreaseSigil(self, messageCache, 1);
@@ -632,12 +595,12 @@ export const a_foundationOfHumanitysMagic = new Card({
       });
     } else if (character.stats.stats.Ability === 3) {
       return new Card({
-        ...a_lastPageOfHumanitysMagicBase,
+        ...a_thirdPageOfHumanitysMagicBase,
         empowerLevel: this.empowerLevel,
       });
     } else {
       return new Card({
-        ...a_pinnacleOfHumanitysMagicBase,
+        ...a_lastPageOfHumanitysMagicBase,
         empowerLevel: this.empowerLevel,
       });
     }

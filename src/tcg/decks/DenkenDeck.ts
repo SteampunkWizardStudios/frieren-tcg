@@ -122,11 +122,11 @@ export const bareHandedBlock = new Card({
   effects: [2, 8],
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { game, selfIndex: characterIndex, messageCache, possessive }
   ) {
     const character = game.characters[characterIndex];
     messageCache.push(
-      `${character.name} raised his hands to prepare to block the opponent's attack!`,
+      `${character.name} raised ${possessive} hands to prepare to block the opponent's attack!`,
       TCGThread.Gameroom
     );
 

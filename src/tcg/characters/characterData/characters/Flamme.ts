@@ -1,13 +1,13 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import flammeDeck from "@tcg/decks/FlammeDeck";
+import flammeDeck, { researchDecreaseSigil } from "@tcg/decks/FlammeDeck";
 import { CharacterName } from "../../metadata/CharacterName";
-import { CharacterEmoji } from "@tcg/formatting/emojis";
+import { CardEmoji, CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
 import mediaLinks from "@tcg/formatting/mediaLinks";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import Game from "@tcg/game";
-import Card from "@tcg/card";
+import Card, { Nature } from "@tcg/card";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import TimedEffect from "@tcg/timedEffect";
 
@@ -18,6 +18,27 @@ const flammeStats = new Stats({
   [StatsEnum.TrueDEF]: 0.0,
   [StatsEnum.SPD]: 12.0,
   [StatsEnum.Ability]: 0.0,
+});
+
+const a_pinnacleOfHumanitysMagic = new Card({
+  title: "Pinnacle of Humanity's Magic",
+  cardMetadata: { nature: Nature.Attack },
+  description: ([stat]) =>
+    `ATK+${stat} DEF+${stat} SPD+${stat}. Deal ${stat} DMG.`,
+  emoji: CardEmoji.FLAMME_CARD,
+  priority: 100,
+  effects: [100],
+  cardAction: function (
+    this: Card,
+    { game, sendToGameroom, selfStat, flatSelfStat, basicAttack }
+  ) {
+    sendToGameroom(`The Pinnacle of Humanity's Magic is on display.`);
+    flatSelfStat(1, StatsEnum.Ability, game);
+    selfStat(0, StatsEnum.ATK, game);
+    selfStat(0, StatsEnum.DEF, game);
+    selfStat(0, StatsEnum.SPD, game);
+    basicAttack(0);
+  },
 });
 
 const Flamme = new CharacterData({
@@ -32,7 +53,9 @@ const Flamme = new CharacterData({
   cards: flammeDeck,
   ability: {
     abilityName: "Founder of Humanity's Magic",
-    abilityEffectString: `The Foundation of Humanity's Magic gets more developed for each Theory card you play.`,
+    abilityEffectString: `The Foundation of Humanity's Magic gets more developed for each Theory card you play.
+        After playing 4 Theory cards, add 1 "Pinnacle of Humanity's Magic" to your Discard pile.
+        *Pinnacle of Humanity's Magic*: Priority+100. ATK+**100** DEF+**100** SPD+**100**. Deal **100** DMG.`,
     subAbilities: [
       {
         name: "Deceitful",
@@ -63,6 +86,11 @@ const Flamme = new CharacterData({
           TCGThread.Gameroom
         );
         character.setStat(99, StatsEnum.Ability);
+        messageCache.push(
+          `*Pinnacle of Humanity's Magic* has been added to ${character.name}'s Discard pile.`,
+          TCGThread.Gameroom
+        );
+        character.deck.discardPile.push(a_pinnacleOfHumanitysMagic.clone());
       }
 
       // sigil timed effects cleanup
@@ -86,6 +114,27 @@ const Flamme = new CharacterData({
           }
         });
         character.timedEffects = newTimedEffects;
+      }
+    },
+    // sigil sequence
+    abilityDefendEffect: (
+      game: Game,
+      characterIndex: number,
+      messageCache: MessageCache,
+      _attackDamage: number
+    ) => {
+      const character = game.getCharacter(characterIndex);
+      const lostFlammeSigil = character.timedEffects.filter(
+        (effect) => effect.metadata.consumesFlammeSigil
+      ).length;
+
+      if (lostFlammeSigil > 0) {
+        researchDecreaseSigil(
+          character,
+          messageCache,
+          lostFlammeSigil,
+          "The barriers stir."
+        );
       }
     },
   },
