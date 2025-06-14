@@ -21,8 +21,8 @@ const Methode = new CharacterData({
   cosmetic: {
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.METHODE,
-    color: 0x8a2be2, // default
-    imageUrl: mediaLinks.edelPortrait, // default
+    color: 0x7f78ac,
+    imageUrl: mediaLinks.methodePortrait, // default
   },
   stats: methodeStats,
   cards: methodeDeck,
@@ -33,7 +33,7 @@ const Methode = new CharacterData({
       {
         name: '"I think you\'re cute"',
         description:
-          "ATK+1 and DEF-1 against Frieren, Fern, Serie and Edel on the first turn.",
+          "ATK+1 and DEF-1 against cute opponents on the first turn.",
       },
     ],
     abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
@@ -56,7 +56,7 @@ const Methode = new CharacterData({
         case 2:
           {
             messageCache.push(
-              `${self.name}'s adoration for ${opp.name} has worn off.`,
+              `${self.name} redirects her focus from ${opp.name} back to the battle.`,
               TCGThread.Gameroom
             );
             self.adjustStat(-1, StatsEnum.ATK, game);

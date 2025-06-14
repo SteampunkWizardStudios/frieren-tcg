@@ -161,13 +161,13 @@ const manaDetection = new Card({
       _msgCache,
       _atkDmg
     ) => {
+      sendToGameroom(`${name} was ready for ${opponent.name}'s attack!`);
       self.ability.abilitySelectedMoveModifierEffect = (
         _game,
         _charIdx,
         _msgCache,
         card
       ) => {
-        sendToGameroom(`${name} was ready for ${opponent.name}'s attack!`);
         card.priority += 1;
         self.ability.abilitySelectedMoveModifierEffect = undefined;
         return card;
