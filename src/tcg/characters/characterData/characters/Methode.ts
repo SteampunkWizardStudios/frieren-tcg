@@ -32,22 +32,38 @@ const Methode = new CharacterData({
     subAbilities: [
       {
         name: '"I think you\'re cute"',
-        description: "ATK+1 and DEF-1 against Frieren, Fern, Serie and Edel",
+        description:
+          "ATK+1 and DEF-1 against Frieren, Fern, Serie and Edel on the first turn.",
       },
     ],
     abilityStartOfTurnEffect: (game, characterIndex, messageCache) => {
-      if (game.turnCount !== 1) return;
-
-      const opp = game.getCharacter(1 - characterIndex);
-      if (!opp.additionalMetadata.methodeFindsCute) return;
-
       const self = game.getCharacter(characterIndex);
-      messageCache.push(
-        `${self.name} finds ${opp.name} cute!`,
-        TCGThread.Gameroom
-      );
-      self.adjustStat(1, StatsEnum.ATK, game);
-      self.adjustStat(-1, StatsEnum.DEF, game);
+      const opp = game.getCharacter(1 - characterIndex);
+
+      switch (game.turnCount) {
+        case 1:
+          {
+            if (!opp.additionalMetadata.methodeFindsCute) return;
+
+            messageCache.push(
+              `${self.name} finds ${opp.name} cute!`,
+              TCGThread.Gameroom
+            );
+            self.adjustStat(1, StatsEnum.ATK, game);
+            self.adjustStat(-1, StatsEnum.DEF, game);
+          }
+          break;
+        case 2:
+          {
+            messageCache.push(
+              `${self.name}'s adoration for ${opp.name} has worn off.`,
+              TCGThread.Gameroom
+            );
+            self.adjustStat(-1, StatsEnum.ATK, game);
+            self.adjustStat(1, StatsEnum.DEF, game);
+          }
+          break;
+      }
     },
   },
 
