@@ -74,7 +74,7 @@ export default class Character {
   }
 
   drawStartingHand() {
-    for (let i = 0; i < this.additionalMetadata.rollsCount; i++) {
+    for (let i = 0; i < 6; i++) {
       this.drawCard();
     }
   }
@@ -193,7 +193,7 @@ export default class Character {
         rolls.push(5);
       }
     } else {
-      let rollCount = 4;
+      let rollCount = this.additionalMetadata.rollsCount;
       if (
         game.additionalMetadata.flammeResearch[characterIndex][
           FlammeResearch.TreeOfLife

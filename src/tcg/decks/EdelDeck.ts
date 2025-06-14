@@ -157,7 +157,7 @@ const mental_fog = new Card({
     opponent.timedEffects.push(
       new TimedEffect({
         name: "Mental Fog",
-        description: `Your highest empowered playable card costs an additional ${cost} HP for the next 6 turns, and if it's not played, redraw 1 card.`,
+        description: `Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not played, redraw 1 card.`,
         turnDuration: 6,
         activateEndOfTurnActionThisTurn: false,
         executeAfterCardRolls: ({ game, selfIndex }) => {

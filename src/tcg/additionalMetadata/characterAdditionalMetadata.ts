@@ -18,7 +18,6 @@ export type CharacterAdditionalMetadata = {
   minimumPossibleHp?: number | undefined; // if undefined, there is no minimum hp cap
   overheal?: boolean;
   selectedCard?: Card;
-  lastUsedCard?: Card;
   nextCardToPlay?: Card;
 
   senseTeaTimeStacks?: number;

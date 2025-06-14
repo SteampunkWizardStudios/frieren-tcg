@@ -52,7 +52,7 @@ const Methode = new CharacterData({
   },
 
   additionalMetadata: {
-    rollsCount: 7,
+    rollsCount: 5,
   },
 });
 
