@@ -237,16 +237,35 @@ const goddessHealingMagic = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
   description: ([hp, bonusHp, def]) =>
-    `Heal ${hp} HP. Heal an additional ${bonusHp} HP and gain ${def} DEF if the opponent did not use an attacking move this turn.`,
+    `Heal ${hp} HP. Heal an additional ${bonusHp} HP and gain ${def} DEF if the opponent did not use an offensive move this turn.`,
   effects: [7, 3, 2],
-  cardAction: ({ name, opponent, game, sendToGameroom, selfStat }) => {
+  cardAction: ({
+    name,
+    self,
+    game,
+    opponentLastCard,
+    calcEffect,
+    sendToGameroom,
+    selfStat,
+  }) => {
     sendToGameroom(`${name} calls upon the Goddess for healing magic.`);
     selfStat(0, StatsEnum.HP, game);
-    // need to change?
-    if (!opponent.additionalMetadata.attackedThisTurn) {
-      selfStat(1, StatsEnum.HP, game);
-      selfStat(2, StatsEnum.DEF, game);
-    }
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Goddess' Healing Magic",
+        description: `Gain ${calcEffect(1)} DEF and Heal ${calcEffect(2)} HP if the opponent did not use an offensive move this turn.`,
+        turnDuration: 1,
+        metadata: { removableBySorganeil: false },
+        endOfTimedEffectAction: () => {
+          if (opponentLastCard.cardMetadata.nature !== Nature.Attack) {
+            sendToGameroom(`${name} receives the Goddess' blessing!`);
+            selfStat(1, StatsEnum.HP, game);
+            selfStat(2, StatsEnum.DEF, game);
+          }
+        },
+      })
+    );
   },
 });
 
@@ -260,6 +279,7 @@ const restraintMagic = new Card({
   priority: 1,
   cardAction: ({
     name,
+    self,
     game,
     sendToGameroom,
     opponent,
@@ -275,6 +295,18 @@ const restraintMagic = new Card({
     opponentStat(0, StatsEnum.ATK, game, -1);
     opponentStat(0, StatsEnum.DEF, game, -1);
     opponentStat(0, StatsEnum.SPD, game, -1);
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Restraining",
+        description: `Your DEF is set to 1 until the end of this turn.`,
+        turnDuration: 1,
+        priority: -1,
+        endOfTimedEffectAction: () => {
+          flatSelfStat(defDebuff, StatsEnum.DEF, game);
+        },
+      })
+    );
 
     const restraint = calcEffect(0);
     opponent.timedEffects.push(
@@ -332,13 +364,14 @@ const spotWeakness = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
   description: ([spd, atk, bonusAtk]) =>
-    `SPD+${spd} ATK+${atk}. If the opponent uses an attacking move this turn, ATK+${bonusAtk}.`,
+    `SPD+${spd} ATK+${atk}. If the opponent uses an offensive move this turn, at the end of turn, ATK+${bonusAtk}.`,
   effects: [2, 1, 3],
   cardAction: ({
     self,
     name,
     opponent,
     game,
+    opponentLastCard,
     selfStat,
     sendToGameroom,
     calcEffect,
@@ -353,13 +386,12 @@ const spotWeakness = new Card({
 
     self.timedEffects.push(
       new TimedEffect({
-        name: "Spot Weakness",
-        description: `If the opponent attacks this turn, ATK+${bonusAtk}`,
+        name: "Spotting Weaknesses",
+        description: `If the opponent uses an offensive move this turn, at the end of turn, ATK+${bonusAtk}`,
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: () => {
-          // need to change?
-          if (opponent.additionalMetadata.attackedThisTurn) {
+          if (opponentLastCard.cardMetadata.nature === Nature.Attack) {
             sendToGameroom(
               `${name} found an opening in ${opponent.name}'s attack!`
             );
