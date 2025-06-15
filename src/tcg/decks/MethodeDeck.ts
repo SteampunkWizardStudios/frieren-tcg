@@ -53,7 +53,7 @@ const delayedShot = new Card({
     self.timedEffects.push(
       new TimedEffect({
         name: "Delayed Shot",
-        description: `Deal ${dmg} x2 at the end of your turn.`,
+        description: `Deal ${dmg} x2 at the end of timed effect.`,
         turnDuration: 3,
         endOfTimedEffectAction: () => {
           sendToGameroom(`${name}'s delayed shot hits!`);
@@ -259,7 +259,7 @@ const goddessHealingMagic = new Card({
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: () => {
           if (opponentLastCard.cardMetadata.nature !== Nature.Attack) {
-            sendToGameroom(`${name} receives the Goddess' blessing!`);
+            sendToGameroom(`${name} receives the Goddess's blessing!`);
             selfStat(1, StatsEnum.HP, game);
             selfStat(2, StatsEnum.DEF, game);
           }
@@ -330,7 +330,7 @@ const hypnoticCompulsion = new Card({
   emoji: CardEmoji.METHODE_CARD,
   description: ([atkDebuff]) =>
     `Opponent's ATK-${atkDebuff}. Your opponent only has their last used move next turn.`,
-  effects: [],
+  effects: [2],
   cardAction: ({
     name,
     opponent,
