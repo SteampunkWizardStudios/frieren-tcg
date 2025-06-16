@@ -2,7 +2,6 @@ import Card, { Nature } from "@tcg/card";
 import { StatsEnum } from "@tcg/stats";
 import CommonCardAction from "@tcg/util/commonCardActions";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
-import TimedEffect from "@tcg/timedEffect";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
@@ -19,29 +18,23 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
   },
   effects: [5],
   hpCost: 5,
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.characters[characterIndex];
-    if (character.characterName === CharacterName.Sein) {
-      messageCache.push(
-        `${character.name} called on help from Frieren!`,
-        TCGThread.Gameroom
-      );
-    } else {
-      messageCache.push(`${character.name} used Zoltraak.`, TCGThread.Gameroom);
-    }
+  cardAction: ({
+    name,
+    characterName,
+    sendToGameroom,
+    calcEffect,
+    flatAttack,
+  }) => {
+    sendToGameroom(
+      characterName === CharacterName.Sein
+        ? `${name} called on help from Frieren!`
+        : `${name} used Zoltraak.`
+    );
 
     const damage = Number(
-      (
-        this.calculateEffectValue(this.effects[0]) +
-        character.stats.stats.HP / 9
-      ).toFixed(2)
+      (calcEffect(0) + character.stats.stats.HP / 9).toFixed(2)
     );
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-    });
+    flatAttack(damage, game);
   },
 });
 
@@ -59,47 +52,38 @@ export const a_trustInYourAllyFernsBarrage = new Card({
   },
   effects: [3],
   hpCost: 7,
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.characters[characterIndex];
-    if (character.characterName === CharacterName.Sein) {
-      messageCache.push(
-        `${character.name} called on help from Fern!`,
-        TCGThread.Gameroom
-      );
-    } else {
-      messageCache.push(
-        `${character.name} used a simple offensive spell barrage.`,
-        TCGThread.Gameroom
-      );
-    }
-
+  cardAction: ({
+    sendToGameroom,
+    name,
+    characterName,
+    calcEffect,
+    flatAttack,
+    selfEffect,
+  }) => {
+    sendToGameroom(
+      characterName === CharacterName.Sein
+        ? `${name} called on help from Fern!`
+        : `${name} used a simple offensive spell barrage.`
+    );
     const damage = Number(
-      (
-        this.calculateEffectValue(this.effects[0]) +
-        character.stats.stats.HP / 10
-      ).toFixed(2)
+      (calcEffect(0) + character.stats.stats.HP / 10).toFixed(2)
     );
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
+
+    flatAttack(damage, game);
+
+    selfEffect({
+      name: "Barrage",
+      description: `Deal ${damage} at the end of the effect.`,
+      turnDuration: 2,
+      activateEndOfTurnActionThisTurn: false,
+      endOfTurnAction: (game, charIdx, _msgCache) => {
+        sendToGameroom(`The barrage continues!`);
+        CommonCardAction.commonAttack(game, charIdx, {
+          damage,
+          isTimedEffectAttack: true,
+        });
+      },
     });
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Barrage",
-        description: `Deal ${damage} at the end of the effect.`,
-        turnDuration: 2,
-        activateEndOfTurnActionThisTurn: false,
-        endOfTurnAction: (game, characterIndex, messageCache) => {
-          messageCache.push("The barrage continues!", TCGThread.Gameroom);
-          CommonCardAction.commonAttack(game, characterIndex, {
-            damage,
-            isTimedEffectAttack: true,
-          });
-        },
-      })
-    );
   },
 });
 
@@ -116,30 +100,18 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
   hpCost: 9,
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { name, characterName, sendToGameroom, calcEffect, flatAttack }
   ) {
-    const character = game.characters[characterIndex];
-    if (character.characterName === CharacterName.Sein) {
-      messageCache.push(
-        `${character.name} called on help from Stark!`,
-        TCGThread.Gameroom
-      );
-    } else {
-      messageCache.push(
-        `${character.name} used lightning strike.`,
-        TCGThread.Gameroom
-      );
-    }
+    sendToGameroom(
+      characterName === CharacterName.Sein
+        ? `${name} called on help from Stark!`
+        : `${name} used lightning strike.`
+    );
 
     const damage = Number(
-      (
-        this.calculateEffectValue(this.effects[0]) +
-        character.stats.stats.HP / 8
-      ).toFixed(2)
+      (calcEffect(0) + character.stats.stats.HP / 8).toFixed(2)
     );
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-    });
+    flatAttack(damage, game);
   },
 });
 
@@ -156,46 +128,30 @@ export const mugOfBeer = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361017071886012681/GIF_3575013087.gif?ex=6807c56c&is=680673ec&hm=1e20739be8a75140974b9babb65729cf83c31d4f3d991bc35c90207fda41cd34&",
   },
   effects: [7, 2],
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} downed a mug of beer.`,
-      TCGThread.Gameroom
-    );
+  cardAction: ({
+    name,
+    sendToGameroom,
+    selfStat,
+    flatSelfStat,
+    selfEffect,
+  }) => {
+    sendToGameroom(`${name} downed a mug of beer.`);
+    selfStat(0, StatsEnum.HP, game);
+    selfStat(1, StatsEnum.ATK, game);
+    flatSelfStat(-2, StatsEnum.DEF, game);
+    flatSelfStat(-2, StatsEnum.SPD, game);
 
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP,
-      game
-    );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[1]),
-      StatsEnum.ATK,
-      game
-    );
-
-    character.adjustStat(-2, StatsEnum.DEF, game);
-    character.adjustStat(-2, StatsEnum.SPD, game);
-
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Drunk",
-        description: `DEF-2. SPD-2.`,
-        turnDuration: 2,
-        metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          messageCache.push(
-            `${character.name}'s drowsiness faded.`,
-            TCGThread.Gameroom
-          );
-          character.adjustStat(2, StatsEnum.DEF, game);
-          character.adjustStat(2, StatsEnum.SPD, game);
-        },
-      })
-    );
+    selfEffect({
+      name: "Drunk",
+      description: `DEF-2. SPD-2.`,
+      turnDuration: 2,
+      metadata: { removableBySorganeil: false },
+      endOfTimedEffectAction: (_game, _charIdx, _msgCache) => {
+        sendToGameroom(`${name}'s drowsiness faded.`);
+        flatSelfStat(2, StatsEnum.DEF, game);
+        flatSelfStat(2, StatsEnum.SPD, game);
+      },
+    });
   },
 });
 
@@ -212,31 +168,11 @@ export const smokeBreak = new Card({
   },
   effects: [3, 2, 2],
   hpCost: 3,
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} took a smoke break.`,
-      TCGThread.Gameroom
-    );
-
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.ATK,
-      game
-    );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[1]),
-      StatsEnum.DEF,
-      game
-    );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD,
-      game
-    );
+  cardAction: ({ name, sendToGameroom, selfStat }) => {
+    sendToGameroom(`${name} took a smoke break.`);
+    selfStat(0, StatsEnum.ATK, game);
+    selfStat(1, StatsEnum.DEF, game);
+    selfStat(2, StatsEnum.SPD, game);
   },
 });
 
@@ -252,28 +188,11 @@ export const awakening = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361016482263208137/GIF_1188387197.gif?ex=6807c4df&is=6806735f&hm=f5ed7c521144db3412cf1a52b1417497950c1adf96d45301ff7421b5a75d8ca7&",
   },
   effects: [2, 1, 2],
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.characters[characterIndex];
-    messageCache.push(`${character.name} used Awakening!`, TCGThread.Gameroom);
-
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.ATK,
-      game
-    );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[1]),
-      StatsEnum.DEF,
-      game
-    );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[2]),
-      StatsEnum.SPD,
-      game
-    );
+  cardAction: ({ name, sendToGameroom, selfStat }) => {
+    sendToGameroom(`${name} used Awakening!`);
+    selfStat(0, StatsEnum.ATK, game);
+    selfStat(1, StatsEnum.DEF, game);
+    selfStat(2, StatsEnum.SPD, game);
   },
 });
 
@@ -289,20 +208,9 @@ export const poisonCure = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361016416488390776/GIF_0966802288.gif?ex=6807c4d0&is=68067350&hm=2d09267ccc0505a949b0c57e6c9bb84fc99decb89d35637cadced435723f5904&",
   },
   effects: [10],
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} applied a poison cure.`,
-      TCGThread.Gameroom
-    );
-    character.adjustStat(
-      this.calculateEffectValue(this.effects[0]),
-      StatsEnum.HP,
-      game
-    );
+  cardAction: ({ name, sendToGameroom, selfStat }) => {
+    sendToGameroom(`${name} applied a poison cure.`);
+    selfStat(0, StatsEnum.HP, game);
   },
 });
 
@@ -320,37 +228,33 @@ export const braceYourself = new Card({
   },
   priority: 2,
   effects: [20],
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.characters[characterIndex];
-    if (character.characterName === CharacterName.Sein) {
-      messageCache.push(
-        `${character.name} called on ${character.cosmetic.pronouns.possessive} allies to brace themselves!`,
-        TCGThread.Gameroom
-      );
-    } else {
-      messageCache.push(
-        `${character.name} braced ${character.cosmetic.pronouns.reflexive}.`,
-        TCGThread.Gameroom
-      );
-    }
-
-    const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF, game);
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Brace Yourself",
-        description: `Increases TrueDEF by ${def} until the end of the turn.`,
-        priority: -1,
-        turnDuration: 1,
-        metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-          character.adjustStat(-def, StatsEnum.TrueDEF, game);
-        },
-      })
+  cardAction: ({
+    name,
+    sendToGameroom,
+    characterName,
+    calcEffect,
+    possessive,
+    reflexive,
+  }) => {
+    sendToGameroom(
+      characterName === CharacterName.Sein
+        ? `${name} called on ${possessive} allies to brace themselves!`
+        : `${name} braced ${reflexive}.`
     );
+
+    const def = calcEffect(0);
+    selfStat(0, StatsEnum.TrueDEF, game);
+
+    selfEffect({
+      name: "Brace Yourself",
+      description: `Increases TrueDEF by ${def} until the end of the turn.`,
+      priority: -1,
+      turnDuration: 1,
+      metadata: { removableBySorganeil: false },
+      endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
+        selfStat(0, StatsEnum.TrueDEF, game, -1);
+      },
+    });
   },
 });
 
@@ -367,38 +271,28 @@ export const a_threeSpearsOfTheGoddess = new Card({
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [7],
   hpCost: 15,
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.characters[characterIndex];
-    messageCache.push(
-      `${character.name} used Three Spears of the Goddess!`,
-      TCGThread.Gameroom
-    );
+  cardAction: ({ name, sendToGameroom, calcEffect, selfEffect }) => {
+    sendToGameroom(`${name} used Three Spears of the Goddess!`);
+
     const damage = Number(
-      (
-        this.calculateEffectValue(this.effects[0]) +
-        character.stats.stats.HP / 10
-      ).toFixed(2)
+      (calcEffect(0) + character.stats.stats.HP / 10).toFixed(2)
     );
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Three Spears of the Goddess",
-        description: `Deal ${damage} at each turn's end.`,
-        turnDuration: 3,
-        endOfTurnAction: (game, characterIndex) => {
-          messageCache.push(
-            "The goddess' spears continue to rain!",
-            TCGThread.Gameroom
-          );
-          CommonCardAction.commonAttack(game, characterIndex, {
-            damage,
-            isTimedEffectAttack: true,
-          });
-        },
-      })
-    );
+
+    selfEffect({
+      name: "Three Spears of the Goddess",
+      description: `Deal ${damage} at each turn's end.`,
+      turnDuration: 3,
+      endOfTurnAction: (game, characterIndex) => {
+        messageCache.push(
+          "The goddess' spears continue to rain!",
+          TCGThread.Gameroom
+        );
+        CommonCardAction.commonAttack(game, characterIndex, {
+          damage,
+          isTimedEffectAttack: true,
+        });
+      },
+    });
   },
 });
 
