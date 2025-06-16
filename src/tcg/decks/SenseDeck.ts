@@ -1,5 +1,4 @@
 import Card, { Nature } from "@tcg/card";
-import TimedEffect from "@tcg/timedEffect";
 import { StatsEnum } from "@tcg/stats";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import { manaConcealment } from "./FernDeck";
@@ -93,6 +92,7 @@ export const hairBarrier = new Card({
     selfStat,
     sendToGameroom,
     calcEffect,
+    selfEffect,
   }) => {
     sendToGameroom(
       `${name} surrounded ${reflexive} in ${possessive} hair barrier!`
@@ -101,18 +101,16 @@ export const hairBarrier = new Card({
     const def = calcEffect(0);
     selfStat(0, StatsEnum.TrueDEF, game);
 
-    self.timedEffects.push(
-      new TimedEffect({
-        name: "Hair Barrier",
-        description: `Increases TrueDEF by ${def} until the end of the turn.`,
-        priority: -1,
-        turnDuration: 1,
-        metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-1 * def, StatsEnum.TrueDEF, game);
-        },
-      })
-    );
+    selfEffect({
+      name: "Hair Barrier",
+      description: `Increases TrueDEF by ${def} until the end of the turn.`,
+      priority: -1,
+      turnDuration: 1,
+      metadata: { removableBySorganeil: false },
+      endOfTimedEffectAction: (_game, _characterIndex) => {
+        self.adjustStat(-1 * def, StatsEnum.TrueDEF, game);
+      },
+    });
   },
 });
 
