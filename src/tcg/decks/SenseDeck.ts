@@ -124,8 +124,7 @@ export const teaTime = new Card({
   effects: [1, 4],
   emoji: CardEmoji.HEART,
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364949044656607232/GIF_0807192060.gif?ex=680b875b&is=680a35db&hm=ced86d0c723bc4d139d0012c97a29d89d6fad79d084e1607036211869d17b57e&",
+    cardGif: mediaLinks.sense_teaTime_gif,
   },
   cardAction: ({
     game,
@@ -159,8 +158,7 @@ export const teaParty = new Card({
   effects: [2, 7],
   emoji: CardEmoji.RANDOM,
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364992405018902568/GIF_0507169428.gif?ex=680c587d&is=680b06fd&hm=dd2441c0af97bd72ee4c6ee262830ce4a418d07197f696bae7bb832202d6498c&",
+    cardGif: sense_teaParty_gif,
   },
   cardAction: ({
     game,
@@ -197,8 +195,7 @@ export const a_piercingDrill = new Card({
   emoji: CardEmoji.PUNCH,
   cardMetadata: { nature: Nature.Attack, signature: true },
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364943023678427196/GIF_3233937113.gif?ex=680b81c0&is=680a3040&hm=07d5b41617b811cd069cc08f1de64d9966b4d03df7936844262be5f6ee25e0cb&",
+    cardGif: sense_piercingDrill_gif,
   },
   cardAction: ({ name, selfStats, sendToGameroom, flatAttack, calcEffect }) => {
     sendToGameroom(`${name} used a piercing drill!`);
