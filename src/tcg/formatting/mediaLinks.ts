@@ -88,6 +88,12 @@ const frierenCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1364284928543424652/GIF_0512568585.gif?ex=68091cda&is=6807cb5a&hm=fa96e7031f374a6a962522623b61e81a53133ba49d57583e77d483e379a31edf&",
 } as const;
 
+const senseCardLinks = {
+  sense_hairBarrier_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364942857307295905/GIF_0653594382.gif?ex=680b8198&is=680a3018&hm=368a1918766556e47cc2e4692113d174afa955d6f59f3206d2f0cb6269df4a34&",
+
+  } as const;
+
 const stilleCardLinks = {
   stille_hide_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1374730977061900400/GIF_1220750973.gif?ex=6839a97e&is=683857fe&hm=efca39e0b8ca3e13ee37c77ea4083ff5b64924dd1d20a51eb4321dc949d6dd19&",
@@ -142,6 +148,7 @@ const mediaLinks = {
 
   ...edelCardLinks,
   ...frierenCardLinks,
+  ...senseCardLinks,
   ...stilleCardLinks,
   ...wirbelCardLinks,
   ...flammeCardLinks,
