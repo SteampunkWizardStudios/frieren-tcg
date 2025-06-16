@@ -98,10 +98,9 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
   },
   effects: [10],
   hpCost: 9,
-  cardAction: function (
-    this: Card,
+  cardAction: (
     { name, characterName, sendToGameroom, calcEffect, flatAttack }
-  ) {
+  ) => {
     sendToGameroom(
       characterName === CharacterName.Sein
         ? `${name} called on help from Stark!`

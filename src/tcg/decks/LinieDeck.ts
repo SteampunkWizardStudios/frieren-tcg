@@ -48,10 +48,7 @@ export const adapt = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/Dcc6-Rvkts8AAAAd/tenor.gif",
   },
-  cardAction: function (
-    this: Card,
-    { game, selfStats, name, sendToGameroom, selfStat }
-  ) {
+  cardAction: ({ game, selfStats, name, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} adapts to the situation.`);
     selfStat(0, StatsEnum.SPD, game);
 
@@ -64,10 +61,7 @@ export const adapt = new Card({
   },
 });
 
-export const manaDetectionBaseCardAction = function (
-  this: Card,
-  context: GameMessageContext
-) {
+export const manaDetectionBaseCardAction = (context: GameMessageContext) => {
   const {
     name,
     sendToGameroom,
@@ -163,10 +157,13 @@ export const a_erfassenJavelin = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/zd9mOGFjT3IAAAAd/tenor.gif",
   },
-  cardAction: (
-    this: Card,
-    { name, sendToGameroom, possessive, basicAttack, selfEffect }
-  ) => {
+  cardAction: ({
+    name,
+    sendToGameroom,
+    possessive,
+    basicAttack,
+    selfEffect,
+  }) => {
     sendToGameroom(`${name} recalls ${possessive} Javelin imitation.`);
     basicAttack(0);
 
@@ -210,17 +207,14 @@ export const a_erfassenKnife = new Card({
   emoji: CardEmoji.LINIE_CARD,
   effects: [2],
   hpCost: 1,
-  cardAction: function (
-    this: Card,
-    {
-      name,
-      possessive,
-      sendToGameroom,
-      basicAttack,
-      calcEffect,
-      selfEffect,
-    }
-  ) {
+  cardAction: ({
+    name,
+    possessive,
+    sendToGameroom,
+    basicAttack,
+    calcEffect,
+    selfEffect,
+  }) => {
     sendToGameroom(`${name} recalls ${possessive} Knife throw imitation.`);
     basicAttack(0);
 
