@@ -3,7 +3,6 @@ import { StatsEnum } from "@tcg/stats";
 import TimedEffect from "@tcg/timedEffect";
 import CommonCardAction from "@tcg/util/commonCardActions";
 import { CardEmoji } from "@tcg/formatting/emojis";
-import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { GameMessageContext } from "@tcg/gameContextProvider";
 
 export const imitate = new Card({
@@ -30,11 +29,8 @@ export const imitate = new Card({
         description: () => "No card to imitate. This move will fail.",
         effects: [],
         emoji: CardEmoji.LINIE_CARD,
-        cardAction: ({ messageCache }) => {
-          messageCache.push(
-            `No card to imitate. The move failed!`,
-            TCGThread.Gameroom
-          );
+        cardAction: ({ sendToGameroom }) => {
+          sendToGameroom(`No card to imitate. The move failed!`);
         },
         imitated: true,
       });
@@ -72,24 +68,21 @@ export const manaDetectionBaseCardAction = function (
   this: Card,
   context: GameMessageContext
 ) {
-  const { game, selfIndex: characterIndex, messageCache } = context;
-  const character = game.getCharacter(characterIndex);
-  messageCache.push(
-    `${character.name} detects the opponent's mana flow.`,
-    TCGThread.Gameroom
-  );
+  const {
+    name,
+    sendToGameroom,
+    opponent,
+    calcEffect,
+    selfStat,
+    opponentStats,
+  } = context;
+  sendToGameroom(`${name} detects the opponent's mana flow.`);
+  selfStat(0, StatsEnum.SPD, game);
 
-  const opponent = game.getCharacter(1 - characterIndex);
-  character.adjustStat(
-    this.calculateEffectValue(this.effects[0]),
-    StatsEnum.SPD,
-    game
-  );
+  const bigNumber = calcEffect(1);
+  const smallNumber = calcEffect(2);
 
-  const bigNumber = this.calculateEffectValue(this.effects[1]);
-  const smallNumber = this.calculateEffectValue(this.effects[2]);
-
-  if (opponent.stats.stats.DEF >= opponent.stats.stats.ATK) {
+  if (opponentStats.DEF >= opponentStats.ATK) {
     character.adjustStat(bigNumber, StatsEnum.ATK, game);
     character.adjustStat(smallNumber, StatsEnum.DEF, game);
   } else {
@@ -103,9 +96,8 @@ export const manaDetectionBaseCardAction = function (
       card.empowerLevel > highest.empowerLevel ? card : highest,
     opponent.hand[0]
   );
-  messageCache.push(
-    `### ${opponent.name} is concentrating ${opponent.cosmetic.pronouns.possessive} power on the move **${currentHighestEmpoweredCard.getTitle()}**!`,
-    TCGThread.Gameroom
+  sendToGameroom(
+    `### ${opponent.name} is concentrating ${opponent.cosmetic.pronouns.possessive} power on the move **${currentHighestEmpoweredCard.getTitle()}**!`
   );
 };
 
@@ -127,34 +119,21 @@ const parry = new Card({
   emoji: CardEmoji.LINIE_CARD,
   effects: [20],
   priority: 2,
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} prepares to parry the opponent's attack.`,
-      TCGThread.Gameroom
-    );
+  cardAction: ({ name, sendToGameroom, calcEffect, selfEffect, selfStat }) => {
+    sendToGameroom(`${name} prepares to parry the opponent's attack.`);
 
-    const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF, game);
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Parry",
-        description: `Increases DEF by ${def} until the end of the turn.`,
-        priority: -1,
-        turnDuration: 1,
-        metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: (game, characterIndex) => {
-          game.characters[characterIndex].adjustStat(
-            -def,
-            StatsEnum.TrueDEF,
-            game
-          );
-        },
-      })
-    );
+    const def = calcEffect(0);
+    selfStat(0, StatsEnum.TrueDEF, game);
+    selfEffect({
+      name: "Parry",
+      description: `Increases DEF by ${def} until the end of the turn.`,
+      priority: -1,
+      turnDuration: 1,
+      metadata: { removableBySorganeil: false },
+      endOfTimedEffectAction: (game) => {
+        selfStat(0, StatsEnum.TrueDEF, game, -1);
+      },
+    });
   },
 });
 
@@ -168,20 +147,9 @@ export const a_erfassenAxe = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/eUCHN11H4B4AAAAd/tenor.gif",
   },
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} recalls ${character.cosmetic.pronouns.possessive} Axe imitation.`,
-      TCGThread.Gameroom
-    );
-
-    const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-    });
+  cardAction: ({ name, sendToGameroom, possessive, basicAttack }) => {
+    sendToGameroom(`${name} recalls ${possessive} Axe imitation.`);
+    basicAttack(0);
   },
 });
 
@@ -195,39 +163,26 @@ export const a_erfassenJavelin = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/zd9mOGFjT3IAAAAd/tenor.gif",
   },
-  cardAction: function (
+  cardAction: (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} recalls ${character.cosmetic.pronouns.possessive} Javelin imitation.`,
-      TCGThread.Gameroom
-    );
+    { name, sendToGameroom, possessive, basicAttack, selfEffect }
+  ) => {
+    sendToGameroom(`${name} recalls ${possessive} Javelin imitation.`);
+    basicAttack(0);
 
-    const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
+    selfEffect({
+      name: "Erfassen: Javelin",
+      description: `Deal ${damage} at the end of the effect.`,
+      turnDuration: 2,
+      activateEndOfTurnActionThisTurn: false,
+      endOfTurnAction: (game, characterIndex) => {
+        sendToGameroom(`${name} launches a javelin!`);
+        CommonCardAction.commonAttack(game, characterIndex, {
+          damage,
+          isTimedEffectAttack: true,
+        });
+      },
     });
-
-    character.timedEffects.push(
-      new TimedEffect({
-        name: "Erfassen: Javelin",
-        description: `Deal ${damage} at the end of the effect.`,
-        turnDuration: 2,
-        activateEndOfTurnActionThisTurn: false,
-        endOfTurnAction: (game, characterIndex, messageCache) => {
-          messageCache.push(
-            `${character.name} launches a javelin!`,
-            TCGThread.Gameroom
-          );
-          CommonCardAction.commonAttack(game, characterIndex, {
-            damage,
-            isTimedEffectAttack: true,
-          });
-        },
-      })
-    );
   },
 });
 
@@ -241,20 +196,9 @@ export const a_erfassenSword = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/f4-8FBCgXg4AAAAd/tenor.gif",
   },
-  cardAction: function (
-    this: Card,
-    { game, selfIndex: characterIndex, messageCache }
-  ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} recalls ${character.cosmetic.pronouns.possessive} Sword imitation.`,
-      TCGThread.Gameroom
-    );
-
-    const damage = this.calculateEffectValue(this.effects[0]);
-    CommonCardAction.commonAttack(game, characterIndex, {
-      damage,
-    });
+  cardAction: ({ name, sendToGameroom, possessive, basicAttack }) => {
+    sendToGameroom(`${name} recalls ${possessive} Sword imitation.`);
+    basicAttack(0);
   },
 });
 
@@ -268,24 +212,29 @@ export const a_erfassenKnife = new Card({
   hpCost: 1,
   cardAction: function (
     this: Card,
-    { name, possessive, self, sendToGameroom, basicAttack, calcEffect }
+    {
+      name,
+      possessive,
+      sendToGameroom,
+      basicAttack,
+      calcEffect,
+      selfEffect,
+    }
   ) {
     sendToGameroom(`${name} recalls ${possessive} Knife throw imitation.`);
     basicAttack(0);
 
     const damage = calcEffect(0);
-    self.timedEffects.push(
-      new TimedEffect({
-        name: "Erfassen: Knife",
-        description: `Deal ${damage} at each turn's end.`,
-        turnDuration: 3,
-        activateEndOfTurnActionThisTurn: false,
-        endOfTurnAction: function (this: TimedEffect, _game, _characterIndex) {
-          sendToGameroom(`${name} flings a knife at the opponent!`);
-          basicAttack(0);
-        },
-      })
-    );
+    selfEffect({
+      name: "Erfassen: Knife",
+      description: `Deal ${damage} at each turn's end.`,
+      turnDuration: 3,
+      activateEndOfTurnActionThisTurn: false,
+      endOfTurnAction: function (this: TimedEffect, _game, _characterIndex) {
+        sendToGameroom(`${name} flings a knife at the opponent!`);
+        basicAttack(0);
+      },
+    });
   },
 });
 
