@@ -6,7 +6,7 @@ import { StatsEnum } from "@tcg/stats";
 import Character from "@tcg/character";
 import Card from "@tcg/card";
 import CommonCardAction from "./util/commonCardActions";
-import { TimedEffectProps } from "@tcg/timedEffect";
+import TimedEffect, { TimedEffectProps } from "@tcg/timedEffect";
 
 // Constants
 const EMPOWER_BOOST = 0.1;
@@ -25,11 +25,10 @@ function characterBasedContext(game: Game, characterIndex: number) {
     target: Character,
     amount: number,
     stat: StatsEnum,
-    game: Game,
     multiplier: number = 1
   ) => {
     const change = amount * multiplier;
-    target.adjustStat(change, stat, game);
+    target.adjustStat(change, stat, game); // doesn't need to pass in game because its already in the context
     return change;
   };
 
@@ -45,7 +44,7 @@ function characterBasedContext(game: Game, characterIndex: number) {
    * @param effectArgs Constructor arguments for a TimedEffect.
    */
   const selfEffect = (effectArgs: TimedEffectProps) => {
-    self.timedEffect.push(new TimedEffect(effectArgs));
+    self.timedEffects.push(new TimedEffect(effectArgs));
   };
 
   /**
@@ -53,7 +52,7 @@ function characterBasedContext(game: Game, characterIndex: number) {
    * @param effectArgs Constructor arguments for a TimedEffect.
    */
   const opponentEffect = (effectArgs: TimedEffectProps) => {
-    opponent.timedEffect.push(new TimedEffect(effectArgs));
+    opponent.timedEffects.push(new TimedEffect(effectArgs));
   };
 
   return {
@@ -106,7 +105,6 @@ export function gameContextProvider(
     target: Character,
     effectIndex: number,
     stat: StatsEnum,
-    game: Game,
     multiplier: number = 1
   ) => {
     const empowered = calculateEffectValue(

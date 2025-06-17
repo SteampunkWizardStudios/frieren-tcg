@@ -103,7 +103,7 @@ export default class CommonCardAction {
 
     sendToGameroom(`${name} used **${newCard.getTitle()}**.`);
     if (newCard.hpCost && newCard.hpCost !== 0) {
-      flatSelfStat(-newCard.hpCost, StatsEnum.HP, game);
+      flatSelfStat(-newCard.hpCost, StatsEnum.HP);
     }
 
     return newCard;

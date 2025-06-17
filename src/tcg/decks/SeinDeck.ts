@@ -3,7 +3,6 @@ import { StatsEnum } from "@tcg/stats";
 import CommonCardAction from "@tcg/util/commonCardActions";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { CardEmoji } from "@tcg/formatting/emojis";
-import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 
 export const a_trustInYourAllyFrierensZoltraak = new Card({
   title: "Trust in Your Ally: Frieren's Zoltraak",
@@ -24,6 +23,7 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
     sendToGameroom,
     calcEffect,
     flatAttack,
+    selfStats,
   }) => {
     sendToGameroom(
       characterName === CharacterName.Sein
@@ -31,10 +31,8 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
         : `${name} used Zoltraak.`
     );
 
-    const damage = Number(
-      (calcEffect(0) + character.stats.stats.HP / 9).toFixed(2)
-    );
-    flatAttack(damage, game);
+    const damage = Number((calcEffect(0) + selfStats.HP / 9).toFixed(2));
+    flatAttack(damage);
   },
 });
 
@@ -55,6 +53,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
   cardAction: ({
     sendToGameroom,
     name,
+    selfStats,
     characterName,
     calcEffect,
     flatAttack,
@@ -65,11 +64,9 @@ export const a_trustInYourAllyFernsBarrage = new Card({
         ? `${name} called on help from Fern!`
         : `${name} used a simple offensive spell barrage.`
     );
-    const damage = Number(
-      (calcEffect(0) + character.stats.stats.HP / 10).toFixed(2)
-    );
+    const damage = Number((calcEffect(0) + selfStats.HP / 10).toFixed(2));
 
-    flatAttack(damage, game);
+    flatAttack(damage);
 
     selfEffect({
       name: "Barrage",
@@ -98,19 +95,22 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
   },
   effects: [10],
   hpCost: 9,
-  cardAction: (
-    { name, characterName, sendToGameroom, calcEffect, flatAttack }
-  ) => {
+  cardAction: ({
+    name,
+    characterName,
+    selfStats,
+    sendToGameroom,
+    calcEffect,
+    flatAttack,
+  }) => {
     sendToGameroom(
       characterName === CharacterName.Sein
         ? `${name} called on help from Stark!`
         : `${name} used lightning strike.`
     );
 
-    const damage = Number(
-      (calcEffect(0) + character.stats.stats.HP / 8).toFixed(2)
-    );
-    flatAttack(damage, game);
+    const damage = Number((calcEffect(0) + selfStats.HP / 8).toFixed(2));
+    flatAttack(damage);
   },
 });
 
@@ -135,10 +135,10 @@ export const mugOfBeer = new Card({
     selfEffect,
   }) => {
     sendToGameroom(`${name} downed a mug of beer.`);
-    selfStat(0, StatsEnum.HP, game);
-    selfStat(1, StatsEnum.ATK, game);
-    flatSelfStat(-2, StatsEnum.DEF, game);
-    flatSelfStat(-2, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.HP);
+    selfStat(1, StatsEnum.ATK);
+    flatSelfStat(-2, StatsEnum.DEF);
+    flatSelfStat(-2, StatsEnum.SPD);
 
     selfEffect({
       name: "Drunk",
@@ -147,8 +147,8 @@ export const mugOfBeer = new Card({
       metadata: { removableBySorganeil: false },
       endOfTimedEffectAction: (_game, _charIdx, _msgCache) => {
         sendToGameroom(`${name}'s drowsiness faded.`);
-        flatSelfStat(2, StatsEnum.DEF, game);
-        flatSelfStat(2, StatsEnum.SPD, game);
+        flatSelfStat(2, StatsEnum.DEF);
+        flatSelfStat(2, StatsEnum.SPD);
       },
     });
   },
@@ -169,9 +169,9 @@ export const smokeBreak = new Card({
   hpCost: 3,
   cardAction: ({ name, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} took a smoke break.`);
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(1, StatsEnum.DEF, game);
-    selfStat(2, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.ATK);
+    selfStat(1, StatsEnum.DEF);
+    selfStat(2, StatsEnum.SPD);
   },
 });
 
@@ -189,9 +189,9 @@ export const awakening = new Card({
   effects: [2, 1, 2],
   cardAction: ({ name, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} used Awakening!`);
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(1, StatsEnum.DEF, game);
-    selfStat(2, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.ATK);
+    selfStat(1, StatsEnum.DEF);
+    selfStat(2, StatsEnum.SPD);
   },
 });
 
@@ -209,7 +209,7 @@ export const poisonCure = new Card({
   effects: [10],
   cardAction: ({ name, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} applied a poison cure.`);
-    selfStat(0, StatsEnum.HP, game);
+    selfStat(0, StatsEnum.HP);
   },
 });
 
@@ -230,6 +230,8 @@ export const braceYourself = new Card({
   cardAction: ({
     name,
     sendToGameroom,
+    selfStat,
+    selfEffect,
     characterName,
     calcEffect,
     possessive,
@@ -242,7 +244,7 @@ export const braceYourself = new Card({
     );
 
     const def = calcEffect(0);
-    selfStat(0, StatsEnum.TrueDEF, game);
+    selfStat(0, StatsEnum.TrueDEF);
 
     selfEffect({
       name: "Brace Yourself",
@@ -251,7 +253,7 @@ export const braceYourself = new Card({
       turnDuration: 1,
       metadata: { removableBySorganeil: false },
       endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
-        selfStat(0, StatsEnum.TrueDEF, game, -1);
+        selfStat(0, StatsEnum.TrueDEF, -1);
       },
     });
   },
@@ -270,22 +272,17 @@ export const a_threeSpearsOfTheGoddess = new Card({
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [7],
   hpCost: 15,
-  cardAction: ({ name, sendToGameroom, calcEffect, selfEffect }) => {
+  cardAction: ({ name, selfStats, sendToGameroom, calcEffect, selfEffect }) => {
     sendToGameroom(`${name} used Three Spears of the Goddess!`);
 
-    const damage = Number(
-      (calcEffect(0) + character.stats.stats.HP / 10).toFixed(2)
-    );
+    const damage = Number((calcEffect(0) + selfStats.HP / 10).toFixed(2));
 
     selfEffect({
       name: "Three Spears of the Goddess",
       description: `Deal ${damage} at each turn's end.`,
       turnDuration: 3,
       endOfTurnAction: (game, characterIndex) => {
-        messageCache.push(
-          "The goddess' spears continue to rain!",
-          TCGThread.Gameroom
-        );
+        sendToGameroom("The goddess' spears continue to rain!");
         CommonCardAction.commonAttack(game, characterIndex, {
           damage,
           isTimedEffectAttack: true,

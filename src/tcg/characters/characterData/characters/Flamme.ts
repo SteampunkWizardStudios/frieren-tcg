@@ -33,10 +33,10 @@ const a_pinnacleOfHumanitysMagic = new Card({
     { game, sendToGameroom, selfStat, flatSelfStat, basicAttack }
   ) {
     sendToGameroom(`The Pinnacle of Humanity's Magic is on display.`);
-    flatSelfStat(1, StatsEnum.Ability, game);
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(0, StatsEnum.DEF, game);
-    selfStat(0, StatsEnum.SPD, game);
+    flatSelfStat(1, StatsEnum.Ability);
+    selfStat(0, StatsEnum.ATK);
+    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.SPD);
     basicAttack(0);
   },
 });

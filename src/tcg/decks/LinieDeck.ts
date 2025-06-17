@@ -48,15 +48,15 @@ export const adapt = new Card({
   cosmetic: {
     cardGif: "https://c.tenor.com/Dcc6-Rvkts8AAAAd/tenor.gif",
   },
-  cardAction: ({ game, selfStats, name, sendToGameroom, selfStat }) => {
+  cardAction: ({ selfStats, name, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} adapts to the situation.`);
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.SPD);
 
     if (selfStats.HP > 50) {
-      selfStat(1, StatsEnum.ATK, game);
-      selfStat(1, StatsEnum.DEF, game);
+      selfStat(1, StatsEnum.ATK);
+      selfStat(1, StatsEnum.DEF);
     } else {
-      selfStat(2, StatsEnum.HP, game);
+      selfStat(2, StatsEnum.HP);
     }
   },
 });
@@ -66,22 +66,23 @@ export const manaDetectionBaseCardAction = (context: GameMessageContext) => {
     name,
     sendToGameroom,
     opponent,
+    flatSelfStat,
     calcEffect,
     selfStat,
     opponentStats,
   } = context;
   sendToGameroom(`${name} detects the opponent's mana flow.`);
-  selfStat(0, StatsEnum.SPD, game);
+  selfStat(0, StatsEnum.SPD);
 
   const bigNumber = calcEffect(1);
   const smallNumber = calcEffect(2);
 
   if (opponentStats.DEF >= opponentStats.ATK) {
-    character.adjustStat(bigNumber, StatsEnum.ATK, game);
-    character.adjustStat(smallNumber, StatsEnum.DEF, game);
+    flatSelfStat(bigNumber, StatsEnum.ATK);
+    flatSelfStat(smallNumber, StatsEnum.DEF);
   } else {
-    character.adjustStat(smallNumber, StatsEnum.ATK, game);
-    character.adjustStat(bigNumber, StatsEnum.DEF, game);
+    flatSelfStat(smallNumber, StatsEnum.ATK);
+    flatSelfStat(bigNumber, StatsEnum.DEF);
   }
 
   // reveal empower
@@ -113,19 +114,25 @@ const parry = new Card({
   emoji: CardEmoji.LINIE_CARD,
   effects: [20],
   priority: 2,
-  cardAction: ({ name, sendToGameroom, calcEffect, selfEffect, selfStat }) => {
+  cardAction: ({
+    name,
+    sendToGameroom,
+    calcEffect,
+    selfEffect,
+    selfStat,
+  }) => {
     sendToGameroom(`${name} prepares to parry the opponent's attack.`);
 
     const def = calcEffect(0);
-    selfStat(0, StatsEnum.TrueDEF, game);
+    selfStat(0, StatsEnum.TrueDEF);
     selfEffect({
       name: "Parry",
       description: `Increases DEF by ${def} until the end of the turn.`,
       priority: -1,
       turnDuration: 1,
       metadata: { removableBySorganeil: false },
-      endOfTimedEffectAction: (game) => {
-        selfStat(0, StatsEnum.TrueDEF, game, -1);
+      endOfTimedEffectAction: () => {
+        selfStat(0, StatsEnum.TrueDEF, -1);
       },
     });
   },
@@ -165,7 +172,7 @@ export const a_erfassenJavelin = new Card({
     selfEffect,
   }) => {
     sendToGameroom(`${name} recalls ${possessive} Javelin imitation.`);
-    basicAttack(0);
+    const damage = basicAttack(0);
 
     selfEffect({
       name: "Erfassen: Javelin",

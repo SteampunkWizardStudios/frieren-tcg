@@ -174,11 +174,11 @@ const disapprovingPout = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, name, sendToGameroom, selfStat, opponentStat }
+    { name, sendToGameroom, selfStat, opponentStat }
   ) {
     sendToGameroom(`${name} looks down on the opponent.`);
-    selfStat(0, StatsEnum.HP, game);
-    opponentStat(1, StatsEnum.ATK, game, -1);
+    selfStat(0, StatsEnum.HP);
+    opponentStat(1, StatsEnum.ATK, -1);
   },
 });
 
@@ -269,10 +269,10 @@ export const spellToCreateManaButterflies = new Card({
   effects: [6, 2],
   cardAction: function (
     this: Card,
-    { game, self, name, sendToGameroom, selfStat, calcEffect, flatSelfStat }
+    { self, name, sendToGameroom, selfStat, calcEffect, flatSelfStat }
   ) {
     sendToGameroom(`${name} conjured a field of mana butterflies.`);
-    selfStat(0, StatsEnum.HP, game);
+    selfStat(0, StatsEnum.HP);
 
     const endOfTurnHealing = calcEffect(1);
 
@@ -284,7 +284,7 @@ export const spellToCreateManaButterflies = new Card({
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           sendToGameroom(`The Mana Butterflies soothe ${name}.`);
-          flatSelfStat(endOfTurnHealing, StatsEnum.HP, game);
+          flatSelfStat(endOfTurnHealing, StatsEnum.HP);
 
           self.additionalMetadata.fernBarrage =
             (self.additionalMetadata.fernBarrage ?? 0) + 0.5;

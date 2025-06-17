@@ -12,7 +12,6 @@ export const a_hairWhip = new Card({
   hpCost: 4,
   emoji: CardEmoji.PUNCH,
   cardAction: ({
-    game,
     name,
     selfStats,
     possessive,
@@ -23,7 +22,7 @@ export const a_hairWhip = new Card({
   }) => {
     sendToGameroom(`${name} whipped ${possessive} hair!`);
 
-    selfStat(0, StatsEnum.DEF, game);
+    selfStat(0, StatsEnum.DEF);
 
     const damage = calcEffect(1) + selfStats.DEF / 4;
     flatAttack(damage);
@@ -37,12 +36,12 @@ export const sharpen = new Card({
   effects: [2, 2, 2],
   hpCost: 3,
   emoji: CardEmoji.PUNCH,
-  cardAction: ({ game, name, possessive, sendToGameroom, selfStat }) => {
+  cardAction: ({ name, possessive, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} sharpened ${possessive} hair drills!`);
 
-    selfStat(0, StatsEnum.DEF, game);
-    selfStat(1, StatsEnum.ATK, game);
-    selfStat(2, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.DEF);
+    selfStat(1, StatsEnum.ATK);
+    selfStat(2, StatsEnum.SPD);
   },
 });
 
@@ -55,7 +54,6 @@ export const a_pierce = new Card({
   hpCost: 7,
   emoji: CardEmoji.PUNCH,
   cardAction: ({
-    game,
     name,
     selfStats,
     sendToGameroom,
@@ -65,7 +63,7 @@ export const a_pierce = new Card({
   }) => {
     sendToGameroom(`${name} pierced the opponent!`);
 
-    selfStat(0, StatsEnum.DEF, game);
+    selfStat(0, StatsEnum.DEF);
 
     const damage = calcEffect(1) + selfStats.DEF / 4;
     flatAttack(damage, 0.25);
@@ -84,7 +82,6 @@ export const hairBarrier = new Card({
     cardGif: mediaLinks.sense_hairBarrier_gif,
   },
   cardAction: ({
-    game,
     self,
     name,
     possessive,
@@ -99,7 +96,7 @@ export const hairBarrier = new Card({
     );
 
     const def = calcEffect(0);
-    selfStat(0, StatsEnum.TrueDEF, game);
+    selfStat(0, StatsEnum.TrueDEF);
 
     selfEffect({
       name: "Hair Barrier",
@@ -107,7 +104,7 @@ export const hairBarrier = new Card({
       priority: -1,
       turnDuration: 1,
       metadata: { removableBySorganeil: false },
-      endOfTimedEffectAction: (_game, _characterIndex) => {
+      endOfTimedEffectAction: (game, _characterIndex) => {
         self.adjustStat(-1 * def, StatsEnum.TrueDEF, game);
       },
     });
@@ -125,26 +122,24 @@ export const teaTime = new Card({
     cardGif: mediaLinks.sense_teaTime_gif,
   },
   cardAction: ({
-    game,
     self,
     opponent,
     name,
     selfStat,
+    opponentStat,
     sendToGameroom,
-    calcEffect,
   }) => {
     sendToGameroom(
       `${name} and ${opponent.name} enjoyed a refreshing cup of tea. Both characters' hands are empowered!`
     );
 
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.SPD);
 
     self.empowerHand();
     opponent.empowerHand();
 
-    const hpHeal = calcEffect(1);
-    self.adjustStat(hpHeal, StatsEnum.HP, game);
-    opponent.adjustStat(hpHeal, StatsEnum.HP, game);
+    selfStat(0, StatsEnum.HP);
+    opponentStat(0, StatsEnum.HP);
   },
 });
 
@@ -156,7 +151,7 @@ export const teaParty = new Card({
   effects: [2, 7],
   emoji: CardEmoji.RANDOM,
   cosmetic: {
-    cardGif: sense_teaParty_gif,
+    cardGif: mediaLinks.sense_teaParty_gif,
   },
   cardAction: ({
     game,
@@ -171,7 +166,7 @@ export const teaParty = new Card({
       `${name} and ${opponent.name} held a tea party! Both characters' hands are greatly empowered!`
     );
 
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.SPD);
 
     for (let i = 0; i < 2; i++) {
       self.empowerHand();
@@ -193,7 +188,7 @@ export const a_piercingDrill = new Card({
   emoji: CardEmoji.PUNCH,
   cardMetadata: { nature: Nature.Attack, signature: true },
   cosmetic: {
-    cardGif: sense_piercingDrill_gif,
+    cardGif: mediaLinks.sense_piercingDrill_gif,
   },
   cardAction: ({ name, selfStats, sendToGameroom, flatAttack, calcEffect }) => {
     sendToGameroom(`${name} used a piercing drill!`);

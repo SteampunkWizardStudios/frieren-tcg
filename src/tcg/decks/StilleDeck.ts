@@ -39,7 +39,6 @@ const a_ironFeather = new Card({
   cardAction: function (
     this: Card,
     {
-      game,
       reflexive,
       name,
       sendToGameroom,
@@ -50,8 +49,8 @@ const a_ironFeather = new Card({
   ) {
     sendToGameroom(`${name} sharpened ${reflexive} feathers!`);
 
-    flatSelfStat(-3, StatsEnum.SPD, game);
-    selfStat(0, StatsEnum.DEF, game);
+    flatSelfStat(-3, StatsEnum.SPD);
+    selfStat(0, StatsEnum.DEF);
 
     basicAttack(1);
   },
@@ -68,12 +67,12 @@ const hide = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, name, reflexive, selfStat, flatSelfStat, sendToGameroom }
+    { name, reflexive, selfStat, flatSelfStat, sendToGameroom }
   ) {
     sendToGameroom(`${name} hid ${reflexive} and flew to safety!`);
 
-    flatSelfStat(-3, StatsEnum.SPD, game);
-    selfStat(0, StatsEnum.DEF, game);
+    flatSelfStat(-3, StatsEnum.SPD);
+    selfStat(0, StatsEnum.DEF);
   },
 });
 
@@ -92,9 +91,9 @@ const roost = new Card({
   ) {
     sendToGameroom(`${name} landed on the ground.`);
 
-    flatSelfStat(-5, StatsEnum.SPD, game);
-    flatSelfStat(-3, StatsEnum.DEF, game);
-    selfStat(0, StatsEnum.HP, game);
+    flatSelfStat(-5, StatsEnum.SPD);
+    flatSelfStat(-3, StatsEnum.DEF);
+    selfStat(0, StatsEnum.HP);
 
     self.timedEffects.push(
       new TimedEffect({
