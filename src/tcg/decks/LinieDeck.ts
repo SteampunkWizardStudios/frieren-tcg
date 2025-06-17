@@ -114,13 +114,7 @@ const parry = new Card({
   emoji: CardEmoji.LINIE_CARD,
   effects: [20],
   priority: 2,
-  cardAction: ({
-    name,
-    sendToGameroom,
-    calcEffect,
-    selfEffect,
-    selfStat,
-  }) => {
+  cardAction: ({ name, sendToGameroom, calcEffect, selfEffect, selfStat }) => {
     sendToGameroom(`${name} prepares to parry the opponent's attack.`);
 
     const def = calcEffect(0);

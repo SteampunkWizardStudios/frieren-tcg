@@ -64,14 +64,8 @@ const incantationExperimentalNotes = new Card({
   emoji: CardEmoji.FLAMME_CARD,
   effects: [5],
   cardAction: function (this: Card, context) {
-    const {
-      self,
-      messageCache,
-      name,
-      possessive,
-      sendToGameroom,
-      selfStat,
-    } = context;
+    const { self, messageCache, name, possessive, sendToGameroom, selfStat } =
+      context;
     sendToGameroom(`${name} experiments with ${possessive} findings.`);
     selfStat(0, StatsEnum.HP);
     incantationIncreaseSigil(self, messageCache, 5);
@@ -129,14 +123,8 @@ const incantationSeductionTechnique = new Card({
     cardGif: mediaLinks.flamme_seduction_gif,
   },
   cardAction: function (this: Card, context) {
-    const {
-      self,
-      messageCache,
-      name,
-      sendToGameroom,
-      selfStat,
-      opponentStat,
-    } = context;
+    const { self, messageCache, name, sendToGameroom, selfStat, opponentStat } =
+      context;
     sendToGameroom(`${name} showcases her seduction technique.`);
     selfStat(0, StatsEnum.HP);
     opponentStat(1, StatsEnum.ATK, -1);

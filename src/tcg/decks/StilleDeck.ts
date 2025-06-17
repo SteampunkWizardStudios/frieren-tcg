@@ -38,14 +38,7 @@ const a_ironFeather = new Card({
   },
   cardAction: function (
     this: Card,
-    {
-      reflexive,
-      name,
-      sendToGameroom,
-      basicAttack,
-      flatSelfStat,
-      selfStat,
-    }
+    { reflexive, name, sendToGameroom, basicAttack, flatSelfStat, selfStat }
   ) {
     sendToGameroom(`${name} sharpened ${reflexive} feathers!`);
 
