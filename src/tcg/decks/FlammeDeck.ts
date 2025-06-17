@@ -64,17 +64,10 @@ const incantationExperimentalNotes = new Card({
   emoji: CardEmoji.FLAMME_CARD,
   effects: [5],
   cardAction: function (this: Card, context) {
-    const {
-      self,
-      messageCache,
-      game,
-      name,
-      possessive,
-      sendToGameroom,
-      selfStat,
-    } = context;
+    const { self, messageCache, name, possessive, sendToGameroom, selfStat } =
+      context;
     sendToGameroom(`${name} experiments with ${possessive} findings.`);
-    selfStat(0, StatsEnum.HP, game);
+    selfStat(0, StatsEnum.HP);
     incantationIncreaseSigil(self, messageCache, 5);
 
     const flammesNoteCount = self.hand.filter(
@@ -130,19 +123,12 @@ const incantationSeductionTechnique = new Card({
     cardGif: mediaLinks.flamme_seduction_gif,
   },
   cardAction: function (this: Card, context) {
-    const {
-      self,
-      messageCache,
-      game,
-      name,
-      sendToGameroom,
-      selfStat,
-      opponentStat,
-    } = context;
+    const { self, messageCache, name, sendToGameroom, selfStat, opponentStat } =
+      context;
     sendToGameroom(`${name} showcases her seduction technique.`);
-    selfStat(0, StatsEnum.HP, game);
-    opponentStat(1, StatsEnum.ATK, game, -1);
-    opponentStat(2, StatsEnum.SPD, game, -1);
+    selfStat(0, StatsEnum.HP);
+    opponentStat(1, StatsEnum.ATK, -1);
+    opponentStat(2, StatsEnum.SPD, -1);
 
     incantationIncreaseSigil(self, messageCache, 3);
   },
@@ -162,8 +148,8 @@ const milleniumBarrier = new Card({
     sendToGameroom(`A barrier blankets the land.`);
     const defIncrease = calcEffect(0);
     const spdIncrease = calcEffect(1);
-    flatSelfStat(defIncrease, StatsEnum.DEF, game);
-    flatSelfStat(spdIncrease, StatsEnum.SPD, game);
+    flatSelfStat(defIncrease, StatsEnum.DEF);
+    flatSelfStat(spdIncrease, StatsEnum.SPD);
 
     const sigilCount = self.additionalMetadata.flammeSigil ?? 0;
     game.additionalMetadata.flammeResearch[selfIndex][
@@ -199,8 +185,8 @@ const milleniumBarrier = new Card({
           } else {
             sendToGameroom("The barrier crumbles. It is yet strong enough.");
           }
-          flatSelfStat(defIncrease, StatsEnum.DEF, game, -1);
-          flatSelfStat(spdIncrease, StatsEnum.SPD, game, -1);
+          flatSelfStat(defIncrease, StatsEnum.DEF, -1);
+          flatSelfStat(spdIncrease, StatsEnum.SPD, -1);
           game.additionalMetadata.flammeResearch[selfIndex][
             FlammeResearch.MilleniumBarrier
           ] = false;
@@ -235,8 +221,8 @@ const thousandYearSanctuary = new Card({
     sendToGameroom(`${name} raises a towering sanctuary.`);
     const oppAtkDecrease = calcEffect(0);
     const oppSpdDecrease = calcEffect(1);
-    flatOpponentStat(oppAtkDecrease, StatsEnum.ATK, game, -1);
-    flatOpponentStat(oppSpdDecrease, StatsEnum.SPD, game, -1);
+    flatOpponentStat(oppAtkDecrease, StatsEnum.ATK, -1);
+    flatOpponentStat(oppSpdDecrease, StatsEnum.SPD, -1);
 
     const sigilCount = self.additionalMetadata.flammeSigil ?? 0;
     game.additionalMetadata.flammeResearch[selfIndex][
@@ -272,8 +258,8 @@ const thousandYearSanctuary = new Card({
           } else {
             sendToGameroom("The sanctuary collapses. It is yet strong enough.");
           }
-          flatOpponentStat(oppAtkDecrease, StatsEnum.ATK, game);
-          flatOpponentStat(oppSpdDecrease, StatsEnum.SPD, game);
+          flatOpponentStat(oppAtkDecrease, StatsEnum.ATK);
+          flatOpponentStat(oppSpdDecrease, StatsEnum.SPD);
           game.additionalMetadata.flammeResearch[selfIndex][
             FlammeResearch.ThousandYearSanctuary
           ] = false;
@@ -298,7 +284,7 @@ const treeOfLife = new Card({
     { self, game, selfIndex, name, sendToGameroom, selfStat }
   ) {
     sendToGameroom(`${name} plants a sapling for someone 1000 years from now.`);
-    selfStat(0, StatsEnum.HP, game);
+    selfStat(0, StatsEnum.HP);
 
     const sigilCount = self.additionalMetadata.flammeSigil ?? 0;
     game.additionalMetadata.flammeResearch[selfIndex][
@@ -371,7 +357,7 @@ const flammesNote = new Card({
       );
     }
     self.discardRandomCard();
-    selfStat(0, StatsEnum.HP, game);
+    selfStat(0, StatsEnum.HP);
 
     // collect theory
     const theoriesIndices: Array<[Card[], number]> = [];

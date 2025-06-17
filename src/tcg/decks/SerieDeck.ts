@@ -126,13 +126,13 @@ export const mock = new Card({
   effects: [3, 2, 1],
   cardAction: function (
     this: Card,
-    { game, name, sendToGameroom, selfStat, opponentStat }
+    { name, sendToGameroom, selfStat, opponentStat }
   ) {
     sendToGameroom(`${name} mocked the opponent.`);
 
-    selfStat(0, StatsEnum.HP, game);
-    selfStat(1, StatsEnum.SPD, game);
-    opponentStat(2, StatsEnum.DEF, game, -1);
+    selfStat(0, StatsEnum.HP);
+    selfStat(1, StatsEnum.SPD);
+    opponentStat(2, StatsEnum.DEF, -1);
   },
 });
 
@@ -203,9 +203,9 @@ export const unbreakableBarrier = new Card({
     const defBuff = calcEffect(1);
     const spdDebuff = calcEffect(2);
 
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(1, StatsEnum.DEF, game);
-    opponentStat(2, StatsEnum.SPD, game, -1);
+    selfStat(0, StatsEnum.ATK);
+    selfStat(1, StatsEnum.DEF);
+    opponentStat(2, StatsEnum.SPD, -1);
 
     self.timedEffects.push(
       new TimedEffect({
