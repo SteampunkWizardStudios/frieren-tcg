@@ -132,7 +132,7 @@ const mental_fog = new Card({
   cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
   emoji: CardEmoji.EDEL_CARD,
   description: ([spd, cost]) =>
-    `Eye Contact+1. Opponent's SPD-${spd}. Their highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not played, the opponent redraws 1 card.`,
+    `Eye Contact+1. Opponent's SPD-${spd}. Their highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, the opponent redraws 1 card.`,
   effects: [2, 5],
   hpCost: 10,
   cosmetic: {
@@ -155,7 +155,7 @@ const mental_fog = new Card({
     opponent.timedEffects.push(
       new TimedEffect({
         name: "Mental Fog",
-        description: `Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not played, redraw 1 card.`,
+        description: `Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, redraw 1 card.`,
         turnDuration: 6,
         activateEndOfTurnActionThisTurn: false,
         executeAfterCardRolls: ({ game, selfIndex }) => {
@@ -164,13 +164,15 @@ const mental_fog = new Card({
             selfIndex
           );
           highestEmpoweredCard.hpCost += cost;
-          highestEmpoweredCard.onNotPlayed = function (this: Card, context) {
-            const { name } = context;
-            sendToGameroom(
-              `${name} coudn't clear up the mental fog. ${name} redrew 1 card.`
-            );
-            redrawRandom(opponent, self);
-          };
+          if (!highestEmpoweredCard.onNotPlayed) {
+            highestEmpoweredCard.onNotPlayed = function (this: Card, context) {
+              const { name } = context;
+              sendToGameroom(
+                `${name} coudn't clear up the mental fog. ${name} redrew 1 card.`
+              );
+              redrawRandom(opponent, self);
+            };
+          }
         },
         endOfTurnAction: (game, characterIndex) => {
           const highestEmpoweredCard = getHighestEmpowerFromCurrentDraws(

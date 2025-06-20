@@ -33,7 +33,7 @@ export const printCharacter = (
   const activePileCount = character.deck.activePile.length;
   const discardPileCount = character.deck.discardPile.length;
   const lines = [
-    `# ${character.name} [⠀](${character.cosmetic.imageUrl})`,
+    `# ${character.name} ${game.gameSettings.liteMode ? "" : `[⠀](${character.cosmetic.imageUrl})`}`,
     `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
     `- ${statDetails[StatsEnum.ATK].emoji} **ATK**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.ATK}`,
     `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.DEF}`,

@@ -15,7 +15,7 @@ import {
   TCGThreads,
 } from "./tcgChatInteractions/sendGameMessage";
 import { printGameState } from "./tcgChatInteractions/printGameState";
-import Card from "@tcg/card";
+import Card, { Nature } from "@tcg/card";
 import { printCharacter } from "./tcgChatInteractions/printCharacter";
 import TimedEffect from "@tcg/timedEffect";
 import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
@@ -143,7 +143,8 @@ export const tcgMain = async (
         characterThread: TCGThread.OpponentThread,
       }),
     ],
-    messageCache
+    messageCache,
+    gameSettings
   );
 
   // update manaSuppression
@@ -400,13 +401,19 @@ export const tcgMain = async (
     // move resolution step
     game.characters.forEach((character: Character, characterIndex: number) => {
       if (character.ability.abilitySelectedMoveModifierEffect) {
-        characterToSelectedMoveMap[characterIndex] =
-          character.ability.abilitySelectedMoveModifierEffect(
-            game,
-            characterIndex,
-            messageCache,
-            characterToSelectedMoveMap[characterIndex].clone()
-          );
+        // do not modify status cards
+        if (
+          characterToSelectedMoveMap[characterIndex].cardMetadata.nature !==
+          Nature.Status
+        ) {
+          characterToSelectedMoveMap[characterIndex] =
+            character.ability.abilitySelectedMoveModifierEffect(
+              game,
+              characterIndex,
+              messageCache,
+              characterToSelectedMoveMap[characterIndex].clone()
+            );
+        }
       }
     });
     const moveFirst = game.getFirstMove(characterToSelectedMoveMap);
@@ -423,10 +430,10 @@ export const tcgMain = async (
           const character = game.getCharacter(characterIndex);
           const opponentCharacter = game.getCharacter(1 - characterIndex);
           messageCache.push(
-            `## ${character.cosmetic.emoji} ${character.name} used **${card.emoji} ${card.getTitle()}**${card.cosmetic?.cardImageUrl ? `[⠀](${card.cosmetic?.cardImageUrl})` : "!"}`,
+            `## ${character.cosmetic.emoji} ${character.name} used **${card.emoji} ${card.getTitle()}**${card.cosmetic?.cardImageUrl && !game.gameSettings.liteMode ? `[⠀](${card.cosmetic?.cardImageUrl})` : "!"}`,
             TCGThread.Gameroom
           );
-          if (card.cosmetic?.cardGif) {
+          if (card.cosmetic?.cardGif && !game.gameSettings.liteMode) {
             // look into discord's new media components from components v2 for this
             messageCache.push(
               `[⠀](${card.cosmetic?.cardGif})`,

@@ -4,6 +4,7 @@ import TimedEffect from "@tcg/timedEffect";
 import CommonCardAction from "@tcg/util/commonCardActions";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import { GameMessageContext } from "@tcg/gameContextProvider";
+import mediaLinks from "../formatting/mediaLinks";
 
 export const imitate = new Card({
   title: "Imitate",
@@ -46,7 +47,7 @@ export const adapt = new Card({
   emoji: CardEmoji.LINIE_CARD,
   effects: [2, 2, 10],
   cosmetic: {
-    cardGif: "https://c.tenor.com/Dcc6-Rvkts8AAAAd/tenor.gif",
+    cardGif: mediaLinks.linie_adapt_gif,
   },
   cardAction: ({ selfStats, name, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} adapts to the situation.`);
@@ -140,7 +141,7 @@ export const a_erfassenAxe = new Card({
   effects: [12],
   hpCost: 4,
   cosmetic: {
-    cardGif: "https://c.tenor.com/eUCHN11H4B4AAAAd/tenor.gif",
+    cardGif: mediaLinks.linie_erfassenAxe_gif,
   },
   cardAction: ({ name, sendToGameroom, possessive, basicAttack }) => {
     sendToGameroom(`${name} recalls ${possessive} Axe imitation.`);
@@ -156,7 +157,7 @@ export const a_erfassenJavelin = new Card({
   effects: [5],
   hpCost: 3,
   cosmetic: {
-    cardGif: "https://c.tenor.com/zd9mOGFjT3IAAAAd/tenor.gif",
+    cardGif: mediaLinks.linie_erfassenJavelin_gif,
   },
   cardAction: ({
     name,
@@ -192,7 +193,7 @@ export const a_erfassenSword = new Card({
   effects: [8],
   hpCost: 2,
   cosmetic: {
-    cardGif: "https://c.tenor.com/f4-8FBCgXg4AAAAd/tenor.gif",
+    cardGif: mediaLinks.linie_erfassenSword_gif,
   },
   cardAction: ({ name, sendToGameroom, possessive, basicAttack }) => {
     sendToGameroom(`${name} recalls ${possessive} Sword imitation.`);
@@ -206,6 +207,9 @@ export const a_erfassenKnife = new Card({
   description: ([dmg]) =>
     `DMG ${dmg}. At the end of the next 2 turns, deal ${dmg}.`,
   emoji: CardEmoji.LINIE_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.linie_erfassenKnife_gif,
+  },
   effects: [2],
   hpCost: 1,
   cardAction: ({

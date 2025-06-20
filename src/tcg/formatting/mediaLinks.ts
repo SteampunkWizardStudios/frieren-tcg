@@ -25,7 +25,7 @@ const characterPortraits = {
   stillePortrait:
     "https://cdn.discordapp.com/attachments/1346555621952192522/1347746124936646756/Stille_EP18.webp?ex=67dcc3e4&is=67db7264&hm=2b4045f648e23094cc5011390d138a4e350471c86533dc7ec07a1d4b34c684f2&",
   ubelPortrait:
-    "https://images-ext-1.discordapp.net/external/T8sKlCzZxYVznbr_nMT7c2GR556S5JQs-2NGeGiSm9Q/%3Fcb%3D20240112114604/https/static.wikia.nocookie.net/frieren/images/4/43/%25C3%259Cbel_anime_portrait.png/revision/latest?format=webp&width=375&height=375",
+    "https://static.wikia.nocookie.net/frieren/images/4/43/%C3%9Cbel_anime_portrait.png/revision/latest?cb=20240112114604",
   wirbelPortrait:
     "https://static.wikia.nocookie.net/frieren/images/d/da/Wirbel_anime_portrait.png/revision/latest?cb=20240112114401",
   flammePortrait:
@@ -141,10 +141,23 @@ const flammeCardLinks = {
   flamme_seduction_gif: "https://c.tenor.com/EC6mBMhIRugAAAAC/tenor.gif",
   flamme_theory_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1378420857839554651/GIF_0406338443.gif?ex=683c89f6&is=683b3876&hm=9a8cdeafacbf67abd81c32ecbb32a415dec4c65e78654cf2eb11c40802d80df0&",
+  flamme_theory2_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378714935177252874/IMG_6840.gif?ex=6856a857&is=685556d7&hm=1d1398f7b7a49a35d92226381d8994dd668c4119cfd4f0c6a1033045da2de895&",
   flamme_theoryofSouls_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1378471920546087002/IMG_6826.gif?ex=683cb984&is=683b6804&hm=d837cdeef81def136a5379af313be932d5d00cafd3d96a01a9031cc01d9a27ac&",
   flamme_milleniumBarrier_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1378507554509946911/GIF_2872451178.gif?ex=683cdab4&is=683b8934&hm=b2bc1a80599ea2daed73e9f475afd1707dbb56ef13da049afc4d29b266d4ea83&",
+  flamme_pinnacle_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1378716437748912228/IMG_6837.gif?ex=6856a9be&is=6855583e&hm=0530f498d2c610f20e6c167a749e70e1a527eb24b0be7bff809a2babf3b78df7&",
+};
+
+const linieCardLinks = {
+  linie_adapt_gif: "https://c.tenor.com/Dcc6-Rvkts8AAAAd/tenor.gif",
+  linie_erfassenAxe_gif: "https://c.tenor.com/eUCHN11H4B4AAAAd/tenor.gif",
+  linie_erfassenJavelin_gif: "https://c.tenor.com/zd9mOGFjT3IAAAAd/tenor.gif",
+  linie_erfassenSword_gif: "https://c.tenor.com/f4-8FBCgXg4AAAAd/tenor.gif",
+  linie_erfassenKnife_gif:
+    "https://cdn.discordapp.com/attachments/1374120144334487703/1383218233544544458/Record_2025_06_13_23_54_18_400.gif?ex=68568f9d&is=68553e1d&hm=5e505d4f193dee45cac1df4b52c54a27704a1638746127ae282a2559d4f74d4a&",
 };
 
 const mediaLinks = {
@@ -157,6 +170,7 @@ const mediaLinks = {
   ...stilleCardLinks,
   ...wirbelCardLinks,
   ...flammeCardLinks,
+  ...linieCardLinks,
 } as const;
 
 export default mediaLinks;

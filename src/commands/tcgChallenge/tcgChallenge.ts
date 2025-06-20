@@ -38,6 +38,11 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setName("goddess-mode")
         .setDescription("Play with the Goddess deck, with one of every card.")
     )
+    .addBooleanOption((option) =>
+      option
+        .setName("lite-mode")
+        .setDescription("Disable printing of media (GIFs/character portraits).")
+    )
     .addIntegerOption((option) =>
       option
         .setName("text_speed_ms")
@@ -58,6 +63,8 @@ export const command: Command<ChatInputCommandInteraction> = {
       const textSpeedMs = interaction.options.getInteger("text_speed_ms");
       gameSettings.goddessMode =
         interaction.options.getBoolean("goddess-mode") ?? false;
+      gameSettings.liteMode =
+        interaction.options.getBoolean("lite-mode") ?? undefined;
 
       initiateChallengeRequest({
         interaction,

@@ -13,6 +13,7 @@ export enum Nature {
   Defense = "Defense",
   Default = "Default",
   Util = "Util",
+  Status = "Status",
   None = "None",
 }
 

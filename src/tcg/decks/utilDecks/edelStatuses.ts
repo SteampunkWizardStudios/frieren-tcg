@@ -6,7 +6,7 @@ import { CardEmoji } from "@tcg/formatting/emojis";
 
 export const sleepy = new Card({
   title: "Sleepy",
-  cardMetadata: { nature: Nature.None, temporary: true, hideEmpower: true },
+  cardMetadata: { nature: Nature.Status, temporary: true, hideEmpower: true },
   emoji: CardEmoji.EDEL_STATUS_CARD,
   description: () =>
     "If you do not play this card, remove all of your timed effects, skip next turn. This card is removed from your deck after it becomes playable, regardless of it was played.",
@@ -28,7 +28,7 @@ export const sleepy = new Card({
 
 export const mesmerized = new Card({
   title: "Mesmerized",
-  cardMetadata: { nature: Nature.None, temporary: true },
+  cardMetadata: { nature: Nature.Status, temporary: true },
   emoji: CardEmoji.EDEL_STATUS_CARD,
   description: ([hp]) =>
     `If you play this card on the first turn it is playable, it is removed from your deck. Otherwise, until the end of the game, at each turn's end, lose ${hp}HP, your opponent heals ${hp}HP, and this card can no longer be removed from your deck.`,
@@ -75,7 +75,7 @@ export const mesmerized = new Card({
 
 export const weakened = new Card({
   title: "Weakened",
-  cardMetadata: { nature: Nature.None, temporary: true },
+  cardMetadata: { nature: Nature.Status, temporary: true },
   emoji: CardEmoji.EDEL_STATUS_CARD,
   description: ([debuff]) =>
     `If you do not play this card, reduce ATK, DEF, SPD by ${debuff}. This card is removed from your deck after it becomes playable, regardless of it was played.`,

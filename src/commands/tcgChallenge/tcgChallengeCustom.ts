@@ -50,6 +50,11 @@ export const command: Command<ChatInputCommandInteraction> = {
       option
         .setName("goddess-mode")
         .setDescription("Play with the Goddess deck, with one of every card.")
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("lite-mode")
+        .setDescription("Disable printing of media (GIFs/character portraits).")
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -67,6 +72,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       const textSpeedMs = interaction.options.getInteger("text_speed_ms");
       const goddessMode =
         interaction.options.getBoolean("goddess-mode") ?? false;
+      const liteMode = interaction.options.getBoolean("lite-mode") ?? undefined;
 
       initiateChallengeRequest({
         interaction,
@@ -75,6 +81,7 @@ export const command: Command<ChatInputCommandInteraction> = {
           revealHand,
           revealDraw,
           goddessMode,
+          liteMode,
         },
         ranked: false,
         gamemode: undefined,

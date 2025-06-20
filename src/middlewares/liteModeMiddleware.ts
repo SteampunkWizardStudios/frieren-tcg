@@ -15,7 +15,14 @@ const liteModeMiddleware: Middleware = async (
     return await next();
   }
 
-  const subcommand = interaction.options.getSubcommand(true);
+  let subcommand: string | null = null;
+  try {
+    subcommand = interaction.options.getSubcommand();
+  } catch (error) {
+    // mostly just a no subcommand error
+    return await next();
+  }
+
   if (subcommand !== "lite-mode") {
     return await next();
   }

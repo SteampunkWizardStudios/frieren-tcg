@@ -24,10 +24,16 @@ export async function initiateChallengeRequest(prop: {
     return;
   }
 
+  const player = await getPlayer(interaction.user.id);
+  const playerPreferences = await getPlayerPreferences(player.id);
+  if (gameSettings.liteMode === undefined) {
+    gameSettings.liteMode = playerPreferences
+      ? playerPreferences.tcgLiteMode
+      : false;
+  }
+
   let preferredTextSpeed = textSpeedMs;
   if (!preferredTextSpeed) {
-    const player = await getPlayer(interaction.user.id);
-    const playerPreferences = await getPlayerPreferences(player.id);
     preferredTextSpeed = playerPreferences
       ? playerPreferences.tcgTextSpeed
       : DEFAULT_TEXT_SPEED;
