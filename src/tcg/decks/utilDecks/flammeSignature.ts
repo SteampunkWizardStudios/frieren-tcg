@@ -18,7 +18,6 @@ const incantationFieldOfFlowers = new Card({
   cardAction: function (
     this: Card,
     {
-      game,
       self,
       name,
       sendToGameroom,
@@ -29,7 +28,7 @@ const incantationFieldOfFlowers = new Card({
     }
   ) {
     sendToGameroom(`${name} conjured a field of flowers.`);
-    selfStat(0, StatsEnum.HP, game);
+    selfStat(0, StatsEnum.HP);
 
     const endOfTurnHealing = calcEffect(1);
     incantationIncreaseSigil(self, messageCache, 3);
@@ -43,7 +42,7 @@ const incantationFieldOfFlowers = new Card({
         endOfTurnAction: (game, characterIndex, messageCache) => {
           const character = game.getCharacter(characterIndex);
           sendToGameroom(`The Field of Flowers soothe ${name}.`);
-          flatSelfStat(endOfTurnHealing, StatsEnum.HP, game);
+          flatSelfStat(endOfTurnHealing, StatsEnum.HP);
           incantationIncreaseSigil(character, messageCache, 2);
         },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {

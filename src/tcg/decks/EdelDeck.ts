@@ -75,7 +75,6 @@ export const one_step_ahead = new Card({
   priority: 3,
   cardAction: ({
     self,
-    game,
     opponent,
     name,
     calcEffect,
@@ -85,7 +84,7 @@ export const one_step_ahead = new Card({
     flatAttack,
   }) => {
     sendToGameroom(`${name} put up a full coverage defense.`);
-    selfStat(0, StatsEnum.TrueDEF, game);
+    selfStat(0, StatsEnum.TrueDEF);
 
     const def = calcEffect(0);
 
@@ -116,7 +115,7 @@ export const one_step_ahead = new Card({
     sendToGameroom(
       `${opponent.name} is playing a defensive card. ${name} read ${opponent.cosmetic.pronouns.possessive} mind!`
     );
-    opponentStat(1, StatsEnum.SPD, game, -1);
+    opponentStat(1, StatsEnum.SPD, -1);
 
     for (let i = 0; i < 2; i++) {
       redrawRandom(opponent, self);
@@ -142,7 +141,6 @@ const mental_fog = new Card({
   cardAction: ({
     name,
     self,
-    game,
     opponent,
     opponentStat,
     sendToGameroom,
@@ -151,7 +149,7 @@ const mental_fog = new Card({
     sendToGameroom(
       `${name} hypnotizes ${opponent.name}. ${opponent.name} starts blanking out.`
     );
-    opponentStat(0, StatsEnum.SPD, game, -1);
+    opponentStat(0, StatsEnum.SPD, -1);
     const cost = calcEffect(1);
 
     opponent.timedEffects.push(
@@ -199,7 +197,6 @@ const clear_mind = new Card({
   },
   cardAction: ({
     name,
-    game,
     possessive,
     sendToGameroom,
     selfStat,
@@ -210,8 +207,8 @@ const clear_mind = new Card({
     sendToGameroom(`${name} focuses and clears ${possessive} mind.`);
 
     const hp = calcEffect(0) + self.additionalMetadata.forcedDiscards * 2;
-    flatSelfStat(hp, StatsEnum.HP, game);
-    selfStat(1, StatsEnum.SPD, game);
+    flatSelfStat(hp, StatsEnum.HP);
+    selfStat(1, StatsEnum.SPD);
   },
 });
 

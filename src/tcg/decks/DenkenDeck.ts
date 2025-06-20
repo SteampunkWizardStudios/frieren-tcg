@@ -179,10 +179,10 @@ export const a_waldgoseBase = new Card({
         ...a_jab,
         empowerLevel: this.empowerLevel,
       });
-      flatSelfStat(-jab.hpCost, StatsEnum.HP, game);
+      flatSelfStat(-jab.hpCost, StatsEnum.HP);
       jab.cardAction(context);
     } else {
-      flatSelfStat(-waldgoseHpCost, StatsEnum.HP, game);
+      flatSelfStat(-waldgoseHpCost, StatsEnum.HP);
       messageCache.push(
         `${character.name} whipped up a tornado!`,
         TCGThread.Gameroom
@@ -262,10 +262,10 @@ export const a_daosdorgBase = new Card({
         ...a_hook,
         empowerLevel: this.empowerLevel,
       });
-      flatSelfStat(-hook.hpCost, StatsEnum.HP, game);
+      flatSelfStat(-hook.hpCost, StatsEnum.HP);
       hook.cardAction(context);
     } else {
-      flatSelfStat(-daosdorgHpCost, StatsEnum.HP, game);
+      flatSelfStat(-daosdorgHpCost, StatsEnum.HP);
       messageCache.push(
         `${character.name} set the sky aflame.`,
         TCGThread.Gameroom
@@ -346,7 +346,6 @@ export const a_catastraviaBase = new Card({
   cardAction: function (this: Card, context) {
     const {
       self,
-      game,
       name,
       sendToGameroom,
       selfStats,
@@ -364,10 +363,10 @@ export const a_catastraviaBase = new Card({
         empowerLevel: this.empowerLevel,
       });
 
-      flatSelfStat(-uppercut.hpCost, StatsEnum.HP, game);
+      flatSelfStat(-uppercut.hpCost, StatsEnum.HP);
       uppercut.cardAction(context);
     } else {
-      flatSelfStat(-catastraviaHpCost, StatsEnum.HP, game);
+      flatSelfStat(-catastraviaHpCost, StatsEnum.HP);
       sendToGameroom(`${name} covered the sky in stars.`);
       basicAttack(0);
 

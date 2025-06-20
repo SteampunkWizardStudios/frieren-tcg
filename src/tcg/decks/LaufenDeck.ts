@@ -19,7 +19,6 @@ const a_staffStrike = new Card({
   cardAction: function (
     this: Card,
     {
-      game,
       name,
       sendToGameroom,
       calcEffect,
@@ -31,7 +30,7 @@ const a_staffStrike = new Card({
     }
   ) {
     sendToGameroom(`${name} struck with ${possessive} staff!`);
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.SPD);
 
     const damage = calcEffect(1) + selfStats.SPD / 8;
 
@@ -56,7 +55,6 @@ const a_staffBash = new Card({
   cardAction: function (
     this: Card,
     {
-      game,
       name,
       sendToGameroom,
       calcEffect,
@@ -68,7 +66,7 @@ const a_staffBash = new Card({
     }
   ) {
     sendToGameroom(`${name} bashed ${possessive} staff!`);
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.SPD);
 
     const damage = calcEffect(1) + selfStats.SPD / 6;
     const spdDiffPercentage = (selfStats.SPD - opponentStats.SPD) / 100;
@@ -91,7 +89,6 @@ export const a_whip = new Card({
   cardAction: function (
     this: Card,
     {
-      game,
       sendToGameroom,
       name,
       possessive,
@@ -102,7 +99,7 @@ export const a_whip = new Card({
     }
   ) {
     sendToGameroom(`${name} turned ${possessive} staff into a whip!`);
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.SPD);
     const damage = calcEffect(1) + selfStats.SPD / 5;
     flatAttack(damage);
   },
@@ -139,10 +136,10 @@ export const hide = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1365422814097707120/GIF_3467240538.gif?ex=68108c57&is=680f3ad7&hm=afdbfcbce169548db1583e2f07027c57cf975b395500daee05e77e21a6b96b48&",
   },
-  cardAction: function (this: Card, { game, sendToGameroom, name, selfStat }) {
+  cardAction: function (this: Card, { sendToGameroom, name, selfStat }) {
     sendToGameroom(`${name} hid behind coverings!`);
-    selfStat(0, StatsEnum.SPD, game);
-    selfStat(1, StatsEnum.HP, game);
+    selfStat(0, StatsEnum.SPD);
+    selfStat(1, StatsEnum.HP);
   },
 });
 
@@ -163,8 +160,8 @@ const quickDodge = new Card({
     { game, self, name, sendToGameroom, selfStat, calcEffect }
   ) {
     sendToGameroom(`${name} dodged away!`);
-    selfStat(0, StatsEnum.SPD, game);
-    selfStat(1, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.SPD);
+    selfStat(1, StatsEnum.SPD);
     const tempSpd = calcEffect(1);
 
     self.timedEffects.push(
@@ -199,7 +196,7 @@ export const parry = new Card({
     { game, self, name, sendToGameroom, calcEffect, selfStat }
   ) {
     sendToGameroom(`${name} switched to a parrying stance!`);
-    selfStat(0, StatsEnum.TrueDEF, game);
+    selfStat(0, StatsEnum.TrueDEF);
     const tempDef = calcEffect(0);
 
     self.timedEffects.push(
@@ -243,7 +240,7 @@ export const jilwer = new Card({
   ) {
     const turnCount = 2;
     sendToGameroom(`${name} cast Jilwer!`);
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.SPD);
     const tempSpd = calcEffect(0);
 
     self.timedEffects.push(

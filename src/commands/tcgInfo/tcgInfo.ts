@@ -62,7 +62,7 @@ export const command: Command<ChatInputCommandInteraction> = {
                 value: AdvancedRulesSection.SeriesPoolUtility,
               },
               {
-                name: "Character signature moves: Übel's Empathy Card Pool",
+                name: "Character signature moves: Übel's Empathy Transformations",
                 value: AdvancedRulesSection.SignatureMoves,
               }
             )
