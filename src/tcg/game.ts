@@ -10,6 +10,7 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import type { GamePlugin } from "@tcg/gamePlugin";
 import { DENKEN_DEATH_HP } from "@tcg/characters/characterData/characters/Denken";
+import { GameSettings } from "@src/commands/tcgChallenge/gameHandler/gameSettings";
 
 export default class Game {
   characters: [Character, Character];
@@ -19,15 +20,19 @@ export default class Game {
 
   messageCache: MessageCache;
 
+  gameSettings: GameSettings;
+
   plugins: GamePlugin[];
 
   constructor(
     characters: [Character, Character],
     messageCache: MessageCache,
+    gameSettings: GameSettings,
     plugins: GamePlugin[] = []
   ) {
     this.characters = characters;
     this.gameOver = false;
+    this.gameSettings = gameSettings;
     this.additionalMetadata = {
       attackMissed: {
         0: false,

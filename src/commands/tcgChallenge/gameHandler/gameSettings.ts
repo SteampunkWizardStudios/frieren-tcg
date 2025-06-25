@@ -12,6 +12,7 @@ export interface GameSettings {
   optionName?: string;
   allowedOption?: boolean;
   goddessMode?: boolean;
+  liteMode?: boolean | undefined;
 }
 
 export const GAME_SETTINGS: Record<GameMode, GameSettings> = {

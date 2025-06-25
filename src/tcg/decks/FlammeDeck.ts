@@ -496,7 +496,7 @@ const theoryOfPrescience = new Card({
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cosmetic: {
-    cardGif: mediaLinks.flamme_theory_gif,
+    cardGif: mediaLinks.flamme_theory2_gif,
   },
   cardAction: function (this: Card, { game, name, sendToGameroom }) {
     if (!game.additionalMetadata.flammeTheory[FlammeTheory.Prescience]) {
@@ -525,7 +525,7 @@ const theoryOfSoul = new Card({
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cosmetic: {
-    cardGif: mediaLinks.flamme_theory_gif,
+    cardGif: mediaLinks.flamme_theory2_gif,
   },
   cardAction: function (
     this: Card,

@@ -35,7 +35,7 @@ export default function buildChallengeRequest({
   includeButtons = true,
   threadId,
 }: ChallengeRequestOptions) {
-  const { turnDurationSeconds, revealHand, revealDraw, goddessMode } =
+  const { turnDurationSeconds, revealHand, revealDraw, goddessMode, liteMode } =
     gameOptions;
 
   const optsMap = {
@@ -43,6 +43,7 @@ export default function buildChallengeRequest({
     "Reveal Hand": revealHand ? "Yes" : "No",
     "Reveal Draw": revealDraw ? "Yes" : "No",
     "Goddess Mode": goddessMode ? "Yes" : "No",
+    "Lite Mode": liteMode ? "Yes" : "No",
     "Text Speed": `${textSpeedMs}ms`,
   };
 

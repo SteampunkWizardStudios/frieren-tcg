@@ -131,7 +131,7 @@ export const rushdown = new Card({
         name: "Rushdown",
         description: `Increases SPD by ${spdIncrease} for ${turnCount} turns. Attacks will not miss`,
         turnDuration: turnCount,
-        metadata: { ubelSpeedModifiers: 1 },
+        metadata: { ubelSpeedModifiers: 1, removableBySorganeil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           messageCache.push(
@@ -286,8 +286,6 @@ export const sorganeil = new Card({
     }
 
     opponent.skipTurn = true;
-    const opponentOriginalSpeedDiff = opponent.stats.stats.SPD - 1;
-    opponent.adjustStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD, game);
     messageCache.push(
       `${character.name} traps ${opponent.name} in ${character.cosmetic.pronouns.possessive} gaze!`,
       TCGThread.Gameroom
@@ -298,6 +296,10 @@ export const sorganeil = new Card({
       1 - characterIndex,
       messageCache
     );
+
+    // handle speed diff after timed effect removal
+    const opponentOriginalSpeedDiff = opponent.stats.stats.SPD - 1;
+    opponent.adjustStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD, game);
 
     character.timedEffects.push(
       new TimedEffect({

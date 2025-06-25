@@ -309,14 +309,16 @@ export const perfectSorganeil = new Card({
     sendToGameroom(`${name} traps ${opponentName} in ${possessive} gaze!`);
     basicAttack(0);
     opponent.skipTurn = true;
-    const opponentOriginalSpeedDiff = opponentStats.SPD - 1;
-    flatOpponentStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD);
 
     CommonCardAction.removeCharacterTimedEffect(
       game,
       opponentIndex,
       messageCache
     );
+
+    // handle speed diff after timed effect removal
+    const opponentOriginalSpeedDiff = opponentStats.SPD - 1;
+    flatOpponentStat(-1 * opponentOriginalSpeedDiff, StatsEnum.SPD);
 
     self.timedEffects.push(
       new TimedEffect({

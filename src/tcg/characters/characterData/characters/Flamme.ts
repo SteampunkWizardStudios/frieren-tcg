@@ -28,9 +28,12 @@ const a_pinnacleOfHumanitysMagic = new Card({
   emoji: CardEmoji.FLAMME_CARD,
   priority: 100,
   effects: [100],
+  cosmetic: {
+    cardGif: mediaLinks.flamme_pinnacle_gif,
+  },
   cardAction: function (
     this: Card,
-    { game, sendToGameroom, selfStat, flatSelfStat, basicAttack }
+    { sendToGameroom, selfStat, flatSelfStat, basicAttack }
   ) {
     sendToGameroom(`The Pinnacle of Humanity's Magic is on display.`);
     flatSelfStat(1, StatsEnum.Ability);

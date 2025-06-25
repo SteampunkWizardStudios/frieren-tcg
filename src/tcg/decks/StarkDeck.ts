@@ -275,8 +275,11 @@ export const a_lastStand = new Card({
         executeEndOfTimedEffectActionOnRemoval: false,
         activateEndOfTurnActionThisTurn: false,
         endOfTimedEffectAction: (game, characterIndex) => {
-          sendToGameroom(`[⠀](https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif)`);
-          self.adjustStat(-2, StatsEnum.Ability, game);
+          if (!game.gameSettings.liteMode) {
+            sendToGameroom(
+              `[⠀](https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif)`
+            );
+          }
           self.adjustStat(-20, StatsEnum.HP, game);
           self.adjustStat(5, StatsEnum.DEF, game);
           sendToGameroom(`${name} performs Lightning Strike!`);
@@ -284,6 +287,7 @@ export const a_lastStand = new Card({
             damage,
             isTimedEffectAttack: true,
           });
+          self.adjustStat(-2, StatsEnum.Ability, game);
         },
       })
     );
