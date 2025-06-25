@@ -89,12 +89,12 @@ const polymath = new Card({
   description: ([buff]) =>
     `ATK+${buff}, DEF+${buff}, SPD+${buff}. Redraw your hand and roll 1 extra die next turn.`,
   effects: [1],
-  cardAction: ({ self, name, game, sendToGameroom, selfStat }) => {
+  cardAction: ({ self, name, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} used Polymath`);
 
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(0, StatsEnum.DEF, game);
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.ATK);
+    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.SPD);
 
     for (let i = 0; i < self.hand.length; i++) {
       self.discardCard(0);
@@ -242,14 +242,13 @@ const goddessHealingMagic = new Card({
   cardAction: ({
     name,
     self,
-    game,
     opponentLastCard,
     calcEffect,
     sendToGameroom,
     selfStat,
   }) => {
     sendToGameroom(`${name} calls upon the Goddess for healing magic.`);
-    selfStat(0, StatsEnum.HP, game);
+    selfStat(0, StatsEnum.HP);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -260,8 +259,8 @@ const goddessHealingMagic = new Card({
         endOfTimedEffectAction: () => {
           if (opponentLastCard.cardMetadata.nature !== Nature.Attack) {
             sendToGameroom(`${name} receives the Goddess's blessing!`);
-            selfStat(1, StatsEnum.HP, game);
-            selfStat(2, StatsEnum.DEF, game);
+            selfStat(1, StatsEnum.HP);
+            selfStat(2, StatsEnum.DEF);
           }
         },
       })
@@ -280,7 +279,6 @@ const restraintMagic = new Card({
   cardAction: ({
     name,
     self,
-    game,
     sendToGameroom,
     opponent,
     calcEffect,
@@ -290,11 +288,11 @@ const restraintMagic = new Card({
   }) => {
     sendToGameroom(`${name} casts restraint magic on ${opponent.name}.`);
     const defDebuff = selfStats.DEF - 1;
-    flatSelfStat(-defDebuff, StatsEnum.DEF, game);
+    flatSelfStat(-defDebuff, StatsEnum.DEF);
 
-    opponentStat(0, StatsEnum.ATK, game, -1);
-    opponentStat(0, StatsEnum.DEF, game, -1);
-    opponentStat(0, StatsEnum.SPD, game, -1);
+    opponentStat(0, StatsEnum.ATK, -1);
+    opponentStat(0, StatsEnum.DEF, -1);
+    opponentStat(0, StatsEnum.SPD, -1);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -303,7 +301,7 @@ const restraintMagic = new Card({
         turnDuration: 1,
         priority: -1,
         endOfTimedEffectAction: () => {
-          flatSelfStat(defDebuff, StatsEnum.DEF, game);
+          flatSelfStat(defDebuff, StatsEnum.DEF);
         },
       })
     );
@@ -315,9 +313,9 @@ const restraintMagic = new Card({
         description: `ATK-${restraint}, DEF-${restraint}, SPD-${restraint}.`,
         turnDuration: 4,
         endOfTimedEffectAction: () => {
-          opponentStat(0, StatsEnum.ATK, game);
-          opponentStat(0, StatsEnum.DEF, game);
-          opponentStat(0, StatsEnum.SPD, game);
+          opponentStat(0, StatsEnum.ATK);
+          opponentStat(0, StatsEnum.DEF);
+          opponentStat(0, StatsEnum.SPD);
         },
       })
     );
@@ -334,13 +332,12 @@ const hypnoticCompulsion = new Card({
   cardAction: ({
     name,
     opponent,
-    game,
     opponentLastCard,
     sendToGameroom,
     opponentStat,
   }) => {
     sendToGameroom(`${name} hypnotizes ${opponent.name}.`);
-    opponentStat(0, StatsEnum.ATK, game, -1);
+    opponentStat(0, StatsEnum.ATK, -1);
     opponent.skipTurn = true;
     opponent.additionalMetadata.accessToDefaultCardOptions = false;
     opponent.additionalMetadata.nextCardToPlay = opponentLastCard;
@@ -370,7 +367,6 @@ const spotWeakness = new Card({
     self,
     name,
     opponent,
-    game,
     opponentLastCard,
     selfStat,
     sendToGameroom,
@@ -379,8 +375,8 @@ const spotWeakness = new Card({
     sendToGameroom(
       `${name} is on the lookout for ${opponent.name}'s weaknesses.`
     );
-    selfStat(0, StatsEnum.SPD, game);
-    selfStat(1, StatsEnum.ATK, game);
+    selfStat(0, StatsEnum.SPD);
+    selfStat(1, StatsEnum.ATK);
 
     const bonusAtk = calcEffect(2);
 
@@ -395,7 +391,7 @@ const spotWeakness = new Card({
             sendToGameroom(
               `${name} found an opening in ${opponent.name}'s attack!`
             );
-            selfStat(2, StatsEnum.ATK, game);
+            selfStat(2, StatsEnum.ATK);
           }
         },
       })
