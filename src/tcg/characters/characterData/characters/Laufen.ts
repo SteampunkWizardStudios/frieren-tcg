@@ -57,9 +57,10 @@ const Laufen = new CharacterData({
 
       const spdDiff = character.stats.stats.SPD - opponent.stats.stats.SPD;
       const grazeReduction = Math.min(Math.max(spdDiff / 100, 0), 1);
+      const spdDiffPrinted = Math.round((spdDiff) * 100) / 100;
 
       const roll = Rolls.rollD100();
-      messageCache.push(`### **SPD diff**: ${spdDiff}`, TCGThread.Gameroom);
+      messageCache.push(`### **SPD diff**: ${spdDiffPrinted}`, TCGThread.Gameroom);
       messageCache.push(`### Roll: ${roll}`, TCGThread.Gameroom);
 
       const evasionReduction =

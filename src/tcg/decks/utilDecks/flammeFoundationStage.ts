@@ -14,13 +14,10 @@ export const a_foundationOfHumanitysMagicBase = new Card({
     `ATK+${stat} DEF+${stat} SPD+${stat}. Deal ${stat} DMG.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [1],
-  cardAction: function (
-    this: Card,
-    { game, sendToGameroom, selfStat, basicAttack }
-  ) {
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(0, StatsEnum.DEF, game);
-    selfStat(0, StatsEnum.SPD, game);
+  cardAction: function (this: Card, { sendToGameroom, selfStat, basicAttack }) {
+    selfStat(0, StatsEnum.ATK);
+    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.SPD);
     basicAttack(0);
     sendToGameroom(`Humanity's Magic is still in its infancy.`);
   },
@@ -36,12 +33,12 @@ export const a_firstPageOfHumanitysMagicBase = new Card({
   hpCost: 4,
   cardAction: function (
     this: Card,
-    { game, selfStat, self, name, sendToGameroom, messageCache, basicAttack }
+    { selfStat, self, name, sendToGameroom, messageCache, basicAttack }
   ) {
     sendToGameroom(`${name} developed a basic offensive spell.`);
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(0, StatsEnum.DEF, game);
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.ATK);
+    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.SPD);
     basicAttack(1);
     incantationIncreaseSigil(self, messageCache, 2);
   },
@@ -55,10 +52,10 @@ export const a_secondPageOfHumanitysMagicBase = new Card({
   emoji: CardEmoji.FLAMME_CARD,
   effects: [3],
   cardAction: function (this: Card, context: GameMessageContext) {
-    const { game, selfStat, self, messageCache } = context;
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(0, StatsEnum.DEF, game);
-    selfStat(0, StatsEnum.SPD, game);
+    const { selfStat, self, messageCache } = context;
+    selfStat(0, StatsEnum.ATK);
+    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.SPD);
     const newCard = CommonCardAction.useRandomCard({
       cardPool: serie_offensiveMagic_rare,
       empowerLevel: this.empowerLevel,
@@ -79,12 +76,12 @@ export const a_thirdPageOfHumanitysMagicBase = new Card({
   hpCost: 10,
   cardAction: function (
     this: Card,
-    { game, name, sendToGameroom, selfStat, basicAttack, self, messageCache }
+    { name, sendToGameroom, selfStat, basicAttack, self, messageCache }
   ) {
     sendToGameroom(`${name} called upon Hellfire.`);
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(0, StatsEnum.DEF, game);
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.ATK);
+    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.SPD);
     basicAttack(1);
     incantationIncreaseSigil(self, messageCache, 1);
   },
@@ -98,10 +95,10 @@ export const a_lastPageOfHumanitysMagicBase = new Card({
   emoji: CardEmoji.FLAMME_CARD,
   effects: [5],
   cardAction: function (this: Card, context: GameMessageContext) {
-    const { game, selfStat } = context;
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(0, StatsEnum.DEF, game);
-    selfStat(0, StatsEnum.SPD, game);
+    const { selfStat } = context;
+    selfStat(0, StatsEnum.ATK);
+    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.SPD);
     const newCard = CommonCardAction.useRandomCard({
       cardPool: serie_offensiveMagic_unusual,
       empowerLevel: this.empowerLevel,

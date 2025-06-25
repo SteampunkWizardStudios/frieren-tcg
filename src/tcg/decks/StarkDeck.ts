@@ -42,9 +42,9 @@ const offensiveStance = new Card({
   ) {
     sendToGameroom(`${name} took an offensive stance!`);
 
-    selfStat(0, StatsEnum.ATK, game);
+    selfStat(0, StatsEnum.ATK);
     self.adjustStat(-2, StatsEnum.DEF, game);
-    selfStat(1, StatsEnum.SPD, game);
+    selfStat(1, StatsEnum.SPD);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -75,8 +75,8 @@ const defensiveStance = new Card({
     sendToGameroom(`${name} took a defensive stance!`);
 
     self.adjustStat(-2, StatsEnum.ATK, game);
-    selfStat(0, StatsEnum.DEF, game);
-    selfStat(1, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.DEF);
+    selfStat(1, StatsEnum.SPD);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -113,7 +113,7 @@ const jumboBerrySpecialBreak = new Card({
     const defChange = calcEffect(0);
     self.adjustStat(-2, StatsEnum.SPD, game);
     self.adjustStat(defChange, StatsEnum.DEF, game);
-    selfStat(1, StatsEnum.HP, game);
+    selfStat(1, StatsEnum.HP);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -177,9 +177,9 @@ const concentration = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360979639362781304/IMG_3087.gif?ex=68084b4f&is=6806f9cf&hm=98d20b75a63aca3116965b33fac4adac213feaefa4895cf0751976527dd483a0&",
   },
-  cardAction: function (this: Card, { game, name, sendToGameroom, selfStat }) {
+  cardAction: function (this: Card, { name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} concentrates on the battle.`);
-    selfStat(0, StatsEnum.SPD, game);
+    selfStat(0, StatsEnum.SPD);
   },
 });
 
@@ -211,13 +211,13 @@ const fearBroughtMeThisFar = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360983005946183957/IMG_3091.gif?ex=68084e72&is=6806fcf2&hm=5e9453189ccb1c31a4def06862e8dc7d2468c471eff0f8faa63d6288c8127c6c&",
   },
-  cardAction: function (this: Card, { name, sendToGameroom, game, selfStat }) {
+  cardAction: function (this: Card, { name, sendToGameroom, selfStat }) {
     sendToGameroom(
       `${name}'s hands can't stop shaking, but ${name} is determined.`
     );
 
-    selfStat(0, StatsEnum.ATK, game);
-    selfStat(0, StatsEnum.DEF, game);
+    selfStat(0, StatsEnum.ATK);
+    selfStat(0, StatsEnum.DEF);
   },
 });
 

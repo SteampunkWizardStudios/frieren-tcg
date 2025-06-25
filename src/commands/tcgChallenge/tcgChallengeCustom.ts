@@ -34,7 +34,7 @@ export const command: Command<ChatInputCommandInteraction> = {
     .addUserOption((option) =>
       option
         .setName("opponent")
-        .setDescription("The user you want to challenge")
+        .setDescription("The player you want to challenge")
     )
     .addIntegerOption((option) =>
       option

@@ -90,6 +90,17 @@ const frierenCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1364284928543424652/GIF_0512568585.gif?ex=68091cda&is=6807cb5a&hm=fa96e7031f374a6a962522623b61e81a53133ba49d57583e77d483e379a31edf&",
 } as const;
 
+const senseCardLinks = {
+  sense_hairBarrier_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364942857307295905/GIF_0653594382.gif?ex=680b8198&is=680a3018&hm=368a1918766556e47cc2e4692113d174afa955d6f59f3206d2f0cb6269df4a34&",
+  sense_teaTime_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364949044656607232/GIF_0807192060.gif?ex=680b875b&is=680a35db&hm=ced86d0c723bc4d139d0012c97a29d89d6fad79d084e1607036211869d17b57e&",
+  sense_teaParty_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364992405018902568/GIF_0507169428.gif?ex=680c587d&is=680b06fd&hm=dd2441c0af97bd72ee4c6ee262830ce4a418d07197f696bae7bb832202d6498c&",
+  sense_piercingDrill_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364943023678427196/GIF_3233937113.gif?ex=680b81c0&is=680a3040&hm=07d5b41617b811cd069cc08f1de64d9966b4d03df7936844262be5f6ee25e0cb&",
+} as const;
+
 const stilleCardLinks = {
   stille_hide_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1374730977061900400/GIF_1220750973.gif?ex=6839a97e&is=683857fe&hm=efca39e0b8ca3e13ee37c77ea4083ff5b64924dd1d20a51eb4321dc949d6dd19&",
@@ -145,6 +156,7 @@ const mediaLinks = {
   ...edelCardLinks,
   ...flammeCardLinks,
   ...frierenCardLinks,
+  ...senseCardLinks,
   ...stilleCardLinks,
   ...wirbelCardLinks,
 } as const;
