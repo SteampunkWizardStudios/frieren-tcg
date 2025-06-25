@@ -161,18 +161,20 @@ export default class Character {
     game: Game,
     characterIndex: number
   ): Record<string, Card> {
+    const nextCard = this.additionalMetadata.nextCardToPlay;
+
     const defaultCardOptions: Record<string, Card> = {};
     if (this.additionalMetadata.accessToDefaultCardOptions) {
       defaultCardOptions["10"] = DefaultCards.discardCard.clone(); // starting at 10 to avoid getting out of order with extra dice
       defaultCardOptions["11"] = DefaultCards.waitCard.clone();
-    } else if (this.skipTurn) {
+    } else if (this.skipTurn && !nextCard) {
       defaultCardOptions["12"] = DefaultCards.doNothing.clone();
     }
-    const nextCard = this.additionalMetadata.nextCardToPlay;
     if (nextCard) {
       defaultCardOptions["13"] = nextCard.clone();
       this.additionalMetadata.nextCardToPlay = undefined;
     }
+
     defaultCardOptions["14"] = DefaultCards.forfeitCard.clone();
 
     if (this.skipTurn) {

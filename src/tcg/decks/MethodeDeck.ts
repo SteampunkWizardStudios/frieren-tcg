@@ -106,7 +106,7 @@ const polymath = new Card({
       new TimedEffect({
         name: "Polymath",
         description: "Roll an extra die this turn.",
-        turnDuration: 1,
+        turnDuration: 2,
         endOfTimedEffectAction: (_game, _characterIndex) => {
           self.additionalMetadata.rollsCount -= 1;
         },
@@ -349,7 +349,7 @@ const hypnoticCompulsion = new Card({
       new TimedEffect({
         name: "Compelled",
         description: `Use your last used move next turn.`,
-        turnDuration: 1,
+        turnDuration: 2,
         endOfTimedEffectAction: () => {
           opponent.additionalMetadata.accessToDefaultCardOptions = true;
           opponent.additionalMetadata.nextCardToPlay = undefined;
@@ -413,7 +413,7 @@ const methodeDeck = [
   { card: reversePolarity, count: 1 },
   { card: goddessHealingMagic, count: 2 },
   { card: restraintMagic, count: 1 },
-  { card: hypnoticCompulsion, count: 1 },
+  { card: hypnoticCompulsion, count: 100 }, // 1
   { card: spotWeakness, count: 1 },
 ];
 

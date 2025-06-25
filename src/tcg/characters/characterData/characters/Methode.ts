@@ -22,7 +22,7 @@ const Methode = new CharacterData({
     pronouns: Pronouns.Feminine,
     emoji: CharacterEmoji.METHODE,
     color: 0x7f78ac,
-    imageUrl: mediaLinks.methodePortrait, // default
+    imageUrl: mediaLinks.methodePortrait,
   },
   stats: methodeStats,
   cards: methodeDeck,
@@ -40,11 +40,10 @@ const Methode = new CharacterData({
       const self = game.getCharacter(characterIndex);
       const opp = game.getCharacter(1 - characterIndex);
 
+      if (!opp.additionalMetadata.methodeFindsCute) return;
       switch (game.turnCount) {
         case 1:
           {
-            if (!opp.additionalMetadata.methodeFindsCute) return;
-
             messageCache.push(
               `${self.name} finds ${opp.name} cute!`,
               TCGThread.Gameroom
