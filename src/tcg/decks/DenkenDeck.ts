@@ -12,6 +12,7 @@ const a_jab = new Card({
     `DEF+${def}. ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [1, 1, 1, 2],
+  hpCost: 2,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -49,6 +50,7 @@ const a_hook = new Card({
   description: ([spd, atk, dmg]) => `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
+  hpCost: 2,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -81,6 +83,7 @@ const a_uppercut = new Card({
   description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 3],
+  hpCost: 3,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1364978489035460708/GIF_0836074812.gif?ex=680c4b87&is=680afa07&hm=84fd66beff9352aba9c037ff66d2b0e69219b34c0e3c9c5e62edbf96dc62a0f8&",

@@ -118,7 +118,7 @@ export const mugOfBeer = new Card({
   title: "Mug of Beer",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, atk]) =>
-    `HP+${hp}. ATK+${atk}. DEF-2 and SPD-2 for 2 turns.`,
+    `HP+${hp}. ATK+${atk}. DEF-2 and SPD-2 for 3 turns.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -143,7 +143,7 @@ export const mugOfBeer = new Card({
     selfEffect({
       name: "Drunk",
       description: `DEF-2. SPD-2.`,
-      turnDuration: 2,
+      turnDuration: 3,
       metadata: { removableBySorganeil: false },
       endOfTimedEffectAction: (_game, _charIdx, _msgCache) => {
         sendToGameroom(`${name}'s drowsiness faded.`);

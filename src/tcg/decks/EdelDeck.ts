@@ -134,7 +134,7 @@ const mental_fog = new Card({
   description: ([spd, cost]) =>
     `Eye Contact+1. Opponent's SPD-${spd}. Their highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, the opponent redraws 1 card.`,
   effects: [2, 5],
-  hpCost: 10,
+  hpCost: 5,
   cosmetic: {
     cardGif: mediaLinks.edel_mental_fog_gif,
   },

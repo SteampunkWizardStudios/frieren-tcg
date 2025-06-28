@@ -11,8 +11,8 @@ import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
 import mediaLinks from "@src/tcg/formatting/mediaLinks";
 
-const ANALYSIS_BOOST = 0.05;
-const ANALYSIS_STACK_CAP = 20;
+const ANALYSIS_BOOST = 0.07;
+const ANALYSIS_STACK_CAP = 10;
 
 const frierenStats = new Stats({
   [StatsEnum.HP]: 100.0,

@@ -8,7 +8,7 @@ export const a_hairWhip = new Card({
   title: "Hair Whip",
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) => `DEF+${def}. Afterwards, DMG ${dmg}+DEF/4.`,
-  effects: [2, 7],
+  effects: [3, 7],
   hpCost: 4,
   emoji: CardEmoji.PUNCH,
   cardAction: ({
@@ -114,30 +114,17 @@ export const hairBarrier = new Card({
 export const teaTime = new Card({
   title: "Tea Time",
   cardMetadata: { nature: Nature.Util, teaTime: 1 },
-  description: ([spd, hp]) =>
-    `SPD+${spd}. Empower both characters' hands. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
-  effects: [1, 4],
+  description: ([hp]) =>
+    `Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
+  effects: [4],
   emoji: CardEmoji.HEART,
   cosmetic: {
     cardGif: mediaLinks.sense_teaTime_gif,
   },
-  cardAction: ({
-    self,
-    opponent,
-    name,
-    selfStat,
-    opponentStat,
-    sendToGameroom,
-  }) => {
+  cardAction: ({ opponent, name, selfStat, opponentStat, sendToGameroom }) => {
     sendToGameroom(
-      `${name} and ${opponent.name} enjoyed a refreshing cup of tea. Both characters' hands are empowered!`
+      `${name} and ${opponent.name} enjoyed a refreshing cup of tea.`
     );
-
-    selfStat(0, StatsEnum.SPD);
-
-    self.empowerHand();
-    opponent.empowerHand();
-
     selfStat(0, StatsEnum.HP);
     opponentStat(0, StatsEnum.HP);
   },
@@ -146,36 +133,17 @@ export const teaTime = new Card({
 export const teaParty = new Card({
   title: "Tea Party",
   cardMetadata: { nature: Nature.Util, teaTime: 2 },
-  description: ([spd, hp]) =>
-    `SPD+${spd}. Empower both characters' hands twice. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
-  effects: [2, 7],
+  description: ([hp]) =>
+    `Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
+  effects: [7],
   emoji: CardEmoji.RANDOM,
   cosmetic: {
     cardGif: mediaLinks.sense_teaParty_gif,
   },
-  cardAction: ({
-    game,
-    self,
-    opponent,
-    name,
-    selfStat,
-    sendToGameroom,
-    calcEffect,
-  }) => {
-    sendToGameroom(
-      `${name} and ${opponent.name} held a tea party! Both characters' hands are greatly empowered!`
-    );
-
-    selfStat(0, StatsEnum.SPD);
-
-    for (let i = 0; i < 2; i++) {
-      self.empowerHand();
-      opponent.empowerHand();
-    }
-
-    const hpHeal = calcEffect(1);
-    self.adjustStat(hpHeal, StatsEnum.HP, game);
-    opponent.adjustStat(hpHeal, StatsEnum.HP, game);
+  cardAction: ({ opponent, name, sendToGameroom, selfStat, opponentStat }) => {
+    sendToGameroom(`${name} and ${opponent.name} held a tea party!`);
+    selfStat(0, StatsEnum.HP);
+    opponentStat(0, StatsEnum.HP);
   },
 });
 
