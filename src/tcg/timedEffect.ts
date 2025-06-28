@@ -45,6 +45,8 @@ type TimedEffectMetadata = {
   ubelSpeedModifiers?: number;
 
   consumesFlammeSigil?: boolean;
+
+  manaConcealment?: boolean;
 };
 
 const defaultMetadata: TimedEffectMetadata = {

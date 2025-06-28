@@ -243,15 +243,24 @@ export const manaConcealment = new Card({
         description: `Attacking moves receive Priority+1 and 50% Pierce.`,
         turnDuration: 2,
         priority: -1,
+        metadata: { manaConcealment: true },
         executeEndOfTimedEffectActionOnRemoval: true,
-        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
-          messageCache.push(
-            `${character.name} unveiled ${character.cosmetic.pronouns.possessive} presence.`,
-            TCGThread.Gameroom
-          );
-          character.ability.abilitySelectedMoveModifierEffect = undefined;
-          character.additionalMetadata.pierceFactor = 0;
-          character.ability.abilityStartOfTurnEffect = undefined;
+        endOfTimedEffectAction: (game, characterIndex, messageCache) => {
+          const character = game.getCharacter(characterIndex);
+          if (
+            !character.timedEffects.some(
+              (effect) => effect.metadata.manaConcealment
+            )
+          ) {
+            // only execute if character has no parallel mana concealment timed effect
+            messageCache.push(
+              `${character.name} unveiled ${character.cosmetic.pronouns.possessive} presence.`,
+              TCGThread.Gameroom
+            );
+            character.ability.abilitySelectedMoveModifierEffect = undefined;
+            character.additionalMetadata.pierceFactor = 0;
+            character.ability.abilityStartOfTurnEffect = undefined;
+          }
         },
       })
     );
