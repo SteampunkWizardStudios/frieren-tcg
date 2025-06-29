@@ -587,7 +587,7 @@ const rally = new Card({
   description: ([stat, lessStat]) =>
     `ATK+${stat}. DEF+${stat}. SPD+${stat}. An additional ATK+${lessStat}, DEF+${lessStat}, SPD+${lessStat} per ally active, or per active Timed Effect if not used by Himmel.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [1.5, 0.5],
+  effects: [1, 1],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }

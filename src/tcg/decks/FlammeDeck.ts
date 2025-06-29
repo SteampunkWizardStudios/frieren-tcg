@@ -56,62 +56,6 @@ export const researchDecreaseSigil = (
   );
 };
 
-const incantationExperimentalNotes = new Card({
-  title: "Incantation: Experimental Notes",
-  cardMetadata: { nature: Nature.Util },
-  description: ([hp]) =>
-    `Heal ${hp} HP. Gain 5 Sigils. If you have less than 2 Flamme's Note cards in your hand, discard a random card, add 1 Flamme's Note from the active or discard pile to your hand.`,
-  emoji: CardEmoji.FLAMME_CARD,
-  effects: [5],
-  cardAction: function (this: Card, context) {
-    const { self, messageCache, name, possessive, sendToGameroom, selfStat } =
-      context;
-    sendToGameroom(`${name} experiments with ${possessive} findings.`);
-    selfStat(0, StatsEnum.HP);
-    incantationIncreaseSigil(self, messageCache, 5);
-
-    const flammesNoteCount = self.hand.filter(
-      (card) => card.cardMetadata.isFlammesNote
-    ).length;
-    if (flammesNoteCount < 2) {
-      self.discardRandomCard();
-
-      let flammesNote: Card | undefined = undefined;
-      const activePileFlammesNoteIndex = self.deck.activePile.findIndex(
-        (card) => card.cardMetadata.isFlammesNote
-      );
-      if (activePileFlammesNoteIndex !== -1) {
-        flammesNote = self.deck.activePile.splice(
-          activePileFlammesNoteIndex,
-          1
-        )[0];
-      } else {
-        const discardPileFlammesNoteIndex = self.deck.discardPile.findIndex(
-          (card) => card.cardMetadata.isFlammesNote
-        );
-        if (discardPileFlammesNoteIndex !== -1) {
-          flammesNote = self.deck.discardPile.splice(
-            discardPileFlammesNoteIndex,
-            1
-          )[0];
-        }
-      }
-
-      if (flammesNote) {
-        sendToGameroom(
-          `${name} added ${flammesNote.title} to ${possessive} hand.`
-        );
-        self.hand.push(flammesNote);
-      } else {
-        sendToGameroom(
-          `${name} couldn't find anything new. ${name} drew 1 card.`
-        );
-        self.drawCard();
-      }
-    }
-  },
-});
-
 const incantationSeductionTechnique = new Card({
   title: "Incantation: Seduction Technique",
   cardMetadata: { nature: Nature.Util },
@@ -463,7 +407,7 @@ const theoryOfBalance = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `The Empower level for all card is now equal to half of the Turn Count. Remove this card from the deck once it is used.`,
+    `The Empower level for all card is now equal to the Turn Count. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cosmetic: {
@@ -472,7 +416,7 @@ const theoryOfBalance = new Card({
   cardAction: function (this: Card, { game, name, sendToGameroom }) {
     if (!game.additionalMetadata.flammeTheory[FlammeTheory.Balance]) {
       sendToGameroom(
-        `${name} discovered the Theory of Balance. **The Empower level for all card is now equal to half of the Turn Count.**`
+        `${name} discovered the Theory of Balance. **The Empower level for all card is now equal to the Turn Count.**`
       );
       game.additionalMetadata.flammeTheory[FlammeTheory.Balance] = true;
     } else {
@@ -594,8 +538,7 @@ export const a_foundationOfHumanitysMagic = new Card({
 });
 
 const flammeDeck = [
-  { card: a_foundationOfHumanitysMagic, count: 3 },
-  { card: incantationExperimentalNotes, count: 2 },
+  { card: a_foundationOfHumanitysMagic, count: 5 },
   { card: incantationFieldOfFlowers, count: 2 },
   { card: incantationSeductionTechnique, count: 2 },
   { card: milleniumBarrier, count: 1 },

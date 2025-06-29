@@ -11,7 +11,7 @@ const a_staffStrike = new Card({
     `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/8 with SPDDiff% Pierce.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [3, 7],
-  hpCost: 7,
+  hpCost: 5,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1365418943023681656/GIF_0570739142.gif?ex=681088bc&is=680f373c&hm=11d929f2c7b8bbc30b003a0d981cf02eb802b3651ba64f281ca1f5e0fa36b358&",
@@ -47,7 +47,7 @@ const a_staffBash = new Card({
     `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/6 with (SPDDiff / 2)% Pierce.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [2, 8],
-  hpCost: 7,
+  hpCost: 5,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1365418943023681656/GIF_0570739142.gif?ex=681088bc&is=680f373c&hm=11d929f2c7b8bbc30b003a0d981cf02eb802b3651ba64f281ca1f5e0fa36b358&",
@@ -81,7 +81,7 @@ export const a_whip = new Card({
   description: ([spd, dmg]) => `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/5.`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [2, 9],
-  hpCost: 7,
+  hpCost: 5,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1365419009721499718/GIF_3626022317.gif?ex=681088cc&is=680f374c&hm=838847fac81db2afc9448524255aceece7c3015a4af205b3014cd79ba565380c&",
@@ -111,7 +111,7 @@ export const a_supersonicStrike = new Card({
   emoji: CardEmoji.LAUFEN_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [10],
-  hpCost: 7,
+  hpCost: 5,
   cosmetic: {
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1366373963789242388/GIF_0816288304-ezgif.com-optimize.gif?ex=6810b66a&is=680f64ea&hm=04b17a787656912d7075211221d149c8eaca57ca5ca916c27ab634fedaa75fb0&",
@@ -149,7 +149,7 @@ const quickDodge = new Card({
   description: ([spd, spdBuff]) =>
     `SPD+${spd}. Increases SPD by an additional ${spdBuff} until the end of the turn.`,
   emoji: CardEmoji.LAUFEN_CARD,
-  effects: [3, 27],
+  effects: [5, 35],
   priority: 2,
   cosmetic: {
     cardGif:
