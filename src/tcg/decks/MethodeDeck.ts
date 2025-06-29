@@ -434,7 +434,7 @@ const methodeDeck = [
   { card: manaDetection, count: 1 },
   { card: reversePolarity, count: 1 },
   { card: restraintMagic, count: 1 },
-  { card: hypnoticCompulsion, count: 1000 },
+  { card: hypnoticCompulsion, count: 1 },
   { card: goddessHealingMagic, count: 2 },
   { card: spotWeakness, count: 1 },
 ];
