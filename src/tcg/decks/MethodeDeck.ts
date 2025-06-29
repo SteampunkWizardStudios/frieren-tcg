@@ -153,7 +153,7 @@ const manaDetection = new Card({
   cardMetadata: { nature: Nature.Defense },
   emoji: CardEmoji.METHODE_CARD,
   description: ([def]) =>
-    `TrueDEF+${def} for 1 turn. If the opponent uses an attacking move this turn, next turn, all your moves have Priority+1.`,
+    `TrueDEF+${def} for 1 turn. If the opponent attacks this turn, next turn, all your moves have Priority+1.`,
   effects: [20],
   priority: 2,
   cardAction: ({ name, opponent, sendToGameroom, self, game, calcEffect }) => {
@@ -201,7 +201,7 @@ const reversePolarity = new Card({
   cardMetadata: { nature: Nature.Defense },
   emoji: CardEmoji.METHODE_CARD,
   description: ([def]) =>
-    `TrueDEF+${def} for 1 turn. If the opponent uses an attacking move this turn, at this turn's end, attack with base DMG equal to the move's DMG.`,
+    `TrueDEF+${def} for 1 turn. If the opponent attacks this turn, at this turn's end, attack with base DMG equal to the move's DMG.`,
   effects: [20],
   priority: 2,
   cardAction: ({
@@ -225,7 +225,7 @@ const reversePolarity = new Card({
       self.ability.abilityCounterEffect = undefined;
       self.timedEffects.push(
         new TimedEffect({
-          name: "Reverse Polarity",
+          name: "Reverse Polarity - Reflection",
           description: `Reflects with ${atkDmg} base DMG back at the attacker at the end of this turn.`,
           turnDuration: 1,
           endOfTurnAction(_game, _characterIndex, _messageCache) {
@@ -235,6 +235,20 @@ const reversePolarity = new Card({
         })
       );
     };
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Reverse Polarity",
+        description: `Increases TrueDEF by ${def} until the end of the turn.`,
+        priority: -1,
+        turnDuration: 1,
+        metadata: { removableBySorganeil: false },
+        endOfTimedEffectAction: (_game, _characterIndex) => {
+          self.adjustStat(-def, StatsEnum.TrueDEF, game);
+          self.ability.abilityCounterEffect = undefined;
+        },
+      })
+    );
   },
 });
 
@@ -409,8 +423,8 @@ const methodeDeck = [
   { card: scatterShot, count: 2 },
   { card: delayedShot, count: 2 },
   { card: piercingShot, count: 2 },
-  { card: polymath, count: 200 },
-  { card: ordinaryDefensiveMagic, count: 100 },
+  { card: polymath, count: 2 },
+  { card: ordinaryDefensiveMagic, count: 1 },
   { card: manaDetection, count: 1 },
   { card: reversePolarity, count: 1 },
   { card: goddessHealingMagic, count: 2 },
