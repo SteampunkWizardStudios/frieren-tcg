@@ -9,7 +9,7 @@ const scatterShot = new Card({
   emoji: CardEmoji.METHODE_CARD,
   description: ([dmg]) =>
     `${dmg} DMG. Deal DMG ${dmg} x2 at the end of next turn`,
-  effects: [3],
+  effects: [4],
   hpCost: 6,
   cardAction: ({
     self,
@@ -20,6 +20,7 @@ const scatterShot = new Card({
     sendToGameroom,
   }) => {
     sendToGameroom(`${name} fires a scatter shot!`);
+    basicAttack(0);
     const dmg = calcEffect(0);
     self.timedEffects.push(
       new TimedEffect({
@@ -44,11 +45,12 @@ const delayedShot = new Card({
   emoji: CardEmoji.METHODE_CARD,
   description: ([dmg]) =>
     `${dmg} DMG. Deal DMG ${dmg} x2 at the end of 2 turns from now.`,
-  effects: [3],
-  hpCost: 6,
+  effects: [6],
+  hpCost: 8,
   cardAction: ({ self, name, calcEffect, basicAttack, sendToGameroom }) => {
     sendToGameroom(`${name} fires a delayed shot!`);
     const dmg = calcEffect(0);
+    basicAttack(0);
 
     self.timedEffects.push(
       new TimedEffect({
@@ -71,12 +73,13 @@ const piercingShot = new Card({
   emoji: CardEmoji.METHODE_CARD,
   description: ([dmg, bonus]) =>
     `DMG ${dmg}. If this character did not use an attacking move last turn, deal an additional ${bonus} DMG with 50% pierce.`,
-  effects: [9, 4],
-  hpCost: 8,
+  effects: [9, 5],
+  hpCost: 10,
   cardAction: ({ name, sendToGameroom, lastCard, basicAttack }) => {
-    sendToGameroom(`${name} fires a piercing shot!`);
+    sendToGameroom(`${name} fires a direct shot!`);
     basicAttack(0);
     if (lastCard.cardMetadata.nature !== Nature.Attack) {
+      sendToGameroom(`The shot pierces the opponent!`);
       basicAttack(1, 0.5);
     }
   },
@@ -89,8 +92,10 @@ const polymath = new Card({
   description: ([buff]) =>
     `ATK+${buff}, DEF+${buff}, SPD+${buff}. Redraw your hand and roll 1 extra die next turn.`,
   effects: [1],
-  cardAction: ({ self, name, sendToGameroom, selfStat }) => {
-    sendToGameroom(`${name} used Polymath`);
+  cardAction: ({ self, name, sendToGameroom, selfStat, possessive }) => {
+    sendToGameroom(
+      `${name} taps into ${possessive} studies. ${name} redrew ${possessive} hand.`
+    );
 
     selfStat(0, StatsEnum.ATK);
     selfStat(0, StatsEnum.DEF);
@@ -107,6 +112,7 @@ const polymath = new Card({
         name: "Polymath",
         description: "Roll an extra die this turn.",
         turnDuration: 2,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: (_game, _characterIndex) => {
           self.additionalMetadata.rollsCount -= 1;
         },
@@ -403,13 +409,13 @@ const methodeDeck = [
   { card: scatterShot, count: 2 },
   { card: delayedShot, count: 2 },
   { card: piercingShot, count: 2 },
-  { card: polymath, count: 2 },
-  { card: ordinaryDefensiveMagic, count: 1 },
+  { card: polymath, count: 200 },
+  { card: ordinaryDefensiveMagic, count: 100 },
   { card: manaDetection, count: 1 },
   { card: reversePolarity, count: 1 },
   { card: goddessHealingMagic, count: 2 },
   { card: restraintMagic, count: 1 },
-  { card: hypnoticCompulsion, count: 100 }, // 1
+  { card: hypnoticCompulsion, count: 1 },
   { card: spotWeakness, count: 1 },
 ];
 

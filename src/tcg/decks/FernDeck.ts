@@ -248,9 +248,9 @@ export const manaConcealment = new Card({
         endOfTimedEffectAction: (game, characterIndex, messageCache) => {
           const character = game.getCharacter(characterIndex);
           if (
-            !character.timedEffects.some(
+            character.timedEffects.filter(
               (effect) => effect.metadata.manaConcealment
-            )
+            ).length < 2
           ) {
             // only execute if character has no parallel mana concealment timed effect
             messageCache.push(
