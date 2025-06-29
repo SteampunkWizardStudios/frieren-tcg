@@ -407,7 +407,7 @@ const theoryOfBalance = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `The Empower level for all card is now equal to half of the Turn Count. Remove this card from the deck once it is used.`,
+    `The Empower level for all card is now equal to the Turn Count. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cosmetic: {

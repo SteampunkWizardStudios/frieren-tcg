@@ -149,7 +149,7 @@ const quickDodge = new Card({
   description: ([spd, spdBuff]) =>
     `SPD+${spd}. Increases SPD by an additional ${spdBuff} until the end of the turn.`,
   emoji: CardEmoji.LAUFEN_CARD,
-  effects: [3, 27],
+  effects: [5, 35],
   priority: 2,
   cosmetic: {
     cardGif:

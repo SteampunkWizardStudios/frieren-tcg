@@ -206,7 +206,7 @@ export const tcgMain = async (
 
       if (game.additionalMetadata.flammeTheory.Balance) {
         character.hand.forEach((card) => {
-          card.empowerLevel = game.turnCount / 2;
+          card.empowerLevel = game.turnCount;
         });
       }
 
