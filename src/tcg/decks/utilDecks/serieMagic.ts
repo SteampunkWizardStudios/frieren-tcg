@@ -41,6 +41,14 @@ import {
   sharpen,
 } from "@decks/SenseDeck";
 import { a_cleave, a_dismantle, a_shallowSlash } from "@decks/UbelDeck";
+import {
+  a_scatterShot,
+  a_delayedShot,
+  a_piercingShot,
+  goddessHealingMagic,
+  restraintMagic,
+  hypnoticCompulsion,
+} from "@decks/MethodeDeck";
 import { a_malevolentShrine } from "./ubelSignature";
 import {
   a_concentratedZoltraakBolt,
@@ -48,6 +56,15 @@ import {
   perfectSorganeil,
   scharfJubelade,
 } from "../WirbelDeck";
+import {
+  a_telekinesis,
+  a_kneel,
+  mental_fog,
+  clear_mind,
+  hypnosis_sleep,
+  hypnosis_mesmerize,
+  hypnosis_weaken,
+} from "../EdelDeck";
 
 export const serie_offensiveMagic_common = [
   a_zoltraak,
@@ -58,6 +75,7 @@ export const serie_offensiveMagic_common = [
   a_fernZoltraak,
   a_erfassenKnife,
   a_ehreDoragate,
+  a_scatterShot,
 ];
 
 export const serie_offensiveMagic_rare = [
@@ -75,6 +93,8 @@ export const serie_offensiveMagic_rare = [
   a_dismantle,
   a_hairWhip,
   a_trustInYourAllyFernsBarrage,
+  a_delayedShot,
+  a_telekinesis,
 ];
 
 export const serie_offensiveMagic_unusual = [
@@ -83,6 +103,8 @@ export const serie_offensiveMagic_unusual = [
   a_catastraviaBase,
   a_malevolentShrine,
   a_concentratedZoltraakBolt,
+  a_piercingShot,
+  a_kneel,
 ];
 
 export const serie_utilityMagic_tactics = [
@@ -95,6 +117,9 @@ export const serie_utilityMagic_tactics = [
   manaConcealment,
   perfectSorganeil,
   scharfJubelade,
+  restraintMagic,
+  hypnoticCompulsion,
+  mental_fog,
 ];
 
 export const serie_utilityMagic_recovery = [
@@ -103,4 +128,6 @@ export const serie_utilityMagic_recovery = [
   hide,
   fieldOfFlower,
   spellToCreateManaButterflies,
+  goddessHealingMagic,
+  clear_mind,
 ];

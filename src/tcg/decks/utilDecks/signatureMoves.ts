@@ -1,7 +1,7 @@
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import Card from "@tcg/card";
 import { bareHandedBlock } from "@decks/DenkenDeck";
-import { telekinesis } from "@decks/EdelDeck";
+import { a_kneel } from "@decks/EdelDeck";
 import { spellToCreateManaButterflies } from "@decks/FernDeck";
 import incantationFieldOfFlowers from "./flammeSignature";
 import { a_theHeightOfMagic } from "@decks/FrierenDeck";
@@ -15,17 +15,18 @@ import { a_geisel } from "@decks/StilleDeck";
 import { a_lastStand } from "@decks/StarkDeck";
 import { a_malevolentShrine } from "./ubelSignature";
 import { perfectSorganeil } from "@decks/WirbelDeck";
+import { reversePolarity } from "@decks/MethodeDeck";
 
 export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Denken]: bareHandedBlock,
-  [CharacterName.Edel]: telekinesis,
+  [CharacterName.Edel]: a_kneel,
   [CharacterName.Fern]: spellToCreateManaButterflies,
   [CharacterName.Flamme]: incantationFieldOfFlowers,
   [CharacterName.Frieren]: a_theHeightOfMagic,
   [CharacterName.Himmel]: a_realHeroSwing,
   [CharacterName.Laufen]: a_supersonicStrike,
   [CharacterName.Linie]: imitate,
-  [CharacterName.Methode]: telekinesis, // default
+  [CharacterName.Methode]: reversePolarity,
   [CharacterName.Sein]: a_threeSpearsOfTheGoddess,
   [CharacterName.Sense]: a_piercingDrill,
   [CharacterName.Stark]: a_lastStand,

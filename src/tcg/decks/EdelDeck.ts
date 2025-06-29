@@ -44,7 +44,7 @@ const getHighestEmpowerFromCurrentDraws = (
   )[1];
 };
 
-export const telekinesis = new Card({
+export const a_telekinesis = new Card({
   title: "Telekinesis",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
@@ -127,7 +127,7 @@ export const one_step_ahead = new Card({
   },
 });
 
-const mental_fog = new Card({
+export const mental_fog = new Card({
   title: "Mental Fog",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
   emoji: CardEmoji.EDEL_CARD,
@@ -187,7 +187,7 @@ const mental_fog = new Card({
   },
 });
 
-const clear_mind = new Card({
+export const clear_mind = new Card({
   title: "Clear Mind",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
   emoji: CardEmoji.EDEL_CARD,
@@ -214,7 +214,7 @@ const clear_mind = new Card({
   },
 });
 
-const hypnosis_sleep = new Card({
+export const hypnosis_sleep = new Card({
   title: "Hypnosis: *Sleep*",
   cardMetadata: { nature: Nature.Util, hideEmpower: true, edelEyeContact: 2 },
   emoji: CardEmoji.EDEL_CARD,
@@ -228,7 +228,7 @@ const hypnosis_sleep = new Card({
   },
 });
 
-const hypnosis_mesmerize = new Card({
+export const hypnosis_mesmerize = new Card({
   title: "Hypnosis: *Mesmerize*",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 2 },
   emoji: CardEmoji.EDEL_CARD,
@@ -244,7 +244,7 @@ const hypnosis_mesmerize = new Card({
   },
 });
 
-const hypnosis_weaken = new Card({
+export const hypnosis_weaken = new Card({
   title: "Hypnosis: *Weaken*",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 2 },
   emoji: CardEmoji.EDEL_CARD,
@@ -260,7 +260,7 @@ const hypnosis_weaken = new Card({
   },
 });
 
-const kneel = new Card({
+export const a_kneel = new Card({
   title: "*Kneel!*",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
@@ -302,14 +302,14 @@ const kneel = new Card({
 });
 
 const edelDeck = [
-  { card: telekinesis, count: 3 },
+  { card: a_telekinesis, count: 3 },
   { card: one_step_ahead, count: 2 },
   { card: mental_fog, count: 2 },
   { card: clear_mind, count: 2 },
   { card: hypnosis_sleep, count: 2 },
   { card: hypnosis_mesmerize, count: 2 },
   { card: hypnosis_weaken, count: 2 },
-  { card: kneel, count: 1 },
+  { card: a_kneel, count: 1 },
 ];
 
 export default edelDeck;

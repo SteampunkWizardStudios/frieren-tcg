@@ -3,7 +3,7 @@ import { CardEmoji } from "@tcg/formatting/emojis";
 import TimedEffect from "@tcg/timedEffect";
 import { StatsEnum } from "@tcg/stats";
 
-const scatterShot = new Card({
+export const a_scatterShot = new Card({
   title: "Scatter Shot",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.METHODE_CARD,
@@ -39,7 +39,7 @@ const scatterShot = new Card({
   },
 });
 
-const delayedShot = new Card({
+export const a_delayedShot = new Card({
   title: "Delayed Shot",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.METHODE_CARD,
@@ -67,7 +67,7 @@ const delayedShot = new Card({
   },
 });
 
-const piercingShot = new Card({
+export const a_piercingShot = new Card({
   title: "Piercing Shot",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.METHODE_CARD,
@@ -196,9 +196,9 @@ const manaDetection = new Card({
   },
 });
 
-const reversePolarity = new Card({
+export const reversePolarity = new Card({
   title: "Reverse Polarity",
-  cardMetadata: { nature: Nature.Defense },
+  cardMetadata: { nature: Nature.Defense, signature: true },
   emoji: CardEmoji.METHODE_CARD,
   description: ([def]) =>
     `TrueDEF+${def} for 1 turn. If the opponent attacks this turn, at this turn's end, attack with base DMG equal to the move's DMG.`,
@@ -252,43 +252,7 @@ const reversePolarity = new Card({
   },
 });
 
-const goddessHealingMagic = new Card({
-  title: "Goddess' Healing Magic",
-  cardMetadata: { nature: Nature.Util },
-  emoji: CardEmoji.METHODE_CARD,
-  description: ([hp, bonusHp, def]) =>
-    `Heal ${hp} HP. Heal an additional ${bonusHp} HP and gain ${def} DEF if the opponent did not use an offensive move this turn.`,
-  effects: [7, 3, 2],
-  cardAction: ({
-    name,
-    self,
-    opponentLastCard,
-    calcEffect,
-    sendToGameroom,
-    selfStat,
-  }) => {
-    sendToGameroom(`${name} calls upon the Goddess for healing magic.`);
-    selfStat(0, StatsEnum.HP);
-
-    self.timedEffects.push(
-      new TimedEffect({
-        name: "Goddess' Healing Magic",
-        description: `Gain ${calcEffect(1)} DEF and Heal ${calcEffect(2)} HP if the opponent did not use an offensive move this turn.`,
-        turnDuration: 1,
-        metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: () => {
-          if (opponentLastCard.cardMetadata.nature !== Nature.Attack) {
-            sendToGameroom(`${name} receives the Goddess's blessing!`);
-            selfStat(1, StatsEnum.HP);
-            selfStat(2, StatsEnum.DEF);
-          }
-        },
-      })
-    );
-  },
-});
-
-const restraintMagic = new Card({
+export const restraintMagic = new Card({
   title: "Restraint Magic",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
@@ -342,7 +306,7 @@ const restraintMagic = new Card({
   },
 });
 
-const hypnoticCompulsion = new Card({
+export const hypnoticCompulsion = new Card({
   title: "Hypnotic Compulsion",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
@@ -376,60 +340,86 @@ const hypnoticCompulsion = new Card({
   },
 });
 
+export const goddessHealingMagic = new Card({
+  title: "Goddess' Healing Magic",
+  cardMetadata: { nature: Nature.Util },
+  emoji: CardEmoji.METHODE_CARD,
+  description: ([hp, bonusHp, def]) =>
+    `Heal ${hp} HP. Heal an additional ${bonusHp} HP and gain ${def} DEF if the opponent's next move isn't an attack. Will overwrite the effect of Spot Weakness.`,
+  effects: [7, 3, 2],
+  cardAction: ({
+    name,
+    self,
+    sendToGameroom,
+    selfStat,
+    possessive,
+    reflexive,
+  }) => {
+    sendToGameroom(`${name} calls upon the Goddess for recovery.`);
+    selfStat(0, StatsEnum.HP);
+    sendToGameroom(`${name} scans for a resting spot.`);
+
+    self.ability.abilityAfterOpponentsMoveEffect = (
+      _game,
+      _charIndex,
+      _msgCache,
+      card: Card
+    ) => {
+      if (card.cardMetadata.nature !== Nature.Attack) {
+        sendToGameroom(
+          `${name} made use of the room the opponent gave ${possessive} to steel ${reflexive}.`
+        );
+        selfStat(1, StatsEnum.HP);
+        selfStat(2, StatsEnum.DEF);
+      }
+      self.ability.abilityAfterOpponentsMoveEffect = undefined;
+    };
+  },
+});
+
 const spotWeakness = new Card({
   title: "Spot Weakness",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
   description: ([spd, atk, bonusAtk]) =>
-    `SPD+${spd} ATK+${atk}. If the opponent uses an offensive move this turn, at the end of turn, ATK+${bonusAtk}.`,
-  effects: [2, 1, 3],
-  cardAction: ({
-    self,
-    name,
-    opponent,
-    opponentLastCard,
-    selfStat,
-    sendToGameroom,
-    calcEffect,
-  }) => {
+    `SPD+${spd} ATK+${atk}. ATK+${bonusAtk} if the opponent's next move is an attack. Will overwrite the effect of Goddess' Healing Magic.`,
+  effects: [2, 2, 3],
+  cardAction: ({ self, name, opponent, selfStat, sendToGameroom }) => {
     sendToGameroom(
       `${name} is on the lookout for ${opponent.name}'s weaknesses.`
     );
     selfStat(0, StatsEnum.SPD);
     selfStat(1, StatsEnum.ATK);
+    sendToGameroom(`${name} scans for an opening.`);
 
-    const bonusAtk = calcEffect(2);
-
-    self.timedEffects.push(
-      new TimedEffect({
-        name: "Spotting Weaknesses",
-        description: `If the opponent uses an offensive move this turn, at the end of turn, ATK+${bonusAtk}`,
-        turnDuration: 1,
-        metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: () => {
-          if (opponentLastCard.cardMetadata.nature === Nature.Attack) {
-            sendToGameroom(
-              `${name} found an opening in ${opponent.name}'s attack!`
-            );
-            selfStat(2, StatsEnum.ATK);
-          }
-        },
-      })
-    );
+    self.ability.abilityAfterOpponentsMoveEffect = (
+      _game,
+      _charIndex,
+      _msgCache,
+      card: Card
+    ) => {
+      if (card.cardMetadata.nature === Nature.Attack) {
+        sendToGameroom(
+          `${name} found an opening in ${opponent.name}'s attack!`
+        );
+        selfStat(2, StatsEnum.ATK);
+      }
+      self.ability.abilityAfterOpponentsMoveEffect = undefined;
+    };
   },
 });
 
 const methodeDeck = [
-  { card: scatterShot, count: 2 },
-  { card: delayedShot, count: 2 },
-  { card: piercingShot, count: 2 },
+  { card: a_scatterShot, count: 2 },
+  { card: a_delayedShot, count: 2 },
+  { card: a_piercingShot, count: 2 },
   { card: polymath, count: 2 },
   { card: ordinaryDefensiveMagic, count: 1 },
   { card: manaDetection, count: 1 },
   { card: reversePolarity, count: 1 },
-  { card: goddessHealingMagic, count: 2 },
   { card: restraintMagic, count: 1 },
   { card: hypnoticCompulsion, count: 1 },
+  { card: goddessHealingMagic, count: 2 },
   { card: spotWeakness, count: 1 },
 ];
 
