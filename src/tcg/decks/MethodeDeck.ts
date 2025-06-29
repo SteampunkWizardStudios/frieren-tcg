@@ -311,17 +311,24 @@ export const hypnoticCompulsion = new Card({
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
   description: ([atkDebuff]) =>
-    `Opponent's ATK-${atkDebuff}. Your opponent only has their last used move next turn.`,
+    `Opponent's ATK-${atkDebuff}. Your opponent can only use the move they used last turn in the next turn.`,
   effects: [2],
   cardAction: ({
     name,
     opponent,
+    opponentName,
     opponentLastCard,
     sendToGameroom,
     opponentStat,
   }) => {
     sendToGameroom(`${name} hypnotizes ${opponent.name}.`);
     opponentStat(0, StatsEnum.ATK, -1);
+    if (!opponentLastCard) {
+      sendToGameroom(
+        `The opponent hasn't used any move yet. ${opponentName} is compelled to Do Nothing!`
+      );
+    }
+
     opponent.skipTurn = true;
     opponent.additionalMetadata.accessToDefaultCardOptions = false;
     opponent.additionalMetadata.nextCardToPlay = opponentLastCard;
@@ -331,9 +338,18 @@ export const hypnoticCompulsion = new Card({
         name: "Compelled",
         description: `Use your last used move next turn.`,
         turnDuration: 2,
-        endOfTimedEffectAction: () => {
-          opponent.additionalMetadata.accessToDefaultCardOptions = true;
-          opponent.additionalMetadata.nextCardToPlay = undefined;
+        metadata: { hypnoticCompulsion: true },
+        executeEndOfTimedEffectActionOnRemoval: true,
+        endOfTimedEffectAction: (game, characterIndex, _messageCache) => {
+          const character = game.getCharacter(characterIndex);
+          if (
+            character.timedEffects.filter(
+              (effect) => effect.metadata.hypnoticCompulsion
+            ).length < 2
+          ) {
+            opponent.additionalMetadata.accessToDefaultCardOptions = true;
+            opponent.additionalMetadata.nextCardToPlay = undefined;
+          }
         },
       })
     );
@@ -418,7 +434,7 @@ const methodeDeck = [
   { card: manaDetection, count: 1 },
   { card: reversePolarity, count: 1 },
   { card: restraintMagic, count: 1 },
-  { card: hypnoticCompulsion, count: 1 },
+  { card: hypnoticCompulsion, count: 1000 },
   { card: goddessHealingMagic, count: 2 },
   { card: spotWeakness, count: 1 },
 ];

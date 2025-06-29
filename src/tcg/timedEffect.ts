@@ -47,6 +47,7 @@ type TimedEffectMetadata = {
   consumesFlammeSigil?: boolean;
 
   manaConcealment?: boolean;
+  hypnoticCompulsion?: boolean;
 };
 
 const defaultMetadata: TimedEffectMetadata = {
