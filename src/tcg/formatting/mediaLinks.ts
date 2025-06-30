@@ -162,6 +162,16 @@ const linieCardLinks = {
     "https://cdn.discordapp.com/attachments/1374120144334487703/1383218233544544458/Record_2025_06_13_23_54_18_400.gif?ex=68568f9d&is=68553e1d&hm=5e505d4f193dee45cac1df4b52c54a27704a1638746127ae282a2559d4f74d4a&",
 };
 
+const methodeCardLinks = {
+  methode_reversePolarity_gif:
+    "https://cdn.discordapp.com/attachments/1374120144334487703/1383220242444193833/Record_2025_06_14_00_01_59_586.gif?ex=686317bc&is=6861c63c&hm=ab9cf6576651efac8e246f52bd08cec46713fc8181e71c6d6a97f2ec93349ba3&",
+  methode_goddessMagic_gif:
+    "https://cdn.discordapp.com/attachments/1374120144334487703/1383221519039201370/Record_2025_06_14_00_07_38_188.gif?ex=686318ed&is=6861c76d&hm=bfcb7dc7cb601bdcea70bd7781a8c568ca435a4319796426b75993c105a81328&",
+  methode_restraintMagic_gif:
+    "https://cdn.discordapp.com/attachments/1374120144334487703/1383223333168087071/Record_2025_06_14_00_15_00_71.gif?ex=68631a9d&is=6861c91d&hm=73bb6e7882ab63e19e31b46e8a7551b858eae0f7771a59b7759f5c4df694d73a&",
+  methode_piercing_gif: "https://c.tenor.com/q7ffBv9OS-sAAAAd/tenor.gif",
+};
+
 const mediaLinks = {
   ...characterPortraits,
   ...vangerisuCards,
@@ -174,6 +184,7 @@ const mediaLinks = {
   ...wirbelCardLinks,
   ...flammeCardLinks,
   ...linieCardLinks,
+  ...methodeCardLinks,
 } as const;
 
 export default mediaLinks;

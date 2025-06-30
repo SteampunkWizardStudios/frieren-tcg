@@ -2,6 +2,7 @@ import Card, { Nature } from "@tcg/card";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import TimedEffect from "@tcg/timedEffect";
 import { StatsEnum } from "@tcg/stats";
+import mediaLinks from "../formatting/mediaLinks";
 
 export const a_scatterShot = new Card({
   title: "Scatter Shot",
@@ -71,6 +72,9 @@ export const a_piercingShot = new Card({
   title: "Piercing Shot",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.METHODE_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.methode_piercing_gif,
+  },
   description: ([dmg, bonus]) =>
     `DMG ${dmg}. If this character did not use an attacking move last turn, deal an additional ${bonus} DMG with 50% pierce.`,
   effects: [9, 5],
@@ -200,6 +204,9 @@ export const reversePolarity = new Card({
   title: "Reverse Polarity",
   cardMetadata: { nature: Nature.Defense, signature: true },
   emoji: CardEmoji.METHODE_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.methode_reversePolarity_gif,
+  },
   description: ([def]) =>
     `TrueDEF+${def} for 1 turn. If the opponent attacks this turn, at this turn's end, attack with base DMG equal to the move's DMG.`,
   effects: [20],
@@ -256,6 +263,9 @@ export const restraintMagic = new Card({
   title: "Restraint Magic",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.methode_restraintMagic_gif,
+  },
   description: ([debuff]) =>
     `Set your DEF to 1 until this turn's end. Opp's ATK-${debuff}, DEF-${debuff}, SPD-${debuff} for the next 4 turns.`,
   effects: [4],
@@ -360,6 +370,9 @@ export const goddessHealingMagic = new Card({
   title: "Goddess' Healing Magic",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.methode_goddessMagic_gif,
+  },
   description: ([hp, bonusHp, def]) =>
     `Heal ${hp} HP. Heal an additional ${bonusHp} HP and gain ${def} DEF if the opponent's next move isn't an attack. Will overwrite the effect of Spot Weakness.`,
   effects: [7, 3, 2],
