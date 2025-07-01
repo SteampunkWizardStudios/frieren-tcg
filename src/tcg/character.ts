@@ -204,7 +204,7 @@ export default class Character {
         rollCount += 1;
       }
       for (let i = 0; i < rollCount; i++) {
-        rolls.push(Rolls.rollDAny(this.additionalMetadata.rollsCount));
+        rolls.push(Rolls.rollD6());
       }
     }
 
