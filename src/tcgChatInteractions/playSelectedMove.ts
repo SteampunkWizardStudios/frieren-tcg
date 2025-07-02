@@ -1,9 +1,7 @@
 import {
   ActionRowBuilder,
   ComponentType,
-  MessageFlags,
   StringSelectMenuBuilder,
-  StringSelectMenuInteraction,
   ThreadChannel,
   User,
 } from "discord.js";
@@ -23,9 +21,6 @@ export const playSelectedMove = async (
   if (character.skipTurn) {
     character.skipTurn = false;
   }
-
-  const timeLimit = turnDurationSeconds * 1000;
-  let isResolved = false;
 
   // Create the dropdown menu
   const moveSelectId = `move-select-${player.username}-${Date.now()}`;
@@ -54,126 +49,42 @@ export const playSelectedMove = async (
   const randomIndex: number = parseInt(randomIndexString);
   const randomCard: Card = playerPossibleMove[randomIndexString];
 
-  return new Promise<Card>((resolve, reject) => {
-    const fallbackTimeout = setTimeout(() => {
-      if (!isResolved) {
-        isResolved = true;
-        console.warn(
-          "Fallback timeout triggered in getSelectedMove function - collector failed to end properly."
-        );
+  return new Promise<Card>((resolve) => {
+    response
+      .awaitMessageComponent({
+        filter: (i) => {
+          i.deferUpdate();
+          return i.user.id === player.id && i.customId === moveSelectId;
+        },
+        componentType: ComponentType.StringSelect,
+        time: turnDurationSeconds * 1000,
+      })
+      .then((i) => {
+        const selectedCardIndex = parseInt(i.values[0]);
+        const selectedCard = playerPossibleMove[i.values[0]] ?? randomCard;
+        if (selectedCardIndex < 6) {
+          character.playCard(selectedCardIndex);
+        }
+
+        response.edit({
+          content: `You selected ${selectedCard.emoji} **${selectedCard.getTitle()}**`,
+          components: [],
+        });
+
+        resolve(selectedCard);
+      })
+      .catch((err) => {
+        console.log(`Collection failed: ${err}`);
         if (randomIndex < 6) {
           character.playCard(randomIndex);
         }
+
+        response.edit({
+          content: `You selected ${randomCard.emoji} **${randomCard.getTitle()}**`,
+          components: [],
+        });
+
         resolve(randomCard);
-      }
-    }, timeLimit + 5000); // 5 additional seconds for fallback timeout
-
-    try {
-      if (response) {
-        const collector = response.createMessageComponentCollector({
-          componentType: ComponentType.StringSelect,
-          filter: (i) => i.customId === moveSelectId,
-          time: timeLimit,
-        });
-
-        collector.on("collect", async (i: StringSelectMenuInteraction) => {
-          try {
-            // Verify that the interaction is from the original user
-            if (i.user.id !== player.id) {
-              await i.reply({
-                content: "Invalid user.",
-                flags: MessageFlags.Ephemeral,
-              });
-              return;
-            }
-
-            if (!isResolved) {
-              if (!i.replied && !i.deferred) {
-                await i.deferUpdate();
-              }
-              collector.stop("Card selected");
-
-              const selectedCardIndex = parseInt(i.values[0]);
-              const selectedCard =
-                playerPossibleMove[i.values[0]] ?? randomCard;
-              if (selectedCardIndex < 6) {
-                character.playCard(selectedCardIndex);
-              }
-
-              await i.editReply({
-                content: `You selected ${selectedCard.emoji} **${selectedCard.getTitle()}**`,
-                components: [],
-              });
-
-              isResolved = true;
-              clearTimeout(fallbackTimeout);
-              resolve(selectedCard);
-            }
-          } catch (error) {
-            console.error(error);
-
-            // reply only if hasn't been acknowledged
-            if (!i.replied && !i.deferred) {
-              await i.reply({
-                content: "There was an error fetching card.",
-                flags: MessageFlags.Ephemeral,
-              });
-            } else {
-              await i.editReply({
-                content: "There was an error fetching card.",
-              });
-            }
-
-            if (!isResolved) {
-              collector.stop("Error occurred");
-              isResolved = true;
-              clearTimeout(fallbackTimeout);
-              reject(error);
-            }
-          }
-        });
-
-        collector.on("end", async (collected) => {
-          try {
-            // When the collector expires, disable the select menu
-            if (collected.size === 0) {
-              if (!isResolved) {
-                if (randomIndex < 6) {
-                  character.playCard(randomIndex);
-                }
-                await response
-                  .edit({
-                    content: `Timeout! Playing a random card: ${randomCard.emoji} **${randomCard.getTitle()}**!`,
-                    components: [],
-                  })
-                  .catch(() => {});
-
-                isResolved = true;
-                clearTimeout(fallbackTimeout);
-                resolve(randomCard);
-              }
-            }
-          } catch (error) {
-            console.error("Error in collector end event:", error);
-
-            if (randomIndex < 6) {
-              character.playCard(randomIndex);
-            }
-            if (!isResolved) {
-              isResolved = true;
-              clearTimeout(fallbackTimeout);
-              resolve(randomCard);
-            }
-          }
-        });
-      }
-    } catch (error) {
-      if (!isResolved) {
-        console.error(error);
-        isResolved = true;
-        clearTimeout(fallbackTimeout);
-        reject(error);
-      }
-    }
+      });
   });
 };
