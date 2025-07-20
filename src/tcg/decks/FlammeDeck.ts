@@ -42,7 +42,7 @@ const milleniumBarrier = new Card({
   description: ([def, spd, hp]) =>
     `DEF+${def} and SPD+${spd} for 5 turns. If Theory of Irreversibilty is active, all opponent's stat increases are set to 0. While active, heal ${hp}HP at each turn's end.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [5, 5, 2],
+  effects: [5, 5, 3],
   hpCost: 15,
   cardAction: function (
     this: Card,
@@ -93,7 +93,7 @@ const thousandYearSanctuary = new Card({
   description: ([oppAtkDecrease, oppSpdDecrease, hp]) =>
     `Opp's ATK-${oppAtkDecrease} and SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing. While active, heal ${hp}HP at each turn's end.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [5, 5, 2],
+  effects: [5, 5, 3],
   hpCost: 15,
   cosmetic: {
     cardGif: mediaLinks.flamme_sanctuary_gif,
