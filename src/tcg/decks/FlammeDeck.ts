@@ -7,9 +7,6 @@ import {
   FlammeTheory,
 } from "../additionalMetadata/gameAdditionalMetadata";
 import { CharacterName } from "../characters/metadata/CharacterName";
-import Character from "../character";
-import { MessageCache } from "@src/tcgChatInteractions/messageCache";
-import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import mediaLinks from "../formatting/mediaLinks";
 import {
   a_foundationOfHumanitysMagicBase,
@@ -20,71 +17,33 @@ import {
 } from "./utilDecks/flammeFoundationStage";
 import incantationFieldOfFlowers from "./utilDecks/flammeSignature";
 
-export const incantationIncreaseSigil = (
-  self: Character,
-  messageCache: MessageCache,
-  sigilCount: number
-) => {
-  const name = self.name;
-  self.additionalMetadata.flammeSigil =
-    (self.additionalMetadata.flammeSigil ?? 0) + sigilCount;
-  messageCache.push(
-    `${name} performed an incantation. ${name} **gained ${sigilCount}** Sigil. Current Sigil count: **${self.additionalMetadata.flammeSigil}**.`,
-    TCGThread.Gameroom
-  );
-};
-
-export const researchDecreaseSigil = (
-  self: Character,
-  messageCache: MessageCache,
-  sigilCount: number,
-  customMessage?: string
-) => {
-  const name = self.name;
-  const possessive = self.cosmetic.pronouns.possessive;
-  self.additionalMetadata.flammeSigil =
-    (self.additionalMetadata.flammeSigil ?? 0) - sigilCount;
-  let message = "";
-  if (customMessage) {
-    message += customMessage;
-  } else {
-    message += `${name} performed ${possessive} research.`;
-  }
-  messageCache.push(
-    `${message} ${name} *lost ${sigilCount}* Sigil. Current Sigil count: **${self.additionalMetadata.flammeSigil}**.`,
-    TCGThread.Gameroom
-  );
-};
-
 const incantationSeductionTechnique = new Card({
   title: "Incantation: Seduction Technique",
   cardMetadata: { nature: Nature.Util },
   description: ([hp, oppAtkDecrease, oppSpdDecrease]) =>
-    `Heal ${hp} HP. Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}. Gain 3 Sigils.`,
+    `Heal ${hp} HP. Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [3, 2, 1],
   cosmetic: {
     cardGif: mediaLinks.flamme_seduction_gif,
   },
   cardAction: function (this: Card, context) {
-    const { self, messageCache, name, sendToGameroom, selfStat, opponentStat } =
-      context;
+    const { name, sendToGameroom, selfStat, opponentStat } = context;
     sendToGameroom(`${name} showcases her seduction technique.`);
     selfStat(0, StatsEnum.HP);
     opponentStat(1, StatsEnum.ATK, -1);
     opponentStat(2, StatsEnum.SPD, -1);
-
-    incantationIncreaseSigil(self, messageCache, 3);
   },
 });
 
 const milleniumBarrier = new Card({
   title: "Millenium Barrier",
   cardMetadata: { nature: Nature.Util },
-  description: ([def, spd]) =>
-    `DEF+${def} and SPD+${spd}. If Theory of Irreversibilty is active, all opponent's stat increases are set to 0. If you were attacked this turn, -1 Sigil. At the end of every turn, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
+  description: ([def, spd, hp]) =>
+    `DEF+${def} and SPD+${spd} for 5 turns. If Theory of Irreversibilty is active, all opponent's stat increases are set to 0. While active, heal ${hp}HP at each turn's end.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [5, 5],
+  effects: [5, 5, 2],
+  hpCost: 15,
   cardAction: function (
     this: Card,
     { self, game, selfIndex, sendToGameroom, calcEffect, flatSelfStat }
@@ -95,33 +54,21 @@ const milleniumBarrier = new Card({
     flatSelfStat(defIncrease, StatsEnum.DEF);
     flatSelfStat(spdIncrease, StatsEnum.SPD);
 
-    const sigilCount = self.additionalMetadata.flammeSigil ?? 0;
     game.additionalMetadata.flammeResearch[selfIndex][
       FlammeResearch.MilleniumBarrier
     ] = true;
 
+    const endOfTurnHealing = calcEffect(2);
     self.timedEffects.push(
       new TimedEffect({
         name: "Millenium Barrier",
-        description: `DEF+${defIncrease}. SPD+${spdIncrease}. If Theory of Irreversibilty is active, all opponent's stat increases are set to 0. -1 Sigil if attacked this turn.`,
-        turnDuration: sigilCount,
-        metadata: { removableBySorganeil: true, consumesFlammeSigil: true },
+        description: `DEF+${defIncrease}. SPD+${spdIncrease}. If Theory of Irreversibilty is active, all opponent's stat increases are set to 0. HP+${endOfTurnHealing} at turn end.`,
+        turnDuration: 5,
+        metadata: { removableBySorganeil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
         priority: -2,
-        endOfTurnAction: function (
-          this: TimedEffect,
-          _game,
-          _characterIndex,
-          messageCache
-        ) {
-          self.additionalMetadata.flammeSigil ??= 0;
-
-          if (self.additionalMetadata.flammeSigil > 0) {
-            sendToGameroom("The barrier takes in mana.");
-            researchDecreaseSigil(self, messageCache, 1);
-          }
-
-          this.turnDuration = self.additionalMetadata.flammeSigil;
+        endOfTurnAction: function (this: TimedEffect, _game, _characterIndex) {
+          flatSelfStat(endOfTurnHealing, StatsEnum.HP);
         },
         endOfTimedEffectAction: function () {
           if (game.additionalMetadata.flammeTheory.Irreversibility) {
@@ -143,10 +90,11 @@ const milleniumBarrier = new Card({
 const thousandYearSanctuary = new Card({
   title: "Thousand Year Sanctuary",
   cardMetadata: { nature: Nature.Util },
-  description: ([oppAtkDecrease, oppSpdDecrease]) =>
-    `Opp's ATK-${oppAtkDecrease} and SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing. If you were attacked this turn, -1 Sigil. At the end of every turn, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
+  description: ([oppAtkDecrease, oppSpdDecrease, hp]) =>
+    `Opp's ATK-${oppAtkDecrease} and SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing. While active, heal ${hp}HP at each turn's end.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [5, 5],
+  effects: [5, 5, 2],
+  hpCost: 15,
   cosmetic: {
     cardGif: mediaLinks.flamme_sanctuary_gif,
   },
@@ -160,6 +108,7 @@ const thousandYearSanctuary = new Card({
       sendToGameroom,
       calcEffect,
       flatOpponentStat,
+      flatSelfStat,
     }
   ) {
     sendToGameroom(`${name} raises a towering sanctuary.`);
@@ -168,33 +117,26 @@ const thousandYearSanctuary = new Card({
     flatOpponentStat(oppAtkDecrease, StatsEnum.ATK, -1);
     flatOpponentStat(oppSpdDecrease, StatsEnum.SPD, -1);
 
-    const sigilCount = self.additionalMetadata.flammeSigil ?? 0;
     game.additionalMetadata.flammeResearch[selfIndex][
       FlammeResearch.ThousandYearSanctuary
     ] = true;
 
+    const endOfTurnHealing = calcEffect(2);
     self.timedEffects.push(
       new TimedEffect({
         name: "Thousand Year Sanctuary",
-        description: `Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing. -1 Sigil if attacked this turn.`,
-        turnDuration: sigilCount,
-        metadata: { removableBySorganeil: true, consumesFlammeSigil: true },
+        description: `Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}. If Theory of Balance is active, the turn count stops increasing. HP+${endOfTurnHealing} at turn end.`,
+        turnDuration: 5,
+        metadata: { removableBySorganeil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
         priority: -2,
         endOfTurnAction: function (
           this: TimedEffect,
-          game,
+          _game,
           _characterIndex,
-          messageCache
+          _messageCache
         ) {
-          self.additionalMetadata.flammeSigil ??= 0;
-
-          if (self.additionalMetadata.flammeSigil > 0) {
-            sendToGameroom("The sanctuary approaches equilibrium.");
-            researchDecreaseSigil(self, messageCache, 1);
-          }
-
-          this.turnDuration = self.additionalMetadata.flammeSigil;
+          flatSelfStat(endOfTurnHealing, StatsEnum.HP);
         },
         endOfTimedEffectAction: function () {
           if (game.additionalMetadata.flammeTheory.Irreversibility) {
@@ -217,7 +159,7 @@ const treeOfLife = new Card({
   title: "Tree of Life",
   cardMetadata: { nature: Nature.Util },
   description: ([hp]) =>
-    `Heal ${hp} HP. Roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 5. If you were attacked this turn, -1 Sigil. At the end of every turn, -1 Sigil. This effect lasts until the number of Sigil you have is <= 0.`,
+    `Heal ${hp} HP. For the next 7 turns, roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 5.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [10],
   cosmetic: {
@@ -230,7 +172,6 @@ const treeOfLife = new Card({
     sendToGameroom(`${name} plants a sapling for someone 1000 years from now.`);
     selfStat(0, StatsEnum.HP);
 
-    const sigilCount = self.additionalMetadata.flammeSigil ?? 0;
     game.additionalMetadata.flammeResearch[selfIndex][
       FlammeResearch.TreeOfLife
     ] = true;
@@ -238,26 +179,11 @@ const treeOfLife = new Card({
     self.timedEffects.push(
       new TimedEffect({
         name: "Tree of Life",
-        description: `Roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 5. -1 Sigil if attacked this turn.`,
-        turnDuration: sigilCount,
-        metadata: { removableBySorganeil: true, consumesFlammeSigil: true },
+        description: `Roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 5.`,
+        turnDuration: 7,
+        metadata: { removableBySorganeil: true },
         priority: -2,
         executeEndOfTimedEffectActionOnRemoval: true,
-        endOfTurnAction: function (
-          this: TimedEffect,
-          game,
-          _characterIndex,
-          messageCache
-        ) {
-          self.additionalMetadata.flammeSigil ??= 0;
-
-          if (self.additionalMetadata.flammeSigil > 0) {
-            sendToGameroom("The tree flutters.");
-            researchDecreaseSigil(self, messageCache, 1);
-          }
-
-          this.turnDuration = self.additionalMetadata.flammeSigil;
-        },
         endOfTimedEffectAction: function () {
           sendToGameroom("The tree stands strong and unmoving.");
           game.additionalMetadata.flammeResearch[selfIndex][
@@ -272,25 +198,16 @@ const treeOfLife = new Card({
 const flammesNote = new Card({
   title: "Flamme's Note",
   cardMetadata: { nature: Nature.Util, isFlammesNote: true },
-  description: ([hp]) =>
-    `HP+${hp}. Discard a random card. If there is no Theory card in your deck, draw 1 card. Otherwise, add a random Theory card to your hand, and if Theory of Souls is not active, -1 Sigil.`,
+  description: ([hp, hpSoul]) =>
+    `HP+${hp}. Heal an additional ${hpSoul}HP if Theory of Soul is active. Discard a random card. If there is no Theory card in your deck, draw 1 card. Otherwise, add a random Theory card to your hand.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [8],
+  effects: [4, 6],
   cosmetic: {
     cardGif: mediaLinks.flamme_flammesNotes_gif,
   },
   cardAction: function (
     this: Card,
-    {
-      self,
-      game,
-      messageCache,
-      name,
-      characterName,
-      personal,
-      selfStat,
-      sendToGameroom,
-    }
+    { self, game, name, characterName, personal, selfStat, sendToGameroom }
   ) {
     const isFlamme = characterName === CharacterName.Flamme;
     if (isFlamme) {
@@ -302,6 +219,11 @@ const flammesNote = new Card({
     }
     self.discardRandomCard();
     selfStat(0, StatsEnum.HP);
+
+    if (game.additionalMetadata.flammeTheory.Soul) {
+      sendToGameroom("The souls offer a guidance.");
+      selfStat(1, StatsEnum.HP);
+    }
 
     // collect theory
     const theoriesIndices: Array<[Card[], number]> = [];
@@ -325,10 +247,6 @@ const flammesNote = new Card({
       const theoryCard = pile.splice(pileIndex, 1)[0];
       sendToGameroom(`${name} formulated the **${theoryCard.title}**.`);
       self.hand.push(theoryCard);
-
-      if (!game.additionalMetadata.flammeTheory.Soul) {
-        researchDecreaseSigil(self, messageCache, 1);
-      }
     } else {
       sendToGameroom(
         `It doesn't seem like ${personal} found anything ${personal} doesn't already know. ${name} draws 1 card.`
@@ -378,7 +296,7 @@ const theoryOfIrreversibility = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `All ATK/DEF/SPD changes for both players are halved. Remove this card from the deck once it is used.`,
+    `All HP/ATK/DEF/SPD changes for both players are halved. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cosmetic: {

@@ -255,7 +255,6 @@ export default class Character {
   // there is no failure condition for now
   private static IRREVERSIBILITY_IGNORED_STATS = new Set([
     StatsEnum.Ability,
-    StatsEnum.HP,
     StatsEnum.TrueDEF,
   ]);
   adjustStat(adjustValue: number, stat: StatsEnum, game: Game): boolean {
@@ -266,7 +265,8 @@ export default class Character {
       if (!Character.IRREVERSIBILITY_IGNORED_STATS.has(stat)) {
         if (
           this.additionalMetadata.opponentMilleniumBarrierActive &&
-          roundedAdjustValue > 0
+          roundedAdjustValue > 0 &&
+          stat != StatsEnum.HP
         ) {
           roundedAdjustValue = 0;
         } else {

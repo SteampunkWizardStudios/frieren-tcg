@@ -2,14 +2,13 @@ import Card, { Nature } from "@tcg/card";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import mediaLinks from "@tcg/formatting/mediaLinks";
 import { StatsEnum } from "@tcg/stats";
-import { incantationIncreaseSigil } from "../FlammeDeck";
 import TimedEffect from "@tcg/timedEffect";
 
 const incantationFieldOfFlowers = new Card({
   title: "Incantation: Field of Flowers",
   cardMetadata: { nature: Nature.Util, signature: true },
   description: ([hp, endHp]) =>
-    `Heal ${hp} HP. Gain 3 Sigils. At the next 3 turns' ends, heal ${endHp} HP. Gain 2 Sigils at the end of every turn.`,
+    `Heal ${hp} HP. At the next 3 turns' ends, heal ${endHp} HP.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [5, 3],
   cosmetic: {
@@ -17,33 +16,22 @@ const incantationFieldOfFlowers = new Card({
   },
   cardAction: function (
     this: Card,
-    {
-      self,
-      name,
-      sendToGameroom,
-      selfStat,
-      calcEffect,
-      messageCache,
-      flatSelfStat,
-    }
+    { self, name, sendToGameroom, selfStat, calcEffect, flatSelfStat }
   ) {
     sendToGameroom(`${name} conjured a field of flowers.`);
     selfStat(0, StatsEnum.HP);
 
     const endOfTurnHealing = calcEffect(1);
-    incantationIncreaseSigil(self, messageCache, 3);
 
     self.timedEffects.push(
       new TimedEffect({
         name: "Field of Flowers",
-        description: `Heal ${endOfTurnHealing} HP. Gain 2 Sigils.`,
+        description: `Heal ${endOfTurnHealing} HP.`,
         turnDuration: 3,
         executeEndOfTimedEffectActionOnRemoval: true,
-        endOfTurnAction: (game, characterIndex, messageCache) => {
-          const character = game.getCharacter(characterIndex);
+        endOfTurnAction: (_game, _characterIndex, _messageCache) => {
           sendToGameroom(`The Field of Flowers soothe ${name}.`);
           flatSelfStat(endOfTurnHealing, StatsEnum.HP);
-          incantationIncreaseSigil(character, messageCache, 2);
         },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           sendToGameroom("The Field of Flowers fade.");

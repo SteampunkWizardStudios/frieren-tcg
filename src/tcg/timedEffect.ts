@@ -44,8 +44,6 @@ type TimedEffectMetadata = {
 
   ubelSpeedModifiers?: number;
 
-  consumesFlammeSigil?: boolean;
-
   manaConcealment?: boolean;
   hypnoticCompulsion?: boolean;
 };
