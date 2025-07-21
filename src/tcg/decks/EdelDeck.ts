@@ -70,7 +70,7 @@ export const one_step_ahead = new Card({
   cardMetadata: { nature: Nature.Defense },
   emoji: CardEmoji.EDEL_CARD,
   description: ([def, spd, dmg]) =>
-    `TrueDEF+${def} for 1 turn. If this card is played the same turn your opponent plays a defensive card, their SPD-${spd}, they redraw 2 cards. Attack with DMG ${dmg} + Forced Discards, ignoring defense.`,
+    `TrueDEF+${def} for 1 turn. If this card is played the same turn your opponent plays a defensive card, their SPD-${spd}, they redraw 2 cards. Attack with DMG ${dmg}, ignoring defense.`,
   effects: [20, 2, 10],
   priority: 3,
   cardAction: ({
@@ -113,7 +113,7 @@ export const one_step_ahead = new Card({
     }
 
     sendToGameroom(
-      `${opponent.name} is playing a defensive card. ${name} read ${opponent.cosmetic.pronouns.possessive} mind!`
+      `${opponent.name} is playing a defensive card. ${name} read ${opponent.cosmetic.pronouns.possessive} intention!`
     );
     opponentStat(1, StatsEnum.SPD, -1);
 

@@ -3,6 +3,7 @@ import { CardEmoji } from "@tcg/formatting/emojis";
 import TimedEffect from "@tcg/timedEffect";
 import { StatsEnum } from "@tcg/stats";
 import mediaLinks from "../formatting/mediaLinks";
+import { one_step_ahead } from "./EdelDeck";
 
 export const a_scatterShot = new Card({
   title: "Scatter Shot",
@@ -82,7 +83,17 @@ export const a_piercingShot = new Card({
   cardAction: ({ name, sendToGameroom, lastCard, basicAttack }) => {
     sendToGameroom(`${name} fires a direct shot!`);
     basicAttack(0);
-    if (lastCard.cardMetadata.nature !== Nature.Attack) {
+
+    let willPierce = false;
+    if (lastCard) {
+      if (lastCard.cardMetadata.nature !== Nature.Attack) {
+        willPierce = true;
+      }
+    } else {
+      willPierce = true;
+    }
+
+    if (willPierce) {
       sendToGameroom(`The shot pierces the opponent!`);
       basicAttack(1, 0.5);
     }
@@ -125,32 +136,32 @@ const polymath = new Card({
   },
 });
 
-const ordinaryDefensiveMagic = new Card({
-  title: "Ordinary Defensive Magic",
-  cardMetadata: { nature: Nature.Defense },
-  emoji: CardEmoji.METHODE_CARD,
-  description: ([def]) => `TrueDEF+${def} for 1 turn.`,
-  effects: [20],
-  priority: 2,
-  cardAction: ({ self, name, game, sendToGameroom, calcEffect }) => {
-    sendToGameroom(`${name} puts up an ordinary barrier.`);
-    const def = calcEffect(0);
-    self.adjustStat(def, StatsEnum.TrueDEF, game);
+// const ordinaryDefensiveMagic = new Card({
+//   title: "Ordinary Defensive Magic",
+//   cardMetadata: { nature: Nature.Defense },
+//   emoji: CardEmoji.METHODE_CARD,
+//   description: ([def]) => `TrueDEF+${def} for 1 turn.`,
+//   effects: [20],
+//   priority: 2,
+//   cardAction: ({ self, name, game, sendToGameroom, calcEffect }) => {
+//     sendToGameroom(`${name} puts up an ordinary barrier.`);
+//     const def = calcEffect(0);
+//     self.adjustStat(def, StatsEnum.TrueDEF, game);
 
-    self.timedEffects.push(
-      new TimedEffect({
-        name: "Ordinary Defensive Magic",
-        description: `Increases TrueDEF by ${def} until the end of the turn.`,
-        priority: -1,
-        turnDuration: 1,
-        metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-def, StatsEnum.TrueDEF, game);
-        },
-      })
-    );
-  },
-});
+//     self.timedEffects.push(
+//       new TimedEffect({
+//         name: "Ordinary Defensive Magic",
+//         description: `Increases TrueDEF by ${def} until the end of the turn.`,
+//         priority: -1,
+//         turnDuration: 1,
+//         metadata: { removableBySorganeil: false },
+//         endOfTimedEffectAction: (_game, _characterIndex) => {
+//           self.adjustStat(-def, StatsEnum.TrueDEF, game);
+//         },
+//       })
+//     );
+//   },
+// });
 
 const manaDetection = new Card({
   title: "Mana Detection",
@@ -294,6 +305,7 @@ export const restraintMagic = new Card({
         description: `Your DEF is set to 1 until the end of this turn.`,
         turnDuration: 1,
         priority: -1,
+        metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: () => {
           flatSelfStat(defDebuff, StatsEnum.DEF);
         },
@@ -306,6 +318,8 @@ export const restraintMagic = new Card({
         name: "Restrained",
         description: `ATK-${restraint}, DEF-${restraint}, SPD-${restraint}.`,
         turnDuration: 4,
+        priority: -2,
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: () => {
           opponentStat(0, StatsEnum.ATK);
           opponentStat(0, StatsEnum.DEF);
@@ -324,7 +338,7 @@ export const hypnoticCompulsion = new Card({
     cardGif: mediaLinks.methode_hypnoticCompulsion_gif,
   },
   description: ([atkDebuff]) =>
-    `Opponent's ATK-${atkDebuff}. Your opponent can only use the move they used last turn in the next turn.`,
+    `Opponent's ATK-${atkDebuff}. Your opponent can only use the move they used last turn in the next turn at Priority-2.`,
   effects: [2],
   cardAction: ({
     name,
@@ -344,7 +358,10 @@ export const hypnoticCompulsion = new Card({
 
     opponent.skipTurn = true;
     opponent.additionalMetadata.accessToDefaultCardOptions = false;
-    opponent.additionalMetadata.nextCardToPlay = opponentLastCard;
+    opponent.additionalMetadata.nextCardToPlay = new Card({
+      ...opponentLastCard,
+      priority: -2,
+    });
 
     opponent.timedEffects.push(
       new TimedEffect({
@@ -378,7 +395,7 @@ export const goddessHealingMagic = new Card({
   },
   description: ([hp, bonusHp, def]) =>
     `Heal ${hp} HP. Heal an additional ${bonusHp} HP and gain ${def} DEF if the opponent's next move isn't an attack. Will overwrite the effect of Spot Weakness.`,
-  effects: [7, 3, 2],
+  effects: [10, 5, 3],
   cardAction: ({
     name,
     self,
@@ -446,12 +463,12 @@ const methodeDeck = [
   { card: a_delayedShot, count: 2 },
   { card: a_piercingShot, count: 2 },
   { card: polymath, count: 2 },
-  { card: ordinaryDefensiveMagic, count: 1 },
+  { card: one_step_ahead, count: 1 },
   { card: manaDetection, count: 1 },
   { card: reversePolarity, count: 1 },
-  { card: restraintMagic, count: 1 },
+  { card: restraintMagic, count: 2 },
   { card: hypnoticCompulsion, count: 1 },
-  { card: goddessHealingMagic, count: 2 },
+  { card: goddessHealingMagic, count: 1 },
   { card: spotWeakness, count: 1 },
 ];
 

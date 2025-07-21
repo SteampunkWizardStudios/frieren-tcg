@@ -56,15 +56,7 @@ import {
   perfectSorganeil,
   scharfJubelade,
 } from "../WirbelDeck";
-import {
-  a_telekinesis,
-  a_kneel,
-  mental_fog,
-  clear_mind,
-  hypnosis_sleep,
-  hypnosis_mesmerize,
-  hypnosis_weaken,
-} from "../EdelDeck";
+import { a_telekinesis, a_kneel, mental_fog, clear_mind } from "../EdelDeck";
 
 export const serie_offensiveMagic_common = [
   a_zoltraak,
