@@ -256,6 +256,7 @@ export default class Character {
   private static IRREVERSIBILITY_IGNORED_STATS = new Set([
     StatsEnum.Ability,
     StatsEnum.TrueDEF,
+    StatsEnum.HP,
   ]);
   adjustStat(adjustValue: number, stat: StatsEnum, game: Game): boolean {
     const roundedInitialAdjustValue = Number(adjustValue.toFixed(2));
@@ -265,8 +266,7 @@ export default class Character {
       if (!Character.IRREVERSIBILITY_IGNORED_STATS.has(stat)) {
         if (
           this.additionalMetadata.opponentMilleniumBarrierActive &&
-          roundedAdjustValue > 0 &&
-          stat != StatsEnum.HP
+          roundedAdjustValue > 0
         ) {
           roundedAdjustValue = 0;
         } else {

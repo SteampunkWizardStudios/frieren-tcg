@@ -50,7 +50,7 @@ export const a_secondPageOfHumanitysMagicBase = new Card({
   description: ([stat]) =>
     `ATK+${stat} DEF+${stat} SPD+${stat}. Use a random rare offensive magic.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [1],
+  effects: [2],
   cardAction: function (this: Card, context: GameMessageContext) {
     const { selfStat } = context;
     selfStat(0, StatsEnum.ATK);
@@ -91,7 +91,7 @@ export const a_lastPageOfHumanitysMagicBase = new Card({
   description: ([stat]) =>
     `ATK+${stat} DEF+${stat} SPD+${stat}. Use a random unusual offensive magic.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [2],
+  effects: [3],
   cardAction: function (this: Card, context: GameMessageContext) {
     const { selfStat } = context;
     selfStat(0, StatsEnum.ATK);

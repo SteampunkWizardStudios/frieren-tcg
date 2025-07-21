@@ -320,6 +320,9 @@ export const hypnoticCompulsion = new Card({
   title: "Hypnotic Compulsion",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.METHODE_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.methode_hypnoticCompulsion_gif,
+  },
   description: ([atkDebuff]) =>
     `Opponent's ATK-${atkDebuff}. Your opponent can only use the move they used last turn in the next turn.`,
   effects: [2],

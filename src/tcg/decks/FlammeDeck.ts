@@ -17,24 +17,24 @@ import {
 } from "./utilDecks/flammeFoundationStage";
 import incantationFieldOfFlowers from "./utilDecks/flammeSignature";
 
-const incantationSeductionTechnique = new Card({
-  title: "Incantation: Seduction Technique",
-  cardMetadata: { nature: Nature.Util },
-  description: ([hp, oppAtkDecrease, oppSpdDecrease]) =>
-    `Heal ${hp} HP. Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}.`,
-  emoji: CardEmoji.FLAMME_CARD,
-  effects: [3, 2, 1],
-  cosmetic: {
-    cardGif: mediaLinks.flamme_seduction_gif,
-  },
-  cardAction: function (this: Card, context) {
-    const { name, sendToGameroom, selfStat, opponentStat } = context;
-    sendToGameroom(`${name} showcases her seduction technique.`);
-    selfStat(0, StatsEnum.HP);
-    opponentStat(1, StatsEnum.ATK, -1);
-    opponentStat(2, StatsEnum.SPD, -1);
-  },
-});
+// const incantationSeductionTechnique = new Card({
+//   title: "Incantation: Seduction Technique",
+//   cardMetadata: { nature: Nature.Util },
+//   description: ([hp, oppAtkDecrease, oppSpdDecrease]) =>
+//     `Heal ${hp} HP. Opp's ATK-${oppAtkDecrease}. Opp's SPD-${oppSpdDecrease}.`,
+//   emoji: CardEmoji.FLAMME_CARD,
+//   effects: [3, 2, 1],
+//   cosmetic: {
+//     cardGif: mediaLinks.flamme_seduction_gif,
+//   },
+//   cardAction: function (this: Card, context) {
+//     const { name, sendToGameroom, selfStat, opponentStat } = context;
+//     sendToGameroom(`${name} showcases her seduction technique.`);
+//     selfStat(0, StatsEnum.HP);
+//     opponentStat(1, StatsEnum.ATK, -1);
+//     opponentStat(2, StatsEnum.SPD, -1);
+//   },
+// });
 
 const milleniumBarrier = new Card({
   title: "Millenium Barrier",
@@ -296,7 +296,7 @@ const theoryOfIrreversibility = new Card({
     hideEmpower: true,
   },
   description: () =>
-    `All HP/ATK/DEF/SPD changes for both players are halved. Remove this card from the deck once it is used.`,
+    `All ATK/DEF/SPD changes for both players are halved. Remove this card from the deck once it is used.`,
   emoji: CardEmoji.FLAMME_CARD,
   effects: [],
   cosmetic: {
@@ -305,7 +305,7 @@ const theoryOfIrreversibility = new Card({
   cardAction: function (this: Card, { game, name, sendToGameroom }) {
     if (!game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility]) {
       sendToGameroom(
-        `${name} discovered the Theory of Irreversibility. **All stat changes for both players are halved.**`
+        `${name} discovered the Theory of Irreversibility. **All ATK/DEF/SPD changes for both players are halved.**`
       );
       game.additionalMetadata.flammeTheory[FlammeTheory.Irreversibility] = true;
     } else {
@@ -456,13 +456,12 @@ export const a_foundationOfHumanitysMagic = new Card({
 });
 
 const flammeDeck = [
-  { card: a_foundationOfHumanitysMagic, count: 5 },
+  { card: a_foundationOfHumanitysMagic, count: 6 },
   { card: incantationFieldOfFlowers, count: 2 },
-  { card: incantationSeductionTechnique, count: 2 },
   { card: milleniumBarrier, count: 1 },
   { card: thousandYearSanctuary, count: 1 },
   { card: treeOfLife, count: 1 },
-  { card: flammesNote, count: 2 },
+  { card: flammesNote, count: 3 },
   { card: primitiveDefensiveTechnique, count: 2 },
   { card: theoryOfIrreversibility, count: 1 },
   { card: theoryOfBalance, count: 1 },

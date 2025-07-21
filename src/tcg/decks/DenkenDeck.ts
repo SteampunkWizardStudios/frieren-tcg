@@ -4,6 +4,7 @@ import CommonCardAction from "@tcg/util/commonCardActions";
 import TimedEffect from "@tcg/timedEffect";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
+import mediaLinks from "../formatting/mediaLinks";
 
 const a_jab = new Card({
   title: "Jab",
@@ -85,8 +86,7 @@ const a_uppercut = new Card({
   effects: [2, 1, 3],
   hpCost: 3,
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364978489035460708/GIF_0836074812.gif?ex=680c4b87&is=680afa07&hm=84fd66beff9352aba9c037ff66d2b0e69219b34c0e3c9c5e62edbf96dc62a0f8&",
+    cardGif: mediaLinks.denken_uppercut_gif,
   },
   cardAction: function (
     this: Card,
@@ -163,8 +163,7 @@ export const a_waldgoseBase = new Card({
   effects: [6, 1],
   hpCost: 0, // hp cost variable at cast time
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364217876323500123/GIF_0112106003.gif?ex=6808de67&is=68078ce7&hm=53339631d41657c84bff7858a0d4ca127e5dd726db694b68d34f5d833a75c8ba&",
+    cardGif: mediaLinks.denken_waldgose_gif,
   },
   cardAction: function (this: Card, context) {
     const {
@@ -246,8 +245,7 @@ export const a_daosdorgBase = new Card({
   effects: [12],
   hpCost: 0, // hpCost variable at cast time
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364218009102581871/GIF_4214490964.gif?ex=6808de87&is=68078d07&hm=dedf596f960aafe344c5eedec122d4dbd54c3b5c6f8b002b3cae75da891fdedf&",
+    cardGif: mediaLinks.denken_daosdorg_gif,
   },
   cardAction: function (this: Card, context) {
     const {
@@ -343,8 +341,7 @@ export const a_catastraviaBase = new Card({
   effects: [9, 3, 3],
   hpCost: 0, // hpCost variable at cast time
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364218121669316608/GIF_1295476803.gif?ex=6808dea2&is=68078d22&hm=bdc2fd9b990ddf12a7cb0d6ad7b24dca2a24203773cd3896f0c53681dad85ed9&",
+    cardGif: mediaLinks.denken_catastravia_gif,
   },
   cardAction: function (this: Card, context) {
     const {
@@ -433,6 +430,9 @@ const elementaryDefensiveMagicBase = new Card({
   description: ([def]) =>
     `Increases TrueDEF by ${def} until the end of the turn. Treat this card as "Bare-handed Block" if the user's HP is <= 0.`,
   emoji: CardEmoji.DENKEN_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.denken_defensive_gif,
+  },
   priority: 2,
   effects: [20],
   cardAction: function (
@@ -521,8 +521,7 @@ export const thisIsNoPlaceToGiveUp = new Card({
   emoji: CardEmoji.DENKEN_CARD,
   effects: [7, 7],
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364979223357296802/GIF_0406490421.gif?ex=680c4c36&is=680afab6&hm=cf5c0f9d7e3e14ec143a8b304c0d416868db25cb8de5a1f0b38cc4c7507df73d&",
+    cardGif: mediaLinks.denken_noPlaceToGiveUp_gif,
   },
   cardAction: function (
     this: Card,
