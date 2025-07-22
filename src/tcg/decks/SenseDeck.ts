@@ -33,7 +33,7 @@ export const sharpen = new Card({
   title: "Sharpen",
   cardMetadata: { nature: Nature.Util },
   description: ([def, atk, spd]) => `DEF+${def}. ATK+${atk}. SPD+${spd}`,
-  effects: [2, 2, 2],
+  effects: [1, 2, 2],
   hpCost: 3,
   emoji: CardEmoji.PUNCH,
   cardAction: ({ name, possessive, sendToGameroom, selfStat }) => {
@@ -50,7 +50,7 @@ export const a_pierce = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
     `DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
-  effects: [2, 10],
+  effects: [1, 10],
   hpCost: 7,
   emoji: CardEmoji.PUNCH,
   cardAction: ({
@@ -115,7 +115,7 @@ export const teaTime = new Card({
   title: "Tea Time",
   cardMetadata: { nature: Nature.Util, teaTime: 1 },
   description: ([hp]) => `Heal ${hp}. Gain 1 Tea Time snack.`,
-  effects: [9],
+  effects: [7],
   emoji: CardEmoji.HEART,
   cosmetic: {
     cardGif: mediaLinks.sense_teaTime_gif,
@@ -130,7 +130,7 @@ export const teaParty = new Card({
   title: "Tea Party",
   cardMetadata: { nature: Nature.Util, teaTime: 2 },
   description: ([hp]) => `Heal ${hp}. Gain 2 Tea Time snacks.`,
-  effects: [12],
+  effects: [10],
   emoji: CardEmoji.HEART,
   cosmetic: {
     cardGif: mediaLinks.sense_teaParty_gif,
