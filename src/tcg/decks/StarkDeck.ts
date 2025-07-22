@@ -120,7 +120,7 @@ const jumboBerrySpecialBreak = new Card({
         name: "Jumbo Berry Special Break",
         description: `SPD-2 for 2 turns. DEF+${defChange} for 2 turns.`,
         turnDuration: 2,
-        metadata: { removableBySorganeil: false },
+        executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: (game, _characterIndex, _messageCache) => {
           sendToGameroom(`The break is over. ${name} recomposes ${reflexive}.`);
           self.adjustStat(2, StatsEnum.SPD, game);

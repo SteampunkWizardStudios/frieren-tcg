@@ -201,7 +201,7 @@ const flammesNote = new Card({
   description: ([hp, hpSoul]) =>
     `HP+${hp}. Heal an additional ${hpSoul}HP if Theory of Soul is active. Discard a random card. If there is no Theory card in your deck, draw 1 card. Otherwise, add a random Theory card to your hand.`,
   emoji: CardEmoji.FLAMME_CARD,
-  effects: [4, 6],
+  effects: [6, 4],
   cosmetic: {
     cardGif: mediaLinks.flamme_flammesNotes_gif,
   },

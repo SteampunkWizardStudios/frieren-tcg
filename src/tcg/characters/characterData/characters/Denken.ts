@@ -8,7 +8,7 @@ import Pronouns from "@tcg/pronoun";
 import mediaLinks from "@tcg/formatting/mediaLinks";
 
 const DENKEN_PRESERVERANCE_COUNT = 3;
-export const DENKEN_DEATH_HP = -30;
+export const DENKEN_DEATH_HP = -40;
 
 const denkenStats = new Stats({
   [StatsEnum.HP]: 100.0,

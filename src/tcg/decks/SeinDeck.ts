@@ -16,7 +16,7 @@ export const a_trustInYourAllyFrierensZoltraak = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361022845664104740/GIF_0907854706.gif?ex=6807cacc&is=6806794c&hm=c4c3d7908005bbcd23defb42f4c9b756135c8a5c1726330d0a52495998ec2c53&",
   },
   effects: [5],
-  hpCost: 5,
+  hpCost: 6,
   cardAction: ({
     name,
     characterName,
@@ -49,7 +49,7 @@ export const a_trustInYourAllyFernsBarrage = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361022927788834966/GIF_2294206836.gif?ex=6807cae0&is=68067960&hm=ca32887d358b3c43ad2d4c5618373b8cab1a11d0acdcc496a7203544936a9244&",
   },
   effects: [3],
-  hpCost: 7,
+  hpCost: 8,
   cardAction: ({
     sendToGameroom,
     name,
@@ -94,7 +94,7 @@ const a_trustInYourAllyStarksLightningStrike = new Card({
       "https://cdn.discordapp.com/attachments/1351391350398128159/1353035310677622845/Trust_in_your_Ally_Starks_Lightning_Strike.png?ex=67e02fd4&is=67dede54&hm=608a0bc2795f44b1512ecb7d26b29213aedada2f9f9db64b178447be0dd98476&",
   },
   effects: [10],
-  hpCost: 9,
+  hpCost: 10,
   cardAction: ({
     name,
     characterName,
@@ -166,7 +166,7 @@ export const smokeBreak = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1361017954392866997/3.2.1.sein.gif?ex=6807c63e&is=680674be&hm=110488d337d86b35ac2b84cfec08e01c070a3ecb4563ccdfb3c1df602c5249f9&",
   },
   effects: [3, 2, 2],
-  hpCost: 3,
+  hpCost: 5,
   cardAction: ({ name, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} took a smoke break.`);
     selfStat(0, StatsEnum.ATK);
@@ -261,7 +261,7 @@ export const braceYourself = new Card({
 
 export const a_threeSpearsOfTheGoddess = new Card({
   title: "Three Spears of the Goddess",
-  description: ([dmg]) => `At the next 3 turn ends, deal ${dmg}+HP/10 DMG.`,
+  description: ([dmg]) => `At the next 3 turn ends, deal ${dmg}+HP/11 DMG.`,
   emoji: CardEmoji.SEIN_CARD,
   cosmetic: {
     cardImageUrl:
@@ -270,12 +270,12 @@ export const a_threeSpearsOfTheGoddess = new Card({
       "https://cdn.discordapp.com/attachments/1360969158623232300/1360972240732291242/GIF_0993654948.gif?ex=6808446b&is=6806f2eb&hm=90213c37d073b6d0b0354a3893d14b16c727fa9b04c457693110512a142c0338&",
   },
   cardMetadata: { nature: Nature.Attack, signature: true },
-  effects: [7],
-  hpCost: 15,
+  effects: [5],
+  hpCost: 10,
   cardAction: ({ name, selfStats, sendToGameroom, calcEffect, selfEffect }) => {
     sendToGameroom(`${name} used Three Spears of the Goddess!`);
 
-    const damage = Number((calcEffect(0) + selfStats.HP / 10).toFixed(2));
+    const damage = Number((calcEffect(0) + selfStats.HP / 11).toFixed(2));
 
     selfEffect({
       name: "Three Spears of the Goddess",

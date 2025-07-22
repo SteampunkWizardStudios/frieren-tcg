@@ -8,7 +8,7 @@ const a_staffStrike = new Card({
   title: "Staff Strike",
   cardMetadata: { nature: Nature.Attack },
   description: ([spd, dmg]) =>
-    `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/8 with SPDDiff% Pierce.`,
+    `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/8 with SPDDiff% Pierce (max: 100%).`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [3, 7],
   hpCost: 5,
@@ -35,7 +35,7 @@ const a_staffStrike = new Card({
     const damage = calcEffect(1) + selfStats.SPD / 8;
 
     const spdDiffPercentage = (selfStats.SPD - opponentStats.SPD) / 100;
-    const pierceFactor = Math.max(spdDiffPercentage, 0);
+    const pierceFactor = Math.min(Math.max(spdDiffPercentage, 0), 1);
     flatAttack(damage, pierceFactor);
   },
 });
@@ -44,7 +44,7 @@ const a_staffBash = new Card({
   title: "Staff Bash",
   cardMetadata: { nature: Nature.Attack },
   description: ([spd, dmg]) =>
-    `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/6 with (SPDDiff / 2)% Pierce.`,
+    `SPD+${spd}. Afterwards, DMG ${dmg}+SPD/6 with (SPDDiff / 2)% Pierce (max: 50%).`,
   emoji: CardEmoji.LAUFEN_CARD,
   effects: [2, 8],
   hpCost: 5,
@@ -70,7 +70,7 @@ const a_staffBash = new Card({
 
     const damage = calcEffect(1) + selfStats.SPD / 6;
     const spdDiffPercentage = (selfStats.SPD - opponentStats.SPD) / 100;
-    const pierceFactor = Math.max(spdDiffPercentage / 2, 0);
+    const pierceFactor = Math.min(Math.max(spdDiffPercentage / 2, 0), 0.5);
     flatAttack(damage, pierceFactor);
   },
 });

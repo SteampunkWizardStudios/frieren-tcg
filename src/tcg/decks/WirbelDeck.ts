@@ -343,8 +343,8 @@ export const a_concentratedZoltraakBolt = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.WIRBEL_CARD,
-  effects: [18],
-  hpCost: 12,
+  effects: [16],
+  hpCost: 10,
   cosmetic: {
     cardGif: mediaLinks.wirbel_concentratedZoltraakBolt_gif,
   },

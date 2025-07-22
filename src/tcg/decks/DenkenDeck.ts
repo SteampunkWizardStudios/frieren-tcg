@@ -13,7 +13,7 @@ const a_jab = new Card({
     `DEF+${def}. ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [1, 1, 1, 2],
-  hpCost: 2,
+  hpCost: 1,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -51,7 +51,7 @@ const a_hook = new Card({
   description: ([spd, atk, dmg]) => `SPD+${spd}. ATK+${atk}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 2],
-  hpCost: 2,
+  hpCost: 1,
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -84,7 +84,7 @@ const a_uppercut = new Card({
   description: ([atk, spd, dmg]) => `ATK+${atk}. SPD+${spd}. Deal ${dmg} DMG.`,
   emoji: CardEmoji.DENKEN_CARD,
   effects: [2, 1, 3],
-  hpCost: 3,
+  hpCost: 2,
   cosmetic: {
     cardGif: mediaLinks.denken_uppercut_gif,
   },
