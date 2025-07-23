@@ -34,14 +34,20 @@ const getHighestEmpowerFromCurrentDraws = (
   const currentDraws = game.additionalMetadata.currentPlayableMoves;
   const possible = currentDraws[characterIndex];
 
-  return Object.entries(possible).reduce<[string, Card]>(
-    ([, highest], [key, card]) => {
-      return card.empowerLevel > highest.empowerLevel
-        ? [key, card]
-        : [key, highest];
-    },
-    Object.entries(possible)[0]
-  )[1];
+  // Filter out cards with Nature.Default
+  const validEntries = Object.entries(possible).filter(
+    ([_, card]) => card.cardMetadata.nature !== Nature.Default
+  );
+
+  if (validEntries.length === 0) {
+    return null;
+  }
+
+  return validEntries.reduce<[string, Card]>(([, highest], [key, card]) => {
+    return card.empowerLevel > highest.empowerLevel
+      ? [key, card]
+      : [key, highest];
+  }, validEntries[0])[1];
 };
 
 export const a_telekinesis = new Card({
@@ -157,21 +163,36 @@ export const mental_fog = new Card({
         name: "Mental Fog",
         description: `Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, redraw 1 card.`,
         turnDuration: 6,
+        metadata: { mentalFog: true },
         activateEndOfTurnActionThisTurn: false,
         executeAfterCardRolls: ({ game, selfIndex }) => {
           const highestEmpoweredCard = getHighestEmpowerFromCurrentDraws(
             game,
             selfIndex
           );
-          highestEmpoweredCard.hpCost += cost;
-          if (!highestEmpoweredCard.onNotPlayed) {
-            highestEmpoweredCard.onNotPlayed = function (this: Card, context) {
-              const { name } = context;
-              sendToGameroom(
-                `${name} coudn't clear up the mental fog. ${name} redrew 1 card.`
-              );
-              redrawRandom(opponent, self);
-            };
+          if (highestEmpoweredCard) {
+            highestEmpoweredCard.hpCost += cost;
+            if (!highestEmpoweredCard.onNotPlayed) {
+              highestEmpoweredCard.onNotPlayed = function (
+                this: Card,
+                context
+              ) {
+                const { name } = context;
+                for (
+                  let i = 0;
+                  i <
+                  opponent.timedEffects.filter(
+                    (effect) => effect.metadata.mentalFog
+                  ).length;
+                  i++
+                ) {
+                  sendToGameroom(
+                    `${name} coudn't clear up the mental fog. ${name} redrew 1 card.`
+                  );
+                  redrawRandom(opponent, self);
+                }
+              };
+            }
           }
         },
         endOfTurnAction: (game, characterIndex) => {
@@ -179,8 +200,10 @@ export const mental_fog = new Card({
             game,
             characterIndex
           );
-          highestEmpoweredCard.hpCost -= cost;
-          highestEmpoweredCard.onNotPlayed = undefined;
+          if (highestEmpoweredCard) {
+            highestEmpoweredCard.hpCost -= cost;
+            highestEmpoweredCard.onNotPlayed = undefined;
+          }
         },
       })
     );

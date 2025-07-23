@@ -45,6 +45,7 @@ type TimedEffectMetadata = {
   ubelSpeedModifiers?: number;
 
   manaConcealment?: boolean;
+  mentalFog?: boolean;
   hypnoticCompulsion?: boolean;
 };
 

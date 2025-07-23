@@ -76,7 +76,7 @@ export default class CommonCardAction {
         ) {
           timedEffect.endOfTimedEffectAction(
             game,
-            1 - characterIndex,
+            characterIndex,
             messageCache
           );
         }
@@ -91,7 +91,7 @@ export default class CommonCardAction {
     context: GameMessageContext;
   }): Card {
     const { cardPool, empowerLevel, context } = props;
-    const { game, name, sendToGameroom, flatSelfStat } = context;
+    const { name, sendToGameroom, flatSelfStat } = context;
 
     sendToGameroom(`${name} found an interesting magic.`);
 
