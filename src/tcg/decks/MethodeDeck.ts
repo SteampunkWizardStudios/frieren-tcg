@@ -358,10 +358,12 @@ export const hypnoticCompulsion = new Card({
 
     opponent.skipTurn = true;
     opponent.additionalMetadata.accessToDefaultCardOptions = false;
-    opponent.additionalMetadata.nextCardToPlay = new Card({
-      ...opponentLastCard,
-      priority: -2,
-    });
+    if (opponentLastCard) {
+      opponent.additionalMetadata.nextCardToPlay = new Card({
+        ...opponentLastCard,
+        priority: -2,
+      });
+    }
 
     opponent.timedEffects.push(
       new TimedEffect({
