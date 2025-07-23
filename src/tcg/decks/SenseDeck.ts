@@ -114,7 +114,8 @@ export const hairBarrier = new Card({
 export const teaTime = new Card({
   title: "Tea Time",
   cardMetadata: { nature: Nature.Util, teaTime: 1 },
-  description: ([hp, oppHp]) => `Heal ${hp} for yourself and ${oppHp} for the opponent. Gain 1 Tea Time snack.`,
+  description: ([hp, oppHp]) =>
+    `Heal ${hp} for yourself and ${oppHp} for the opponent. Gain 1 Tea Time snack.`,
   effects: [6, 3],
   emoji: CardEmoji.HEART,
   cosmetic: {
@@ -130,7 +131,8 @@ export const teaTime = new Card({
 export const teaParty = new Card({
   title: "Tea Party",
   cardMetadata: { nature: Nature.Util, teaTime: 2 },
-  description: ([hp, oppHp]) => `Heal ${hp} for yourself and ${oppHp} for the opponent. Gain 2 Tea Time snacks.`,
+  description: ([hp, oppHp]) =>
+    `Heal ${hp} for yourself and ${oppHp} for the opponent. Gain 2 Tea Time snacks.`,
   effects: [10, 5],
   emoji: CardEmoji.HEART,
   cosmetic: {

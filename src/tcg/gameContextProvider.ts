@@ -77,6 +77,7 @@ function characterBasedContext(game: Game, characterIndex: number) {
     // Opponent properties
     opponent,
     opponentName: opponent.name,
+    opponentCharacterName: opponent.characterName,
     opponentIndex: 1 - characterIndex,
     opponentStats: opponent.stats.stats,
     opponentLastCard: game.additionalMetadata.lastUsedCards[1 - characterIndex],
