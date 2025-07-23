@@ -114,30 +114,32 @@ export const hairBarrier = new Card({
 export const teaTime = new Card({
   title: "Tea Time",
   cardMetadata: { nature: Nature.Util, teaTime: 1 },
-  description: ([hp]) => `Heal ${hp}. Gain 1 Tea Time snack.`,
-  effects: [7],
+  description: ([hp, oppHp]) => `Heal ${hp} for yourself and ${oppHp} for the opponent. Gain 1 Tea Time snack.`,
+  effects: [6, 3],
   emoji: CardEmoji.HEART,
   cosmetic: {
     cardGif: mediaLinks.sense_teaTime_gif,
   },
-  cardAction: ({ name, selfStat, sendToGameroom }) => {
+  cardAction: ({ name, selfStat, opponentStat, sendToGameroom }) => {
     sendToGameroom(`${name} enjoyed a refreshing cup of tea.`);
     selfStat(0, StatsEnum.HP);
+    opponentStat(1, StatsEnum.HP);
   },
 });
 
 export const teaParty = new Card({
   title: "Tea Party",
   cardMetadata: { nature: Nature.Util, teaTime: 2 },
-  description: ([hp]) => `Heal ${hp}. Gain 2 Tea Time snacks.`,
-  effects: [10],
+  description: ([hp, oppHp]) => `Heal ${hp} for yourself and ${oppHp} for the opponent. Gain 2 Tea Time snacks.`,
+  effects: [10, 5],
   emoji: CardEmoji.HEART,
   cosmetic: {
     cardGif: mediaLinks.sense_teaParty_gif,
   },
-  cardAction: ({ name, sendToGameroom, selfStat }) => {
+  cardAction: ({ name, sendToGameroom, selfStat, opponentStat }) => {
     sendToGameroom(`${name} held a tea party!`);
     selfStat(0, StatsEnum.HP);
+    opponentStat(1, StatsEnum.HP);
   },
 });
 
