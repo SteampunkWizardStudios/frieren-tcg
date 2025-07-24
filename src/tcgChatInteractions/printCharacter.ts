@@ -1,10 +1,10 @@
-import { formatAbility } from "@src/tcg/ability";
+import { formatAbility } from "@tcg/ability";
 import Character from "@tcg/character";
 import { statDetails } from "@tcg/formatting/emojis";
 import { ProgressBarBuilder } from "@tcg/formatting/percentBar";
 import { StatsEnum } from "@tcg/stats";
 import { printTheory } from "./printGameState";
-import Game from "@src/tcg/game";
+import Game from "@tcg/game";
 
 export const printCharacter = (
   game: Game,
@@ -81,9 +81,6 @@ export const printCharacter = (
   }
   if (meta.fernBarrage && meta.fernBarrage > 0) {
     printStack.push(`**Barrage**: ${meta.fernBarrage}`);
-  }
-  if (meta.flammeSigil && meta.flammeSigil > 0) {
-    printStack.push(`**Sigils**: ${meta.flammeSigil}`);
   }
   if (meta.forcedDiscards > 0) {
     printStack.push(`**Forced Discards**: ${meta.forcedDiscards}`);

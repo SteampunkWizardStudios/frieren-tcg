@@ -34,17 +34,23 @@ const getHighestEmpowerFromCurrentDraws = (
   const currentDraws = game.additionalMetadata.currentPlayableMoves;
   const possible = currentDraws[characterIndex];
 
-  return Object.entries(possible).reduce<[string, Card]>(
-    ([, highest], [key, card]) => {
-      return card.empowerLevel > highest.empowerLevel
-        ? [key, card]
-        : [key, highest];
-    },
-    Object.entries(possible)[0]
-  )[1];
+  // Filter out cards with Nature.Default
+  const validEntries = Object.entries(possible).filter(
+    ([_, card]) => card.cardMetadata.nature !== Nature.Default
+  );
+
+  if (validEntries.length === 0) {
+    return null;
+  }
+
+  return validEntries.reduce<[string, Card]>(([, highest], [key, card]) => {
+    return card.empowerLevel > highest.empowerLevel
+      ? [key, card]
+      : [key, highest];
+  }, validEntries[0])[1];
 };
 
-export const telekinesis = new Card({
+export const a_telekinesis = new Card({
   title: "Telekinesis",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
@@ -70,7 +76,7 @@ export const one_step_ahead = new Card({
   cardMetadata: { nature: Nature.Defense },
   emoji: CardEmoji.EDEL_CARD,
   description: ([def, spd, dmg]) =>
-    `TrueDEF+${def} for 1 turn. If this card is played the same turn your opponent plays a defensive card, their SPD-${spd}, they redraw 2 cards. Attack with DMG ${dmg} + Forced Discards, ignoring defense.`,
+    `TrueDEF+${def} for 1 turn. If this card is played the same turn your opponent plays a defensive card, their SPD-${spd}, they redraw 2 cards. Attack with DMG ${dmg}, ignoring defense.`,
   effects: [20, 2, 10],
   priority: 3,
   cardAction: ({
@@ -113,7 +119,7 @@ export const one_step_ahead = new Card({
     }
 
     sendToGameroom(
-      `${opponent.name} is playing a defensive card. ${name} read ${opponent.cosmetic.pronouns.possessive} mind!`
+      `${opponent.name} is playing a defensive card. ${name} read ${opponent.cosmetic.pronouns.possessive} intention!`
     );
     opponentStat(1, StatsEnum.SPD, -1);
 
@@ -127,14 +133,14 @@ export const one_step_ahead = new Card({
   },
 });
 
-const mental_fog = new Card({
+export const mental_fog = new Card({
   title: "Mental Fog",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
   emoji: CardEmoji.EDEL_CARD,
   description: ([spd, cost]) =>
     `Eye Contact+1. Opponent's SPD-${spd}. Their highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, the opponent redraws 1 card.`,
   effects: [2, 5],
-  hpCost: 10,
+  hpCost: 5,
   cosmetic: {
     cardGif: mediaLinks.edel_mental_fog_gif,
   },
@@ -157,21 +163,36 @@ const mental_fog = new Card({
         name: "Mental Fog",
         description: `Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, redraw 1 card.`,
         turnDuration: 6,
+        metadata: { mentalFog: true },
         activateEndOfTurnActionThisTurn: false,
         executeAfterCardRolls: ({ game, selfIndex }) => {
           const highestEmpoweredCard = getHighestEmpowerFromCurrentDraws(
             game,
             selfIndex
           );
-          highestEmpoweredCard.hpCost += cost;
-          if (!highestEmpoweredCard.onNotPlayed) {
-            highestEmpoweredCard.onNotPlayed = function (this: Card, context) {
-              const { name } = context;
-              sendToGameroom(
-                `${name} coudn't clear up the mental fog. ${name} redrew 1 card.`
-              );
-              redrawRandom(opponent, self);
-            };
+          if (highestEmpoweredCard) {
+            highestEmpoweredCard.hpCost += cost;
+            if (!highestEmpoweredCard.onNotPlayed) {
+              highestEmpoweredCard.onNotPlayed = function (
+                this: Card,
+                context
+              ) {
+                const { name } = context;
+                for (
+                  let i = 0;
+                  i <
+                  opponent.timedEffects.filter(
+                    (effect) => effect.metadata.mentalFog
+                  ).length;
+                  i++
+                ) {
+                  sendToGameroom(
+                    `${name} coudn't clear up the mental fog. ${name} redrew 1 card.`
+                  );
+                  redrawRandom(opponent, self);
+                }
+              };
+            }
           }
         },
         endOfTurnAction: (game, characterIndex) => {
@@ -179,15 +200,17 @@ const mental_fog = new Card({
             game,
             characterIndex
           );
-          highestEmpoweredCard.hpCost -= cost;
-          highestEmpoweredCard.onNotPlayed = undefined;
+          if (highestEmpoweredCard) {
+            highestEmpoweredCard.hpCost -= cost;
+            highestEmpoweredCard.onNotPlayed = undefined;
+          }
         },
       })
     );
   },
 });
 
-const clear_mind = new Card({
+export const clear_mind = new Card({
   title: "Clear Mind",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
   emoji: CardEmoji.EDEL_CARD,
@@ -214,7 +237,7 @@ const clear_mind = new Card({
   },
 });
 
-const hypnosis_sleep = new Card({
+export const hypnosis_sleep = new Card({
   title: "Hypnosis: *Sleep*",
   cardMetadata: { nature: Nature.Util, hideEmpower: true, edelEyeContact: 2 },
   emoji: CardEmoji.EDEL_CARD,
@@ -228,7 +251,7 @@ const hypnosis_sleep = new Card({
   },
 });
 
-const hypnosis_mesmerize = new Card({
+export const hypnosis_mesmerize = new Card({
   title: "Hypnosis: *Mesmerize*",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 2 },
   emoji: CardEmoji.EDEL_CARD,
@@ -244,7 +267,7 @@ const hypnosis_mesmerize = new Card({
   },
 });
 
-const hypnosis_weaken = new Card({
+export const hypnosis_weaken = new Card({
   title: "Hypnosis: *Weaken*",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 2 },
   emoji: CardEmoji.EDEL_CARD,
@@ -260,7 +283,7 @@ const hypnosis_weaken = new Card({
   },
 });
 
-const kneel = new Card({
+export const a_kneel = new Card({
   title: "*Kneel!*",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.EDEL_CARD,
@@ -302,14 +325,14 @@ const kneel = new Card({
 });
 
 const edelDeck = [
-  { card: telekinesis, count: 3 },
+  { card: a_telekinesis, count: 3 },
   { card: one_step_ahead, count: 2 },
   { card: mental_fog, count: 2 },
   { card: clear_mind, count: 2 },
   { card: hypnosis_sleep, count: 2 },
   { card: hypnosis_mesmerize, count: 2 },
   { card: hypnosis_weaken, count: 2 },
-  { card: kneel, count: 1 },
+  { card: a_kneel, count: 1 },
 ];
 
 export default edelDeck;

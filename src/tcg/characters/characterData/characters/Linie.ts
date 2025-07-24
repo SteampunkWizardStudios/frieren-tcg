@@ -6,9 +6,9 @@ import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
-import mediaLinks from "@src/tcg/formatting/mediaLinks";
+import mediaLinks from "@tcg/formatting/mediaLinks";
 
-const LINIE_CHAIN_BONUS = 0.08;
+const LINIE_CHAIN_BONUS = 0.1;
 
 const linieStats = new Stats({
   [StatsEnum.HP]: 95.0,

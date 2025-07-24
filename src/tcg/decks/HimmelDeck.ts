@@ -18,7 +18,7 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
     cardGif:
       "https://cdn.discordapp.com/attachments/1360969158623232300/1362092606695145482/GIF_1369578971.gif?ex=68086357&is=680711d7&hm=07c26c17a9a859865c2f107f8358b50df98cc49d49ed0daa2f659c6acb494f1e&",
   },
-  effects: [7, 1],
+  effects: [7],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -73,7 +73,7 @@ const a_FrierenBackMeUp = new Card({
   description: ([dmg]) =>
     `Frieren attacks for ${dmg} DMG. For the next 4 turn ends, Frieren attacks for an additional ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [3, 2],
+  effects: [4],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -336,7 +336,7 @@ const eisenHoldTheLine = new Card({
   cardMetadata: { nature: Nature.Util },
   description: ([def]) => `Eisen holds the line. DEF+${def} for 4 turns.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [3],
+  effects: [4],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -443,7 +443,7 @@ const a_heiterThreeSpears = new Card({
   description: ([heal]) =>
     `Heiter casts Three Spears of the Goddess! At next 3 turn's end, deal ${heal} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [5],
+  effects: [6],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -493,7 +493,7 @@ const heiterTrustYou = new Card({
   description: ([atkSpd]) =>
     `Heiter supports the party. ATK+${atkSpd}, SPD+${atkSpd} for 4 turns.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [3],
+  effects: [4],
   cardAction: function (
     this: Card,
     { game, selfIndex: characterIndex, messageCache }
@@ -584,36 +584,43 @@ export const quickBlock = new Card({
 const rally = new Card({
   title: "Rally",
   cardMetadata: { nature: Nature.Util },
-  description: ([stat, lessStat]) =>
-    `ATK+${stat}. DEF+${stat}. SPD+${stat}. An additional ATK+${lessStat}, DEF+${lessStat}, SPD+${lessStat} per ally active, or per active Timed Effect if not used by Himmel.`,
+  description: ([hp, lessHp, stat, lessStat]) =>
+    `HP+${hp}. ATK+${stat}. DEF+${stat}. SPD+${stat}. An additional HP+${lessHp}, ATK+${lessStat}, DEF+${lessStat}, SPD+${lessStat} per ally active, or per active Timed Effect if not used by Himmel.`,
   emoji: CardEmoji.HIMMEL_CARD,
-  effects: [1.5, 0.5],
+  effects: [2, 1, 1, 0.5],
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { game, selfIndex: characterIndex, messageCache, calcEffect, flatSelfStat }
   ) {
     const character = game.characters[characterIndex];
     const isHimmel = character.characterName === CharacterName.Himmel;
+    let activeAllies;
     if (isHimmel) {
       messageCache.push(
         `${character.name} rallied ${character.cosmetic.pronouns.possessive} allies!`,
         TCGThread.Gameroom
       );
+      activeAllies = character.timedEffects.filter(
+        (effect) =>
+          effect.metadata.frieren ||
+          effect.metadata.heiter ||
+          effect.metadata.eisen
+      ).length;
     } else {
       messageCache.push(
         `${character.name} rallied ${character.cosmetic.pronouns.reflexive}.`,
         TCGThread.Gameroom
       );
+      activeAllies = character.timedEffects.length;
     }
 
-    const activeAllies = character.timedEffects.length;
-    const stat =
-      this.calculateEffectValue(this.effects[0]) +
-      activeAllies * this.calculateEffectValue(this.effects[1]);
+    const hp = calcEffect(0) + activeAllies * calcEffect(1);
+    const stat = calcEffect(2) + activeAllies * calcEffect(3);
 
-    character.adjustStat(stat, StatsEnum.ATK, game);
-    character.adjustStat(stat, StatsEnum.DEF, game);
-    character.adjustStat(stat, StatsEnum.SPD, game);
+    flatSelfStat(hp, StatsEnum.HP);
+    flatSelfStat(stat, StatsEnum.ATK);
+    flatSelfStat(stat, StatsEnum.DEF);
+    flatSelfStat(stat, StatsEnum.SPD);
   },
 });
 

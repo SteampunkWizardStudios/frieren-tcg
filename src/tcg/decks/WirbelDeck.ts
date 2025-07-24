@@ -80,7 +80,7 @@ export const tacticalRetreat = new Card({
 export const scharfJubelade = new Card({
   title: "Scharf: Barrier of Steel Petals - Jubelade",
   cardMetadata: { nature: Nature.Util },
-  description: ([def]) => `Increases DEF by ${def} for 3 turns.`,
+  description: ([def]) => `Increases TrueDEF by ${def} for 3 turns.`,
   effects: [4],
   emoji: CardEmoji.WIRBEL_CARD,
   cosmetic: {
@@ -100,18 +100,18 @@ export const scharfJubelade = new Card({
     }
 
     const def = calcEffect(0);
-    selfStat(0, StatsEnum.DEF);
+    selfStat(0, StatsEnum.TrueDEF);
 
     self.timedEffects.push(
       new TimedEffect({
         name: "Barrier of Steel Petals - Jubelade",
-        description: `Increases DEF by ${def}.`,
+        description: `Increases TrueDEF by ${def}.`,
         priority: -1,
         turnDuration: 3,
         metadata: { removableBySorganeil: true },
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          self.adjustStat(-1 * def, StatsEnum.DEF, game);
+          self.adjustStat(-1 * def, StatsEnum.TrueDEF, game);
         },
       })
     );
@@ -343,8 +343,8 @@ export const a_concentratedZoltraakBolt = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `DMG ${dmg}.`,
   emoji: CardEmoji.WIRBEL_CARD,
-  effects: [18],
-  hpCost: 12,
+  effects: [16],
+  hpCost: 10,
   cosmetic: {
     cardGif: mediaLinks.wirbel_concentratedZoltraakBolt_gif,
   },
@@ -363,11 +363,11 @@ const wirbelDeck = [
   { card: tacticalRetreat, count: 2 },
   { card: emergencyDefensiveBarrier, count: 2 },
   { card: scharfJubelade, count: 2 },
-  { card: captainsOrder, count: 3 },
+  { card: captainsOrder, count: 2 },
   { card: a_spearRush, count: 2 },
   { card: a_ehreDoragate, count: 2 },
   { card: perfectSorganeil, count: 2 },
-  { card: a_concentratedZoltraakBolt, count: 1 },
+  { card: a_concentratedZoltraakBolt, count: 2 },
 ];
 
 export default wirbelDeck;

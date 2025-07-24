@@ -8,7 +8,7 @@ export const a_hairWhip = new Card({
   title: "Hair Whip",
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) => `DEF+${def}. Afterwards, DMG ${dmg}+DEF/4.`,
-  effects: [2, 7],
+  effects: [3, 7],
   hpCost: 4,
   emoji: CardEmoji.PUNCH,
   cardAction: ({
@@ -33,7 +33,7 @@ export const sharpen = new Card({
   title: "Sharpen",
   cardMetadata: { nature: Nature.Util },
   description: ([def, atk, spd]) => `DEF+${def}. ATK+${atk}. SPD+${spd}`,
-  effects: [2, 2, 2],
+  effects: [1, 2, 2],
   hpCost: 3,
   emoji: CardEmoji.PUNCH,
   cardAction: ({ name, possessive, sendToGameroom, selfStat }) => {
@@ -50,7 +50,7 @@ export const a_pierce = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([def, dmg]) =>
     `DEF+${def}. Afterwards, DMG ${dmg} + (DEF/4). Pierces through 1/4 of the opponent's defense.`,
-  effects: [2, 10],
+  effects: [1, 10],
   hpCost: 7,
   emoji: CardEmoji.PUNCH,
   cardAction: ({
@@ -114,68 +114,34 @@ export const hairBarrier = new Card({
 export const teaTime = new Card({
   title: "Tea Time",
   cardMetadata: { nature: Nature.Util, teaTime: 1 },
-  description: ([spd, hp]) =>
-    `SPD+${spd}. Empower both characters' hands. Heal ${hp} for both characters. Gain 1 Tea Time snack.`,
-  effects: [1, 4],
+  description: ([hp, oppHp]) =>
+    `Heal ${hp} for yourself and ${oppHp} for the opponent. Gain 1 Tea Time snack.`,
+  effects: [6, 3],
   emoji: CardEmoji.HEART,
   cosmetic: {
     cardGif: mediaLinks.sense_teaTime_gif,
   },
-  cardAction: ({
-    self,
-    opponent,
-    name,
-    selfStat,
-    opponentStat,
-    sendToGameroom,
-  }) => {
-    sendToGameroom(
-      `${name} and ${opponent.name} enjoyed a refreshing cup of tea. Both characters' hands are empowered!`
-    );
-
-    selfStat(0, StatsEnum.SPD);
-
-    self.empowerHand();
-    opponent.empowerHand();
-
+  cardAction: ({ name, selfStat, opponentStat, sendToGameroom }) => {
+    sendToGameroom(`${name} enjoyed a refreshing cup of tea.`);
     selfStat(0, StatsEnum.HP);
-    opponentStat(0, StatsEnum.HP);
+    opponentStat(1, StatsEnum.HP);
   },
 });
 
 export const teaParty = new Card({
   title: "Tea Party",
   cardMetadata: { nature: Nature.Util, teaTime: 2 },
-  description: ([spd, hp]) =>
-    `SPD+${spd}. Empower both characters' hands twice. Heal ${hp} for both characters. Gain 2 Tea Time snacks.`,
-  effects: [2, 7],
-  emoji: CardEmoji.RANDOM,
+  description: ([hp, oppHp]) =>
+    `Heal ${hp} for yourself and ${oppHp} for the opponent. Gain 2 Tea Time snacks.`,
+  effects: [10, 5],
+  emoji: CardEmoji.HEART,
   cosmetic: {
     cardGif: mediaLinks.sense_teaParty_gif,
   },
-  cardAction: ({
-    game,
-    self,
-    opponent,
-    name,
-    selfStat,
-    sendToGameroom,
-    calcEffect,
-  }) => {
-    sendToGameroom(
-      `${name} and ${opponent.name} held a tea party! Both characters' hands are greatly empowered!`
-    );
-
-    selfStat(0, StatsEnum.SPD);
-
-    for (let i = 0; i < 2; i++) {
-      self.empowerHand();
-      opponent.empowerHand();
-    }
-
-    const hpHeal = calcEffect(1);
-    self.adjustStat(hpHeal, StatsEnum.HP, game);
-    opponent.adjustStat(hpHeal, StatsEnum.HP, game);
+  cardAction: ({ name, sendToGameroom, selfStat, opponentStat }) => {
+    sendToGameroom(`${name} held a tea party!`);
+    selfStat(0, StatsEnum.HP);
+    opponentStat(1, StatsEnum.HP);
   },
 });
 

@@ -5,6 +5,7 @@ import CommonCardAction from "@tcg/util/commonCardActions";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { manaDetection } from "./LinieDeck";
+import { CharacterName } from "../characters/metadata/CharacterName";
 
 export const a_fernZoltraak = new Card({
   title: "Zoltraak",
@@ -165,20 +166,32 @@ const a_fernConcentratedZoltraakSnipe = new Card({
 const disapprovingPout = new Card({
   title: "Disapproving Pout",
   cardMetadata: { nature: Nature.Util },
-  description: ([hp, oppAtkDecrease]) =>
-    `HP+${hp}. Opp's ATK-${oppAtkDecrease}.`,
+  description: ([hp, atk, oppAtkDecrease]) =>
+    `HP+${hp}. ATK+${atk}. Opp's ATK-${oppAtkDecrease}.`,
   emoji: CardEmoji.FERN_CARD,
-  effects: [3, 2],
+  effects: [3, 1, 2],
   cosmetic: {
     cardGif: "https://c.tenor.com/V1ad9v260E8AAAAd/tenor.gif",
   },
   cardAction: function (
     this: Card,
-    { name, sendToGameroom, selfStat, opponentStat }
+    {
+      name,
+      sendToGameroom,
+      selfStat,
+      opponentStat,
+      opponentName,
+      opponentCharacterName,
+    }
   ) {
     sendToGameroom(`${name} looks down on the opponent.`);
     selfStat(0, StatsEnum.HP);
-    opponentStat(1, StatsEnum.ATK, -1);
+    selfStat(1, StatsEnum.ATK);
+    opponentStat(2, StatsEnum.ATK, -1);
+    if (opponentCharacterName === CharacterName.Stark) {
+      sendToGameroom(`${opponentName} felt hurt...`);
+      opponentStat(0.01, StatsEnum.HP, -1);
+    }
   },
 });
 
@@ -242,15 +255,24 @@ export const manaConcealment = new Card({
         description: `Attacking moves receive Priority+1 and 50% Pierce.`,
         turnDuration: 2,
         priority: -1,
+        metadata: { manaConcealment: true },
         executeEndOfTimedEffectActionOnRemoval: true,
-        endOfTimedEffectAction: (_game, _characterIndex, messageCache) => {
-          messageCache.push(
-            `${character.name} unveiled ${character.cosmetic.pronouns.possessive} presence.`,
-            TCGThread.Gameroom
-          );
-          character.ability.abilitySelectedMoveModifierEffect = undefined;
-          character.additionalMetadata.pierceFactor = 0;
-          character.ability.abilityStartOfTurnEffect = undefined;
+        endOfTimedEffectAction: (game, characterIndex, messageCache) => {
+          const character = game.getCharacter(characterIndex);
+          if (
+            character.timedEffects.filter(
+              (effect) => effect.metadata.manaConcealment
+            ).length < 2
+          ) {
+            // only execute if character has no parallel mana concealment timed effect
+            messageCache.push(
+              `${character.name} unveiled ${character.cosmetic.pronouns.possessive} presence.`,
+              TCGThread.Gameroom
+            );
+            character.ability.abilitySelectedMoveModifierEffect = undefined;
+            character.additionalMetadata.pierceFactor = 0;
+            character.ability.abilityStartOfTurnEffect = undefined;
+          }
         },
       })
     );
@@ -304,7 +326,7 @@ export const commonDefensiveMagic = new Card({
   title: "Common Defensive Magic",
   cardMetadata: { nature: Nature.Defense },
   description: ([def]) =>
-    `Increases TrueDEF by ${def} until the end of the turn. Reduce 1 Barrage count.`,
+    `Increases TrueDEF by ${def} until the end of the turn.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [20],
   priority: 2,
@@ -314,26 +336,14 @@ export const commonDefensiveMagic = new Card({
   },
   cardAction: function (
     this: Card,
-    { game, selfIndex: characterIndex, messageCache }
+    { game, name, self, sendToGameroom, calcEffect }
   ) {
-    const character = game.getCharacter(characterIndex);
-    messageCache.push(
-      `${character.name} put up a common defensive spell.`,
-      TCGThread.Gameroom
-    );
+    sendToGameroom(`${name} put up a common defensive spell.`);
 
-    const def = this.calculateEffectValue(this.effects[0]);
-    character.adjustStat(def, StatsEnum.TrueDEF, game);
-    character.additionalMetadata.fernBarrage = Math.max(
-      0,
-      (character.additionalMetadata.fernBarrage ?? 0) - 1
-    );
-    messageCache.push(
-      `${character.name} lost 1 Barrage count. Current Barrage count: **${character.additionalMetadata.fernBarrage}**.`,
-      TCGThread.Gameroom
-    );
+    const def = calcEffect(0);
+    self.adjustStat(def, StatsEnum.TrueDEF, game);
 
-    character.timedEffects.push(
+    self.timedEffects.push(
       new TimedEffect({
         name: "Common Defensive Magic",
         description: `Increases TrueDEF by ${def} until the end of the turn.`,
@@ -341,7 +351,7 @@ export const commonDefensiveMagic = new Card({
         turnDuration: 1,
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex) => {
-          character.adjustStat(-def, StatsEnum.TrueDEF, game);
+          self.adjustStat(-def, StatsEnum.TrueDEF, game);
         },
       })
     );

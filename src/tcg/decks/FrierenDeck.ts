@@ -179,10 +179,12 @@ export const ordinaryDefensiveMagic = new Card({
   },
 });
 
+const HOM_HP_CAP = 25;
+
 export const a_theHeightOfMagicBase = new Card({
   title: `"The Height of Magic"`,
   description: ([dmg]) =>
-    `When used with HP <= 25, Priority+1. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1. Treat this card as "Spell to make a Field of Flowers" when used with HP > 25.`,
+    `When used with HP <= ${HOM_HP_CAP}, Priority+1. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1. Treat this card as "Spell to make a Field of Flowers+2" when used with HP > ${HOM_HP_CAP}.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl: mediaLinks.heightOfMagic_image,
@@ -190,15 +192,17 @@ export const a_theHeightOfMagicBase = new Card({
   },
   cardMetadata: { nature: Nature.Attack, signature: true },
   priority: 1,
-  effects: [30],
+  effects: [20],
   cardAction: function (
     this: Card,
     { game, self, name, selfStats, sendToGameroom, basicAttack }
   ) {
     sendToGameroom(`${name} used "The Height of Magic"`);
 
-    if (selfStats.HP > 25) {
-      sendToGameroom(`${name}'s HP is greater than 25. The move failed!`);
+    if (selfStats.HP > HOM_HP_CAP) {
+      sendToGameroom(
+        `${name}'s HP is greater than ${HOM_HP_CAP}. The move failed!`
+      );
       return;
     }
 
@@ -217,12 +221,12 @@ export const a_theHeightOfMagic = new Card({
   conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
     const character = game.characters[characterIndex];
 
-    if (character.stats.stats.HP > 25) {
+    if (character.stats.stats.HP > HOM_HP_CAP) {
       return new Card({
         ...fieldOfFlower,
         description: ([hp, endHp]) =>
-          `This card is treated as ${CardEmoji.FRIEREN_CARD} **"The Height of Magic"** if your HP is <= 25. Heal ${hp} HP. At the next 3 turn ends, heal ${endHp}.`,
-        empowerLevel: this.empowerLevel,
+          `This card is treated as ${CardEmoji.FRIEREN_CARD} **"The Height of Magic"** if your HP is <= ${HOM_HP_CAP}. Heal ${hp} HP. At the next 3 turn ends, heal ${endHp}.`,
+        empowerLevel: this.empowerLevel + 2,
         priority: 0,
       });
     } else {

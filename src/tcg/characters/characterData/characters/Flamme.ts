@@ -1,15 +1,14 @@
 import { CharacterData } from "../characterData";
 import Stats, { StatsEnum } from "@tcg/stats";
-import flammeDeck, { researchDecreaseSigil } from "@src/tcg/decks/FlammeDeck";
+import flammeDeck from "@tcg/decks/FlammeDeck";
 import { CharacterName } from "../../metadata/CharacterName";
 import { CardEmoji, CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
-import mediaLinks from "@src/tcg/formatting/mediaLinks";
+import mediaLinks from "@tcg/formatting/mediaLinks";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
-import Game from "@src/tcg/game";
-import Card, { Nature } from "@src/tcg/card";
+import Game from "@tcg/game";
+import Card, { Nature } from "@tcg/card";
 import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
-import TimedEffect from "@src/tcg/timedEffect";
 
 const flammeStats = new Stats({
   [StatsEnum.HP]: 100.0,
@@ -61,9 +60,9 @@ const Flamme = new CharacterData({
         *Pinnacle of Humanity's Magic*: Priority+100. ATK+**100** DEF+**100** SPD+**100**. Deal **100** DMG.`,
     subAbilities: [
       {
-        name: "Deceitful",
+        name: "All-Knowing",
         description:
-          "This character's stat is always displayed as 10/1/1/1. This character can also see past the opponent's Mana Suppression.",
+          "This character can see past the opponent's Mana Suppression.",
       },
     ],
     abilityAfterOwnCardUse: function (
@@ -95,57 +94,12 @@ const Flamme = new CharacterData({
         );
         character.deck.discardPile.push(a_pinnacleOfHumanitysMagic.clone());
       }
-
-      // sigil timed effects cleanup
-      character.additionalMetadata.flammeSigil ??= 0;
-      if (character.additionalMetadata.flammeSigil <= 0) {
-        const newTimedEffects: TimedEffect[] = [];
-        character.timedEffects.map((timedEffect) => {
-          if (!timedEffect.metadata.consumesFlammeSigil) {
-            newTimedEffects.push(timedEffect);
-          } else {
-            if (
-              timedEffect.executeEndOfTimedEffectActionOnRemoval &&
-              timedEffect.endOfTimedEffectAction
-            ) {
-              timedEffect.endOfTimedEffectAction(
-                game,
-                characterIndex,
-                messageCache
-              );
-            }
-          }
-        });
-        character.timedEffects = newTimedEffects;
-      }
-    },
-    // sigil sequence
-    abilityDefendEffect: (
-      game: Game,
-      characterIndex: number,
-      messageCache: MessageCache,
-      _attackDamage: number
-    ) => {
-      const character = game.getCharacter(characterIndex);
-      const lostFlammeSigil = character.timedEffects.filter(
-        (effect) => effect.metadata.consumesFlammeSigil
-      ).length;
-
-      if (lostFlammeSigil > 0) {
-        researchDecreaseSigil(
-          character,
-          messageCache,
-          lostFlammeSigil,
-          "The barriers stir."
-        );
-      }
     },
   },
   additionalMetadata: {
-    deceitful: true,
+    deceitful: false,
     ignoreManaSuppressed: true,
     defenderDamageScaling: 1,
-    flammeSigil: 3,
   },
 });
 

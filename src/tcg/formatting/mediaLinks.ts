@@ -14,6 +14,8 @@ const characterPortraits = {
     "https://cdn.discordapp.com/attachments/1346555621952192522/1346694607467184179/Laufen_anime_portrait.webp?ex=67dce516&is=67db9396&hm=c8439cdb36a948bfa707b18d46177518aac79300021391b77791d2ba30985947&",
   liniePortrait:
     "https://cdn.discordapp.com/attachments/1346555621952192522/1347897148330606643/Linie_anime_portrait.webp?ex=67dca7ca&is=67db564a&hm=5cf66096e541bb9495c1e5749765f31c013a3644e20e04f7fd0ce9e87dcb8b03&",
+  methodePortrait:
+    "https://static.wikia.nocookie.net/frieren/images/f/f5/Methode_anime_portrait.png/revision/latest?cb=20240213200512",
   seinPortrait:
     "https://cdn.discordapp.com/attachments/1346555621952192522/1347898000717910057/Sein_anime_portrait.webp?ex=67dca896&is=67db5716&hm=ce78236ebb64724705c48a5221039f22e546cd1c9f940aa0036003b8bc74e49b&",
   sensePortrait:
@@ -160,17 +162,47 @@ const linieCardLinks = {
     "https://cdn.discordapp.com/attachments/1374120144334487703/1383218233544544458/Record_2025_06_13_23_54_18_400.gif?ex=68568f9d&is=68553e1d&hm=5e505d4f193dee45cac1df4b52c54a27704a1638746127ae282a2559d4f74d4a&",
 };
 
+const denkenCardLinks = {
+  denken_uppercut_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364978489035460708/GIF_0836074812.gif?ex=680c4b87&is=680afa07&hm=84fd66beff9352aba9c037ff66d2b0e69219b34c0e3c9c5e62edbf96dc62a0f8&",
+  denken_waldgose_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364217876323500123/GIF_0112106003.gif?ex=6808de67&is=68078ce7&hm=53339631d41657c84bff7858a0d4ca127e5dd726db694b68d34f5d833a75c8ba&",
+  denken_daosdorg_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364218009102581871/GIF_4214490964.gif?ex=6808de87&is=68078d07&hm=dedf596f960aafe344c5eedec122d4dbd54c3b5c6f8b002b3cae75da891fdedf&",
+  denken_catastravia_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364218121669316608/GIF_1295476803.gif?ex=6808dea2&is=68078d22&hm=bdc2fd9b990ddf12a7cb0d6ad7b24dca2a24203773cd3896f0c53681dad85ed9&",
+  denken_defensive_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1396618395390050357/GIF_3626846158.gif?ex=687f667d&is=687e14fd&hm=0adf53c2354f5aaedbf33907ee36d9ea632d755d78704688a8d0d58f7322ea7d&",
+  denken_noPlaceToGiveUp_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364979223357296802/GIF_0406490421.gif?ex=680c4c36&is=680afab6&hm=cf5c0f9d7e3e14ec143a8b304c0d416868db25cb8de5a1f0b38cc4c7507df73d&",
+};
+
+const methodeCardLinks = {
+  methode_reversePolarity_gif:
+    "https://cdn.discordapp.com/attachments/1374120144334487703/1383220242444193833/Record_2025_06_14_00_01_59_586.gif?ex=686317bc&is=6861c63c&hm=ab9cf6576651efac8e246f52bd08cec46713fc8181e71c6d6a97f2ec93349ba3&",
+  methode_goddessMagic_gif:
+    "https://cdn.discordapp.com/attachments/1374120144334487703/1383221519039201370/Record_2025_06_14_00_07_38_188.gif?ex=686318ed&is=6861c76d&hm=bfcb7dc7cb601bdcea70bd7781a8c568ca435a4319796426b75993c105a81328&",
+  methode_restraintMagic_gif:
+    "https://cdn.discordapp.com/attachments/1374120144334487703/1383223333168087071/Record_2025_06_14_00_15_00_71.gif?ex=68631a9d&is=6861c91d&hm=73bb6e7882ab63e19e31b46e8a7551b858eae0f7771a59b7759f5c4df694d73a&",
+  methode_piercing_gif: "https://c.tenor.com/q7ffBv9OS-sAAAAd/tenor.gif",
+  methode_hypnoticCompulsion_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1396618033866211438/GIF_2404385183.gif?ex=687f6627&is=687e14a7&hm=c388e026d5468bbe089a941b13da3fddcedc02a9460bece2c3d3c210c40e9160&",
+};
+
 const mediaLinks = {
   ...characterPortraits,
   ...vangerisuCards,
 
   ...edelCardLinks,
+  ...flammeCardLinks,
   ...frierenCardLinks,
   ...senseCardLinks,
   ...stilleCardLinks,
   ...wirbelCardLinks,
   ...flammeCardLinks,
   ...linieCardLinks,
+  ...denkenCardLinks,
+  ...methodeCardLinks,
 } as const;
 
 export default mediaLinks;
