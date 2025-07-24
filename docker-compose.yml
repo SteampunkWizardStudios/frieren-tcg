@@ -1,8 +1,6 @@
 services:
   postgres:
     image: postgres:latest
-    ports: 
-      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -24,7 +22,7 @@ services:
     ports:
       - "3000:3000"
       #- "5555:5555"
-    depends_on: 
+    depends_on:
       postgres:
         condition: service_healthy
     environment:
@@ -38,22 +36,22 @@ services:
       - /app/node_modules
     restart: unless-stopped
 
-  prisma-studio:
-    image: node:lts-alpine3.17
-    working_dir: /usr/src/app
-    volumes:
-      - .:/usr/src/app
-    command: npx prisma studio --port 5555 --browser none
-    ports:
-      - "5555:5555"
-    env_file:
-      - .env
-    depends_on:
-      postgres:
-        condition: service_healthy
-      app:
-        condition: service_started
-    restart: unless-stopped
+  # prisma-studio:
+  #   image: node:lts-alpine3.17
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - .:/usr/src/app
+  #   command: npx prisma studio --port 5555 --browser none
+  #   ports:
+  #     - "5555:5555"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     app:
+  #       condition: service_started
+  #   restart: unless-stopped
 
 volumes:
   postgres_data:
