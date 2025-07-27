@@ -72,8 +72,11 @@ const auraCardLinks = {
 
   // update these later
   aura_stolenValor_gif:
-    "https://static.wikia.nocookie.net/frieren/images/5/5f/Aura_controls_a_knight_with_the_Scales_of_Obedience_EP9.png/revision/latest/scale-to-width-down/1000?cb=20241015200224",
-  aura_auserleseFailed_gif: "https://c.tenor.com/9Qn1YuTL-3EAAAAd/tenor.gif",
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1398992141392547840/IMG_7424-ezgif.com-optimize1.gif?ex=68876076&is=68860ef6&hm=db79eb23db02cafb113e710076ae724920da397deab12631b1bbd50fb192b0bb&",
+  aura_auserleseSucceeded_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1398992140578590780/IMG_7424-ezgif.com-optimize.gif?ex=68876076&is=68860ef6&hm=9ce48209b8825756ca48c38b6b0bfa04dcb4c65e5bdc5eccc4f4d9591ff1d1dc&",
+  aura_auserleseFailed_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1398989032825815040/IMG_7427.gif?ex=68875d91&is=68860c11&hm=3568234b9eabaa5a06ea25a70b0baa412e3113633f4b774271db70d8a5f8a73c&",
 } as const;
 
 const edelCardLinks = {

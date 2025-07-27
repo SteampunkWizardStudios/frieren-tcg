@@ -409,6 +409,9 @@ export const auserlese = new Card({
           sendToGameroom(`## **HP diff**: ${hpDiffAfter}`);
 
           if (hpDiffAfter <= -50) {
+            if (!game.gameSettings.liteMode) {
+              sendToGameroom(`[⠀](${mediaLinks.aura_auserleseSucceeded_gif})`);
+            }
             sendToGameroom(`${opponent.name} fell into ${name}'s control!`);
             game.additionalMetadata.forfeited[opponentIndex] = true;
           } else if (hpDiffAfter >= 50) {
