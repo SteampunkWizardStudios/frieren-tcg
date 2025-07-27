@@ -224,7 +224,7 @@ const loyalty = new Card({
     self.timedEffects.push(
       new TimedEffect({
         name: "Loyalty",
-        description: `DEF+${def}. Once per turn, if hit, counter attack for ${counterDamage} + 1x #Shieldbearers.`,
+        description: `DEF+${def}. Once per turn, if hit, counter attack for ${counterDamage} + ${perShieldCounterDamage}x #Shieldbearers.`,
         turnDuration: 3,
         priority: -1,
         executeEndOfTimedEffectActionOnRemoval: true,
