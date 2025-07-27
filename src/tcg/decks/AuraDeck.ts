@@ -4,6 +4,7 @@ import TimedEffect from "@tcg/timedEffect";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import { AuraPlatoon } from "../characters/characterData/characterUtil/auraPlatoon";
 import Rolls from "../util/rolls";
+import mediaLinks from "../formatting/mediaLinks";
 
 const rusted_blades = new Card({
   title: "Rusted Blades",
@@ -11,6 +12,9 @@ const rusted_blades = new Card({
   description: ([atk]) =>
     `ATK+${atk}. Army Strength+10. Summon 1 Swordsmen platoon.`,
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_rustedBlades_gif,
+  },
   effects: [2],
   hpCost: 2,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
@@ -26,6 +30,9 @@ const weathered_shields = new Card({
   description: ([def]) =>
     `DEF+${def}. Army Strength+10. Summon 1 Shieldbearers platoon.`,
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_weatheredShields_gif,
+  },
   effects: [2],
   hpCost: 2,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
@@ -41,6 +48,9 @@ const broken_arrows = new Card({
   description: ([spd]) =>
     `SPD+${spd}. Army Strength+10. Summon 1 Archers platoon.`,
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_brokenArrows_gif,
+  },
   effects: [2],
   hpCost: 2,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
@@ -56,6 +66,9 @@ const fallen_empire = new Card({
   description: ([stat]) =>
     `ATK+${stat} DEF+${stat} SPD+${stat}. Army Strength+30. Summons 1 Swordsmen, 1 Shieldbearer and 1 Archer platoon.`,
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_fallenEmpire_gif,
+  },
   effects: [2],
   hpCost: 10,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
@@ -76,6 +89,9 @@ const retreat = new Card({
   description: () =>
     `Until the end of the turn, halve ATK. All damage taken that turn will be taken by the Army instead. This move fails if you have no army.`,
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_retreat_gif,
+  },
   effects: [],
   priority: 2,
   cardAction: function (
@@ -116,6 +132,9 @@ const rot = new Card({
   title: "Rot",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_rot_gif,
+  },
   description: ([stat, dmg]) =>
     `For the next 3 turns, ATK+${stat} and SPD+${stat}. Each hit by Swordsmen and Archers platoon deal an additional ${dmg} flat damage. At each turn end, HP-3.`,
   effects: [2, 1],
@@ -161,6 +180,9 @@ const loyalty = new Card({
   title: "Loyalty",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_loyalty_gif,
+  },
   description: ([def, dmg, shieldDmg]) =>
     `For the next 3 turns, DEF+${def}. Once per turn, if hit, counter attack for ${dmg} + ${shieldDmg}x #Shieldbearers. At each turn end, HP-3.`,
   effects: [3, 4, 1],
@@ -227,6 +249,9 @@ const decapitate = new Card({
   description: ([dmg, swrdDmg]) =>
     `Army Strength -30. DMG ${dmg} + ${swrdDmg}x #Swordsmen. Remove all Swordsmen afterwards.`,
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_decapitate_gif,
+  },
   effects: [14, 2],
   hpCost: 8,
   cardAction: function (
@@ -264,6 +289,9 @@ const stolen_valor = new Card({
   description: ([hp, shieldsHeal]) =>
     `Army Strength -30. Heal ${hp}HP + ${shieldsHeal}x #Shieldsbearer. Remove all Shieldsbearer afterwards.`,
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_stolenValor_gif,
+  },
   effects: [10, 2],
   cardAction: function (
     this: Card,
@@ -294,6 +322,9 @@ const heartbreaker = new Card({
   description: ([dmg, archersDmg]) =>
     `Army Strength -30. DMG ${dmg} + ${archersDmg}x #Archers with 50% Pierce. Remove all Archers afterwards.`,
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_heartbreaker_gif,
+  },
   effects: [7, 2],
   hpCost: 8,
   cardAction: function (
@@ -324,6 +355,9 @@ export const auserlese = new Card({
     `Roll a D100. If the result of the role > Opp's HP - Your HP, HP-10, use your opponent's move as if it's your own. At this turn's end, if Your HP - Opp's HP >= 50, you win, and if Opp's HP - Your HP >= 50, you lose.`,
   priority: 13,
   emoji: CardEmoji.AURA_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.aura_auserlese_gif,
+  },
   effects: [],
   cardAction: function (
     this: Card,
@@ -347,6 +381,9 @@ export const auserlese = new Card({
     sendToGameroom(`# Roll: ${roll}`);
 
     if (roll > hpDiff) {
+      if (!game.gameSettings.liteMode) {
+        sendToGameroom(`[⠀](${mediaLinks.aura_auserleseContextShifted_gif})`);
+      }
       sendToGameroom(`${name} forced a misdirection!`);
       game.additionalMetadata.auserleseContextReversal[opponentIndex] = true;
       flatSelfStat(10, StatsEnum.HP, -1);
@@ -375,6 +412,9 @@ export const auserlese = new Card({
             sendToGameroom(`${opponent.name} fell into ${name}'s control!`);
             game.additionalMetadata.forfeited[opponentIndex] = true;
           } else if (hpDiffAfter >= 50) {
+            if (!game.gameSettings.liteMode) {
+              sendToGameroom(`[⠀](${mediaLinks.aura_auserleseFailed_gif})`);
+            }
             sendToGameroom(`${name} is shaken with fear...`);
             game.additionalMetadata.forfeited[characterIndex] = true;
           } else {
