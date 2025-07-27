@@ -5,7 +5,6 @@ import Stats from "@tcg/stats";
 import Card from "@tcg/card";
 import { CharacterAdditionalMetadata } from "@tcg/additionalMetadata/characterAdditionalMetadata";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
-import { AuraPlatoon } from "./characterUtil/auraPlatoon";
 
 const defaultMetadata: CharacterAdditionalMetadata = {
   manaSuppressed: false,
@@ -20,11 +19,6 @@ const defaultMetadata: CharacterAdditionalMetadata = {
   rollsCount: 4,
   methodeFindsCute: false,
   auraPlatoonQueue: [],
-  auraPlatoonCount: {
-    [AuraPlatoon.Swordsmen]: 0,
-    [AuraPlatoon.Shieldbearers]: 0,
-    [AuraPlatoon.Archers]: 0,
-  },
   auraArmyDamageAbsorbtion: 0,
 
   hidden: false,

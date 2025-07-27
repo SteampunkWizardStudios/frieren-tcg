@@ -212,8 +212,6 @@ export default class Game {
       }
     }
 
-    // there should only be 1 counter trigger per attack step
-    // essentially, if attacker not countered this attack step, perform the counter
     if (
       !this.additionalMetadata.attackCountered[attackProps.attackerIndex] &&
       defender.ability.abilityCounterEffect

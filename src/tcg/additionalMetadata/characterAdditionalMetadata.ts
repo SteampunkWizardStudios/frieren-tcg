@@ -36,10 +36,8 @@ export type CharacterAdditionalMetadata = {
   auraArmyDamageAbsorbed?: boolean;
   auraArmyDamageAbsorbtion: number;
   auraPlatoonQueue: AuraPlatoon[];
-  auraPlatoonCount: {
-    [key in AuraPlatoon]: number;
-  };
   auraRotDamage?: number;
+  counteredAttackThisTurn?: boolean;
 
   hidden?: boolean;
   publicDiscards: boolean;

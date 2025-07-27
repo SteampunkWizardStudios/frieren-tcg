@@ -16,7 +16,6 @@ const rusted_blades = new Card({
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth a swordsmen platoon.`);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Swordsmen);
-    self.additionalMetadata.auraPlatoonCount.Swordsmen += 1;
     selfStat(0, StatsEnum.ATK);
   },
 });
@@ -32,7 +31,6 @@ const weathered_shields = new Card({
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth a shieldbearers platoon.`);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Shieldbearers);
-    self.additionalMetadata.auraPlatoonCount.Shieldbearers += 1;
     selfStat(0, StatsEnum.DEF);
   },
 });
@@ -48,7 +46,6 @@ const broken_arrows = new Card({
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth an archers platoon.`);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Archers);
-    self.additionalMetadata.auraPlatoonCount.Archers += 1;
     selfStat(0, StatsEnum.SPD);
   },
 });
@@ -66,10 +63,6 @@ const fallen_empire = new Card({
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Swordsmen);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Shieldbearers);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Archers);
-
-    self.additionalMetadata.auraPlatoonCount.Swordsmen += 1;
-    self.additionalMetadata.auraPlatoonCount.Shieldbearers += 1;
-    self.additionalMetadata.auraPlatoonCount.Archers += 1;
 
     selfStat(0, StatsEnum.ATK);
     selfStat(0, StatsEnum.DEF);
@@ -184,6 +177,7 @@ const loyalty = new Card({
     const counterDamage = calcEffect(1);
 
     flatSelfStat(def, StatsEnum.DEF);
+    self.additionalMetadata.counteredAttackThisTurn = false;
 
     self.ability.abilityCounterEffect = (
       _game,
@@ -191,10 +185,16 @@ const loyalty = new Card({
       _messageCache,
       _attackDamage
     ) => {
-      sendToGameroom(`${name}'s army countered the attack.`);
-      const shieldbearersCount =
-        self.additionalMetadata.auraPlatoonCount.Shieldbearers;
-      flatAttack(counterDamage + shieldbearersCount);
+      if (!self.additionalMetadata.counteredAttackThisTurn) {
+        sendToGameroom(`${name}'s army countered the attack.`);
+        const shieldbearersCount =
+          self.additionalMetadata.auraPlatoonQueue.filter(
+            (p) => p === AuraPlatoon.Shieldbearers
+          ).length;
+        flatAttack(counterDamage + shieldbearersCount);
+
+        self.additionalMetadata.counteredAttackThisTurn = true;
+      }
     };
 
     self.timedEffects.push(
@@ -202,10 +202,12 @@ const loyalty = new Card({
         name: "Loyalty",
         description: `DEF+${def}. Once per turn, if hit, counter attack for ${counterDamage} + 1x #Shieldbearers.`,
         turnDuration: 3,
+        priority: -1,
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex) => {
           sendToGameroom(`${name} expenses ${possessive} mana...`);
           flatSelfStat(3, StatsEnum.HP, -1);
+          self.additionalMetadata.counteredAttackThisTurn = false;
         },
         endOfTimedEffectAction: (_game, _characterIndex) => {
           sendToGameroom("The army falls apart.");
@@ -229,13 +231,14 @@ const decapitate = new Card({
     this: Card,
     { self, calcEffect, name, possessive, sendToGameroom, flatAttack }
   ) {
-    const damage =
-      calcEffect(0) + self.additionalMetadata.auraPlatoonCount.Swordsmen * 2;
+    const swordsmenCount = self.additionalMetadata.auraPlatoonQueue.filter(
+      (p) => p === AuraPlatoon.Swordsmen
+    ).length;
+    const damage = calcEffect(0) + swordsmenCount * 2;
     sendToGameroom(`${name} heaved ${possessive} blade.`);
     flatAttack(damage);
 
     // remove swordsmen
-    self.additionalMetadata.auraPlatoonCount.Swordsmen = 0;
     self.additionalMetadata.auraPlatoonQueue =
       self.additionalMetadata.auraPlatoonQueue.filter(
         (platoon) => platoon !== AuraPlatoon.Swordsmen
@@ -254,16 +257,16 @@ const stolen_valor = new Card({
     this: Card,
     { self, calcEffect, name, possessive, sendToGameroom, flatSelfStat }
   ) {
-    const heal =
-      calcEffect(0) +
-      self.additionalMetadata.auraPlatoonCount.Shieldbearers * 2;
+    const shieldbearersCount = self.additionalMetadata.auraPlatoonQueue.filter(
+      (p) => p === AuraPlatoon.Shieldbearers
+    ).length;
+    const heal = calcEffect(0) + shieldbearersCount * 2;
     sendToGameroom(
       `${name} absorbed what remains of ${possessive} army's lifeforce.`
     );
     flatSelfStat(heal, StatsEnum.HP);
 
     // remove shieldsbearers
-    self.additionalMetadata.auraPlatoonCount.Shieldbearers = 0;
     self.additionalMetadata.auraPlatoonQueue =
       self.additionalMetadata.auraPlatoonQueue.filter(
         (platoon) => platoon !== AuraPlatoon.Shieldbearers
@@ -283,13 +286,14 @@ const heartbreaker = new Card({
     this: Card,
     { self, calcEffect, name, sendToGameroom, flatAttack }
   ) {
-    const damage =
-      calcEffect(0) + self.additionalMetadata.auraPlatoonCount.Archers * 2;
+    const archersCount = self.additionalMetadata.auraPlatoonQueue.filter(
+      (p) => p === AuraPlatoon.Archers
+    ).length;
+    const damage = calcEffect(0) + archersCount * 2;
     sendToGameroom(`${name} aims for the heart.`);
     flatAttack(damage, 0.5);
 
     // remove archers
-    self.additionalMetadata.auraPlatoonCount.Archers = 0;
     self.additionalMetadata.auraPlatoonQueue =
       self.additionalMetadata.auraPlatoonQueue.filter(
         (platoon) => platoon !== AuraPlatoon.Archers
@@ -299,7 +303,7 @@ const heartbreaker = new Card({
 
 export const auserlese = new Card({
   title: "Scales of Obedience - Auserlese",
-  cardMetadata: { nature: Nature.Util, signature: true },
+  cardMetadata: { nature: Nature.Util, signature: true, hideEmpower: true },
   description: () =>
     `Roll a D100. If the result of the role > Opp's HP - Your HP, HP-10, change the target of your opponent's move that round. At this turn's end, if Your HP - Opp's HP >= 50, you win, and if Opp's HP - Your HP >= 50, you lose.`,
   priority: 13,

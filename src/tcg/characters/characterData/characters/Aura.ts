@@ -14,7 +14,7 @@ import auraDeck from "@/src/tcg/decks/AuraDeck";
 const INITIAL_ARMY_STRENGTH = 60;
 
 const INITIAL_SWORDSMEN_COUNT = 2;
-export const SWORDSMEN_DAMAGE = 2;
+export const SWORDSMEN_DAMAGE = 3;
 
 const INITIAL_SHIELDBEARERS_COUNT = 2;
 export const SHIELDBEARERS_STRENGTH_RECOVERY = 2;
@@ -54,12 +54,11 @@ const Aura = new CharacterData({
         self.adjustStat(INITIAL_ARMY_STRENGTH, StatsEnum.Ability, game);
 
         const initialPlatoons = [
-          AuraPlatoon.Swordsmen,
-          AuraPlatoon.Swordsmen,
-          AuraPlatoon.Shieldbearers,
-          AuraPlatoon.Shieldbearers,
-          AuraPlatoon.Archers,
-          AuraPlatoon.Archers,
+          ...new Array(INITIAL_SWORDSMEN_COUNT).fill(AuraPlatoon.Swordsmen),
+          ...new Array(INITIAL_SHIELDBEARERS_COUNT).fill(
+            AuraPlatoon.Shieldbearers
+          ),
+          ...new Array(INITIAL_ARCHERS_COUNT).fill(AuraPlatoon.Archers),
         ];
         for (let i = initialPlatoons.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
@@ -68,86 +67,90 @@ const Aura = new CharacterData({
             initialPlatoons[i],
           ];
         }
-
-        // Add to queue and update counts
         self.additionalMetadata.auraPlatoonQueue = initialPlatoons;
-        self.additionalMetadata.auraPlatoonCount[AuraPlatoon.Swordsmen] =
-          INITIAL_SWORDSMEN_COUNT;
-        self.additionalMetadata.auraPlatoonCount[AuraPlatoon.Shieldbearers] =
-          INITIAL_SHIELDBEARERS_COUNT;
-        self.additionalMetadata.auraPlatoonCount[AuraPlatoon.Archers] =
-          INITIAL_ARCHERS_COUNT;
       }
 
       // apply effect if turn not skipped
       if (!self.skipTurn) {
         const opponent = game.getCharacter(1 - characterIndex);
 
-        const swordsmenCount =
-          self.additionalMetadata.auraPlatoonCount[AuraPlatoon.Swordsmen];
-        const swordsmenDamage = SWORDSMEN_DAMAGE * swordsmenCount;
-        self.timedEffects.push(
-          new TimedEffect({
-            name: "Undead Swordsmen",
-            description: `Deal ${swordsmenDamage} at turn's end.`,
-            turnDuration: 1,
-            executeEndOfTimedEffectActionOnRemoval: false,
-            endOfTurnAction: function (
-              this: TimedEffect,
-              _game,
-              _characterIndex
-            ) {
-              messageCache.push(
-                `The undead swordsmen swing blindly.`,
-                TCGThread.Gameroom
-              );
-              CommonCardAction.commonAttack(game, characterIndex, {
-                damage: swordsmenDamage,
-                isTimedEffectAttack: true,
-              });
-              const auraRotDamage = self.additionalMetadata.auraRotDamage ?? 0;
-              if (auraRotDamage > 0) {
-                opponent.adjustStat(-auraRotDamage, StatsEnum.HP, game);
-              }
-            },
-          })
-        );
-
-        const shieldbearersCount =
-          self.additionalMetadata.auraPlatoonCount[AuraPlatoon.Shieldbearers];
-        self.adjustStat(
-          SHIELDBEARERS_STRENGTH_RECOVERY * shieldbearersCount,
-          StatsEnum.Ability,
-          game
-        );
-
-        const archersCount =
-          self.additionalMetadata.auraPlatoonCount[AuraPlatoon.Archers];
-        self.timedEffects.push(
-          new TimedEffect({
-            name: "Undead Archers",
-            description: `Deal ${ARCHERS_DAMAGE} DMG x ${archersCount} Times at turn's end, with ${(ARCHERS_PIERCE * 100).toFixed(0)}% Pierce.`,
-            turnDuration: 1,
-            endOfTurnAction: () => {
-              messageCache.push(
-                `The undead archers fire a volley.`,
-                TCGThread.Gameroom
-              );
-              const auraRotDamage = self.additionalMetadata.auraRotDamage ?? 0;
-
-              for (let i = 0; i < archersCount; i++) {
+        const swordsmenCount = self.additionalMetadata.auraPlatoonQueue.filter(
+          (p) => p === AuraPlatoon.Swordsmen
+        ).length;
+        if (swordsmenCount > 0) {
+          const swordsmenDamage = SWORDSMEN_DAMAGE * swordsmenCount;
+          self.timedEffects.push(
+            new TimedEffect({
+              name: "Undead Swordsmen",
+              description: `Deal ${swordsmenDamage} at turn's end.`,
+              turnDuration: 1,
+              executeEndOfTimedEffectActionOnRemoval: false,
+              endOfTurnAction: function (
+                this: TimedEffect,
+                _game,
+                _characterIndex
+              ) {
+                messageCache.push(
+                  `The undead swordsmen swing blindly.`,
+                  TCGThread.Gameroom
+                );
                 CommonCardAction.commonAttack(game, characterIndex, {
-                  damage: ARCHERS_DAMAGE,
+                  damage: swordsmenDamage,
                   isTimedEffectAttack: true,
-                  additionalPierceFactor: ARCHERS_PIERCE,
                 });
+                const auraRotDamage =
+                  self.additionalMetadata.auraRotDamage ?? 0;
                 if (auraRotDamage > 0) {
                   opponent.adjustStat(-auraRotDamage, StatsEnum.HP, game);
                 }
-              }
-            },
-          })
-        );
+              },
+            })
+          );
+        }
+
+        const shieldbearersCount =
+          self.additionalMetadata.auraPlatoonQueue.filter(
+            (p) => p === AuraPlatoon.Shieldbearers
+          ).length;
+        if (shieldbearersCount > 0) {
+          self.adjustStat(
+            SHIELDBEARERS_STRENGTH_RECOVERY * shieldbearersCount,
+            StatsEnum.Ability,
+            game
+          );
+        }
+
+        const archersCount = self.additionalMetadata.auraPlatoonQueue.filter(
+          (p) => p === AuraPlatoon.Archers
+        ).length;
+        if (archersCount > 0) {
+          self.timedEffects.push(
+            new TimedEffect({
+              name: "Undead Archers",
+              description: `Deal ${ARCHERS_DAMAGE} DMG x ${archersCount} Times at turn's end, with ${(ARCHERS_PIERCE * 100).toFixed(0)}% Pierce.`,
+              turnDuration: 1,
+              endOfTurnAction: () => {
+                messageCache.push(
+                  `The undead archers fire a volley.`,
+                  TCGThread.Gameroom
+                );
+                const auraRotDamage =
+                  self.additionalMetadata.auraRotDamage ?? 0;
+
+                for (let i = 0; i < archersCount; i++) {
+                  CommonCardAction.commonAttack(game, characterIndex, {
+                    damage: ARCHERS_DAMAGE,
+                    isTimedEffectAttack: true,
+                    additionalPierceFactor: ARCHERS_PIERCE,
+                  });
+                  if (auraRotDamage > 0) {
+                    opponent.adjustStat(-auraRotDamage, StatsEnum.HP, game);
+                  }
+                }
+              },
+            })
+          );
+        }
       }
     },
     abilityAfterOwnCardUse: function (
@@ -186,8 +189,6 @@ const Aura = new CharacterData({
       while ((queue.length - removeCount) * 10 > self.stats.stats.Ability) {
         const removedPlatoon = queue[removeCount];
         if (removedPlatoon) {
-          self.additionalMetadata.auraPlatoonCount[removedPlatoon]--;
-
           switch (removedPlatoon) {
             case AuraPlatoon.Swordsmen:
               messageCache.push(
