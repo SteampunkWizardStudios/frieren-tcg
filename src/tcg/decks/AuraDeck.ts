@@ -219,9 +219,9 @@ const loyalty = new Card({
 
 const decapitate = new Card({
   title: "Decapitate",
-  cardMetadata: { nature: Nature.Attack, armyStrength: -15 },
+  cardMetadata: { nature: Nature.Attack, armyStrength: -20 },
   description: ([dmg]) =>
-    `Army Strength -15. DMG ${dmg} + 2x #Swordsmen. Remove all Swordsmen afterwards.`,
+    `Army Strength -20. DMG ${dmg} + 2x #Swordsmen. Remove all Swordsmen afterwards.`,
   emoji: CardEmoji.AURA_CARD,
   effects: [14],
   hpCost: 8,
@@ -245,9 +245,9 @@ const decapitate = new Card({
 
 const stolen_valor = new Card({
   title: "Stolen Valor",
-  cardMetadata: { nature: Nature.Util, armyStrength: -15 },
+  cardMetadata: { nature: Nature.Util, armyStrength: -20 },
   description: ([hp]) =>
-    `Army Strength -15. Heal ${hp}HP + 2x #Shieldsbearer. Remove all Shieldsbearer afterwards.`,
+    `Army Strength -20. Heal ${hp}HP + 2x #Shieldsbearer. Remove all Shieldsbearer afterwards.`,
   emoji: CardEmoji.AURA_CARD,
   effects: [7],
   cardAction: function (
@@ -273,9 +273,9 @@ const stolen_valor = new Card({
 
 const heartbreaker = new Card({
   title: "Heartbreaker",
-  cardMetadata: { nature: Nature.Attack, armyStrength: -15 },
+  cardMetadata: { nature: Nature.Attack, armyStrength: -20 },
   description: ([dmg]) =>
-    `Army Strength -15. DMG ${dmg} + 2x #Archers with 50% Pierce. Remove all Archers afterwards.`,
+    `Army Strength -20. DMG ${dmg} + 2x #Archers with 50% Pierce. Remove all Archers afterwards.`,
   emoji: CardEmoji.AURA_CARD,
   effects: [7],
   hpCost: 8,
