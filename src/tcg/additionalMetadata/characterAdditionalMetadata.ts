@@ -1,4 +1,5 @@
 import Card from "@tcg/card";
+import { AuraPlatoon } from "../characters/characterData/characterUtil/auraPlatoon";
 
 export enum UbelHit {
   SureHit = "sureHit",
@@ -31,6 +32,14 @@ export type CharacterAdditionalMetadata = {
   forcedDiscards: number;
   rollsCount: number;
   methodeFindsCute: boolean;
+
+  auraArmyDamageAbsorbed?: boolean;
+  auraArmyDamageAbsorbtion: number;
+  auraPlatoonQueue: AuraPlatoon[];
+  auraPlatoonCount: {
+    [key in AuraPlatoon]: number;
+  };
+  auraRotDamage?: number;
 
   hidden?: boolean;
   publicDiscards: boolean;

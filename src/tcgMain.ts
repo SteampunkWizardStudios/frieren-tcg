@@ -444,7 +444,9 @@ export const tcgMain = async (
             card,
             game,
             messageCache,
-            characterIndex
+            game.additionalMetadata.auserleseContextReversal[characterIndex]
+              ? 1 - characterIndex
+              : characterIndex
           );
 
           // use hpCost

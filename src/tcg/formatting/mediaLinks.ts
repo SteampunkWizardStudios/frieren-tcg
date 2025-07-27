@@ -1,4 +1,6 @@
 const characterPortraits = {
+  auraPortrait:
+    "https://static.wikia.nocookie.net/frieren/images/a/ac/Aura_anime_portrait.png/revision/latest?cb=20231017083323",
   denkenPortrait:
     "https://static.wikia.nocookie.net/frieren/images/5/5c/Denken_anime_portrait.png/revision/latest?cb=20240112114340",
   edelPortrait:
