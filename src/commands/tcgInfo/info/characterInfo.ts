@@ -24,7 +24,6 @@ import {
 } from "@/src/tcg/characters/characterData/characterUtil/auraPlatoon";
 import {
   ARCHERS_DAMAGE,
-  ARCHERS_PIERCE,
   SHIELDBEARERS_STRENGTH_RECOVERY,
   SWORDSMEN_DAMAGE,
 } from "@/src/tcg/characters/characterData/characters/Aura";
@@ -134,7 +133,7 @@ export async function showCharacterInfo(
                 },
                 {
                   name: `${auraPlatoonToEmoji[AuraPlatoon.Archers]} Archers`,
-                  value: `If the turn is not skipped, at turn end, deal ${ARCHERS_DAMAGE} DMG x #Archers times, with ${(ARCHERS_PIERCE * 100).toFixed(0)}% Pierce. When this platoon falls, SPD-2.`,
+                  value: `If the turn is not skipped, at turn end, deal ${ARCHERS_DAMAGE} DMG x #Archers times. When this platoon falls, SPD-2.`,
                 }
               );
           }

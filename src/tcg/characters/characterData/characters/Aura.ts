@@ -21,7 +21,7 @@ export const SHIELDBEARERS_STRENGTH_RECOVERY = 2;
 
 const INITIAL_ARCHERS_COUNT = 2;
 export const ARCHERS_DAMAGE = 1;
-export const ARCHERS_PIERCE = 0.15;
+export const ARCHERS_PIERCE = 0.0;
 
 const auraStats = new Stats({
   [StatsEnum.HP]: 60.0,
@@ -127,7 +127,7 @@ const Aura = new CharacterData({
           self.timedEffects.push(
             new TimedEffect({
               name: "Undead Archers",
-              description: `Deal ${ARCHERS_DAMAGE} DMG x ${archersCount} Times at turn's end, with ${(ARCHERS_PIERCE * 100).toFixed(0)}% Pierce.`,
+              description: `Deal ${ARCHERS_DAMAGE} DMG x ${archersCount} Times at turn's end.`,
               turnDuration: 1,
               endOfTurnAction: () => {
                 messageCache.push(
@@ -141,7 +141,7 @@ const Aura = new CharacterData({
                   CommonCardAction.commonAttack(game, characterIndex, {
                     damage: ARCHERS_DAMAGE,
                     isTimedEffectAttack: true,
-                    additionalPierceFactor: ARCHERS_PIERCE,
+                    // additionalPierceFactor: ARCHERS_PIERCE,
                   });
                   if (auraRotDamage > 0) {
                     opponent.adjustStat(-auraRotDamage, StatsEnum.HP, game);

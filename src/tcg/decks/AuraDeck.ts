@@ -7,9 +7,9 @@ import Rolls from "../util/rolls";
 
 const rusted_blades = new Card({
   title: "Rusted Blades",
-  cardMetadata: { nature: Nature.Util, armyStrength: 5 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([atk]) =>
-    `ATK+${atk}. Army Strength+5. Summon 1 Swordsmen platoon.`,
+    `ATK+${atk}. Army Strength+10. Summon 1 Swordsmen platoon.`,
   emoji: CardEmoji.AURA_CARD,
   effects: [2],
   hpCost: 2,
@@ -22,9 +22,9 @@ const rusted_blades = new Card({
 
 const weathered_shields = new Card({
   title: "Weathered Shields",
-  cardMetadata: { nature: Nature.Util, armyStrength: 5 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([def]) =>
-    `DEF+${def}. Army Strength+5. Summon 1 Shieldbearers platoon.`,
+    `DEF+${def}. Army Strength+10. Summon 1 Shieldbearers platoon.`,
   emoji: CardEmoji.AURA_CARD,
   effects: [2],
   hpCost: 2,
@@ -37,9 +37,9 @@ const weathered_shields = new Card({
 
 const broken_arrows = new Card({
   title: "Broken Arrows",
-  cardMetadata: { nature: Nature.Util, armyStrength: 5 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([spd]) =>
-    `SPD+${spd}. Army Strength+5. Summon 1 Archers platoon.`,
+    `SPD+${spd}. Army Strength+10. Summon 1 Archers platoon.`,
   emoji: CardEmoji.AURA_CARD,
   effects: [2],
   hpCost: 2,
@@ -52,9 +52,9 @@ const broken_arrows = new Card({
 
 const fallen_empire = new Card({
   title: "Fallen Empire",
-  cardMetadata: { nature: Nature.Util, armyStrength: 15 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 30 },
   description: ([stat]) =>
-    `ATK+${stat} DEF+${stat} SPD+${stat}. Army Strength+15. Summons 1 Swordsmen, 1 Shieldbearer and 1 Archer platoon.`,
+    `ATK+${stat} DEF+${stat} SPD+${stat}. Army Strength+30. Summons 1 Swordsmen, 1 Shieldbearer and 1 Archer platoon.`,
   emoji: CardEmoji.AURA_CARD,
   effects: [2],
   hpCost: 10,
@@ -112,8 +112,8 @@ const retreat = new Card({
   },
 });
 
-const rot_over_open_wound = new Card({
-  title: "Rot over Open Wound",
+const rot = new Card({
+  title: "Rot",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.AURA_CARD,
   description: ([stat, dmg]) =>
@@ -140,6 +140,7 @@ const rot_over_open_wound = new Card({
         name: "Rot over Open Wound",
         description: `ATK+${stat}. SPD+${stat}. Each Swordsmen and Archer attacks deal ${damage} flat damage.`,
         turnDuration: 3,
+        priority: -1,
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTurnAction: (_game, _characterIndex) => {
           sendToGameroom(`${name} expenses ${possessive} mana...`);
@@ -160,9 +161,9 @@ const loyalty = new Card({
   title: "Loyalty",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.AURA_CARD,
-  description: ([def, dmg]) =>
-    `For the next 3 turns, DEF+${def}. Once per turn, if hit, counter attack for ${dmg} + 1x #Shieldbearers. At each turn end, HP-3.`,
-  effects: [3, 5],
+  description: ([def, dmg, shieldDmg]) =>
+    `For the next 3 turns, DEF+${def}. Once per turn, if hit, counter attack for ${dmg} + ${shieldDmg}x #Shieldbearers. At each turn end, HP-3.`,
+  effects: [3, 4, 1],
   cardAction: ({
     name,
     self,
@@ -175,6 +176,7 @@ const loyalty = new Card({
     sendToGameroom(`${name}'s army stands in formation.`);
     const def = calcEffect(0);
     const counterDamage = calcEffect(1);
+    const perShieldCounterDamage = calcEffect(2);
 
     flatSelfStat(def, StatsEnum.DEF);
     self.additionalMetadata.counteredAttackThisTurn = false;
@@ -191,7 +193,7 @@ const loyalty = new Card({
           self.additionalMetadata.auraPlatoonQueue.filter(
             (p) => p === AuraPlatoon.Shieldbearers
           ).length;
-        flatAttack(counterDamage + shieldbearersCount);
+        flatAttack(counterDamage + shieldbearersCount * perShieldCounterDamage);
 
         self.additionalMetadata.counteredAttackThisTurn = true;
       }
@@ -221,24 +223,34 @@ const loyalty = new Card({
 
 const decapitate = new Card({
   title: "Decapitate",
-  cardMetadata: { nature: Nature.Attack, armyStrength: -20 },
-  description: ([dmg]) =>
-    `Army Strength -20. DMG ${dmg} + 2x #Swordsmen. Remove all Swordsmen afterwards.`,
+  cardMetadata: { nature: Nature.Attack, armyStrength: -30 },
+  description: ([dmg, swrdDmg]) =>
+    `Army Strength -30. DMG ${dmg} + ${swrdDmg}x #Swordsmen. Remove all Swordsmen afterwards.`,
   emoji: CardEmoji.AURA_CARD,
-  effects: [14],
+  effects: [14, 2],
   hpCost: 8,
   cardAction: function (
     this: Card,
-    { self, calcEffect, name, possessive, sendToGameroom, flatAttack }
+    {
+      self,
+      calcEffect,
+      name,
+      possessive,
+      sendToGameroom,
+      flatAttack,
+      flatSelfStat,
+    }
   ) {
     const swordsmenCount = self.additionalMetadata.auraPlatoonQueue.filter(
       (p) => p === AuraPlatoon.Swordsmen
     ).length;
-    const damage = calcEffect(0) + swordsmenCount * 2;
+    const damage = calcEffect(0) + swordsmenCount * calcEffect(1);
     sendToGameroom(`${name} heaved ${possessive} blade.`);
     flatAttack(damage);
 
     // remove swordsmen
+    const lostAttack = swordsmenCount * 2;
+    flatSelfStat(lostAttack, StatsEnum.ATK, -1);
     self.additionalMetadata.auraPlatoonQueue =
       self.additionalMetadata.auraPlatoonQueue.filter(
         (platoon) => platoon !== AuraPlatoon.Swordsmen
@@ -248,11 +260,11 @@ const decapitate = new Card({
 
 const stolen_valor = new Card({
   title: "Stolen Valor",
-  cardMetadata: { nature: Nature.Util, armyStrength: -20 },
-  description: ([hp]) =>
-    `Army Strength -20. Heal ${hp}HP + 2x #Shieldsbearer. Remove all Shieldsbearer afterwards.`,
+  cardMetadata: { nature: Nature.Util, armyStrength: -30 },
+  description: ([hp, shieldsHeal]) =>
+    `Army Strength -30. Heal ${hp}HP + ${shieldsHeal}x #Shieldsbearer. Remove all Shieldsbearer afterwards.`,
   emoji: CardEmoji.AURA_CARD,
-  effects: [7],
+  effects: [10, 2],
   cardAction: function (
     this: Card,
     { self, calcEffect, name, possessive, sendToGameroom, flatSelfStat }
@@ -260,13 +272,15 @@ const stolen_valor = new Card({
     const shieldbearersCount = self.additionalMetadata.auraPlatoonQueue.filter(
       (p) => p === AuraPlatoon.Shieldbearers
     ).length;
-    const heal = calcEffect(0) + shieldbearersCount * 2;
+    const heal = calcEffect(0) + shieldbearersCount * calcEffect(1);
     sendToGameroom(
       `${name} absorbed what remains of ${possessive} army's lifeforce.`
     );
     flatSelfStat(heal, StatsEnum.HP);
 
     // remove shieldsbearers
+    const lostDefense = shieldbearersCount * 2;
+    flatSelfStat(lostDefense, StatsEnum.DEF, -1);
     self.additionalMetadata.auraPlatoonQueue =
       self.additionalMetadata.auraPlatoonQueue.filter(
         (platoon) => platoon !== AuraPlatoon.Shieldbearers
@@ -276,24 +290,26 @@ const stolen_valor = new Card({
 
 const heartbreaker = new Card({
   title: "Heartbreaker",
-  cardMetadata: { nature: Nature.Attack, armyStrength: -20 },
-  description: ([dmg]) =>
-    `Army Strength -20. DMG ${dmg} + 2x #Archers with 50% Pierce. Remove all Archers afterwards.`,
+  cardMetadata: { nature: Nature.Attack, armyStrength: -30 },
+  description: ([dmg, archersDmg]) =>
+    `Army Strength -30. DMG ${dmg} + ${archersDmg}x #Archers with 50% Pierce. Remove all Archers afterwards.`,
   emoji: CardEmoji.AURA_CARD,
-  effects: [7],
+  effects: [7, 2],
   hpCost: 8,
   cardAction: function (
     this: Card,
-    { self, calcEffect, name, sendToGameroom, flatAttack }
+    { self, calcEffect, name, sendToGameroom, flatAttack, flatSelfStat }
   ) {
     const archersCount = self.additionalMetadata.auraPlatoonQueue.filter(
       (p) => p === AuraPlatoon.Archers
     ).length;
-    const damage = calcEffect(0) + archersCount * 2;
+    const damage = calcEffect(0) + archersCount * calcEffect(1);
     sendToGameroom(`${name} aims for the heart.`);
     flatAttack(damage, 0.5);
 
     // remove archers
+    const lostSpeed = archersCount * 2;
+    flatSelfStat(lostSpeed, StatsEnum.SPD, -1);
     self.additionalMetadata.auraPlatoonQueue =
       self.additionalMetadata.auraPlatoonQueue.filter(
         (platoon) => platoon !== AuraPlatoon.Archers
@@ -305,7 +321,7 @@ export const auserlese = new Card({
   title: "Scales of Obedience - Auserlese",
   cardMetadata: { nature: Nature.Util, signature: true, hideEmpower: true },
   description: () =>
-    `Roll a D100. If the result of the role > Opp's HP - Your HP, HP-10, change the target of your opponent's move that round. At this turn's end, if Your HP - Opp's HP >= 50, you win, and if Opp's HP - Your HP >= 50, you lose.`,
+    `Roll a D100. If the result of the role > Opp's HP - Your HP, HP-10, use your opponent's move as if it's your own. At this turn's end, if Your HP - Opp's HP >= 50, you win, and if Opp's HP - Your HP >= 50, you lose.`,
   priority: 13,
   emoji: CardEmoji.AURA_CARD,
   effects: [],
@@ -378,8 +394,8 @@ const auraDeck = [
   { card: broken_arrows, count: 2 },
   { card: fallen_empire, count: 1 },
   { card: retreat, count: 2 },
-  { card: rot_over_open_wound, count: 1 },
-  { card: loyalty, count: 2 },
+  { card: rot, count: 2 },
+  { card: loyalty, count: 1 },
   { card: decapitate, count: 1 },
   { card: stolen_valor, count: 1 },
   { card: heartbreaker, count: 1 },

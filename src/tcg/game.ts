@@ -148,15 +148,13 @@ export default class Game {
           ) ?? baseDamage;
       });
 
-      baseDamage = this.calculateDamage(
+      actualDamage = this.calculateDamage(
         baseDamage,
         attacker.stats.stats.ATK,
         defender.stats.stats.DEF,
         defender.stats.stats.TrueDEF,
         defender.additionalMetadata.defenderDamageScaling
       );
-
-      actualDamage = baseDamage;
 
       // hp deduction
       const minimumDefenderHp =
