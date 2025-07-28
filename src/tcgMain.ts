@@ -522,6 +522,24 @@ export const tcgMain = async (
     });
 
     // end of turn resolution
+    // start of endphase resolution
+    moveOrder.forEach((characterIndex: number) => {
+      if (!game.gameOver) {
+        const character = game.getCharacter(characterIndex);
+        character.ability.abilityStartOfEndPhaseEffect?.(
+          game,
+          characterIndex,
+          messageCache
+        );
+
+        const losingCharacterIndex = game.checkGameOver();
+        if (game.gameOver) {
+          handleGameResult({ losingCharacterIndex });
+          return;
+        }
+      }
+    });
+
     // gather timed effects
     messageCache.push(
       `## ================================`,

@@ -106,7 +106,7 @@ const Aura = new CharacterData({
       character.additionalMetadata.defenderDamageScaling =
         1.0 - damageAbsorbtion;
     },
-    abilityEndOfTurnEffect(this, game, characterIndex, messageCache) {
+    abilityStartOfEndPhaseEffect(this, game, characterIndex, messageCache) {
       const self = game.getCharacter(characterIndex);
       const queue = self.additionalMetadata.auraPlatoonQueue;
       let removeCount = 0;
