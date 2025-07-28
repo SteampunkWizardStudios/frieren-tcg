@@ -6,6 +6,8 @@ import Card from "@tcg/card";
 import { CharacterAdditionalMetadata } from "@tcg/additionalMetadata/characterAdditionalMetadata";
 import { CharacterEmoji } from "@tcg/formatting/emojis";
 
+export const DEFAULT_ROLLS_COUNT = 4;
+
 const defaultMetadata: CharacterAdditionalMetadata = {
   manaSuppressed: false,
   ignoreManaSuppressed: false,
@@ -16,7 +18,7 @@ const defaultMetadata: CharacterAdditionalMetadata = {
   defenderDamageScaling: 1.0,
   pierceFactor: 0,
   forcedDiscards: 0,
-  rollsCount: 4,
+  rollsCount: DEFAULT_ROLLS_COUNT,
   methodeFindsCute: false,
   auraPlatoonQueue: [],
   auraArmyDamageAbsorbtion: 0,

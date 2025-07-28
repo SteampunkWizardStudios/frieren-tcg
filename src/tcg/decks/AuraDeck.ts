@@ -156,7 +156,7 @@ const rot = new Card({
 
     self.timedEffects.push(
       new TimedEffect({
-        name: "Rot over Open Wound",
+        name: "Rot",
         description: `ATK+${stat}. SPD+${stat}. Each Swordsmen and Archer attacks deal ${damage} flat damage.`,
         turnDuration: 3,
         priority: -1,
