@@ -45,7 +45,7 @@ const Aura = new CharacterData({
     abilityName: "Until the End of Time",
     abilityEffectString: `Aura controls an undead army to do her bidding. The army will move at turn end, and 50% of the damage targetted towards her will be transferred to the army instead.
         Aura starts with ${INITIAL_ARMY_STRENGTH} Army Strength, ${INITIAL_SWORDSMEN_COUNT} Swordsmen platoon, ${INITIAL_SHIELDBEARERS_COUNT} Shieldbearers platoon and ${INITIAL_ARCHERS_COUNT} Archers platoon.
-        At the end of every turn, Aura loses soldiers by order she summoned them until #Soldier x 10 <= Army Strength (min: 0).`,
+        At the end of every turn, Aura loses soldiers by the order she summoned them until #Soldier x 10 <= Army Strength (min: 0).`,
     abilityStartOfTurnEffect: (game, characterIndex, _messageCache) => {
       const self = game.getCharacter(characterIndex);
 
