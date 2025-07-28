@@ -106,7 +106,7 @@ const retreat = new Card({
       return;
     }
 
-    self.additionalMetadata.auraArmyDamageAbsorbtion = 1.0;
+    self.additionalMetadata.auraRetreat = true;
     const currentAtk = selfStats.ATK;
     const atkReduction = Number((currentAtk / 2).toFixed(2));
     flatSelfStat(atkReduction, StatsEnum.ATK, -1);
@@ -120,7 +120,7 @@ const retreat = new Card({
         metadata: { removableBySorganeil: false },
         endOfTimedEffectAction: (_game, _characterIndex, _messageCache) => {
           sendToGameroom(`${name} returned from hiding.`);
-          self.additionalMetadata.auraArmyDamageAbsorbtion = 0.5;
+          self.additionalMetadata.auraRetreat = false;
           flatSelfStat(atkReduction, StatsEnum.ATK);
         },
       })

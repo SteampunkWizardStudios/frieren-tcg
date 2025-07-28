@@ -96,7 +96,11 @@ const Aura = new CharacterData({
       // damage calculation routine is done in game.ts
       const character = game.getCharacter(characterIndex);
       if (character.stats.stats.Ability > 0) {
-        character.additionalMetadata.auraArmyDamageAbsorbtion = 0.5;
+        if (character.additionalMetadata.auraRetreat) {
+          character.additionalMetadata.auraArmyDamageAbsorbtion = 1.0;
+        } else {
+          character.additionalMetadata.auraArmyDamageAbsorbtion = 0.5;
+        }
       } else {
         character.additionalMetadata.auraArmyDamageAbsorbtion = 0;
       }
