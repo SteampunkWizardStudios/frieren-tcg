@@ -129,7 +129,7 @@ export async function showCharacterInfo(
                 },
                 {
                   name: `${auraPlatoonToEmoji[AuraPlatoon.Shieldbearers]} Shieldbearers`,
-                  value: `If the turn is not skipped, at turn start, gain ${SHIELDBEARERS_STRENGTH_RECOVERY} Army Strength x #Shieldbearers. When this platoon falls, DEF-2.`,
+                  value: `If the turn is not skipped, at turn end, gain ${SHIELDBEARERS_STRENGTH_RECOVERY} Army Strength x #Shieldbearers. When this platoon falls, DEF-2.`,
                 },
                 {
                   name: `${auraPlatoonToEmoji[AuraPlatoon.Archers]} Archers`,

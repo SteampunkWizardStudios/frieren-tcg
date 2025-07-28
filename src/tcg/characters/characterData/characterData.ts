@@ -20,6 +20,9 @@ const defaultMetadata: CharacterAdditionalMetadata = {
   methodeFindsCute: false,
   auraPlatoonQueue: [],
   auraArmyDamageAbsorbtion: 0,
+  auraRotDamage: 0,
+  auraCounterAttacksDamage: [],
+  auraCounterAttackedThisTurn: false,
 
   hidden: false,
   publicDiscards: false,

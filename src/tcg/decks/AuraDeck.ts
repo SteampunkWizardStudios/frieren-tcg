@@ -152,7 +152,7 @@ const rot = new Card({
 
     flatSelfStat(stat, StatsEnum.ATK);
     flatSelfStat(stat, StatsEnum.SPD);
-    self.additionalMetadata.auraRotDamage = damage;
+    self.additionalMetadata.auraRotDamage += damage;
 
     self.timedEffects.push(
       new TimedEffect({
@@ -169,7 +169,7 @@ const rot = new Card({
           sendToGameroom("The wounds scab over.");
           flatSelfStat(stat, StatsEnum.ATK, -1);
           flatSelfStat(stat, StatsEnum.SPD, -1);
-          self.additionalMetadata.auraRotDamage = 0;
+          self.additionalMetadata.auraRotDamage -= damage;
         },
       })
     );
@@ -201,7 +201,13 @@ const loyalty = new Card({
     const perShieldCounterDamage = calcEffect(2);
 
     flatSelfStat(def, StatsEnum.DEF);
-    self.additionalMetadata.counteredAttackThisTurn = false;
+
+    // Add damage calculation function to queue
+    self.additionalMetadata.auraCounterAttacksDamage.push(
+      (shieldbearersCount: number) => {
+        return counterDamage + shieldbearersCount * perShieldCounterDamage;
+      }
+    );
 
     self.ability.abilityCounterEffect = (
       _game,
@@ -209,15 +215,22 @@ const loyalty = new Card({
       _messageCache,
       _attackDamage
     ) => {
-      if (!self.additionalMetadata.counteredAttackThisTurn) {
+      if (
+        !self.additionalMetadata.auraCounterAttackedThisTurn &&
+        self.additionalMetadata.auraCounterAttacksDamage.length > 0
+      ) {
         sendToGameroom(`${name}'s army countered the attack.`);
         const shieldbearersCount =
           self.additionalMetadata.auraPlatoonQueue.filter(
             (p) => p === AuraPlatoon.Shieldbearers
           ).length;
-        flatAttack(counterDamage + shieldbearersCount * perShieldCounterDamage);
+        self.additionalMetadata.auraCounterAttacksDamage.forEach(
+          (damageFunc) => {
+            flatAttack(damageFunc(shieldbearersCount));
+          }
+        );
 
-        self.additionalMetadata.counteredAttackThisTurn = true;
+        self.additionalMetadata.auraCounterAttackedThisTurn = true;
       }
     };
 
@@ -231,12 +244,12 @@ const loyalty = new Card({
         endOfTurnAction: (_game, _characterIndex) => {
           sendToGameroom(`${name} expenses ${possessive} mana...`);
           flatSelfStat(3, StatsEnum.HP, -1);
-          self.additionalMetadata.counteredAttackThisTurn = false;
+          self.additionalMetadata.auraCounterAttackedThisTurn = false;
         },
         endOfTimedEffectAction: (_game, _characterIndex) => {
           sendToGameroom("The army falls apart.");
           flatSelfStat(def, StatsEnum.DEF, -1);
-          self.ability.abilityCounterEffect = undefined;
+          self.additionalMetadata.auraCounterAttacksDamage.shift();
         },
       })
     );
@@ -245,9 +258,9 @@ const loyalty = new Card({
 
 const decapitate = new Card({
   title: "Decapitate",
-  cardMetadata: { nature: Nature.Attack, armyStrength: -30 },
+  cardMetadata: { nature: Nature.Attack, armyStrength: -20 },
   description: ([dmg, swrdDmg]) =>
-    `Army Strength -30. DMG ${dmg} + ${swrdDmg}x #Swordsmen. Remove all Swordsmen afterwards.`,
+    `Army Strength -20. DMG ${dmg} + ${swrdDmg}x #Swordsmen. Remove all Swordsmen afterwards.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_decapitate_gif,
@@ -285,9 +298,9 @@ const decapitate = new Card({
 
 const stolen_valor = new Card({
   title: "Stolen Valor",
-  cardMetadata: { nature: Nature.Util, armyStrength: -30 },
+  cardMetadata: { nature: Nature.Util, armyStrength: -20 },
   description: ([hp, shieldsHeal]) =>
-    `Army Strength -30. Heal ${hp}HP + ${shieldsHeal}x #Shieldsbearer. Remove all Shieldsbearer afterwards.`,
+    `Army Strength -20. Heal ${hp}HP + ${shieldsHeal}x #Shieldsbearer. Remove all Shieldsbearer afterwards.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_stolenValor_gif,
@@ -318,9 +331,9 @@ const stolen_valor = new Card({
 
 const heartbreaker = new Card({
   title: "Heartbreaker",
-  cardMetadata: { nature: Nature.Attack, armyStrength: -30 },
+  cardMetadata: { nature: Nature.Attack, armyStrength: -20 },
   description: ([dmg, archersDmg]) =>
-    `Army Strength -30. DMG ${dmg} + ${archersDmg}x #Archers with 50% Pierce. Remove all Archers afterwards.`,
+    `Army Strength -20. DMG ${dmg} + ${archersDmg}x #Archers with 50% Pierce. Remove all Archers afterwards.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_heartbreaker_gif,
