@@ -1,5 +1,6 @@
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import Card from "@tcg/card";
+import { auserlese } from "@decks/AuraDeck";
 import { bareHandedBlock } from "@decks/DenkenDeck";
 import { a_kneel } from "@decks/EdelDeck";
 import { spellToCreateManaButterflies } from "@decks/FernDeck";
@@ -16,7 +17,6 @@ import { a_lastStand } from "@decks/StarkDeck";
 import { a_malevolentShrine } from "./ubelSignature";
 import { perfectSorganeil } from "@decks/WirbelDeck";
 import { reversePolarity } from "@decks/MethodeDeck";
-import { auserlese } from "../AuraDeck";
 
 export const signatureMoves: Record<CharacterName, Card> = {
   [CharacterName.Aura]: auserlese,
