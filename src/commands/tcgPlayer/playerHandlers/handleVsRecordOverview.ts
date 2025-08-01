@@ -61,11 +61,11 @@ export default async function handleVsRecordOverview(
 
   records.sort((a, b) => b.winrate - a.winrate);
 
-  const length = records.length;
   const pageSize = 24;
+  const totalPages = Math.ceil(records.length / pageSize);
 
-  const pages = Array.from({ length }, () => {
-    const pageData = records.slice(0, pageSize);
+  const pages = Array.from({ length: totalPages }, (_, i) => {
+    const pageData = records.slice(i * pageSize, (i + 1) * pageSize);
 
     const embed = new EmbedBuilder()
       .setColor("Blurple")
