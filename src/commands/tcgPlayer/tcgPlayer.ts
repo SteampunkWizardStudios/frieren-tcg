@@ -7,7 +7,7 @@ import {
 import type { Command } from "@src/types/command";
 import handlePlayerProfile from "./playerHandlers/profileHandler";
 import handleMatchHistory from "./playerHandlers/matchHandler";
-import { handleHeadToHead } from "./playerHandlers/headToHeadHandler";
+import { handleVsRecord } from "./playerHandlers/handleVsRecord";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -47,28 +47,26 @@ export const command: Command<ChatInputCommandInteraction> = {
           option
             .setName("page")
             .setDescription("The page to get the match history for")
-            .setRequired(false)
             .setMinValue(1)
         )
     )
 
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("head-to-head")
-        .setDescription("Get the head to head record against another player")
-        .addUserOption((option) =>
-          option
-            .setName("opponent")
-            .setDescription(
-              "The player you want to see the head-to-head record against."
-            )
-            .setRequired(true)
-        )
+        .setName("vs-record")
+        .setDescription("Get a player's record against others")
         .addUserOption((option) =>
           option
             .setName("player")
             .setDescription(
-              "The first player whose head-to-head record you want to see, defaults to yourself"
+              "The player whose vs record you want to see, defaults to yourself"
+            )
+        )
+        .addUserOption((option) =>
+          option
+            .setName("opponent")
+            .setDescription(
+              "The opponent to the player, defaults to a list of all opponents"
             )
         )
     ),
@@ -93,9 +91,9 @@ export const command: Command<ChatInputCommandInteraction> = {
             await handleMatchHistory(interaction);
           }
           break;
-        case "head-to-head":
+        case "vs-record":
           {
-            await handleHeadToHead(interaction);
+            await handleVsRecord(interaction);
           }
           break;
       }
