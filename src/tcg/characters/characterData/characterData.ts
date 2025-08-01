@@ -74,7 +74,13 @@ export class CharacterData {
       stats: this.stats.clone(),
       cards: this.cards,
       ability: { ...this.ability },
-      additionalMetadata: { ...this.additionalMetadata },
+      additionalMetadata: {
+        ...this.additionalMetadata,
+        auraPlatoonQueue: [...this.additionalMetadata.auraPlatoonQueue],
+        auraCounterAttacksDamage: [
+          ...this.additionalMetadata.auraCounterAttacksDamage,
+        ],
+      },
     });
   }
 }
