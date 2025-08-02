@@ -8,6 +8,9 @@ import type { Command } from "@src/types/command";
 import handlePlayerProfile from "./playerHandlers/profileHandler";
 import handleMatchHistory from "./playerHandlers/matchHandler";
 import { handleVsRecord } from "./playerHandlers/handleVsRecord";
+import seasonAutocomplete, {
+  seasonOption,
+} from "../tcgStats/statsHandlers/seasonAutocomplete";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -49,6 +52,7 @@ export const command: Command<ChatInputCommandInteraction> = {
             .setDescription("The page to get the match history for")
             .setMinValue(1)
         )
+        .addIntegerOption(seasonOption)
     )
 
     .addSubcommand((subcommand) =>
@@ -69,6 +73,7 @@ export const command: Command<ChatInputCommandInteraction> = {
               "The opponent to the player, defaults to a list of all opponents"
             )
         )
+        .addIntegerOption(seasonOption)
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -103,5 +108,9 @@ export const command: Command<ChatInputCommandInteraction> = {
         content: "Interaction failed.",
       });
     }
+  },
+
+  async autocomplete(interaction) {
+    await seasonAutocomplete(interaction);
   },
 };
