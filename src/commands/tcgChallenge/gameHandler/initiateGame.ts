@@ -150,7 +150,6 @@ export const initiateGame = async (
         content:
           "The application doesn't have permission to create threads in this channel, or the channel doesn't support threads.",
         embeds: [],
-        components: [],
       });
     }
   } catch (error) {
@@ -159,6 +158,7 @@ export const initiateGame = async (
       content: "An error occurred while initiating the game.",
       embeds: [],
       components: [],
+      flags: [],
     });
   }
 };
