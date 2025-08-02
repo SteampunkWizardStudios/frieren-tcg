@@ -53,13 +53,12 @@ export async function getMatchHistory(
 
 export async function getMatchHistoryAgainstPlayer(
   player1: string,
-  player2: string
+  player2: string,
+  seasonQuery: SeasonQuery | null
 ) {
   const headToHeadMatches = await prismaClient.match.findMany({
     where: {
-      ladderReset: {
-        endDate: null,
-      },
+      ladderReset: seasonQuery ?? { endDate: null },
       OR: [
         {
           winner: {

@@ -1,4 +1,5 @@
 import prismaClient from "@/prisma/client";
+import { SeasonQuery } from "@/src/util/db/querySeason";
 import { getWinrate } from "@/src/util/utils";
 import {
   LazyPaginatedMessage,
@@ -8,13 +9,12 @@ import { User, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 
 export default async function handleVsRecordOverview(
   player: User,
-  interaction: ChatInputCommandInteraction
+  interaction: ChatInputCommandInteraction,
+  seasonQuery: SeasonQuery | null
 ) {
   const data = await prismaClient.match.findMany({
     where: {
-      ladderReset: {
-        endDate: null,
-      },
+      ladderReset: seasonQuery ?? { endDate: null },
       OR: [
         {
           winner: {
