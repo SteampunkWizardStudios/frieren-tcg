@@ -18,7 +18,7 @@ export async function handleVsRecord(interaction: ChatInputCommandInteraction) {
   const headToHeadMatches = await getMatchHistoryAgainstPlayer(
     player1.id,
     player2.id,
-	seasonQuery
+    seasonQuery
   );
 
   if (headToHeadMatches.length === 0) {
