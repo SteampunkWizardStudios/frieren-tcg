@@ -70,21 +70,20 @@ export const initiateGame = async (
         }
       })();
 
-      const challengerThread = (await channel.threads.create({
-        name: `TCG Move Select: ${challenger.displayName}'s Move Selection Thread (ID: ${gameId})`,
-        autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-        type: ChannelType.PrivateThread,
-      })) as PrivateThreadChannel;
-      await challengerThread.members.add(challenger.id);
-
-      const opponentThread = (await channel.threads.create({
-        name: `TCG Move Select: ${opponent.displayName}'s Move Selection Thread (ID: ${gameId})`,
-        autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-        type: gameSettings.publicChallengedThread
-          ? ChannelType.PublicThread
-          : ChannelType.PrivateThread,
-      })) as ThreadChannel;
-      await opponentThread.members.add(opponent.id);
+      const [challengerThread, opponentThread] = await Promise.all([
+        channel.threads.create({
+          name: `TCG Move Select: ${challenger.displayName}'s Move Selection Thread (ID: ${gameId})`,
+          autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
+          type: ChannelType.PrivateThread,
+        }) as Promise<PrivateThreadChannel>,
+        channel.threads.create({
+          name: `TCG Move Select: ${opponent.displayName}'s Move Selection Thread (ID: ${gameId})`,
+          autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
+          type: gameSettings.publicChallengedThread
+            ? ChannelType.PublicThread
+            : ChannelType.PrivateThread,
+        }) as Promise<ThreadChannel>,
+      ]);
 
       sendMoveThreadMessage(gameThread, challenger, challengerThread);
       sendMoveThreadMessage(gameThread, opponent, opponentThread);
@@ -149,16 +148,16 @@ export const initiateGame = async (
       await interaction.editReply({
         content:
           "The application doesn't have permission to create threads in this channel, or the channel doesn't support threads.",
-        embeds: [],
+        components: [],
+        flags: [],
       });
     }
   } catch (error) {
     console.error(error);
     await interaction.editReply({
       content: "An error occurred while initiating the game.",
-      embeds: [],
       components: [],
-      flags: [],
+      flags: [], // flags must be explicitly set when editing a reply which may have components to one that uses the content field
     });
   }
 };
