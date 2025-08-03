@@ -10,15 +10,15 @@ import CommonCardAction from "@/src/tcg/util/commonCardActions";
 import Game from "@/src/tcg/game";
 import auraDeck from "@/src/tcg/decks/AuraDeck";
 
-const INITIAL_ARMY_STRENGTH = 35;
+const INITIAL_ARMY_STRENGTH = 55;
 
-const INITIAL_SWORDSMEN_COUNT = 1;
+const INITIAL_SWORDSMEN_COUNT = 2;
 export const SWORDSMEN_DAMAGE = 3;
 
 const INITIAL_SHIELDBEARERS_COUNT = 1;
 export const SHIELDBEARERS_STRENGTH_RECOVERY = 2;
 
-const INITIAL_ARCHERS_COUNT = 1;
+const INITIAL_ARCHERS_COUNT = 2;
 export const ARCHERS_DAMAGE = 1;
 export const ARCHERS_PIERCE = 0.0;
 
@@ -52,20 +52,26 @@ const Aura = new CharacterData({
       if (game.turnCount === 1) {
         self.adjustStat(INITIAL_ARMY_STRENGTH, StatsEnum.Ability, game);
 
-        const initialPlatoons = [
-          ...new Array(INITIAL_SWORDSMEN_COUNT).fill(AuraPlatoon.Swordsmen),
-          ...new Array(INITIAL_SHIELDBEARERS_COUNT).fill(
-            AuraPlatoon.Shieldbearers
-          ),
-          ...new Array(INITIAL_ARCHERS_COUNT).fill(AuraPlatoon.Archers),
+        const initialPlatoons = [];
+        const counts = {
+          [AuraPlatoon.Swordsmen]: INITIAL_SWORDSMEN_COUNT,
+          [AuraPlatoon.Shieldbearers]: INITIAL_SHIELDBEARERS_COUNT,
+          [AuraPlatoon.Archers]: INITIAL_ARCHERS_COUNT,
+        };
+        const order = [
+          AuraPlatoon.Swordsmen,
+          AuraPlatoon.Shieldbearers,
+          AuraPlatoon.Archers,
         ];
-        // for (let i = initialPlatoons.length - 1; i > 0; i--) {
-        //   const j = Math.floor(Math.random() * (i + 1));
-        //   [initialPlatoons[i], initialPlatoons[j]] = [
-        //     initialPlatoons[j],
-        //     initialPlatoons[i],
-        //   ];
-        // }
+
+        while (Object.values(counts).some((count) => count > 0)) {
+          for (const platoon of order) {
+            if (counts[platoon] > 0) {
+              initialPlatoons.push(platoon);
+              counts[platoon]--;
+            }
+          }
+        }
         self.additionalMetadata.auraPlatoonQueue = initialPlatoons;
       }
     },

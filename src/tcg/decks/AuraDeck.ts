@@ -85,7 +85,7 @@ const fallen_empire = new Card({
 
 const retreat = new Card({
   title: "Retreat",
-  cardMetadata: { nature: Nature.Defense, hideEmpower: true },
+  cardMetadata: { nature: Nature.Util, hideEmpower: true },
   description: () =>
     `Until the end of the turn, halve ATK. All damage taken that turn will be taken by the Army instead. This move fails if you have no army.`,
   emoji: CardEmoji.AURA_CARD,
