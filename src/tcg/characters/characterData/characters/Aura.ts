@@ -10,15 +10,15 @@ import CommonCardAction from "@/src/tcg/util/commonCardActions";
 import Game from "@/src/tcg/game";
 import auraDeck from "@/src/tcg/decks/AuraDeck";
 
-const INITIAL_ARMY_STRENGTH = 55;
+const INITIAL_ARMY_STRENGTH = 25;
 
-const INITIAL_SWORDSMEN_COUNT = 2;
+const INITIAL_SWORDSMEN_COUNT = 0;
 export const SWORDSMEN_DAMAGE = 3;
 
-const INITIAL_SHIELDBEARERS_COUNT = 1;
+const INITIAL_SHIELDBEARERS_COUNT = 2;
 export const SHIELDBEARERS_STRENGTH_RECOVERY = 2;
 
-const INITIAL_ARCHERS_COUNT = 2;
+const INITIAL_ARCHERS_COUNT = 0;
 export const ARCHERS_DAMAGE = 1;
 export const ARCHERS_PIERCE = 0.0;
 
@@ -44,7 +44,7 @@ const Aura = new CharacterData({
   ability: {
     abilityName: "Until the End of Time",
     abilityEffectString: `Aura controls an undead army to do her bidding. The army will move at turn end, and 50% of the damage targetted towards her will be transferred to the army instead.
-        Aura starts with ${INITIAL_ARMY_STRENGTH} Army Strength, ${INITIAL_SWORDSMEN_COUNT} Swordsmen platoon, ${INITIAL_SHIELDBEARERS_COUNT} Shieldbearers platoon and ${INITIAL_ARCHERS_COUNT} Archers platoon.
+        Aura starts with ${INITIAL_ARMY_STRENGTH} Army Strength and ${INITIAL_SHIELDBEARERS_COUNT} Shieldbearers platoons.
         At the end of every turn, Aura loses soldiers by the order she summoned them until #Soldier x 10 <= Army Strength (min: 0).`,
     abilityStartOfTurnEffect: (game, characterIndex, _messageCache) => {
       const self = game.getCharacter(characterIndex);

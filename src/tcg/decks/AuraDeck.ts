@@ -8,15 +8,15 @@ import mediaLinks from "../formatting/mediaLinks";
 
 const rusted_blades = new Card({
   title: "Rusted Blades",
-  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 20 },
   description: ([atk]) =>
-    `ATK+${atk}. Army Strength+10. Summon 1 Swordsmen platoon.`,
+    `ATK+${atk}. Army Strength+20. Summon 2 Swordsmen platoon.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_rustedBlades_gif,
   },
   effects: [2],
-  hpCost: 2,
+  hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth a swordsmen platoon.`);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Swordsmen);
@@ -26,15 +26,15 @@ const rusted_blades = new Card({
 
 const weathered_shields = new Card({
   title: "Weathered Shields",
-  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 20 },
   description: ([def]) =>
-    `DEF+${def}. Army Strength+10. Summon 1 Shieldbearers platoon.`,
+    `DEF+${def}. Army Strength+20. Summon 2 Shieldbearers platoon.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_weatheredShields_gif,
   },
   effects: [2],
-  hpCost: 2,
+  hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth a shieldbearers platoon.`);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Shieldbearers);
@@ -44,15 +44,15 @@ const weathered_shields = new Card({
 
 const broken_arrows = new Card({
   title: "Broken Arrows",
-  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 20 },
   description: ([spd]) =>
-    `SPD+${spd}. Army Strength+10. Summon 1 Archers platoon.`,
+    `SPD+${spd}. Army Strength+20. Summon 2 Archers platoon.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_brokenArrows_gif,
   },
   effects: [2],
-  hpCost: 2,
+  hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth an archers platoon.`);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Archers);
