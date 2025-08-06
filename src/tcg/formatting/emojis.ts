@@ -1,5 +1,7 @@
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { StatsEnum } from "@tcg/stats";
+import Character from "@tcg/character";
+import { CharacterData } from "@tcg/characters/characterData/characterData";
 
 type StatInfo = {
   emoji: string;
@@ -13,6 +15,21 @@ export const statDetails: Record<StatsEnum, StatInfo> = {
   [StatsEnum.SPD]: { emoji: "<:tcgSpeed:1402607480587948162>" },
   [StatsEnum.Ability]: { emoji: "<:tcgAbility:1402607474334371952>" },
 };
+
+export function getStatDetails(
+  this: Character | CharacterData
+): Record<StatsEnum, StatInfo> {
+  const soul = this.cosmetic.hasMonsterSoul
+    ? "<:tcgMonsterHp:1402613562127679689>"
+    : "<:tcgHp:1402607479388377180>";
+
+  const charStatDetails: Record<StatsEnum, StatInfo> = {
+    ...statDetails,
+    [StatsEnum.HP]: { emoji: soul },
+  };
+
+  return charStatDetails;
+}
 
 export enum CharacterEmoji {
   AURA = "<:AuraSmug:1211325441755979806>",
