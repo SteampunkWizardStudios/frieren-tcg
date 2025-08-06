@@ -1,6 +1,5 @@
 import { formatAbility } from "@tcg/ability";
 import Character from "@tcg/character";
-import { statDetails } from "@tcg/formatting/emojis";
 import { ProgressBarBuilder } from "@tcg/formatting/percentBar";
 import { StatsEnum } from "@tcg/stats";
 import { printTheory } from "./printGameState";
@@ -33,14 +32,15 @@ export const printCharacter = (
   }
   const activePileCount = character.deck.activePile.length;
   const discardPileCount = character.deck.discardPile.length;
+  const stats = character.statCosmetic;
   const lines = [
     `# ${character.name} ${game.gameSettings.liteMode ? "" : `[⠀](${character.cosmetic.imageUrl})`}`,
-    `- ${statDetails[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
-    `- ${statDetails[StatsEnum.ATK].emoji} **ATK**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.ATK}`,
-    `- ${statDetails[StatsEnum.DEF].emoji} **DEF**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.DEF}`,
-    `- ${statDetails[StatsEnum.TrueDEF].emoji} **TrueDEF**: ${meta.deceitful && obfuscateInformation ? 0 : charStat.TrueDEF}`,
-    `- ${statDetails[StatsEnum.SPD].emoji} **SPD**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.SPD}`,
-    `- ${statDetails[StatsEnum.Ability].emoji} **Ability**: ${character.ability.abilityName} - ${charStat.Ability}`,
+    `- ${stats[StatsEnum.HP].emoji} **HP**: ${hpInfo}`,
+    `- ${stats[StatsEnum.ATK].emoji} **ATK**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.ATK}`,
+    `- ${stats[StatsEnum.DEF].emoji} **DEF**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.DEF}`,
+    `- ${stats[StatsEnum.TrueDEF].emoji} **TrueDEF**: ${meta.deceitful && obfuscateInformation ? 0 : charStat.TrueDEF}`,
+    `- ${stats[StatsEnum.SPD].emoji} **SPD**: ${meta.deceitful && obfuscateInformation ? 1 : charStat.SPD}`,
+    `- ${stats[StatsEnum.Ability].emoji} **Ability**: ${character.ability.abilityName} - ${charStat.Ability}`,
     `  - ${formatAbility(character.ability)}`,
     `**Active Pile:** ${activePileCount} Card${activePileCount > 1 ? "s" : ""}     **Discard Pile:** ${discardPileCount} Card${discardPileCount > 1 ? "s" : ""}`,
   ];

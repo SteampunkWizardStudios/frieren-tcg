@@ -3,7 +3,7 @@ import Deck from "@tcg/deck";
 import Card from "@tcg/card";
 import TimedEffect from "@tcg/timedEffect";
 import { Ability } from "@tcg/ability";
-import { statDetails } from "@tcg/formatting/emojis";
+import { getStatDetails } from "@tcg/formatting/emojis";
 import Rolls from "@tcg/util/rolls";
 import { CharacterAdditionalMetadata } from "@tcg/additionalMetadata/characterAdditionalMetadata";
 import DefaultCards from "@decks/utilDecks/defaultCard";
@@ -37,6 +37,7 @@ export default class Character {
   cosmetic: CharacterCosmetic;
 
   stats: Stats;
+  statCosmetic: ReturnType<typeof getStatDetails>;
   cards: { card: Card; count: number }[];
   ability: Ability;
   additionalMetadata: CharacterAdditionalMetadata;
@@ -55,6 +56,7 @@ export default class Character {
     this.characterName = characterProps.characterData.characterName;
     this.cosmetic = characterProps.characterData.cosmetic;
     this.stats = characterProps.characterData.stats;
+    this.statCosmetic = getStatDetails.call(characterProps.characterData);
     this.cards = characterProps.characterData.cards;
     this.ability = characterProps.characterData.ability;
     this.additionalMetadata = characterProps.characterData.additionalMetadata;
@@ -297,11 +299,11 @@ export default class Character {
 
       if (adjustValue < 0) {
         statUpdateLines.push(
-          `${this.name} *lost* ${statDetails[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`
+          `${this.name} *lost* ${this.statCosmetic[stat].emoji} *${-1 * roundedAdjustValue}* ${statDescription}!`
         );
       } else {
         statUpdateLines.push(
-          `${this.name} **gained** ${statDetails[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`
+          `${this.name} **gained** ${this.statCosmetic[stat].emoji} **${roundedAdjustValue}** ${statDescription}!`
         );
       }
 
