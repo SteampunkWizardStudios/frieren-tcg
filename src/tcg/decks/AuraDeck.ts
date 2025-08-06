@@ -18,7 +18,8 @@ const rusted_blades = new Card({
   effects: [2],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
-    sendToGameroom(`${name} called forth a swordsmen platoon.`);
+    sendToGameroom(`${name} called forth the swordsmen platoon.`);
+    self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Swordsmen);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Swordsmen);
     selfStat(0, StatsEnum.ATK);
   },
@@ -36,7 +37,8 @@ const weathered_shields = new Card({
   effects: [2],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
-    sendToGameroom(`${name} called forth a shieldbearers platoon.`);
+    sendToGameroom(`${name} called forth the shieldbearers platoon.`);
+    self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Shieldbearers);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Shieldbearers);
     selfStat(0, StatsEnum.DEF);
   },
@@ -54,7 +56,8 @@ const broken_arrows = new Card({
   effects: [2],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
-    sendToGameroom(`${name} called forth an archers platoon.`);
+    sendToGameroom(`${name} called forth the archers platoon.`);
+    self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Archers);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Archers);
     selfStat(0, StatsEnum.SPD);
   },

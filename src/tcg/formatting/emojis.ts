@@ -6,12 +6,12 @@ type StatInfo = {
 };
 
 export const statDetails: Record<StatsEnum, StatInfo> = {
-  [StatsEnum.HP]: { emoji: "❤️" },
-  [StatsEnum.ATK]: { emoji: "⚔️" },
-  [StatsEnum.DEF]: { emoji: "🛡️" },
-  [StatsEnum.TrueDEF]: { emoji: "💠" },
-  [StatsEnum.SPD]: { emoji: "⚡" },
-  [StatsEnum.Ability]: { emoji: "✨" },
+  [StatsEnum.HP]: { emoji: "<:tcgHp:1402607479388377180>" },
+  [StatsEnum.ATK]: { emoji: "<:tcgAttack:1402607475647320074>" },
+  [StatsEnum.DEF]: { emoji: "<:tcgDefense:1402607477438025799>" },
+  [StatsEnum.TrueDEF]: { emoji: "<:tcgTrueDef:1402607481766674462>" },
+  [StatsEnum.SPD]: { emoji: "<:tcgSpeed:1402607480587948162>" },
+  [StatsEnum.Ability]: { emoji: "<:tcgAbility:1402607474334371952>" },
 };
 
 export enum CharacterEmoji {
