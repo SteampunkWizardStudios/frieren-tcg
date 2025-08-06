@@ -11,7 +11,6 @@ import { handleHeadToHead } from "./playerHandlers/headToHeadHandler";
 import { handleVsCharacter } from "./playerHandlers/vsCharactersHandler";
 import { CHAR_OPTIONS } from "@src/constants";
 
-
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
     .setName("tcg-player")

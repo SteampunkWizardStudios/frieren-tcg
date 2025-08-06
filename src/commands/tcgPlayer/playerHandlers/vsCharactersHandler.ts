@@ -8,18 +8,20 @@ export async function handleVsCharacter(
   interaction: ChatInputCommandInteraction
 ) {
   const playerId = interaction.options.getUser("player") ?? interaction.user;
-  const character: CharacterName =
+  const playerCharacter: CharacterName =
     (interaction.options.getString("character") as CharacterName) ??
     CharacterName.Frieren;
-
+  const oppCharacter: CharacterName =
+    (interaction.options.getString("character") as CharacterName) ??
+    CharacterName.Frieren;
   const vsCharacterMatches = await getMatchHistoryAgainstCharacter(
     playerId.id,
-    character
-  );
-
+    playerCharacter,
+    oppCharacter);
+    
   if (vsCharacterMatches.length === 0) {
     await interaction.editReply({
-      content: `There are no records of ${playerId} against ${character} in the current ladder.`,
+      content: `There are no records of ${playerId} against ${oppCharacter} in the current ladder.`,
     });
     return;
   }
@@ -52,7 +54,7 @@ export async function handleVsCharacter(
   const paginated = formatMatchHistoryPages(
     vsCharacterMatches,
     playerId,
-    `${playerId.displayName}'s Head-to-Head vs ${character}`,
+    `${playerId.displayName}'s Head-to-Head vs ${oppCharacter}`,
     { prependDescription: overallRecordSummary }
   );
 

@@ -109,7 +109,8 @@ export async function getMatchHistoryAgainstPlayer(
 
 export async function getMatchHistoryAgainstCharacter(
   playerId: string,
-  characterId: string
+  playerCharacter: string,
+  oppCharacter: string
 ) {
   const matches = await prismaClient.match.findMany({
     where: {
@@ -124,7 +125,7 @@ export async function getMatchHistoryAgainstCharacter(
         },
         {
           loser: {
-            discordId: characterId,
+            discordId: oppCharacter,
           },
         },
       ],
