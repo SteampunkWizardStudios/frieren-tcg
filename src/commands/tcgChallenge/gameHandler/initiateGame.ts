@@ -6,7 +6,6 @@ import {
   PublicThreadChannel,
   TextChannel,
   ThreadAutoArchiveDuration,
-  ThreadChannel,
   User,
   Message,
   MessageFlags,
@@ -71,18 +70,13 @@ export const initiateGame = async (
       })();
 
       const [challengerThread, opponentThread] = await Promise.all([
-        channel.threads.create({
-          name: `TCG Move Select: ${challenger.displayName}'s Move Selection Thread (ID: ${gameId})`,
-          autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-          type: ChannelType.PrivateThread,
-        }) as Promise<PrivateThreadChannel>,
-        channel.threads.create({
-          name: `TCG Move Select: ${opponent.displayName}'s Move Selection Thread (ID: ${gameId})`,
-          autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-          type: gameSettings.publicChallengedThread
-            ? ChannelType.PublicThread
-            : ChannelType.PrivateThread,
-        }) as Promise<ThreadChannel>,
+        buildThread(channel, challenger, gameId) as Promise<PrivateThreadChannel>,
+        buildThread(
+          channel,
+          opponent,
+          gameId,
+          gameSettings.publicChallengedThread
+        ),
       ]);
 
       sendMoveThreadMessage(gameThread, challenger, challengerThread);
@@ -161,3 +155,18 @@ export const initiateGame = async (
     });
   }
 };
+
+async function buildThread(
+  channel: TextChannel,
+  user: User,
+  gameId: string,
+  publicThread = false
+) {
+  const thread = await channel.threads.create({
+    name: `TCG Move Select: ${user.displayName}'s Move Selection Thread (ID: ${gameId})`,
+    autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
+    type: publicThread ? ChannelType.PublicThread : ChannelType.PrivateThread,
+  });
+  await thread.members.add(user.id);
+  return thread;
+}
