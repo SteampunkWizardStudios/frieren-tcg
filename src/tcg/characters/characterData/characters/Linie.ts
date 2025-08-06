@@ -26,7 +26,7 @@ const Linie = new CharacterData({
     emoji: CharacterEmoji.LINIE,
     color: 0xf7c1b1,
     imageUrl: mediaLinks.liniePortrait,
-	hasMonsterSoul: true,
+    hasMonsterSoul: true,
   },
   stats: linieStats,
   cards: linieDeck,

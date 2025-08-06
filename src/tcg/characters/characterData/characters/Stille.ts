@@ -27,7 +27,7 @@ const Stille = new CharacterData({
     emoji: CharacterEmoji.STILLE,
     color: 0xe74c3c,
     imageUrl: mediaLinks.stillePortrait,
-	hasMonsterSoul: true,
+    hasMonsterSoul: true,
   },
   stats: stilleStats,
   cards: stilleDeck,

@@ -38,7 +38,7 @@ const Aura = new CharacterData({
     emoji: CharacterEmoji.AURA,
     color: 0xcb83b8,
     imageUrl: mediaLinks.auraPortrait,
-	hasMonsterSoul: true,
+    hasMonsterSoul: true,
   },
   stats: auraStats,
   cards: auraDeck,

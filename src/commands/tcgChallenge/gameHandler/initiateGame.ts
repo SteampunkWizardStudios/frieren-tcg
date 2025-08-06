@@ -70,7 +70,11 @@ export const initiateGame = async (
       })();
 
       const [challengerThread, opponentThread] = await Promise.all([
-        buildThread(channel, challenger, gameId) as Promise<PrivateThreadChannel>,
+        buildThread(
+          channel,
+          challenger,
+          gameId
+        ) as Promise<PrivateThreadChannel>,
         buildThread(
           channel,
           opponent,
