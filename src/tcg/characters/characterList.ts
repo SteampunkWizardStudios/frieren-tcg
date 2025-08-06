@@ -1,5 +1,6 @@
 import { CharacterData } from "@tcg/characters/characterData/characterData";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import Aura from "@characters/Aura";
 import Denken from "@characters/Denken";
 import Edel from "@characters/Edel";
 import Fern from "@characters/Fern";
@@ -18,6 +19,7 @@ import Ubel from "@characters/Ubel";
 import Wirbel from "@characters/Wirbel";
 
 export const CHARACTER_MAP: Record<CharacterName, CharacterData> = {
+  [CharacterName.Aura]: Aura,
   [CharacterName.Denken]: Denken,
   [CharacterName.Edel]: Edel,
   [CharacterName.Fern]: Fern,

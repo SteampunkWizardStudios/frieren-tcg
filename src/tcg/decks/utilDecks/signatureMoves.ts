@@ -1,5 +1,6 @@
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import Card from "@tcg/card";
+import { auserlese } from "@decks/AuraDeck";
 import { bareHandedBlock } from "@decks/DenkenDeck";
 import { a_kneel } from "@decks/EdelDeck";
 import { spellToCreateManaButterflies } from "@decks/FernDeck";
@@ -18,6 +19,7 @@ import { perfectSorganeil } from "@decks/WirbelDeck";
 import { reversePolarity } from "@decks/MethodeDeck";
 
 export const signatureMoves: Record<CharacterName, Card> = {
+  [CharacterName.Aura]: auserlese,
   [CharacterName.Denken]: bareHandedBlock,
   [CharacterName.Edel]: a_kneel,
   [CharacterName.Fern]: spellToCreateManaButterflies,

@@ -1,11 +1,13 @@
 import prismaClient from "@prismaClient";
+import { SeasonQuery } from "./querySeason";
 
-export async function getMatchHistory(playerId: string) {
+export async function getMatchHistory(
+  playerId: string,
+  seasonQuery: SeasonQuery | null
+) {
   const matches = await prismaClient.match.findMany({
     where: {
-      ladderReset: {
-        endDate: null,
-      },
+      ladderReset: seasonQuery ?? { endDate: null },
       OR: [
         {
           winner: {
@@ -51,13 +53,12 @@ export async function getMatchHistory(playerId: string) {
 
 export async function getMatchHistoryAgainstPlayer(
   player1: string,
-  player2: string
+  player2: string,
+  seasonQuery: SeasonQuery | null
 ) {
   const headToHeadMatches = await prismaClient.match.findMany({
     where: {
-      ladderReset: {
-        endDate: null,
-      },
+      ladderReset: seasonQuery ?? { endDate: null },
       OR: [
         {
           winner: {

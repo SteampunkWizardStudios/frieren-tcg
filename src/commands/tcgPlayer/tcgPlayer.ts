@@ -7,9 +7,10 @@ import {
 import type { Command } from "@src/types/command";
 import handlePlayerProfile from "./playerHandlers/profileHandler";
 import handleMatchHistory from "./playerHandlers/matchHandler";
-import { handleHeadToHead } from "./playerHandlers/headToHeadHandler";
-import { handleVsCharacter } from "./playerHandlers/vsCharactersHandler";
-import { CHAR_OPTIONS } from "@src/constants";
+import { handleVsRecord } from "./playerHandlers/handleVsRecord";
+import seasonAutocomplete, {
+  seasonOption,
+} from "../tcgStats/statsHandlers/seasonAutocomplete";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -49,50 +50,30 @@ export const command: Command<ChatInputCommandInteraction> = {
           option
             .setName("page")
             .setDescription("The page to get the match history for")
-            .setRequired(false)
             .setMinValue(1)
         )
+        .addIntegerOption(seasonOption)
     )
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("head-to-head")
-        .setDescription("Get the head to head record against another player")
+        .setName("vs-record")
+        .setDescription("Get a player's record against others")
+        .addUserOption((option) =>
+          option
+            .setName("player")
+            .setDescription(
+              "The player whose vs record you want to see, defaults to yourself"
+            )
+        )
         .addUserOption((option) =>
           option
             .setName("opponent")
             .setDescription(
-              "The player you want to see the head-to-head record against."
-            )
-            .setRequired(true)
-        )
-        .addUserOption((option) =>
-          option
-            .setName("player")
-            .setDescription(
-              "The first player whose head-to-head record you want to see, defaults to yourself"
+              "The opponent to the player, defaults to a list of all opponents"
             )
         )
-    )
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName("vs-characters")
-        .setDescription("Get the record against a character")
-        .addStringOption((option) =>
-          option
-            .setName("character")
-            .setDescription("Select the character to get stats for.")
-            .setRequired(true)
-            .addChoices(CHAR_OPTIONS)
-        )
-        .addUserOption((option) =>
-          option
-            .setName("player")
-            .setDescription(
-              "The first player whose record you want to see, defaults to yourself"
-            )
-        )
+        .addIntegerOption(seasonOption)
     ),
-
 
   async execute(interaction: ChatInputCommandInteraction) {
     const subcommand = interaction.options.getSubcommand();
@@ -114,14 +95,9 @@ export const command: Command<ChatInputCommandInteraction> = {
             await handleMatchHistory(interaction);
           }
           break;
-        case "head-to-head":
+        case "vs-record":
           {
-            await handleHeadToHead(interaction);
-          }
-          break;
-        case "vs-characters":
-          {
-            await handleVsCharacter(interaction);
+            await handleVsRecord(interaction);
           }
           break;
       }
@@ -131,5 +107,9 @@ export const command: Command<ChatInputCommandInteraction> = {
         content: "Interaction failed.",
       });
     }
+  },
+
+  async autocomplete(interaction) {
+    await seasonAutocomplete(interaction);
   },
 };

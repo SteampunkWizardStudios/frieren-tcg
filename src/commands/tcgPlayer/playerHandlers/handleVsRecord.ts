@@ -2,21 +2,28 @@ import { ChatInputCommandInteraction } from "discord.js";
 import { formatMatchHistoryPages } from "./formatMatchHistoryPages";
 import { getWinrate } from "@src/util/utils";
 import { getMatchHistoryAgainstPlayer } from "@src/util/db/getMatchHistory";
+import handleVsRecordOverview from "./handleVsRecordOverview";
+import querySeason from "@src/util/db/querySeason";
 
-export async function handleHeadToHead(
-  interaction: ChatInputCommandInteraction
-) {
+export async function handleVsRecord(interaction: ChatInputCommandInteraction) {
   const player1 = interaction.options.getUser("player") ?? interaction.user;
-  const player2 = interaction.options.getUser("opponent", true);
+  const player2 = interaction.options.getUser("opponent");
+  const seasonId = interaction.options.getInteger("season") ?? null;
+  const seasonQuery = seasonId ? await querySeason(seasonId) : null;
+
+  if (!player2) {
+    return handleVsRecordOverview(player1, interaction, seasonQuery);
+  }
 
   const headToHeadMatches = await getMatchHistoryAgainstPlayer(
     player1.id,
-    player2.id
+    player2.id,
+    seasonQuery
   );
 
   if (headToHeadMatches.length === 0) {
     await interaction.editReply({
-      content: `There are no head-to-head records between ${player1} and ${player2} in the current ladder.`,
+      content: `There are no match records between ${player1} and ${player2} for the selected season.`,
     });
     return;
   }

@@ -39,7 +39,7 @@ export default async function handleAchievementLeaderboard(
 
   const totalPages = Math.ceil(idsToPoints.length / PAGE_SIZE);
 
-  const pages = Array.from({ length: totalPages }, (_, i) => async () => {
+  const pages = Array.from({ length: totalPages }, (_, i) => () => {
     const pageData = idsToPoints.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE);
     const embed = achievementLeaderboardEmbed(pageData, i + 1, PAGE_SIZE);
 
