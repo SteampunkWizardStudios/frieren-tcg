@@ -10,12 +10,12 @@ const rusted_blades = new Card({
   title: "Rusted Blades",
   cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([atk]) =>
-    `ATK+${atk}. Army Strength+10. Summon 2 Swordsmen platoon.`,
+    `ATK+${atk}. Army Strength+10. Summon 2 Swordsmen platoons.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_rustedBlades_gif,
   },
-  effects: [2],
+  effects: [4],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth the swordsmen platoon.`);
@@ -29,12 +29,12 @@ const weathered_shields = new Card({
   title: "Weathered Shields",
   cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([def]) =>
-    `DEF+${def}. Army Strength+10. Summon 2 Shieldbearers platoon.`,
+    `DEF+${def}. Army Strength+10. Summon 2 Shieldbearers platoons.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_weatheredShields_gif,
   },
-  effects: [2],
+  effects: [4],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth the shieldbearers platoon.`);
@@ -48,12 +48,12 @@ const broken_arrows = new Card({
   title: "Broken Arrows",
   cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([spd]) =>
-    `SPD+${spd}. Army Strength+10. Summon 2 Archers platoon.`,
+    `SPD+${spd}. Army Strength+10. Summon 2 Archers platoons.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_brokenArrows_gif,
   },
-  effects: [2],
+  effects: [4],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth the archers platoon.`);
@@ -139,7 +139,7 @@ const rot = new Card({
     cardGif: mediaLinks.aura_rot_gif,
   },
   description: ([stat, dmg]) =>
-    `For the next 3 turns, ATK+${stat} and SPD+${stat}. Each hit by Swordsmen and Archers platoon deal an additional ${dmg} flat damage. At each turn end, HP-3.`,
+    `For the next 3 turns, ATK+${stat} and SPD+${stat}. Each hit by Swordsmen and Archers platoons deal an additional ${dmg} flat damage. At each turn end, HP-3.`,
   effects: [2, 1],
   cardAction: ({
     name,
