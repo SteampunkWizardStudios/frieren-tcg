@@ -179,12 +179,12 @@ const rot = new Card({
   },
 });
 
-const loyalty = new Card({
-  title: "Loyalty",
+const immortalWall = new Card({
+  title: "Immortal Wall",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
-    cardGif: mediaLinks.aura_loyalty_gif,
+    cardGif: mediaLinks.aura_immortalWall_gif,
   },
   description: ([def, dmg, shieldDmg]) =>
     `For the next 3 turns, DEF+${def}. Once per turn, if hit, counter attack for ${dmg} + ${shieldDmg}x #Shieldbearers. At each turn end, HP-3.`,
@@ -268,14 +268,14 @@ const loyalty = new Card({
   },
 });
 
-const decapitate = new Card({
-  title: "Decapitate",
+const guillotine = new Card({
+  title: "Guillotine",
   cardMetadata: { nature: Nature.Attack, armyStrength: -20 },
   description: ([dmg, swrdDmg]) =>
     `Army Strength -20. DMG ${dmg} + ${swrdDmg}x #Swordsmen. Remove all Swordsmen afterwards.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
-    cardGif: mediaLinks.aura_decapitate_gif,
+    cardGif: mediaLinks.aura_guillotine_gif,
   },
   effects: [14, 2],
   hpCost: 8,
@@ -341,14 +341,14 @@ const stolen_valor = new Card({
   },
 });
 
-const heartbreaker = new Card({
-  title: "Heartbreaker",
+const heartpiercer = new Card({
+  title: "Heartpiercer",
   cardMetadata: { nature: Nature.Attack, armyStrength: -20 },
   description: ([dmg, archersDmg]) =>
     `Army Strength -20. DMG ${dmg} + ${archersDmg}x #Archers with 50% Pierce. Remove all Archers afterwards.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
-    cardGif: mediaLinks.aura_heartbreaker_gif,
+    cardGif: mediaLinks.aura_heartpiercer_gif,
   },
   effects: [7, 2],
   hpCost: 8,
@@ -463,10 +463,10 @@ const auraDeck = [
   { card: fallen_empire, count: 1 },
   { card: retreat, count: 2 },
   { card: rot, count: 2 },
-  { card: loyalty, count: 1 },
-  { card: decapitate, count: 1 },
+  { card: immortalWall, count: 1 },
+  { card: guillotine, count: 1 },
   { card: stolen_valor, count: 1 },
-  { card: heartbreaker, count: 1 },
+  { card: heartpiercer, count: 1 },
   { card: auserlese, count: 1 },
 ];
 
