@@ -56,13 +56,13 @@ const auraCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1398981295413137458/IMG_7410.gif?ex=6887565c&is=688604dc&hm=01ae7326b65b9a9c56fb2354b6e41db6e6229e66fa823fcb38b4b3e515fed488&",
   aura_rot_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1398981299309379634/IMG_7420.gif?ex=6887565d&is=688604dd&hm=9f78a0a0d00252a5b2d040eacea1932f4c0e48f7d3e49e6e0af43bd5062b75dd&",
-  aura_loyalty_gif:
+  aura_immortalWall_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1398981298420187268/IMG_7418.gif?ex=6887565d&is=688604dd&hm=f48e459064a30993ac6a53aedc773e5c768f2352f755da1fe6f01ae372f074ed&",
   aura_retreat_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1398981296499200021/IMG_7414.gif?ex=6887565c&is=688604dc&hm=b1e225b447f0527033dae643b6ec209f3be1df358cc45f2277dce4f2632f5962&",
-  aura_decapitate_gif:
+  aura_guillotine_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1398981298806329374/IMG_7419.gif?ex=6887565d&is=688604dd&hm=5f1b3cbd20d2e8f364ecbac56568574c6382c0b2bedd03151ae4b5f4a2b771b9&",
-  aura_heartbreaker_gif:
+  aura_heartpiercer_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1398981295954198528/GIF_2958617706.gif?ex=6887565c&is=688604dc&hm=75109ae5672c22f1db8c12818423fb59dc29aa7374a9d25b96c1e7a1ccc9519b&",
 
   aura_auserlese_gif:

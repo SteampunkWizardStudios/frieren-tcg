@@ -10,12 +10,12 @@ const rusted_blades = new Card({
   title: "Rusted Blades",
   cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([atk]) =>
-    `ATK+${atk}. Army Strength+10. Summon 2 Swordsmen platoon.`,
+    `ATK+${atk}. Army Strength+10. Summon 2 Swordsmen platoons.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_rustedBlades_gif,
   },
-  effects: [2],
+  effects: [4],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth the swordsmen platoon.`);
@@ -29,12 +29,12 @@ const weathered_shields = new Card({
   title: "Weathered Shields",
   cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([def]) =>
-    `DEF+${def}. Army Strength+10. Summon 2 Shieldbearers platoon.`,
+    `DEF+${def}. Army Strength+10. Summon 2 Shieldbearers platoons.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_weatheredShields_gif,
   },
-  effects: [2],
+  effects: [4],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth the shieldbearers platoon.`);
@@ -48,12 +48,12 @@ const broken_arrows = new Card({
   title: "Broken Arrows",
   cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([spd]) =>
-    `SPD+${spd}. Army Strength+10. Summon 2 Archers platoon.`,
+    `SPD+${spd}. Army Strength+10. Summon 2 Archers platoons.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_brokenArrows_gif,
   },
-  effects: [2],
+  effects: [4],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth the archers platoon.`);
@@ -139,7 +139,7 @@ const rot = new Card({
     cardGif: mediaLinks.aura_rot_gif,
   },
   description: ([stat, dmg]) =>
-    `For the next 3 turns, ATK+${stat} and SPD+${stat}. Each hit by Swordsmen and Archers platoon deal an additional ${dmg} flat damage. At each turn end, HP-3.`,
+    `For the next 3 turns, ATK+${stat} and SPD+${stat}. Each hit by Swordsmen and Archers platoons deal an additional ${dmg} flat damage. At each turn end, HP-3.`,
   effects: [2, 1],
   cardAction: ({
     name,
@@ -179,12 +179,12 @@ const rot = new Card({
   },
 });
 
-const loyalty = new Card({
-  title: "Loyalty",
+const immortalWall = new Card({
+  title: "Immortal Wall",
   cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
-    cardGif: mediaLinks.aura_loyalty_gif,
+    cardGif: mediaLinks.aura_immortalWall_gif,
   },
   description: ([def, dmg, shieldDmg]) =>
     `For the next 3 turns, DEF+${def}. Once per turn, if hit, counter attack for ${dmg} + ${shieldDmg}x #Shieldbearers. At each turn end, HP-3.`,
@@ -268,14 +268,14 @@ const loyalty = new Card({
   },
 });
 
-const decapitate = new Card({
-  title: "Decapitate",
+const guillotine = new Card({
+  title: "Guillotine",
   cardMetadata: { nature: Nature.Attack, armyStrength: -20 },
   description: ([dmg, swrdDmg]) =>
     `Army Strength -20. DMG ${dmg} + ${swrdDmg}x #Swordsmen. Remove all Swordsmen afterwards.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
-    cardGif: mediaLinks.aura_decapitate_gif,
+    cardGif: mediaLinks.aura_guillotine_gif,
   },
   effects: [14, 2],
   hpCost: 8,
@@ -341,14 +341,14 @@ const stolen_valor = new Card({
   },
 });
 
-const heartbreaker = new Card({
-  title: "Heartbreaker",
+const heartpiercer = new Card({
+  title: "Heartpiercer",
   cardMetadata: { nature: Nature.Attack, armyStrength: -20 },
   description: ([dmg, archersDmg]) =>
     `Army Strength -20. DMG ${dmg} + ${archersDmg}x #Archers with 50% Pierce. Remove all Archers afterwards.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
-    cardGif: mediaLinks.aura_heartbreaker_gif,
+    cardGif: mediaLinks.aura_heartpiercer_gif,
   },
   effects: [7, 2],
   hpCost: 8,
@@ -463,10 +463,10 @@ const auraDeck = [
   { card: fallen_empire, count: 1 },
   { card: retreat, count: 2 },
   { card: rot, count: 2 },
-  { card: loyalty, count: 1 },
-  { card: decapitate, count: 1 },
+  { card: immortalWall, count: 1 },
+  { card: guillotine, count: 1 },
   { card: stolen_valor, count: 1 },
-  { card: heartbreaker, count: 1 },
+  { card: heartpiercer, count: 1 },
   { card: auserlese, count: 1 },
 ];
 
