@@ -6,7 +6,6 @@ import {
   PublicThreadChannel,
   TextChannel,
   ThreadAutoArchiveDuration,
-  ThreadChannel,
   User,
   Message,
   MessageFlags,
@@ -70,21 +69,19 @@ export const initiateGame = async (
         }
       })();
 
-      const challengerThread = (await channel.threads.create({
-        name: `TCG Move Select: ${challenger.displayName}'s Move Selection Thread (ID: ${gameId})`,
-        autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-        type: ChannelType.PrivateThread,
-      })) as PrivateThreadChannel;
-      await challengerThread.members.add(challenger.id);
-
-      const opponentThread = (await channel.threads.create({
-        name: `TCG Move Select: ${opponent.displayName}'s Move Selection Thread (ID: ${gameId})`,
-        autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-        type: gameSettings.publicChallengedThread
-          ? ChannelType.PublicThread
-          : ChannelType.PrivateThread,
-      })) as ThreadChannel;
-      await opponentThread.members.add(opponent.id);
+      const [challengerThread, opponentThread] = await Promise.all([
+        buildThread(
+          channel,
+          challenger,
+          gameId
+        ) as Promise<PrivateThreadChannel>,
+        buildThread(
+          channel,
+          opponent,
+          gameId,
+          gameSettings.publicChallengedThread
+        ),
+      ]);
 
       sendMoveThreadMessage(gameThread, challenger, challengerThread);
       sendMoveThreadMessage(gameThread, opponent, opponentThread);
@@ -149,16 +146,31 @@ export const initiateGame = async (
       await interaction.editReply({
         content:
           "The application doesn't have permission to create threads in this channel, or the channel doesn't support threads.",
-        embeds: [],
+        components: [],
+        flags: [],
       });
     }
   } catch (error) {
     console.error(error);
     await interaction.editReply({
       content: "An error occurred while initiating the game.",
-      embeds: [],
       components: [],
-      flags: [],
+      flags: [], // flags must be explicitly set when editing a reply which may have components to one that uses the content field
     });
   }
 };
+
+async function buildThread(
+  channel: TextChannel,
+  user: User,
+  gameId: string,
+  publicThread = false
+) {
+  const thread = await channel.threads.create({
+    name: `TCG Move Select: ${user.displayName}'s Move Selection Thread (ID: ${gameId})`,
+    autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
+    type: publicThread ? ChannelType.PublicThread : ChannelType.PrivateThread,
+  });
+  await thread.members.add(user.id);
+  return thread;
+}

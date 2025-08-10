@@ -8,7 +8,7 @@ import {
   MessageFlags,
 } from "discord.js";
 import { sendInfoMessage } from "./util/sendInfoMessage";
-import { CardEmoji, statDetails } from "@tcg/formatting/emojis";
+import { CardEmoji, getStatDetails } from "@tcg/formatting/emojis";
 import { createCharacterDropdown } from "@src/util/createCharacterDropdown";
 import Card from "@tcg/card";
 import { handleCharacterSelection } from "@src/tcgChatInteractions/handleCharacterSelection";
@@ -78,6 +78,9 @@ export async function showCharacterInfo(
             (sum, { count }) => sum + count,
             0
           );
+
+          const stats = getStatDetails.call(char);
+
           const characterEmbed = new EmbedBuilder()
             .setColor(char.cosmetic.color)
             .setTitle(`${char.cosmetic.emoji} ${char.characterName}`)
@@ -87,10 +90,10 @@ export async function showCharacterInfo(
               {
                 name: "Stats",
                 value: [
-                  `- ${statDetails.HP.emoji} **HP**: ${char.stats.stats.HP}`,
-                  `- ${statDetails.ATK.emoji} **ATK**: ${char.stats.stats.ATK}`,
-                  `- ${statDetails.DEF.emoji} **DEF**: ${char.stats.stats.DEF}`,
-                  `- ${statDetails.SPD.emoji} **SPD**: ${char.stats.stats.SPD}`,
+                  `- ${stats.HP.emoji} **HP**: ${char.stats.stats.HP}`,
+                  `- ${stats.ATK.emoji} **ATK**: ${char.stats.stats.ATK}`,
+                  `- ${stats.DEF.emoji} **DEF**: ${char.stats.stats.DEF}`,
+                  `- ${stats.SPD.emoji} **SPD**: ${char.stats.stats.SPD}`,
                 ].join("\n"),
               },
               {

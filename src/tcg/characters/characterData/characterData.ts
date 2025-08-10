@@ -35,6 +35,7 @@ export interface CharacterCosmetic {
   emoji: CharacterEmoji;
   color: number;
   imageUrl: string;
+  hasMonsterSoul?: boolean;
 }
 
 export interface CharacterDataProps {

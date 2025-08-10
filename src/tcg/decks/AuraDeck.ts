@@ -8,9 +8,9 @@ import mediaLinks from "../formatting/mediaLinks";
 
 const rusted_blades = new Card({
   title: "Rusted Blades",
-  cardMetadata: { nature: Nature.Util, armyStrength: 20 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([atk]) =>
-    `ATK+${atk}. Army Strength+20. Summon 2 Swordsmen platoon.`,
+    `ATK+${atk}. Army Strength+10. Summon 2 Swordsmen platoon.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_rustedBlades_gif,
@@ -18,7 +18,8 @@ const rusted_blades = new Card({
   effects: [2],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
-    sendToGameroom(`${name} called forth a swordsmen platoon.`);
+    sendToGameroom(`${name} called forth the swordsmen platoon.`);
+    self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Swordsmen);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Swordsmen);
     selfStat(0, StatsEnum.ATK);
   },
@@ -26,9 +27,9 @@ const rusted_blades = new Card({
 
 const weathered_shields = new Card({
   title: "Weathered Shields",
-  cardMetadata: { nature: Nature.Util, armyStrength: 20 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([def]) =>
-    `DEF+${def}. Army Strength+20. Summon 2 Shieldbearers platoon.`,
+    `DEF+${def}. Army Strength+10. Summon 2 Shieldbearers platoon.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_weatheredShields_gif,
@@ -36,7 +37,8 @@ const weathered_shields = new Card({
   effects: [2],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
-    sendToGameroom(`${name} called forth a shieldbearers platoon.`);
+    sendToGameroom(`${name} called forth the shieldbearers platoon.`);
+    self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Shieldbearers);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Shieldbearers);
     selfStat(0, StatsEnum.DEF);
   },
@@ -44,9 +46,9 @@ const weathered_shields = new Card({
 
 const broken_arrows = new Card({
   title: "Broken Arrows",
-  cardMetadata: { nature: Nature.Util, armyStrength: 20 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
   description: ([spd]) =>
-    `SPD+${spd}. Army Strength+20. Summon 2 Archers platoon.`,
+    `SPD+${spd}. Army Strength+10. Summon 2 Archers platoon.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_brokenArrows_gif,
@@ -54,7 +56,8 @@ const broken_arrows = new Card({
   effects: [2],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
-    sendToGameroom(`${name} called forth an archers platoon.`);
+    sendToGameroom(`${name} called forth the archers platoon.`);
+    self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Archers);
     self.additionalMetadata.auraPlatoonQueue.push(AuraPlatoon.Archers);
     selfStat(0, StatsEnum.SPD);
   },
@@ -62,9 +65,9 @@ const broken_arrows = new Card({
 
 const fallen_empire = new Card({
   title: "Fallen Empire",
-  cardMetadata: { nature: Nature.Util, armyStrength: 30 },
+  cardMetadata: { nature: Nature.Util, armyStrength: 15 },
   description: ([stat]) =>
-    `ATK+${stat} DEF+${stat} SPD+${stat}. Army Strength+30. Summons 1 Swordsmen, 1 Shieldbearer and 1 Archer platoon.`,
+    `ATK+${stat} DEF+${stat} SPD+${stat}. Army Strength+15. Summons 1 Swordsmen, 1 Shieldbearer and 1 Archer platoon.`,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_fallenEmpire_gif,
