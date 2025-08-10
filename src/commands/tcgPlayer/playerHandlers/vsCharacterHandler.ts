@@ -3,25 +3,36 @@ import { formatMatchHistoryPages } from "./formatMatchHistoryPages";
 import { getWinrate } from "@src/util/utils";
 import { getMatchHistoryAgainstCharacter } from "@src/util/db/getMatchHistory";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import handleVsCharacterRecordOverview from "./handleVsCharacterOverview"
+import querySeason from "@src/util/db/querySeason";
 
 export async function handleVsCharacter(
   interaction: ChatInputCommandInteraction
 ) {
   const playerId = interaction.options.getUser("player") ?? interaction.user;
   const playerCharacter: CharacterName =
-    (interaction.options.getString("character") as CharacterName) ??
-    CharacterName.Frieren;
+    (interaction.options.getString("player-character") as CharacterName) ??
+    null;
   const oppCharacter: CharacterName =
-    (interaction.options.getString("character") as CharacterName) ??
-    CharacterName.Frieren;
+    (interaction.options.getString("opponent-character") as CharacterName) ??
+    null;
+  const seasonId = interaction.options.getInteger("season") ?? null;
+  const seasonQuery = seasonId ? await querySeason(seasonId) : null;
+
+  if (!oppCharacter) {
+      return handleVsCharacterRecordOverview(playerId, interaction, seasonQuery);
+    }
+
   const vsCharacterMatches = await getMatchHistoryAgainstCharacter(
     playerId.id,
     playerCharacter,
-    oppCharacter);
+    oppCharacter,
+    seasonQuery
+  );
     
   if (vsCharacterMatches.length === 0) {
     await interaction.editReply({
-      content: `There are no records of ${playerId} against ${oppCharacter} in the current ladder.`,
+      content: `There are no records of this matchup in the current ladder.`,
     });
     return;
   }
