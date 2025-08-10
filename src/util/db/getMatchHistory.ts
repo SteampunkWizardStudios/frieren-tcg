@@ -110,35 +110,24 @@ export async function getMatchHistoryAgainstPlayer(
 
 export async function getMatchHistoryAgainstCharacter(
   playerId: string,
-  playerCharacter: string | null,
-  oppCharacter: string,
-  seasonQuery: SeasonQuery | null
+  playerCharacter: string,
+  oppCharacter: string
 ) {
-  const playerCharFilter = playerCharacter
-    ? { name: playerCharacter }
-    : undefined;
-
   const matches = await prismaClient.match.findMany({
     where: {
-      ladderReset: seasonQuery ?? { endDate: null },
+      ladderReset: {
+        endDate: null,
+      },
       OR: [
         {
           winner: {
             discordId: playerId,
           },
-          ...(playerCharFilter && { winnerCharacter: playerCharFilter }),
-          loserCharacter: {
-            name: oppCharacter,
-          },
         },
         {
-          winnerCharacter: {
-            name: oppCharacter,
-          },
           loser: {
-            discordId: playerId,
+            discordId: oppCharacter,
           },
-          ...(playerCharFilter && { loserCharacter: playerCharFilter }),
         },
       ],
     },
@@ -171,4 +160,3 @@ export async function getMatchHistoryAgainstCharacter(
 
   return matches;
 }
-
