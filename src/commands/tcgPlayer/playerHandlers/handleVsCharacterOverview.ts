@@ -11,9 +11,13 @@ import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 
 export default async function handleVsCharacterRecordOverview(
   player: User,
+  playerCharacter: string | null,
   interaction: ChatInputCommandInteraction,
   seasonQuery: SeasonQuery | null
 ) {
+  const playerCharFilter = playerCharacter
+    ? { name: playerCharacter }
+    : undefined;
   const data = await prismaClient.match.findMany({
     where: {
       ladderReset: seasonQuery ?? { endDate: null },
@@ -22,11 +26,13 @@ export default async function handleVsCharacterRecordOverview(
           winner: {
             discordId: player.id,
           },
+          ...(playerCharFilter && { winnerCharacter: playerCharFilter }),
         },
         {
           loser: {
             discordId: player.id,
           },
+          ...(playerCharFilter && { loserCharacter: playerCharFilter }),
         },
       ],
     },
@@ -37,6 +43,13 @@ export default async function handleVsCharacterRecordOverview(
       loserCharacter: { select: { name: true } },
     },
   });
+
+  if (data.length === 0) {
+    await interaction.editReply({
+      content: `There are no records of this matchup in the selected ladder.`,
+    });
+    return;
+  }
 
   const matchRecord: Record<string, { wins: number; losses: number }> = {};
 
@@ -77,17 +90,21 @@ export default async function handleVsCharacterRecordOverview(
   const pages = Array.from({ length: totalPages }, (_, i) => {
     const pageData = records.slice(i * pageSize, (i + 1) * pageSize);
 
-    const embed = new EmbedBuilder()
-      .setColor("Blurple")
-      .setTitle(`${player.displayName}'s Record Against Characters`)
-      .setDescription(
-        pageData
-          .map(({ formattedCharacter, wins, losses, winrate }) => {
-            return `**${formattedCharacter}**: ${wins} wins, ${losses} losses (Winrate: ${winrate}%)`;
-          })
-          .join("\n")
+    const embed = new EmbedBuilder().setColor("Blurple");
+    if (!playerCharacter) {
+      embed.setTitle(`${player.displayName}'s Record Against Characters`);
+    } else {
+      embed.setTitle(
+        `${player.displayName}'s Record Against Characters with ${charWithEmoji(playerCharacter as CharacterName)}`
       );
-
+    }
+    embed.setDescription(
+      pageData
+        .map(({ formattedCharacter, wins, losses, winrate }) => {
+          return `**${formattedCharacter}**: ${wins} wins, ${losses} losses (Winrate: ${winrate}%)`;
+        })
+        .join("\n")
+    );
     const page: PaginatedMessageMessageOptionsUnion = {
       embeds: [embed],
     };

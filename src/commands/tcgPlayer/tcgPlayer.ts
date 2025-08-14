@@ -7,7 +7,7 @@ import {
 import type { Command } from "@src/types/command";
 import handlePlayerProfile from "./playerHandlers/profileHandler";
 import handleMatchHistory from "./playerHandlers/matchHandler";
-import { handleVsCharacter } from "./playerHandlers/vsCharacterHandler"
+import { handleVsCharacter } from "./playerHandlers/vsCharacterHandler";
 import { handleVsRecord } from "./playerHandlers/handleVsRecord";
 import { CHAR_OPTIONS } from "@src/constants";
 import seasonAutocomplete, {
@@ -94,7 +94,7 @@ export const command: Command<ChatInputCommandInteraction> = {
               "Select the character to get stats for, defaults to an overview."
             )
             .addChoices(CHAR_OPTIONS)
-            )
+        )
         .addStringOption((option) =>
           option
             .setName("opponent-character")
@@ -102,7 +102,7 @@ export const command: Command<ChatInputCommandInteraction> = {
               "Select the character to get stats against, defaults to an overview."
             )
             .addChoices(CHAR_OPTIONS)
-            )
+        )
         .addIntegerOption(seasonOption)
     ),
 

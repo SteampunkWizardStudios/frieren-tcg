@@ -2,37 +2,39 @@ import { ChatInputCommandInteraction } from "discord.js";
 import { formatMatchHistoryPages } from "./formatMatchHistoryPages";
 import { getWinrate } from "@src/util/utils";
 import { getMatchHistoryAgainstCharacter } from "@src/util/db/getMatchHistory";
-import { CharacterName } from "@tcg/characters/metadata/CharacterName";
-import handleVsCharacterRecordOverview from "./handleVsCharacterOverview"
+import handleVsCharacterRecordOverview from "./handleVsCharacterOverview";
 import querySeason from "@src/util/db/querySeason";
+import { charWithEmoji } from "@tcg/formatting/emojis";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 
 export async function handleVsCharacter(
   interaction: ChatInputCommandInteraction
 ) {
-  const playerId = interaction.options.getUser("player") ?? interaction.user;
-  const playerCharacter: CharacterName =
-    (interaction.options.getString("player-character") as CharacterName) ??
-    null;
-  const oppCharacter: CharacterName =
-    (interaction.options.getString("opponent-character") as CharacterName) ??
-    null;
-  const seasonId = interaction.options.getInteger("season") ?? null;
+  const player = interaction.options.getUser("player") ?? interaction.user;
+  const playerCharacter = interaction.options.getString("player-character");
+  const oppCharacter = interaction.options.getString("opponent-character");
+  const seasonId = interaction.options.getInteger("season");
   const seasonQuery = seasonId ? await querySeason(seasonId) : null;
 
   if (!oppCharacter) {
-      return handleVsCharacterRecordOverview(playerId, interaction, seasonQuery);
-    }
+    return handleVsCharacterRecordOverview(
+      player,
+      playerCharacter,
+      interaction,
+      seasonQuery
+    );
+  }
 
   const vsCharacterMatches = await getMatchHistoryAgainstCharacter(
-    playerId.id,
+    player.id,
     playerCharacter,
     oppCharacter,
     seasonQuery
   );
-    
+
   if (vsCharacterMatches.length === 0) {
     await interaction.editReply({
-      content: `There are no records of this matchup in the current ladder.`,
+      content: `There are no records of this matchup in the selected ladder.`,
     });
     return;
   }
@@ -40,34 +42,38 @@ export async function handleVsCharacter(
   const mirrorMatches = vsCharacterMatches.filter(
     (match) => match.winnerCharacter.name === match.loserCharacter.name
   );
-  const playerIdWins = vsCharacterMatches.filter(
-    (match) => match.winner.discordId === playerId.id
+  const playerWins = vsCharacterMatches.filter(
+    (match) => match.winner.discordId === player.id
   ).length;
-  const playerIdLosses = vsCharacterMatches.length - playerIdWins;
-  const overallWinrate = getWinrate(playerIdWins, playerIdLosses);
+  const playerLosses = vsCharacterMatches.length - playerWins;
+  const overallWinrate = getWinrate(playerWins, playerLosses);
 
-  const playerIdMirrorWins = mirrorMatches.filter(
-    (match) => match.winner.discordId === playerId.id
+  const playerMirrorWins = mirrorMatches.filter(
+    (match) => match.winner.discordId === player.id
   ).length;
-  const playerIdMirrorLosses = mirrorMatches.length - playerIdMirrorWins;
-  const mirrorWinrate = getWinrate(playerIdMirrorWins, playerIdMirrorLosses);
+  const playerMirrorLosses = mirrorMatches.length - playerMirrorWins;
+  const mirrorWinrate = getWinrate(playerMirrorWins, playerMirrorLosses);
 
   const overallRecordSummary = [
     `**Overall Record vs Character:**`,
     `- Total Matches: ${overallWinrate.total}`,
-    `- Record: ${playerIdWins} wins - ${playerIdLosses} losses (${overallWinrate.winrate}% win rate)`,
+    `- Record: ${playerWins} wins - ${playerLosses} losses (${overallWinrate.winrate}% win rate)`,
     `**Mirror Matches:**`,
     `- Total Mirror Matches: ${mirrorMatches.length}`,
-    `- Record: ${playerIdMirrorWins} wins - ${playerIdMirrorLosses} losses (${mirrorWinrate.winrate}% win rate)`,
+    `- Record: ${playerMirrorWins} wins - ${playerMirrorLosses} losses (${mirrorWinrate.winrate}% win rate)`,
     `\n`,
   ].join("\n");
 
-  const paginated = formatMatchHistoryPages(
-    vsCharacterMatches,
-    playerId,
-    `${playerId.displayName}'s Head-to-Head vs ${oppCharacter}`,
-    { prependDescription: overallRecordSummary }
-  );
+  // Import charWithEmoji and CharacterName at the top if not already imported
+  // import { charWithEmoji, CharacterName } from "@src/util/characterUtils";
+
+  const title = !playerCharacter
+    ? `${player.displayName}'s Record Against ${charWithEmoji(oppCharacter as CharacterName)}`
+    : `${player.displayName}'s Record Against ${charWithEmoji(oppCharacter as CharacterName)} with ${charWithEmoji(playerCharacter as CharacterName)}`;
+
+  const paginated = formatMatchHistoryPages(vsCharacterMatches, player, title, {
+    prependDescription: overallRecordSummary,
+  });
 
   await paginated.run(interaction);
 }
