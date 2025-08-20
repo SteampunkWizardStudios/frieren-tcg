@@ -186,7 +186,7 @@ const flammeCardLinks = {
   flamme_milleniumBarrier_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1378507554509946911/GIF_2872451178.gif?ex=683cdab4&is=683b8934&hm=b2bc1a80599ea2daed73e9f475afd1707dbb56ef13da049afc4d29b266d4ea83&",
   flamme_pinnacle_gif:
-    "https://cdn.discordapp.com/attachments/1360969158623232300/1378716437748912228/IMG_6837.gif?ex=6856a9be&is=6855583e&hm=0530f498d2c610f20e6c167a749e70e1a527eb24b0be7bff809a2babf3b78df7&",
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1407522765065687131/Record_2025_06_13_21_43_43_805.gif?ex=68a66939&is=68a517b9&hm=ba6f8a983736b4a1193b246c5b8421f3f0c1ae11be9cfb6374b1d777470bb70d",
 };
 
 const linieCardLinks = {

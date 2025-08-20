@@ -19,7 +19,7 @@ export const a_shallowSlash = new Card({
   hpCost: 4,
   cosmetic: {
     cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1364756398772322304/GIF_3910829828.gif?ex=680b7cb1&is=680a2b31&hm=7aa3935ddcec9e8d1c44d6caec5f6288432c3f2800b2cec08ee42c0e5c94a25b&",
+      "https://cdn.discordapp.com/attachments/1360969158623232300/1406952351620665464/Untitled_video_7.gif?ex=68a6503c&is=68a4febc&hm=ccb3c85e6cca4b1287835360a5fa8421e4e2cf8fef095918270e2c1e8ea05081",
   },
   cardAction: function (
     this: Card,
