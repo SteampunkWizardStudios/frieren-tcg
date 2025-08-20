@@ -43,7 +43,7 @@ export const a_fernBarrage = new Card({
   title: "Barrage",
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) =>
-    `DMG ${dmg} with 25% Pierce. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG with 25% Pierce, until Barrage count reaches 0.`,
+    `DMG ${dmg} with 25% Pierce. Gain 1 Barrage count. At the end of each turn, -1 Barrage count, HP-4, deal ${dmg} DMG with 25% Pierce, until Barrage count reaches 0. Using this card while Barrage is already active will replace the active Barrage with this card's effect.`,
   emoji: CardEmoji.FERN_CARD,
   effects: [5],
   hpCost: 4,

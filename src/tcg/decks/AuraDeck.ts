@@ -377,7 +377,7 @@ export const auserlese = new Card({
   title: "Scales of Obedience - Auserlese",
   cardMetadata: { nature: Nature.Util, signature: true, hideEmpower: true },
   description: () =>
-    `Roll a D100. If the result of the role > Opp's HP - Your HP, HP-10, use your opponent's move as if it's your own. At this turn's end, if Your HP - Opp's HP >= 50, you win, and if Opp's HP - Your HP >= 50, you lose.`,
+    `Roll a D100. If the result of the roll > Opp's HP - Your HP, HP-10, use your opponent's move as if it's your own. At this turn's end, if Your HP - Opp's HP >= 50, you win, and if Opp's HP - Your HP >= 50, you lose.`,
   priority: 13,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
