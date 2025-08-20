@@ -47,6 +47,7 @@ type TimedEffectMetadata = {
   manaConcealment?: boolean;
   mentalFog?: boolean;
   hypnoticCompulsion?: boolean;
+  treeOfLife?: boolean;
 };
 
 const defaultMetadata: TimedEffectMetadata = {
