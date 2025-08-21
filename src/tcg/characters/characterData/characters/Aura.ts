@@ -16,7 +16,7 @@ const INITIAL_SWORDSMEN_COUNT = 0;
 export const SWORDSMEN_DAMAGE = 3;
 
 const INITIAL_SHIELDBEARERS_COUNT = 2;
-export const SHIELDBEARERS_STRENGTH_RECOVERY = 2;
+export const SHIELDBEARERS_STRENGTH_RECOVERY = 1;
 
 const INITIAL_ARCHERS_COUNT = 0;
 export const ARCHERS_DAMAGE = 1;
@@ -46,7 +46,7 @@ const Aura = new CharacterData({
   cards: auraDeck,
   ability: {
     abilityName: "Until the End of Time",
-    abilityEffectString: `Aura controls an undead army to do her bidding. The army will move at turn end, and 50% of the damage targeted towards her will be transferred to the army instead.
+    abilityEffectString: `Aura controls an undead army to do her bidding. The army will move at turn end, and 50% of the damage targeted towards her will be transferred to the army instead as long as there is at least 1 soldier in her army.
         Aura starts with ${INITIAL_ARMY_STRENGTH} Army Strength and ${INITIAL_SHIELDBEARERS_COUNT} Shieldbearers platoons.
         At the end of every turn, Aura loses soldiers by the order she summoned them until #Soldier x ${SOLDIER_ARMY_STRENGTH} <= Army Strength (min: 0).`,
     abilityStartOfTurnEffect: (game, characterIndex, _messageCache) => {
@@ -104,7 +104,7 @@ const Aura = new CharacterData({
     ) => {
       // damage calculation routine is done in game.ts
       const character = game.getCharacter(characterIndex);
-      if (character.stats.stats.Ability > 0) {
+      if (character.additionalMetadata.auraPlatoonQueue.length > 0) {
         if (character.additionalMetadata.auraRetreat) {
           character.additionalMetadata.auraArmyDamageAbsorbtion = 1.0;
         } else {

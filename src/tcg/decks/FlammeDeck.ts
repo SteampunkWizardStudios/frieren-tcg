@@ -16,6 +16,7 @@ import {
   a_lastPageOfHumanitysMagicBase,
 } from "./utilDecks/flammeFoundationStage";
 import incantationFieldOfFlowers from "./utilDecks/flammeSignature";
+import CommonCardAction from "../util/commonCardActions";
 
 // const incantationSeductionTechnique = new Card({
 //   title: "Incantation: Seduction Technique",
@@ -167,7 +168,7 @@ const treeOfLife = new Card({
   },
   cardAction: function (
     this: Card,
-    { self, game, selfIndex, name, sendToGameroom, selfStat }
+    { game, selfIndex, name, sendToGameroom, selfStat }
   ) {
     sendToGameroom(`${name} plants a sapling for someone 1000 years from now.`);
     selfStat(0, StatsEnum.HP);
@@ -176,12 +177,15 @@ const treeOfLife = new Card({
       FlammeResearch.TreeOfLife
     ] = true;
 
-    self.timedEffects.push(
+    CommonCardAction.replaceOrAddNewTimedEffect(
+      game,
+      selfIndex,
+      "treeOfLife",
       new TimedEffect({
         name: "Tree of Life",
         description: `Roll an additional dice during card activation phase. If Theory of Prescience is active, this roll of dice will always be 5.`,
         turnDuration: 7,
-        metadata: { removableBySorganeil: true },
+        metadata: { removableBySorganeil: true, treeOfLife: true },
         priority: -2,
         executeEndOfTimedEffectActionOnRemoval: true,
         endOfTimedEffectAction: function () {
