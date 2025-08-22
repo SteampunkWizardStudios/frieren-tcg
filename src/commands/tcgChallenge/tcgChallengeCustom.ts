@@ -7,7 +7,7 @@ import {
 import type { Command } from "@src/types/command";
 import { initiateChallengeRequest } from "./gameHandler/initiateChallengeRequest";
 import { MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
-import { MAX_INVITE_LENGTH, MIN_INVITE_LENGTH } from "@src/constants"
+import { MAX_INVITE_LENGTH, MIN_INVITE_LENGTH } from "@src/constants";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()

@@ -6,7 +6,12 @@ import {
 } from "discord.js";
 import type { Command } from "@src/types/command";
 import { handlePlayerPreferences } from "./preferencesHandlers/preferencesHandler";
-import { MAX_INVITE_LENGTH, MAX_TEXT_SPEED, MIN_INVITE_LENGTH, MIN_TEXT_SPEED } from "@src/constants";
+import {
+  MAX_INVITE_LENGTH,
+  MAX_TEXT_SPEED,
+  MIN_INVITE_LENGTH,
+  MIN_TEXT_SPEED,
+} from "@src/constants";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -39,9 +44,7 @@ export const command: Command<ChatInputCommandInteraction> = {
         .addIntegerOption((option) =>
           option
             .setName("length")
-            .setDescription(
-              "The invite length in minutes"
-            )
+            .setDescription("The invite length in minutes")
             .setRequired(true)
             .setMinValue(MIN_INVITE_LENGTH)
             .setMaxValue(MAX_INVITE_LENGTH)

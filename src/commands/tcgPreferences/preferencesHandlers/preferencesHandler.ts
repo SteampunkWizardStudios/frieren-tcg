@@ -5,7 +5,7 @@ import {
 import type { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import {
   getOrCreatePlayerPreferences,
-  getPlayerPreferences, 
+  getPlayerPreferences,
   setFavouriteCharacters,
   updateTcgLiteMode,
   updateTcgTextSpeed,

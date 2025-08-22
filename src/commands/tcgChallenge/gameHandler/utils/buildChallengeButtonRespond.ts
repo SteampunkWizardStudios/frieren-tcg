@@ -79,7 +79,7 @@ export const buildChallengeButtonRespond = async (
       time: inviteLength * 60_000,
       filter: async (i) =>
         validateMatchButtonInteractions(i, challenger, opponent, ranked),
-    })
+    });
 
     // handle button clicks
     collector.on("collect", async (buttonInteraction: ButtonInteraction) => {
@@ -116,7 +116,6 @@ export const buildChallengeButtonRespond = async (
       }
     });
 
-  
     // Handle collector end (timeout)
     collector.on("end", async (collected) => {
       if (collected.size === 0) {
@@ -130,6 +129,6 @@ export const buildChallengeButtonRespond = async (
           collector.stop("Failed to edit message");
         }
       }
-      });
+    });
   }
 };
