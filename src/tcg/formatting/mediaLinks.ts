@@ -146,6 +146,8 @@ const stilleCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1374730994883629129/GIF_0977172306.gif?ex=6839a982&is=68385802&hm=3f3f42fb23a8d5da61241b0602d5de629f7b460f1cba0d898758bd7aa2105939&",
   stille_flyAway_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1361940199583780864/IMG_3171.gif?ex=6807d567&is=680683e7&hm=55cb8759a21dc4e1d852861c8856dd068b299cb289a109cd4be8cdd27cca4e2f&",
+  stille_geisel_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364971079096995840/GIF_0867566819.gif?ex=680b9be1&is=680a4a61&hm=af689691d54884d9f7df5a639c214146c59d7b3a9a6b0e8547fb41cf6b914c6c&",
 } as const;
 
 const wirbelCardLinks = {
@@ -225,6 +227,151 @@ const methodeCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1396618033866211438/GIF_2404385183.gif?ex=687f6627&is=687e14a7&hm=c388e026d5468bbe089a941b13da3fddcedc02a9460bece2c3d3c210c40e9160&",
 };
 
+const ubelCardLinks = {
+  ubel_shallowSlash_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1406952351620665464/Untitled_video_7.gif?ex=68a6503c&is=68a4febc&hm=ccb3c85e6cca4b1287835360a5fa8421e4e2cf8fef095918270e2c1e8ea05081",
+  ubel_cleave_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364386420554203196/GIF_3999614558.gif?ex=680a241f&is=6808d29f&hm=ed397e2ab4a3166d3e6975560d40d37d928ff1a6df755fabb56425cf283d0f89&",
+  ubel_dismantle_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364758389111918673/GIF_1476107048.gif?ex=680b7e8b&is=680a2d0b&hm=28e6e00072ec765df91914cdea3090c0c582b5079a9ec977ca21a3f70be5aea0&",
+  ubel_rushdown_gif:
+    "https://media.discordapp.net/attachments/1360969158623232300/1364216562600509570/GIF_2060261812.gif?ex=6808dd2e&is=68078bae&hm=120ce38d9abf8a42357d0bd650f0e5c63da9ea2232bd5ceae2716ee67a2fb67f&=&width=1440&height=820",
+  ubel_slowDown_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364216703541837844/GIF_2189012353.gif?ex=6808dd50&is=68078bd0&hm=644b405b52a67b684bda6bfff12ce2ffa99d091de554b967213e07aa87883a8d&",
+  ubel_defend_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364384151616094239/GIF_3928500915.gif?ex=680a2202&is=6808d082&hm=09e4cc493604c6e0be6f9a04263c49d93dd9a7d20bb18c78f6b58d1fd303c9b6&",
+  ubel_sorganeil_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364748769165447188/GIF_3534737554.gif?ex=680b7596&is=680a2416&hm=97e22820e064efed4dc8688572fffad891c01cdaac28df0e7a8e0ca77661521c&",
+  ubel_empathy_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364937614494535711/GIF_3999726425.gif?ex=680b7cb6&is=680a2b36&hm=8e54664c9778ca6cc49807519b9e0afd09dffa377209d98eb3c92f78c4ce1d1b&",
+  ubel_malevolentShrine_gif:
+    "https://media.discordapp.net/attachments/1338831179981262943/1363264315272073406/malevolent-shrine-ubel.gif?ex=68060f14&is=6804bd94&hm=300b3e5578f56a069ea858f0f660ce855be6a3f6f32f246b434066ea770da58e&=&width=400&height=225",
+};
+
+const starkCardLinks = {
+  stark_axeSwipe_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361125002761605140/IMG_3109.gif?ex=680829f1&is=6806d871&hm=ae00597c479d370662a52ae4f04cb024103354b0c758c483ff09946a0c1288ec&",
+  stark_offensiveStance_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361122664416018593/IMG_3106.gif?ex=680827c3&is=6806d643&hm=d6fdc758cc5b780bad809f674a6d3bf88f19ff038136bd96dca94e7c09ce18ed&",
+  stark_jumboBerrySpecialBreak_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1360990957671153826/IMG_3099.gif?ex=680855da&is=6807045a&hm=7b11f297c0dc63b3bd8e9e19d7b7cb316001a389454bd05213d99686879f4f3c&",
+  stark_block_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1360996196788867283/IMG_3102.gif?ex=68085abb&is=6807093b&hm=0602a1a0ef9278e1544911aa3e5b873617d0ab8cdd84c958c62e94f162bfe111&",
+  stark_concentration_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1360979639362781304/IMG_3087.gif?ex=68084b4f&is=6806f9cf&hm=98d20b75a63aca3116965b33fac4adac213feaefa4895cf0751976527dd483a0&",
+  stark_ordensSlashTechnique_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361187449522356324/IMG_3119.gif?ex=68086419&is=68071299&hm=f010c6a8f3b17eb25cdb15c8605dfb69ea06a323b0ca5aaed2484cce741ed4e6&",
+  stark_fearBroughtMeThisFar_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1360983005946183957/IMG_3091.gif?ex=68084e72&is=6806fcf2&hm=5e9453189ccb1c31a4def06862e8dc7d2468c471eff0f8faa63d6288c8127c6c&",
+  stark_eisensAxeCleave_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361191191533719602/IMG_3110.gif?ex=68086795&is=68071615&hm=e80ebb6c7098f7f020cc5a67819287df12f6ea5fa9427231382b6a8b026f3e47&",
+  stark_lastStand_gif:
+    `[⠀](https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif)`
+};
+
+const serieCardLinks = {
+  serie_livingGrimoireOffenseCommon_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
+  serie_livingGrimoireOffenseRare_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015121150022/Living_Grimoire1_1.png?ex=6808772d&is=680725ad&hm=903c0f575a5857d8527c631c5b4ef5fbf6ff9140ea44ea0a4f5ad7c6433a92a6&",
+  serie_livingGrimoireOffenseUnusual_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015825924147/Living_Grimoire2_1.png?ex=6808772e&is=680725ae&hm=63b0595c68a10b5d7c4246e4747f43fc61b292a95577b3c00b479ef11320ac58&",
+  serie_livingGrimoireUtilityTactics_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
+  serie_livingGrimoireUtilityRecovery_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014785740800/Living_Grimoire_1.png?ex=6808772d&is=680725ad&hm=96a1d24a30264ade70debfc8ffe00506330d2b9ed559386e1a69a1c19bc647e9&",
+  serie_mock_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1352873015502966825/Mock_1.png?ex=67df98ae&is=67de472e&hm=b4bfad8c4a548745a18660e2fcb39e7927661f269b17f9f8c73b66fa780f3d04&",
+  serie_basicDefensiveMagic_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014416506932/Basic_Defense_Magic.png?ex=67df98ad&is=67de472d&hm=79bab34bdef07e7fa529c5ac67ed093e7bfa2b69914f644ac434e4a564c47396&",
+  serie_unbreakableBarrier_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1352873016182177984/Unbreakable_Barrier.png?ex=67df98ae&is=67de472e&hm=ecaf6053851a3bb12e9d9b0ba65dc932f11a6e97c3efe3c4af20126fc8407ba3&",
+  serie_ancientBarrierMagic_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1352873014080966718/Ancient_Barrier_Magic_1.png?ex=67df98ad&is=67de472d&hm=c0b00575790207a93d00398d3351e5cd914f371b0c2118855f8f2dc259634420&",
+  serie_ancientBarrierMagic_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1365090141374513232/IMG_6559.gif?ex=680cb383&is=680b6203&hm=319be760a6a351a675a1f82ed84fc6cc78063ab4f302f01e5f00d677de814937&",
+};
+
+const seinCardLinks = {
+  sein_frierensZoltraak_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1353035311357362268/Trust_in_your_Ally_Frierens_Zoltraak_1.png?ex=67e02fd4&is=67dede54&hm=6cb8d375f497cf7bca2637de8d70a900901116aa53f0b0aa3e977ddc27a5def8&",
+  sein_frierensZoltraak_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361022845664104740/GIF_0907854706.gif?ex=6807cacc&is=6806794c&hm=c4c3d7908005bbcd23defb42f4c9b756135c8a5c1726330d0a52495998ec2c53&",
+  sein_fernsBarrage_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1353035310996394024/Trust_in_your_Ally_Ferns_Barrage.png?ex=67e02fd4&is=67dede54&hm=57cae7a03eefb0dacaa8649910e48ab411d50ca94a9855b078098e751b92ae75&",
+  sein_fernsBarrage_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361022927788834966/GIF_2294206836.gif?ex=6807cae0&is=68067960&hm=ca32887d358b3c43ad2d4c5618373b8cab1a11d0acdcc496a7203544936a9244&",
+  sein_starksLightningStrike_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1353035310677622845/Trust_in_your_Ally_Starks_Lightning_Strike.png?ex=67e02fd4&is=67dede54&hm=608a0bc2795f44b1512ecb7d26b29213aedada2f9f9db64b178447be0dd98476&",
+  sein_mugOfBeer_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1353038477805228073/Mug_of_Beer_2.png?ex=67e032c7&is=67dee147&hm=9e453e019c32d60027135834549e42bd19f16995569570a3012b9626a5fdf6f4&",
+  sein_mugOfBeer_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361017071886012681/GIF_3575013087.gif?ex=6807c56c&is=680673ec&hm=1e20739be8a75140974b9babb65729cf83c31d4f3d991bc35c90207fda41cd34&",
+  sein_smokeBreak_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1353035309906133052/Smoke_Break.png?ex=67e02fd4&is=67dede54&hm=a6eaadebd1ce83f74e2819c16eb7cb57e8fb0f9888f8083248ac49b54119ccf4&",
+  sein_smokeBreak_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361017954392866997/3.2.1.sein.gif?ex=6807c63e&is=680674be&hm=110488d337d86b35ac2b84cfec08e01c070a3ecb4563ccdfb3c1df602c5249f9&",
+  sein_awakening_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1353035309436375121/Awakening.png?ex=67e02fd3&is=67dede53&hm=48c7275f912f8927990fa0073b3f8a6c2e7279042e5bd8edfe1a925261a0e5b5&",
+  sein_awakening_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361016482263208137/GIF_1188387197.gif?ex=6807c4df&is=6806735f&hm=f5ed7c521144db3412cf1a52b1417497950c1adf96d45301ff7421b5a75d8ca7&",
+  sein_poisonCure_image:
+    "https://media.discordapp.net/attachments/1351391350398128159/1353035308844974100/Poison_Cure.png?ex=67e02fd3&is=67dede53&hm=76216578c19115f3ddcd9bff1c497b0c7c2f9ee87152f02c4085d681dd0dc6ae&=&format=webp&quality=lossless&width=908&height=1160",
+  sein_poisonCure_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361016416488390776/GIF_0966802288.gif?ex=6807c4d0&is=68067350&hm=2d09267ccc0505a949b0c57e6c9bb84fc99decb89d35637cadced435723f5904&",
+  sein_braceYourself_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1353035308182147102/Brace_Yourself.png?ex=67e02fd3&is=67dede53&hm=b4bcacc46cae5fcd120b76d666ef606186621d3edc230a851e09a77976fce8eb&",
+  sein_braceYourself_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364568772136140810/GIF_1787578930.gif?ex=680a2533&is=6808d3b3&hm=1cfb307428d03155177b0ce8439cc92792a63fc2588d8483cf618682105449a3&",
+  sein_threeSpearsOfTheGoddess_image:
+    "https://cdn.discordapp.com/attachments/1351391350398128159/1353035307397681172/Three_Spears_of_the_Godess.png?ex=67e02fd3&is=67dede53&hm=671b75347795840779fe6e5007f8a0918b04e3b6a558b561ca9ce4b4c18694a8&",
+  sein_threeSpearsOfTheGoddess_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1360972240732291242/GIF_0993654948.gif?ex=6808446b&is=6806f2eb&hm=90213c37d073b6d0b0354a3893d14b16c727fa9b04c457693110512a142c0338&",
+};
+
+const laufenCardLinks = {
+  laufen_staffStrike_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1365418943023681656/GIF_0570739142.gif?ex=681088bc&is=680f373c&hm=11d929f2c7b8bbc30b003a0d981cf02eb802b3651ba64f281ca1f5e0fa36b358&",
+  laufen_staffBash_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1365418943023681656/GIF_0570739142.gif?ex=681088bc&is=680f373c&hm=11d929f2c7b8bbc30b003a0d981cf02eb802b3651ba64f281ca1f5e0fa36b358&",
+  laufen_whip_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1365419009721499718/GIF_3626022317.gif?ex=681088cc&is=680f374c&hm=838847fac81db2afc9448524255aceece7c3015a4af205b3014cd79ba565380c&",
+  laufen_supersonicStrike_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1366373963789242388/GIF_0816288304-ezgif.com-optimize.gif?ex=6810b66a&is=680f64ea&hm=04b17a787656912d7075211221d149c8eaca57ca5ca916c27ab634fedaa75fb0&",
+  laufen_hide_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1365422814097707120/GIF_3467240538.gif?ex=68108c57&is=680f3ad7&hm=afdbfcbce169548db1583e2f07027c57cf975b395500daee05e77e21a6b96b48&",
+  laufen_quickDodge_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1365419393307377684/GIF_1047990200.gif?ex=68108927&is=680f37a7&hm=f99fc20e4da10efce076e95809cf6f4349da36e3fdd8600003877c1589a37ea6&",
+  laufen_parrry_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1365423837218472137/GIF_2008541989.gif?ex=68108d4b&is=680f3bcb&hm=886ee4f02a75662b1f11b3b64fbe46edada132bdffb20d022907d8df3ba15a33&",
+  laufen_jilwer_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1363008456306725004/Jilwer.gif?ex=6807c3cb&is=6806724b&hm=21c109a6e16515d4ee652bb3d730625a7dda49bacb56ad286a0b303d39c26d72&",
+};
+
+const himmelCardLinks = {
+  himmel_FrierenStrikeTheirWeakpoints_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1362092606695145482/GIF_1369578971.gif?ex=68086357&is=680711d7&hm=07c26c17a9a859865c2f107f8358b50df98cc49d49ed0daa2f659c6acb494f1e&",
+  himmel_extremeSpeed_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361210956872421497/IMG_3122.gif?ex=6807d13e&is=68067fbe&hm=3ac9b147ffc7c93d02121986546428f4b36f0bb08a2c8bc526d5ba51df5a4bd6&",
+  himmel_realHerosSwing_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1361777461620248576/GIF_1092034222.gif?ex=6807e697&is=68069517&hm=853f7d8910a4ab79010685a4399cd55c0af1f343295e0b2e04c49f829b54eee7&",
+};
+
+const fernCardLinks = {
+  fern_zoltraak_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364355690780557404/GIF_4110295150.gif?ex=680a0781&is=6808b601&hm=4aa279af5d5b3ae167099775570328a51c55d8572aac6369a9748565b950f8a1&",
+  fern_barrage_gif:
+    "https://c.tenor.com/2RAJbNpiLI4AAAAd/tenor.gif",
+  fern_concentratedZoltraakSnipe_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364357151111385098/GIF_1619936813.gif?ex=6809601d&is=68080e9d&hm=d315925c27f678c96ed238bcc826abd1c209e5e1dae651b445b7fa4760e0cf09&",
+  fern_disapproving_pout_gif:
+    "https://c.tenor.com/V1ad9v260E8AAAAd/tenor.gif",
+  fern_spellToCreateManaButterflies_gif:
+    "https://c.tenor.com/B93aR7oWJ4IAAAAC/tenor.gif",
+  fern_commonDefensiveMagic_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1364255159529767005/GIF_2894655091.gif?ex=68090120&is=6807afa0&hm=e81b702e207fea882babeffd4b376e8db66a1afac7b19191892b3e6e29a9772c&",
+};
+
 const mediaLinks = {
   ...characterPortraits,
   ...vangerisuCards,
@@ -240,6 +387,13 @@ const mediaLinks = {
   ...linieCardLinks,
   ...denkenCardLinks,
   ...methodeCardLinks,
+  ...ubelCardLinks,
+  ...starkCardLinks,
+  ...serieCardLinks,
+  ...seinCardLinks,
+  ...laufenCardLinks,
+  ...himmelCardLinks,
+  ...fernCardLinks,
 } as const;
 
 export default mediaLinks;
