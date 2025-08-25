@@ -49,7 +49,7 @@ export const a_cleave = new Card({
   cardMetadata: { nature: Nature.Attack, ubelFailureRate: 40 },
   hpCost: 6,
   cosmetic: {
-    cardGif:  mediaLinks.ubel_cleave_gif,
+    cardGif: mediaLinks.ubel_cleave_gif,
   },
   cardAction: function (
     this: Card,

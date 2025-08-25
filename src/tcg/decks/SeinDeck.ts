@@ -5,7 +5,6 @@ import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 import { CardEmoji } from "@tcg/formatting/emojis";
 import mediaLinks from "../formatting/mediaLinks";
 
-
 export const a_trustInYourAllyFrierensZoltraak = new Card({
   title: "Trust in Your Ally: Frieren's Zoltraak",
   cardMetadata: { nature: Nature.Attack },

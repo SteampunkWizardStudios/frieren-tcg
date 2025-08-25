@@ -170,7 +170,7 @@ const disapprovingPout = new Card({
   emoji: CardEmoji.FERN_CARD,
   effects: [3, 1, 2],
   cosmetic: {
-    cardGif: mediaLinks.fern_disapproving_pout_gif
+    cardGif: mediaLinks.fern_disapproving_pout_gif,
   },
   cardAction: function (
     this: Card,
@@ -331,7 +331,7 @@ export const commonDefensiveMagic = new Card({
   effects: [20],
   priority: 2,
   cosmetic: {
-    cardGif: mediaLinks.fern_commonDefensiveMagic_gif
+    cardGif: mediaLinks.fern_commonDefensiveMagic_gif,
   },
   cardAction: function (
     this: Card,

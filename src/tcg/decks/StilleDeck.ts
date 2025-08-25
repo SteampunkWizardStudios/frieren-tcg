@@ -190,7 +190,7 @@ export const a_geisel = new Card({
   cardMetadata: { nature: Nature.Attack, signature: true },
   effects: [15],
   cosmetic: {
-    cardGif: mediaLinks.stille_geisel_gif
+    cardGif: mediaLinks.stille_geisel_gif,
   },
   cardAction: function (
     this: Card,

@@ -265,8 +265,7 @@ const starkCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1360983005946183957/IMG_3091.gif?ex=68084e72&is=6806fcf2&hm=5e9453189ccb1c31a4def06862e8dc7d2468c471eff0f8faa63d6288c8127c6c&",
   stark_eisensAxeCleave_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1361191191533719602/IMG_3110.gif?ex=68086795&is=68071615&hm=e80ebb6c7098f7f020cc5a67819287df12f6ea5fa9427231382b6a8b026f3e47&",
-  stark_lastStand_gif:
-    `[⠀](https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif)`
+  stark_lastStand_gif: `[⠀](https://c.tenor.com/eHxDKoFxr2YAAAAC/tenor.gif)`,
 };
 
 const serieCardLinks = {
@@ -360,12 +359,10 @@ const himmelCardLinks = {
 const fernCardLinks = {
   fern_zoltraak_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1364355690780557404/GIF_4110295150.gif?ex=680a0781&is=6808b601&hm=4aa279af5d5b3ae167099775570328a51c55d8572aac6369a9748565b950f8a1&",
-  fern_barrage_gif:
-    "https://c.tenor.com/2RAJbNpiLI4AAAAd/tenor.gif",
+  fern_barrage_gif: "https://c.tenor.com/2RAJbNpiLI4AAAAd/tenor.gif",
   fern_concentratedZoltraakSnipe_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1364357151111385098/GIF_1619936813.gif?ex=6809601d&is=68080e9d&hm=d315925c27f678c96ed238bcc826abd1c209e5e1dae651b445b7fa4760e0cf09&",
-  fern_disapproving_pout_gif:
-    "https://c.tenor.com/V1ad9v260E8AAAAd/tenor.gif",
+  fern_disapproving_pout_gif: "https://c.tenor.com/V1ad9v260E8AAAAd/tenor.gif",
   fern_spellToCreateManaButterflies_gif:
     "https://c.tenor.com/B93aR7oWJ4IAAAAC/tenor.gif",
   fern_commonDefensiveMagic_gif:

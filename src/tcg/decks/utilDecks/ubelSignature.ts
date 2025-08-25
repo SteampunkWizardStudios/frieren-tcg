@@ -9,7 +9,7 @@ export const a_malevolentShrine = new Card({
   description: ([dmg, atkSpd]) =>
     `DMG ${dmg}. If used by Übel, has a 80% of missing if the opponent didn't use an Attack card before this move is used. If the attack misses, ATK+${atkSpd}, SPD+${atkSpd}.`,
   cosmetic: {
-    cardGif: mediaLinks.ubel_malevolentShrine_gif
+    cardGif: mediaLinks.ubel_malevolentShrine_gif,
   },
   emoji: CardEmoji.UBEL_CARD,
   cardMetadata: { nature: Nature.Attack, signature: true, ubelFailureRate: 80 },

@@ -269,9 +269,7 @@ export const a_lastStand = new Card({
         activateEndOfTurnActionThisTurn: false,
         endOfTimedEffectAction: (game, characterIndex) => {
           if (!game.gameSettings.liteMode) {
-            sendToGameroom(
-              mediaLinks.stark_lastStand_gif,
-            );
+            sendToGameroom(mediaLinks.stark_lastStand_gif);
           }
           self.adjustStat(-20, StatsEnum.HP, game);
           self.adjustStat(5, StatsEnum.DEF, game);
