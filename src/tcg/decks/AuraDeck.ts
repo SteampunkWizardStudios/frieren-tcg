@@ -15,7 +15,7 @@ const rusted_blades = new Card({
   cosmetic: {
     cardGif: mediaLinks.aura_rustedBlades_gif,
   },
-  effects: [3],
+  effects: [4],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth the swordsmen platoon.`);
@@ -34,7 +34,7 @@ const weathered_shields = new Card({
   cosmetic: {
     cardGif: mediaLinks.aura_weatheredShields_gif,
   },
-  effects: [3],
+  effects: [4],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth the shieldbearers platoon.`);
@@ -53,7 +53,7 @@ const broken_arrows = new Card({
   cosmetic: {
     cardGif: mediaLinks.aura_brokenArrows_gif,
   },
-  effects: [3],
+  effects: [4],
   hpCost: 5,
   cardAction: function (this: Card, { self, name, sendToGameroom, selfStat }) {
     sendToGameroom(`${name} called forth the archers platoon.`);
