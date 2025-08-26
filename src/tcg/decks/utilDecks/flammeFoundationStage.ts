@@ -38,7 +38,7 @@ export const a_firstPageOfHumanitysMagicBase = new Card({
   ) {
     sendToGameroom(`${name} developed a basic offensive spell.`);
     selfStat(0, StatsEnum.ATK);
-    selfStat(1, StatsEnum.DEF);
+    selfStat(2, StatsEnum.DEF);
     selfStat(0, StatsEnum.SPD);
     basicAttack(1);
   },
