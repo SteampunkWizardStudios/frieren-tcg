@@ -8,7 +8,7 @@ import mediaLinks from "../formatting/mediaLinks";
 
 const rusted_blades = new Card({
   title: "Rusted Blades",
-  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
+  cardMetadata: { nature: Nature.Attack, armyStrength: 10 },
   description: ([atk]) =>
     `ATK+${atk}. Army Strength+10. Summon 2 Swordsmen platoons.`,
   emoji: CardEmoji.AURA_CARD,
@@ -46,7 +46,7 @@ const weathered_shields = new Card({
 
 const broken_arrows = new Card({
   title: "Broken Arrows",
-  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
+  cardMetadata: { nature: Nature.Attack, armyStrength: 10 },
   description: ([spd]) =>
     `SPD+${spd}. Army Strength+10. Summon 2 Archers platoons.`,
   emoji: CardEmoji.AURA_CARD,
@@ -65,7 +65,7 @@ const broken_arrows = new Card({
 
 const fallen_empire = new Card({
   title: "Fallen Empire",
-  cardMetadata: { nature: Nature.Util, armyStrength: 15 },
+  cardMetadata: { nature: Nature.Attack, armyStrength: 15 },
   description: ([stat]) =>
     `ATK+${stat} DEF+${stat} SPD+${stat}. Army Strength+15. Summons 1 Swordsmen, 1 Shieldbearer and 1 Archer platoon.`,
   emoji: CardEmoji.AURA_CARD,
