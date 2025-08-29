@@ -79,7 +79,7 @@ export const a_thirdPageOfHumanitysMagicBase = new Card({
   ) {
     sendToGameroom(`${name} called upon Hellfire.`);
     selfStat(0, StatsEnum.ATK);
-    selfStat(1, StatsEnum.DEF);
+    selfStat(2, StatsEnum.DEF);
     selfStat(0, StatsEnum.SPD);
     basicAttack(1);
   },
