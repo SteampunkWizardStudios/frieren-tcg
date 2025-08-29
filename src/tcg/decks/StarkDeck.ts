@@ -66,6 +66,9 @@ const defensiveStance = new Card({
   description: ([def, spd]) =>
     `DEF+${def}. ATK-2 for 2 turns. SPD+${spd}. Gain 1 <Resolve>.`,
   emoji: CardEmoji.STARK_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.stark_defensiveStance_gif,
+  },
   effects: [2, 2],
   cardAction: function (
     this: Card,

@@ -201,6 +201,9 @@ export const manaConcealment = new Card({
   description: ([atk, def, spd]) =>
     `ATK+${atk}. DEF+${def}. SPD+${spd}. Next turn, receive Priority+1 and additional 50% Pierce on attacks.`,
   emoji: CardEmoji.FERN_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.fern_manaConcealment_gif,
+  },
   effects: [1, 2, 2],
   cardAction: function (
     this: Card,

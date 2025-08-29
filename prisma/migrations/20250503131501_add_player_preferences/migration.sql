@@ -3,7 +3,6 @@ CREATE TABLE "PlayerPreferences" (
     "id" SERIAL NOT NULL,
     "playerId" INTEGER NOT NULL,
     "tcgTextSpeed" INTEGER NOT NULL DEFAULT 1500,
-    "tcgInviteLength" INTEGER NOT NULL DEFAULT 5,
 
     CONSTRAINT "PlayerPreferences_pkey" PRIMARY KEY ("id")
 );

@@ -73,6 +73,9 @@ const a_FrierenBackMeUp = new Card({
   description: ([dmg]) =>
     `Frieren attacks for ${dmg} DMG. For the next 4 turn ends, Frieren attacks for an additional ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.himmel_FrierenBackMeUp_gif,
+  },
   effects: [4],
   cardAction: function (
     this: Card,
@@ -134,6 +137,9 @@ export const a_FrierenNow = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.himmel_FrierenNow_gif,
+  },
   effects: [10],
   cardAction: function (
     this: Card,
@@ -184,6 +190,9 @@ const a_EisenTheEnemysOpen = new Card({
   description: ([def, dmg]) =>
     `Eisen winds up. DEF+${def} for 2 turns. At next turn's end, deal ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.himmel_EisenTheEnemysOpen_gif,
+  },
   effects: [2, 10],
   cardAction: function (
     this: Card,
@@ -336,6 +345,9 @@ const eisenHoldTheLine = new Card({
   cardMetadata: { nature: Nature.Util },
   description: ([def]) => `Eisen holds the line. DEF+${def} for 4 turns.`,
   emoji: CardEmoji.HIMMEL_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.himmel_EisenHoldTheLine_gif,
+  },
   effects: [4],
   cardAction: function (
     this: Card,
