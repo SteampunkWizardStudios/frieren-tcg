@@ -117,6 +117,8 @@ const fernCardLinks = {
     "https://cdn.discordapp.com/attachments/1360969158623232300/1364255159529767005/GIF_2894655091.gif?ex=68090120&is=6807afa0&hm=e81b702e207fea882babeffd4b376e8db66a1afac7b19191892b3e6e29a9772c&",
   fern_manaConcealment_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1410794238576431124/ezgif-342f2b9133a610.gif?ex=68b25005&is=68b0fe85&hm=800bb754dd978b75f4e6915a72361c3509ae6536b24638dc4e6123d7e342002e",
+  fern_manaDetection_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1411852717592150107/ezgif-8798439f839874.gif?ex=68b8240e&is=68b6d28e&hm=2edb4baf768a83cd6dbc36bb361458a037095bb0f9bad30eee495d9cecd9b70c",
 };
 
 const flammeCardLinks = {
@@ -215,6 +217,8 @@ const laufenCardLinks = {
 
 const linieCardLinks = {
   linie_adapt_gif: "https://c.tenor.com/Dcc6-Rvkts8AAAAd/tenor.gif",
+  linie_imitate_gif:
+    "https://cdn.discordapp.com/attachments/1360969158623232300/1411859931195244574/ezgif-838754d1165525.gif?ex=68b82ac6&is=68b6d946&hm=d6980e7d3098a5fcd3392b47990efc62f7b8b1696ece8024bf593bf9519e1e2c",
   linie_erfassenAxe_gif: "https://c.tenor.com/eUCHN11H4B4AAAAd/tenor.gif",
   linie_erfassenJavelin_gif: "https://c.tenor.com/zd9mOGFjT3IAAAAd/tenor.gif",
   linie_erfassenSword_gif: "https://c.tenor.com/f4-8FBCgXg4AAAAd/tenor.gif",
