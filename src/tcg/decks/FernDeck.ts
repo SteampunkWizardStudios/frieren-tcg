@@ -244,14 +244,7 @@ export const manaConcealment = new Card({
       return selectedCard;
     };
 
-    character.ability.abilityStartOfTurnEffect = function (
-      _game,
-      _characterIndex,
-      _messageCache
-    ) {
-      character.additionalMetadata.pierceFactor = 0.5;
-    };
-
+    character.additionalMetadata.pierceFactor = 0.5;
     character.timedEffects.push(
       new TimedEffect({
         name: "Mana Concealment",
@@ -274,7 +267,6 @@ export const manaConcealment = new Card({
             );
             character.ability.abilitySelectedMoveModifierEffect = undefined;
             character.additionalMetadata.pierceFactor = 0;
-            character.ability.abilityStartOfTurnEffect = undefined;
           }
         },
       })

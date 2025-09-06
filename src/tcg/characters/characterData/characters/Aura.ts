@@ -13,7 +13,7 @@ import auraDeck from "@/src/tcg/decks/AuraDeck";
 const INITIAL_ARMY_STRENGTH = 15;
 
 const INITIAL_SWORDSMEN_COUNT = 0;
-export const SWORDSMEN_DAMAGE = 3;
+export const SWORDSMEN_DAMAGE = 2;
 
 const INITIAL_SHIELDBEARERS_COUNT = 2;
 export const SHIELDBEARERS_STRENGTH_RECOVERY = 1;

@@ -13,6 +13,9 @@ export const imitate = new Card({
     `Use the card the opponent used last turn at this card's empower level -2.`,
   emoji: CardEmoji.LINIE_CARD,
   effects: [],
+  cosmetic: {
+    cardGif: mediaLinks.linie_imitate_gif,
+  },
   cardAction: () => {},
   conditionalTreatAsEffect: function (this: Card, game, characterIndex) {
     const lastCard =
@@ -104,6 +107,9 @@ export const manaDetection = new Card({
     `SPD+${spd}. If Opp's DEF >= Opp's ATK, ATK+${bigNumber}, DEF+${smallNumber}. Otherwise, ATK+${smallNumber}, DEF+${bigNumber}. Reveal the opponent's highest empowered card.`,
   emoji: CardEmoji.MANA_CARD,
   effects: [2, 2, 1],
+  cosmetic: {
+    cardGif: mediaLinks.fern_manaDetection_gif,
+  },
   cardAction: manaDetectionBaseCardAction,
 });
 
