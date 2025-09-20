@@ -119,3 +119,10 @@ model CharacterMastery {
 
   @@unique([playerId, characterId])
 }
+
+model BanConfig {
+  id              String  @id @default("ban-config")
+  maxCount        Int     @default(0)
+  enabledRanked   Boolean @default(false)
+  enabledUnranked Boolean @default(false)
+}
