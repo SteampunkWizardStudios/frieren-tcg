@@ -7,6 +7,7 @@ import { getPlayerPreferences } from "@src/util/db/preferences";
 import { DEFAULT_TEXT_SPEED } from "@src/constants";
 import { DEFAULT_INVITE_LENGTH } from "@src/constants";
 import { getPlayer } from "@src/util/db/getPlayer";
+import { resolveBanCountForMatch } from "@src/util/db/banConfig";
 
 export async function initiateChallengeRequest(prop: {
   interaction: ChatInputCommandInteraction;
@@ -35,6 +36,14 @@ export async function initiateChallengeRequest(prop: {
 
   const player = await getPlayer(interaction.user.id);
   const playerPreferences = await getPlayerPreferences(player.id);
+
+  const isCustomMatch = !ranked && gamemode === undefined;
+  const banCount = await resolveBanCountForMatch({
+    isRanked: ranked,
+    isCustom: isCustomMatch,
+    requestedBanCount: gameSettings.banCount,
+  });
+  gameSettings.banCount = banCount;
   if (gameSettings.liteMode === undefined) {
     gameSettings.liteMode = playerPreferences
       ? playerPreferences.tcgLiteMode
@@ -72,6 +81,7 @@ export async function initiateChallengeRequest(prop: {
     ranked,
     preferredTextSpeed,
     preferredInviteLength,
+    isCustomMatch,
     gamemode
   );
 }
