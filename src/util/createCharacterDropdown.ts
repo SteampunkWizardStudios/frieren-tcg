@@ -9,11 +9,14 @@ import { CharacterData } from "../tcg/characters/characterData/characterData";
 import characterSelect from "./messageComponents/characterSelect";
 import { getSortedCharactersForPlayer } from "./db/preferences";
 import { getPlayer } from "./db/getPlayer";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import { charWithEmoji } from "@tcg/formatting/emojis";
 
 export const createCharacterDropdown = async (
   user: User,
   customId: string,
-  timeLimitSeconds?: number
+  timeLimitSeconds?: number,
+  options?: { bannedCharacters?: Set<CharacterName> }
 ): Promise<{
   embed: EmbedBuilder;
   selectMenu: StringSelectMenuBuilder;
@@ -28,6 +31,15 @@ export const createCharacterDropdown = async (
   const player = await getPlayer(user.id);
 
   const sortedCharacters = await getSortedCharactersForPlayer(player.id);
+  const bannedCharacters = options?.bannedCharacters ?? new Set<CharacterName>();
+
+  const availableFavouriteCharacters = sortedCharacters.favouritedCharacter.filter(
+    (char) => !bannedCharacters.has(char.characterName as CharacterName)
+  );
+  const availableNonFavouriteCharacters =
+    sortedCharacters.nonFavouritedCharacter.filter(
+      (char) => !bannedCharacters.has(char.characterName as CharacterName)
+    );
 
   // Create the initial embed showing all characters
   const embed = new EmbedBuilder()
@@ -41,19 +53,29 @@ export const createCharacterDropdown = async (
       value: [
         "🎲 Random Character",
         "✨ Random Favorite Character", // Still using british spelling in the codebase
-        ...sortedCharacters.favouritedCharacter.map(
+        ...availableFavouriteCharacters.map(
           (char: CharacterData) =>
             `1. ⭐ ${char.cosmetic.emoji} ${char.characterName}`
         ),
-        ...sortedCharacters.nonFavouritedCharacter.map(
+        ...availableNonFavouriteCharacters.map(
           (char: CharacterData) =>
             `1. ${char.cosmetic.emoji} ${char.characterName}`
         ),
       ].join("\n"),
     });
 
-  const characterList = sortedCharacters.favouritedCharacter.concat(
-    sortedCharacters.nonFavouritedCharacter
+  if (bannedCharacters.size > 0) {
+    embed.addFields({
+      name: "🚫 Banned This Match",
+      value: Array.from(bannedCharacters)
+        .sort((a, b) => a.localeCompare(b))
+        .map((charName) => `- ${charWithEmoji(charName)}`)
+        .join("\n"),
+    });
+  }
+
+  const characterList = availableFavouriteCharacters.concat(
+    availableNonFavouriteCharacters
   );
   const { charSelect, charSelectActionRow } = characterSelect({
     characterList,

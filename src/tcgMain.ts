@@ -1,35 +1,50 @@
+import goddessDeck from "@decks/utilDecks/goddessDeck";
+import Card, { Nature } from "@tcg/card";
+import Character from "@tcg/character";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import { charWithEmoji } from "@tcg/formatting/emojis";
+import Game from "@tcg/game";
 import {
-  PublicThreadChannel,
+  gameAndMessageContext,
+  timedEffectContext,
+} from "@tcg/gameContextProvider";
+import { StatsEnum } from "@tcg/stats";
+import TimedEffect from "@tcg/timedEffect";
+import {
   PrivateThreadChannel,
-  User,
+  PublicThreadChannel,
   ThreadChannel,
+  User,
 } from "discord.js";
 import { GameSettings } from "./commands/tcgChallenge/gameHandler/gameSettings";
-import Character from "@tcg/character";
+import { FlammeResearch } from "./tcg/additionalMetadata/gameAdditionalMetadata";
+import { getPlayerBans } from "./tcgChatInteractions/getPlayerBans";
 import { getPlayerCharacter } from "./tcgChatInteractions/getPlayerCharacter";
-import Game from "@tcg/game";
+import { CharacterSelectionType } from "./tcgChatInteractions/handleCharacterSelection";
 import { MessageCache } from "./tcgChatInteractions/messageCache";
+import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
+import { printCharacter } from "./tcgChatInteractions/printCharacter";
+import { printGameState } from "./tcgChatInteractions/printGameState";
 import {
   sendToThread,
   TCGThread,
   TCGThreads,
 } from "./tcgChatInteractions/sendGameMessage";
-import { printGameState } from "./tcgChatInteractions/printGameState";
-import Card, { Nature } from "@tcg/card";
-import { printCharacter } from "./tcgChatInteractions/printCharacter";
-import TimedEffect from "@tcg/timedEffect";
-import { playSelectedMove } from "./tcgChatInteractions/playSelectedMove";
-import { CharacterName } from "@tcg/characters/metadata/CharacterName";
-import {
-  gameAndMessageContext,
-  timedEffectContext,
-} from "@tcg/gameContextProvider";
-import { CharacterSelectionType } from "./tcgChatInteractions/handleCharacterSelection";
-import goddessDeck from "@decks/utilDecks/goddessDeck";
-import { StatsEnum } from "@tcg/stats";
-import { FlammeResearch } from "./tcg/additionalMetadata/gameAdditionalMetadata";
 
 const TURN_LIMIT = 50;
+
+const formatInlineList = (items: string[]): string => {
+  if (items.length === 0) {
+    return "";
+  }
+  if (items.length === 1) {
+    return items[0];
+  }
+  if (items.length === 2) {
+    return `${items[0]} and ${items[1]}`;
+  }
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+};
 
 export type TCGResult = {
   winner?: User;
@@ -58,6 +73,75 @@ export const tcgMain = async (
     0: challenger,
     1: opponent,
   };
+
+  const messageCache = new MessageCache();
+  const threadsMapping: TCGThreads = {
+    [TCGThread.Gameroom]: gameThread,
+    [TCGThread.ChallengerThread]: challengerThread,
+    [TCGThread.OpponentThread]: opponentThread,
+  };
+
+  const bansPerPlayer = Math.max(0, Math.min(4, gameSettings.banCount ?? 0));
+  const bannedCharacterSet = new Set<CharacterName>();
+
+  if (bansPerPlayer > 0) {
+    const banPhaseIntro =
+      bansPerPlayer === 1
+        ? "⭕ Ban phase started! Each player may ban 1 character."
+        : `⭕ Ban phase started! Each player may ban ${bansPerPlayer} characters.`;
+    messageCache.push(`## ${banPhaseIntro}`, TCGThread.Gameroom);
+    await sendToThread(
+      messageCache.flush(TCGThread.Gameroom),
+      TCGThread.Gameroom,
+      threadsMapping,
+      textSpeedMs
+    );
+
+    const [challengerBans, opponentBans] = await Promise.all([
+      getPlayerBans(challenger, challengerThread, bansPerPlayer),
+      getPlayerBans(opponent, opponentThread, bansPerPlayer),
+    ]);
+
+    [...challengerBans, ...opponentBans].forEach((name) =>
+      bannedCharacterSet.add(name)
+    );
+
+    const bannedCharacters = Array.from(bannedCharacterSet).sort((a, b) =>
+      a.localeCompare(b)
+    );
+
+    if (bannedCharacters.length > 0) {
+      const formattedList = formatInlineList(
+        bannedCharacters.map((name) => charWithEmoji(name))
+      );
+      const announcement = `🚫 Banned characters: ${formattedList}!`;
+
+      messageCache.push(`## ${announcement}`, TCGThread.Gameroom);
+      messageCache.push(`## ${announcement}`, TCGThread.ChallengerThread);
+      messageCache.push(`## ${announcement}`, TCGThread.OpponentThread);
+
+      await Promise.all([
+        sendToThread(
+          messageCache.flush(TCGThread.Gameroom),
+          TCGThread.Gameroom,
+          threadsMapping,
+          textSpeedMs
+        ),
+        sendToThread(
+          messageCache.flush(TCGThread.ChallengerThread),
+          TCGThread.ChallengerThread,
+          threadsMapping,
+          Math.max(200, textSpeedMs / 2)
+        ),
+        sendToThread(
+          messageCache.flush(TCGThread.OpponentThread),
+          TCGThread.OpponentThread,
+          threadsMapping,
+          Math.max(200, textSpeedMs / 2)
+        ),
+      ]);
+    }
+  }
 
   const handleGameResult = (
     props: { losingCharacterIndex: number } | { tie: true }
@@ -89,11 +173,13 @@ export const tcgMain = async (
   // game start - ask for character selection
   const challengerCharacterResponsePromise = getPlayerCharacter(
     challenger,
-    challengerThread
+    challengerThread,
+    bannedCharacterSet
   );
   const opponentCharacterResponsePromise = getPlayerCharacter(
     opponent,
-    opponentThread
+    opponentThread,
+    bannedCharacterSet
   );
   const [challengerSelection, opponentSelection] = await Promise.all([
     challengerCharacterResponsePromise,
@@ -108,13 +194,6 @@ export const tcgMain = async (
 
   result.challengerCharacter = challengerCharacterName;
   result.opponentCharacter = opponentCharacterName;
-
-  const messageCache = new MessageCache();
-  const threadsMapping: TCGThreads = {
-    [TCGThread.Gameroom]: gameThread,
-    [TCGThread.ChallengerThread]: challengerThread,
-    [TCGThread.OpponentThread]: opponentThread,
-  };
 
   const challengerChar = challengerSelection.char.clone();
   const opponentChar = opponentSelection.char.clone();
