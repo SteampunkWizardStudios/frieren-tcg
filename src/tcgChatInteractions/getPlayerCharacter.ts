@@ -28,6 +28,7 @@ export const getPlayerCharacter = async (
   const timeLimit = timeLimitSeconds * 1000;
   let isResolved = false;
   const bannedSet = bannedCharacters ?? new Set<CharacterName>();
+  const playerRecord = await getPlayer(player.id);
 
   const characterSelectId = `character-select-${player.id}-${Date.now()}`;
   const characterDropdown = await createCharacterDropdown(
@@ -82,7 +83,6 @@ export const getPlayerCharacter = async (
               return;
             }
 
-            const playerRecord = await getPlayer(i.user.id);
             const preferences = await getPlayerPreferences(playerRecord.id);
             const selectedValue = i.values[0] as
               | `${number}`
