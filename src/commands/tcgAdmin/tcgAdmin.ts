@@ -354,18 +354,17 @@ async function handleBansConfig(interaction: ChatInputCommandInteraction) {
   const hasModeUpdate =
     enableRankedOption !== null || enableUnrankedOption !== null;
 
-  if (maxCountOption === null && !hasModeUpdate) {
-    const config = await getBanConfig();
-    await interaction.reply({
-      content: formatBanConfigSummary(config),
-      flags: MessageFlags.Ephemeral,
-    });
-    return;
-  }
-
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
   try {
+    if (maxCountOption === null && !hasModeUpdate) {
+      const config = await getBanConfig();
+      await interaction.editReply({
+        content: formatBanConfigSummary(config),
+      });
+      return;
+    }
+
     if (maxCountOption !== null) {
       await setBanMaxCount(maxCountOption);
     }
