@@ -31,11 +31,13 @@ export const createCharacterDropdown = async (
   const player = await getPlayer(user.id);
 
   const sortedCharacters = await getSortedCharactersForPlayer(player.id);
-  const bannedCharacters = options?.bannedCharacters ?? new Set<CharacterName>();
+  const bannedCharacters =
+    options?.bannedCharacters ?? new Set<CharacterName>();
 
-  const availableFavouriteCharacters = sortedCharacters.favouritedCharacter.filter(
-    (char) => !bannedCharacters.has(char.characterName as CharacterName)
-  );
+  const availableFavouriteCharacters =
+    sortedCharacters.favouritedCharacter.filter(
+      (char) => !bannedCharacters.has(char.characterName as CharacterName)
+    );
   const availableNonFavouriteCharacters =
     sortedCharacters.nonFavouritedCharacter.filter(
       (char) => !bannedCharacters.has(char.characterName as CharacterName)

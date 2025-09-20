@@ -29,9 +29,10 @@ export async function handleCharacterSelection(
     selectedCharacter = characterList[index];
   } else if (selection === "random-favourite") {
     if (preferences && preferences.favouriteCharacters.length > 0) {
-      const availableFavouriteCharacters = preferences.favouriteCharacters.filter(
-        (character) => !bannedSet.has(character.name as CharacterName)
-      );
+      const availableFavouriteCharacters =
+        preferences.favouriteCharacters.filter(
+          (character) => !bannedSet.has(character.name as CharacterName)
+        );
 
       if (availableFavouriteCharacters.length === 0) {
         selectionType = CharacterSelectionType.Random;

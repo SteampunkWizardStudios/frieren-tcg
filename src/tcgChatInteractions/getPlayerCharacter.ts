@@ -98,7 +98,10 @@ export const getPlayerCharacter = async (
                   )
                 : [];
 
-              if (hasFavouriteCharacters && availableFavouriteNames.length === 0) {
+              if (
+                hasFavouriteCharacters &&
+                availableFavouriteNames.length === 0
+              ) {
                 await i.reply({
                   content:
                     "All of your favourite characters are banned in this match. Please pick a character manually or use Random.",
