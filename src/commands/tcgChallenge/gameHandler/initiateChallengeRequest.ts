@@ -34,15 +34,19 @@ export async function initiateChallengeRequest(prop: {
     return;
   }
 
-  const player = await getPlayer(interaction.user.id);
-  const playerPreferences = await getPlayerPreferences(player.id);
+  await interaction.deferReply();
 
   const isCustomMatch = !ranked && gamemode === undefined;
-  const banCount = await resolveBanCountForMatch({
+  const banCountPromise = resolveBanCountForMatch({
     isRanked: ranked,
     isCustom: isCustomMatch,
     requestedBanCount: gameSettings.banCount,
   });
+
+  const player = await getPlayer(interaction.user.id);
+  const playerPreferences = await getPlayerPreferences(player.id);
+
+  const banCount = await banCountPromise;
   gameSettings.banCount = banCount;
   if (gameSettings.liteMode === undefined) {
     gameSettings.liteMode = playerPreferences
@@ -63,8 +67,6 @@ export async function initiateChallengeRequest(prop: {
       ? playerPreferences.tcgInviteLength
       : DEFAULT_INVITE_LENGTH;
   }
-
-  await interaction.deferReply();
 
   const challenger = interaction.user;
   const opponent = interaction.options.getUser("opponent");
