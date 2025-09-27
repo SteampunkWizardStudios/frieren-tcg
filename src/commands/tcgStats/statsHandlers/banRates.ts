@@ -67,15 +67,17 @@ export default async function handleBanRates(
     .map((entry) => {
       const name = idToName.get(entry.characterId) ?? "Unknown";
       const formattedName = formatCharacterName(name);
-      const percentage = (entry._count.characterId / totalMatchesWithBans) * 100;
+      const count = entry._count.characterId;
+      const percentage = (count / totalMatchesWithBans) * 100;
       return {
         formattedName,
+        count,
         percentage,
       };
     })
     .sort((a, b) => b.percentage - a.percentage)
-    .map(({ formattedName, percentage }) => {
-      return `${formattedName}: ${percentage.toFixed(1)}%`;
+    .map(({ formattedName, count, percentage }) => {
+      return `${formattedName}: ${count} bans (${percentage.toFixed(1)}%)`;
     });
 
   const description = lines.join("\n");
