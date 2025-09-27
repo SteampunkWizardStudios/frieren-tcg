@@ -17,6 +17,7 @@ import exportTable from "./statsHandlers/exportTable";
 import seasonAutocomplete, {
   seasonOption,
 } from "./statsHandlers/seasonAutocomplete";
+import handleBanRates from "./statsHandlers/banRates";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -93,6 +94,12 @@ export const command: Command<ChatInputCommandInteraction> = {
     )
     .addSubcommand((subcommand) =>
       subcommand
+        .setName("ban-rates")
+        .setDescription("Show which characters are banned the most")
+        .addIntegerOption(seasonOption)
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("export")
         .setDescription("Export a table from the database")
         .addStringOption((option) =>
@@ -133,6 +140,10 @@ export const command: Command<ChatInputCommandInteraction> = {
         }
         case "usage": {
           await handleUsageStats(interaction);
+          break;
+        }
+        case "ban-rates": {
+          await handleBanRates(interaction);
           break;
         }
         case "export": {
@@ -179,6 +190,10 @@ export const command: Command<ChatInputCommandInteraction> = {
         break;
       }
       case "character": {
+        await seasonAutocomplete(interaction);
+        break;
+      }
+      case "ban-rates": {
         await seasonAutocomplete(interaction);
         break;
       }
