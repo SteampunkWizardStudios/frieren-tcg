@@ -1,8 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import prismaClient from "@prismaClient";
-import querySeason, {
-  SeasonQuery,
-} from "@src/util/db/querySeason";
+import querySeason, { SeasonQuery } from "@src/util/db/querySeason";
 import { CHARACTER_MAP } from "@tcg/characters/characterList";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 

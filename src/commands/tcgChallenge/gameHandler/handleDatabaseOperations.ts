@@ -74,14 +74,14 @@ export const handleDatabaseOperations = async (props: {
     ]);
     const [winnerCharacterDbObject, loserCharacterDbObject] =
       await getOrCreateCharacters([winnerCharacter, loserCharacter]);
-    const uniqueBannedCharacters = Array.from(
-      new Set(bannedCharacters ?? [])
-    );
+    const uniqueBannedCharacters = Array.from(new Set(bannedCharacters ?? []));
     const bannedCharacterDbObjects = uniqueBannedCharacters.length
       ? await getOrCreateCharacters(uniqueBannedCharacters)
       : [];
     const bannedCharacterIds = bannedCharacterDbObjects
-      .filter((character): character is { id: number; name: string } => !!character)
+      .filter(
+        (character): character is { id: number; name: string } => !!character
+      )
       .map((character) => character.id);
     if (
       winnerDbObject &&
