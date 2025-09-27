@@ -37,6 +37,7 @@ export const handleDatabaseOperations = async (props: {
   ranked: boolean;
   gameMode: GameMode;
   gameThread: ThreadChannel;
+  bannedCharacters?: CharacterName[];
 }): Promise<DatabaseOperationResult> => {
   const {
     winner,
@@ -46,6 +47,7 @@ export const handleDatabaseOperations = async (props: {
     ranked,
     gameMode,
     gameThread,
+    bannedCharacters,
   } = props;
 
   let winnerRank: Rank | null = null,
@@ -72,6 +74,15 @@ export const handleDatabaseOperations = async (props: {
     ]);
     const [winnerCharacterDbObject, loserCharacterDbObject] =
       await getOrCreateCharacters([winnerCharacter, loserCharacter]);
+    const uniqueBannedCharacters = Array.from(
+      new Set(bannedCharacters ?? [])
+    );
+    const bannedCharacterDbObjects = uniqueBannedCharacters.length
+      ? await getOrCreateCharacters(uniqueBannedCharacters)
+      : [];
+    const bannedCharacterIds = bannedCharacterDbObjects
+      .filter((character): character is { id: number; name: string } => !!character)
+      .map((character) => character.id);
     if (
       winnerDbObject &&
       loserDbObject &&
@@ -79,13 +90,15 @@ export const handleDatabaseOperations = async (props: {
       loserCharacterDbObject
     ) {
       // create the match object for stat tracking
-      createMatch({
+      await createMatch({
         ladderResetId: currLadderReset.id,
         winnerId: winnerDbObject.id,
         winnerCharacterId: winnerCharacterDbObject.id,
         loserId: loserDbObject.id,
         loserCharacterId: loserCharacterDbObject.id,
         threadId: gameThread.id,
+        ranked,
+        bannedCharacterIds,
       });
 
       // fetch respective ladderrank and charactermastery objects if ranked

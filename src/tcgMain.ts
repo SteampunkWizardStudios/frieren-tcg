@@ -53,6 +53,7 @@ export type TCGResult = {
   loserCharacter?: CharacterName;
   challengerCharacter?: CharacterName;
   opponentCharacter?: CharacterName;
+  bannedCharacters: CharacterName[];
 };
 
 export const tcgMain = async (
@@ -67,6 +68,7 @@ export const tcgMain = async (
   let result: TCGResult = {
     winner: undefined,
     loser: undefined,
+    bannedCharacters: [],
   };
 
   const indexToUserMapping: Record<number, User> = {
@@ -700,6 +702,8 @@ export const tcgMain = async (
       );
     }
   }
+
+  result.bannedCharacters = Array.from(bannedCharacterSet);
 
   return result;
 };
