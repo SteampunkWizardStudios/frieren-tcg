@@ -7,6 +7,7 @@ import { TCGThread } from "@src/tcgChatInteractions/sendGameMessage";
 import { MessageCache } from "@src/tcgChatInteractions/messageCache";
 import Game from "@tcg/game";
 import { CharacterName } from "@tcg/characters/metadata/CharacterName";
+import mediaLinks from "@src/tcg/formatting/mediaLinks";
 
 const a_FrierenStrikeTheirWeakpoint = new Card({
   title: "Frieren! Strike Their Weakpoints!",
@@ -15,8 +16,7 @@ const a_FrierenStrikeTheirWeakpoint = new Card({
     `Frieren attacks for ${dmg} DMG. At next turn's end, Frieren attacks for an additional ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1362092606695145482/GIF_1369578971.gif?ex=68086357&is=680711d7&hm=07c26c17a9a859865c2f107f8358b50df98cc49d49ed0daa2f659c6acb494f1e&",
+    cardGif: mediaLinks.himmel_FrierenStrikeTheirWeakpoints_gif,
   },
   effects: [7],
   cardAction: function (
@@ -73,6 +73,9 @@ const a_FrierenBackMeUp = new Card({
   description: ([dmg]) =>
     `Frieren attacks for ${dmg} DMG. For the next 4 turn ends, Frieren attacks for an additional ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.himmel_FrierenBackMeUp_gif,
+  },
   effects: [4],
   cardAction: function (
     this: Card,
@@ -134,6 +137,9 @@ export const a_FrierenNow = new Card({
   cardMetadata: { nature: Nature.Attack },
   description: ([dmg]) => `DMG ${dmg}`,
   emoji: CardEmoji.HIMMEL_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.himmel_FrierenNow_gif,
+  },
   effects: [10],
   cardAction: function (
     this: Card,
@@ -184,6 +190,9 @@ const a_EisenTheEnemysOpen = new Card({
   description: ([def, dmg]) =>
     `Eisen winds up. DEF+${def} for 2 turns. At next turn's end, deal ${dmg} DMG.`,
   emoji: CardEmoji.HIMMEL_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.himmel_EisenTheEnemysOpen_gif,
+  },
   effects: [2, 10],
   cardAction: function (
     this: Card,
@@ -336,6 +345,9 @@ const eisenHoldTheLine = new Card({
   cardMetadata: { nature: Nature.Util },
   description: ([def]) => `Eisen holds the line. DEF+${def} for 4 turns.`,
   emoji: CardEmoji.HIMMEL_CARD,
+  cosmetic: {
+    cardGif: mediaLinks.himmel_EisenHoldTheLine_gif,
+  },
   effects: [4],
   cardAction: function (
     this: Card,
@@ -633,8 +645,7 @@ export const a_extremeSpeed = new Card({
   effects: [12],
   hpCost: 8,
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1361210956872421497/IMG_3122.gif?ex=6807d13e&is=68067fbe&hm=3ac9b147ffc7c93d02121986546428f4b36f0bb08a2c8bc526d5ba51df5a4bd6&",
+    cardGif: mediaLinks.himmel_extremeSpeed_gif,
   },
   cardAction: function (
     this: Card,
@@ -661,8 +672,7 @@ export const a_realHeroSwing = new Card({
   effects: [18],
   hpCost: 12,
   cosmetic: {
-    cardGif:
-      "https://cdn.discordapp.com/attachments/1360969158623232300/1361777461620248576/GIF_1092034222.gif?ex=6807e697&is=68069517&hm=853f7d8910a4ab79010685a4399cd55c0af1f343295e0b2e04c49f829b54eee7&",
+    cardGif: mediaLinks.himmel_realHerosSwing_gif,
   },
   cardAction: function (
     this: Card,

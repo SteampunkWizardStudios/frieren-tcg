@@ -69,7 +69,7 @@ export default class DefaultCards {
       hidePriority: true,
       hideEmpower: true,
     },
-    description: () => "Forfeits the g ame.",
+    description: () => "Forfeits the game.",
     effects: [],
     emoji: CardEmoji.RANDOM,
     priority: 999,

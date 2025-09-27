@@ -8,7 +8,7 @@ import mediaLinks from "../formatting/mediaLinks";
 
 const rusted_blades = new Card({
   title: "Rusted Blades",
-  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
+  cardMetadata: { nature: Nature.Attack, armyStrength: 10 },
   description: ([atk]) =>
     `ATK+${atk}. Army Strength+10. Summon 2 Swordsmen platoons.`,
   emoji: CardEmoji.AURA_CARD,
@@ -46,7 +46,7 @@ const weathered_shields = new Card({
 
 const broken_arrows = new Card({
   title: "Broken Arrows",
-  cardMetadata: { nature: Nature.Util, armyStrength: 10 },
+  cardMetadata: { nature: Nature.Attack, armyStrength: 10 },
   description: ([spd]) =>
     `SPD+${spd}. Army Strength+10. Summon 2 Archers platoons.`,
   emoji: CardEmoji.AURA_CARD,
@@ -65,7 +65,7 @@ const broken_arrows = new Card({
 
 const fallen_empire = new Card({
   title: "Fallen Empire",
-  cardMetadata: { nature: Nature.Util, armyStrength: 15 },
+  cardMetadata: { nature: Nature.Attack, armyStrength: 15 },
   description: ([stat]) =>
     `ATK+${stat} DEF+${stat} SPD+${stat}. Army Strength+15. Summons 1 Swordsmen, 1 Shieldbearer and 1 Archer platoon.`,
   emoji: CardEmoji.AURA_CARD,
@@ -377,8 +377,9 @@ export const auserlese = new Card({
   title: "Scales of Obedience - Auserlese",
   cardMetadata: { nature: Nature.Util, signature: true, hideEmpower: true },
   description: () =>
-    `Roll a D100. If the result of the role > Opp's HP - Your HP, HP-10, use your opponent's move as if it's your own. At this turn's end, if Your HP - Opp's HP >= 50, you win, and if Opp's HP - Your HP >= 50, you lose.`,
+    `Roll a D100. If the result of the roll > Opp's HP - Your HP, use your opponent's move as if it's your own. At this turn's end, if Your HP - Opp's HP >= 50, you win, and if Opp's HP - Your HP >= 50, you lose.`,
   priority: 13,
+  hpCost: 15,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_auserlese_gif,
@@ -395,7 +396,6 @@ export const auserlese = new Card({
       opponentStats,
       selfStats,
       opponentIndex,
-      flatSelfStat,
     }
   ) {
     sendToGameroom(`${name} tried to manipulate the opponent's aims.`);
@@ -411,7 +411,6 @@ export const auserlese = new Card({
       }
       sendToGameroom(`${name} forced a misdirection!`);
       game.additionalMetadata.auserleseContextReversal[opponentIndex] = true;
-      flatSelfStat(10, StatsEnum.HP, -1);
     } else {
       sendToGameroom(`The incantation was not strong enough.`);
     }

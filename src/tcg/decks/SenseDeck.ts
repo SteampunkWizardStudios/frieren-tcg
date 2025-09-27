@@ -11,6 +11,9 @@ export const a_hairWhip = new Card({
   effects: [3, 7],
   hpCost: 4,
   emoji: CardEmoji.PUNCH,
+  cosmetic: {
+    cardGif: mediaLinks.sense_hairWhip_gif,
+  },
   cardAction: ({
     name,
     selfStats,
@@ -36,6 +39,9 @@ export const sharpen = new Card({
   effects: [1, 2, 2],
   hpCost: 3,
   emoji: CardEmoji.PUNCH,
+  cosmetic: {
+    cardGif: mediaLinks.sense_sharpen_gif,
+  },
   cardAction: ({ name, possessive, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} sharpened ${possessive} hair drills!`);
 
@@ -53,6 +59,9 @@ export const a_pierce = new Card({
   effects: [1, 10],
   hpCost: 7,
   emoji: CardEmoji.PUNCH,
+  cosmetic: {
+    cardGif: mediaLinks.sense_pierce_gif,
+  },
   cardAction: ({
     name,
     selfStats,
