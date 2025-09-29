@@ -7,7 +7,8 @@ import type { StringSelectMenuInteraction } from "discord.js";
 export async function handleCharacterSelection(
   interaction: StringSelectMenuInteraction,
   preferences: Awaited<ReturnType<typeof getPlayerPreferences>> | null,
-  characterList: CharacterData[]
+  characterList: CharacterData[],
+  bannedCharacters?: Set<CharacterName>
 ): Promise<{
   selectedCharacter: CharacterData;
   selectionType: CharacterSelectionType;
@@ -20,20 +21,32 @@ export async function handleCharacterSelection(
   let selectionType: CharacterSelectionType;
   let selectedCharacter: CharacterData;
 
+  const bannedSet = bannedCharacters ?? new Set<CharacterName>();
+
   if (selection === "random") {
     selectionType = CharacterSelectionType.Random;
     const index = Math.floor(Math.random() * characterList.length);
     selectedCharacter = characterList[index];
   } else if (selection === "random-favourite") {
     if (preferences && preferences.favouriteCharacters.length > 0) {
-      selectionType = CharacterSelectionType.FavouriteRandom;
-      const favouriteCharacters = preferences.favouriteCharacters;
-      const randomFavouriteCharacter =
-        favouriteCharacters[
-          Math.floor(Math.random() * favouriteCharacters.length)
-        ];
-      selectedCharacter =
-        CHARACTER_MAP[randomFavouriteCharacter.name as CharacterName];
+      const availableFavouriteCharacters =
+        preferences.favouriteCharacters.filter(
+          (character) => !bannedSet.has(character.name as CharacterName)
+        );
+
+      if (availableFavouriteCharacters.length === 0) {
+        selectionType = CharacterSelectionType.Random;
+        const index = Math.floor(Math.random() * characterList.length);
+        selectedCharacter = characterList[index];
+      } else {
+        selectionType = CharacterSelectionType.FavouriteRandom;
+        const randomFavouriteCharacter =
+          availableFavouriteCharacters[
+            Math.floor(Math.random() * availableFavouriteCharacters.length)
+          ];
+        selectedCharacter =
+          CHARACTER_MAP[randomFavouriteCharacter.name as CharacterName];
+      }
     } else {
       selectionType = CharacterSelectionType.Random;
       const index = Math.floor(Math.random() * characterList.length);

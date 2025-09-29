@@ -1,28 +1,34 @@
+import type { BanConfig } from "@prisma/client";
+import { isTextChannel } from "@sapphire/discord.js-utilities";
+import config from "@src/config";
+import { FRIEREN_DISCORD_SERVER } from "@src/constants";
+import type { Command } from "@src/types/command";
 import {
-  ChannelType,
-  SlashCommandBuilder,
-  ChatInputCommandInteraction,
-  MessageFlags,
-  InteractionContextType,
-  EmbedBuilder,
+  getBanConfig,
+  setBanMaxCount,
+  setBanModes,
+} from "@src/util/db/banConfig";
+import { ProgressBarBuilder } from "@tcg/formatting/percentBar";
+import {
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle,
   ButtonInteraction,
+  ButtonStyle,
+  ChannelType,
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  InteractionContextType,
+  MessageFlags,
+  SlashCommandBuilder,
 } from "discord.js";
-import type { Command } from "@src/types/command";
+import { removeAllServerRankRoles } from "../tcgChallenge/gameHandler/rankScoresToRankTitleMapping";
 import handleAchievementAutocomplete from "./achievementHandler/handleAchievementAutocomplete";
 import handleGrantAchievement from "./achievementHandler/handleGrantAchievement";
-import { ProgressBarBuilder } from "@tcg/formatting/percentBar";
-import config from "@src/config";
-import { isTextChannel } from "@sapphire/discord.js-utilities";
 import {
   createAchievement,
   deleteAchievement,
 } from "./achievementHandler/handleManageAchievement";
 import handleLadderReset from "./handleLadderReset/handleLadderReset";
-import { removeAllServerRankRoles } from "../tcgChallenge/gameHandler/rankScoresToRankTitleMapping";
-import { FRIEREN_DISCORD_SERVER } from "@src/constants";
 
 const CONFIRM_LADDER_RESET_BUTTON_ID = "ladder-reset-confirm";
 
@@ -142,10 +148,37 @@ export const command: Command<ChatInputCommandInteraction> = {
       subcommand
         .setName("ladder-reset")
         .setDescription("Reset all active ladders for a new season")
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("bans-config")
+        .setDescription("View or update the pre-game ban system")
+        .addIntegerOption((option) =>
+          option
+            .setName("maxcount")
+            .setDescription("Bans per player (0 disables the system)")
+            .setMinValue(0)
+            .setMaxValue(4)
+        )
+        .addBooleanOption((option) =>
+          option
+            .setName("enable-unranked")
+            .setDescription("Enable bans for unranked matches")
+        )
+        .addBooleanOption((option) =>
+          option
+            .setName("enable-ranked")
+            .setDescription("Enable bans for ranked matches")
+        )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
     const subcommand = interaction.options.getSubcommand();
+
+    if (subcommand === "bans-config") {
+      await handleBansConfig(interaction);
+      return;
+    }
 
     try {
       switch (subcommand) {
@@ -311,6 +344,108 @@ export const command: Command<ChatInputCommandInteraction> = {
     }
   },
 };
+
+async function handleBansConfig(interaction: ChatInputCommandInteraction) {
+  const maxCountOption = interaction.options.getInteger("maxcount");
+  const enableRankedOption = interaction.options.getBoolean("enable-ranked");
+  const enableUnrankedOption =
+    interaction.options.getBoolean("enable-unranked");
+
+  const hasModeUpdate =
+    enableRankedOption !== null || enableUnrankedOption !== null;
+
+  await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
+  try {
+    if (maxCountOption === null && !hasModeUpdate) {
+      const config = await getBanConfig();
+      await interaction.editReply({
+        content: formatBanConfigSummary(config),
+      });
+      return;
+    }
+
+    if (maxCountOption !== null) {
+      await setBanMaxCount(maxCountOption);
+    }
+
+    if (hasModeUpdate) {
+      const payload: {
+        enableRanked?: boolean;
+        enableUnranked?: boolean;
+      } = {};
+
+      if (enableUnrankedOption !== null) {
+        payload.enableUnranked = enableUnrankedOption;
+      }
+      if (enableRankedOption !== null) {
+        payload.enableRanked = enableRankedOption;
+      }
+
+      if (Object.keys(payload).length === 0) {
+        await interaction.editReply({
+          content:
+            "No modes were selected. Select unranked and/or ranked to update.",
+        });
+        return;
+      }
+      await setBanModes(payload);
+    }
+
+    await interaction.editReply({
+      content: "Ban configuration preferences have been saved.",
+    });
+  } catch (error) {
+    console.error("Error handling bans config:", error);
+    await interaction.editReply({
+      content: "Failed to update ban configuration preferences.",
+    });
+  }
+}
+
+function formatBanConfigSummary(config: BanConfig): string {
+  const status = config.maxCount > 0 ? "On" : "Off";
+  const modes = collectEnabledModes(config);
+  const modesLine = (() => {
+    if (config.maxCount <= 0) {
+      if (modes.length === 0) {
+        return "None (inactive while Status is Off)";
+      }
+      return `${formatList(modes)} (inactive while Status is Off)`;
+    }
+    return modes.length > 0 ? formatList(modes) : "None";
+  })();
+
+  return [
+    `Status: ${status}`,
+    `Max bans per player: ${config.maxCount}`,
+    `Enabled modes: ${modesLine}`,
+  ].join("\n");
+}
+
+function collectEnabledModes(config: BanConfig): string[] {
+  const modes: string[] = [];
+  if (config.enabledUnranked) {
+    modes.push("Unranked");
+  }
+  if (config.enabledRanked) {
+    modes.push("Ranked");
+  }
+  return modes;
+}
+
+function formatList(items: string[]): string {
+  if (items.length === 0) {
+    return "";
+  }
+  if (items.length === 1) {
+    return items[0];
+  }
+  if (items.length === 2) {
+    return `${items[0]} and ${items[1]}`;
+  }
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+}
 
 async function handleMaintenance(interaction: ChatInputCommandInteraction) {
   const sendMessage = interaction.options.getBoolean("send_message") ?? true;

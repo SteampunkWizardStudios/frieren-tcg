@@ -15,6 +15,7 @@ export interface GameSettings {
   allowedOption?: boolean;
   goddessMode?: boolean;
   liteMode?: boolean | undefined;
+  banCount?: number;
 }
 
 export const GAME_SETTINGS: Record<GameMode, GameSettings> = {

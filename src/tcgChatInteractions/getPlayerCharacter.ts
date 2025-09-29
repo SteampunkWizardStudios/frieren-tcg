@@ -14,10 +14,12 @@ import {
   handleCharacterSelection,
   CharacterSelectionType,
 } from "@src/tcgChatInteractions/handleCharacterSelection";
+import { CharacterName } from "@tcg/characters/metadata/CharacterName";
 
 export const getPlayerCharacter = async (
   player: User,
-  playerThread: ThreadChannel<false>
+  playerThread: ThreadChannel<false>,
+  bannedCharacters?: Set<CharacterName>
 ): Promise<{
   char: CharacterData;
   selectionType: CharacterSelectionType;
@@ -25,13 +27,23 @@ export const getPlayerCharacter = async (
   const timeLimitSeconds = 60;
   const timeLimit = timeLimitSeconds * 1000;
   let isResolved = false;
+  const bannedSet = bannedCharacters ?? new Set<CharacterName>();
+  const playerRecord = await getPlayer(player.id);
 
   const characterSelectId = `character-select-${player.id}-${Date.now()}`;
   const characterDropdown = await createCharacterDropdown(
     player,
     characterSelectId,
-    timeLimitSeconds
+    timeLimitSeconds,
+    { bannedCharacters: bannedSet }
   );
+
+  if (characterDropdown.characterListUsed.length === 0) {
+    await playerThread.send(
+      "There are no available characters to select after bans were applied."
+    );
+    return null;
+  }
 
   const response = await playerThread.send({
     embeds: [characterDropdown.embed],
@@ -71,27 +83,53 @@ export const getPlayerCharacter = async (
               return;
             }
 
+            const preferences = await getPlayerPreferences(playerRecord.id);
+            const selectedValue = i.values[0] as
+              | `${number}`
+              | "random"
+              | "random-favourite";
+
+            if (selectedValue === "random-favourite") {
+              const hasFavouriteCharacters =
+                !!preferences && preferences.favouriteCharacters.length > 0;
+              const availableFavouriteNames = hasFavouriteCharacters
+                ? preferences.favouriteCharacters.filter(
+                    (fav) => !bannedSet.has(fav.name as CharacterName)
+                  )
+                : [];
+
+              if (
+                hasFavouriteCharacters &&
+                availableFavouriteNames.length === 0
+              ) {
+                await i.reply({
+                  content:
+                    "All of your favourite characters are banned in this match. Please pick a character manually or use Random.",
+                  flags: MessageFlags.Ephemeral,
+                });
+                return;
+              }
+            }
+
             if (!isResolved) {
               if (!i.replied && !i.deferred) {
                 await i.deferUpdate();
               }
               collector.stop("Character selected");
 
-              const player = await getPlayer(i.user.id);
-              const preferences = await getPlayerPreferences(player.id);
               const { selectedCharacter, selectionType } =
                 await handleCharacterSelection(
                   i,
                   preferences,
-                  characterDropdown.characterListUsed
+                  characterDropdown.characterListUsed,
+                  bannedSet
                 );
 
-              // Error message if player tried to pick random favourite character when they have no favourited characters
               const errorMessage = `You have no favourite characters. Please add some by using the \`/tcg-preferences toggle-favourite-character\` command.`;
               const shouldSendErrorMessage =
                 preferences &&
                 preferences.favouriteCharacters.length === 0 &&
-                selectionType === CharacterSelectionType.FavouriteRandom;
+                selectedValue === "random-favourite";
 
               const characterSelectedEmbed = new EmbedBuilder()
                 .setTitle(
