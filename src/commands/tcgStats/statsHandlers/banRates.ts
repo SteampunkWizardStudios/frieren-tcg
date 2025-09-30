@@ -21,25 +21,27 @@ export default async function handleBanRates(
     match: rankedMatchWhere,
   } as const;
 
-  const [totalRankedMatches, distinctMatchIds, groupedBans] = await Promise.all([
-    prismaClient.match.count({
-      where: rankedMatchWhere,
-    }),
-    prismaClient.characterBan.findMany({
-      where: characterBanWhere,
-      distinct: ["matchId"],
-      select: {
-        matchId: true,
-      },
-    }),
-    prismaClient.characterBan.groupBy({
-      by: ["characterId"],
-      _count: {
-        characterId: true,
-      },
-      where: characterBanWhere,
-    }),
-  ]);
+  const [totalRankedMatches, distinctMatchIds, groupedBans] = await Promise.all(
+    [
+      prismaClient.match.count({
+        where: rankedMatchWhere,
+      }),
+      prismaClient.characterBan.findMany({
+        where: characterBanWhere,
+        distinct: ["matchId"],
+        select: {
+          matchId: true,
+        },
+      }),
+      prismaClient.characterBan.groupBy({
+        by: ["characterId"],
+        _count: {
+          characterId: true,
+        },
+        where: characterBanWhere,
+      }),
+    ]
+  );
 
   const totalMatchesWithBans = distinctMatchIds.length;
   const rankedMatchesWithoutBans = Math.max(
