@@ -12,35 +12,49 @@ export default async function handleBanRates(
     ? await querySeason(seasonId)
     : null;
 
-  const characterBanWhere = {
-    match: {
-      ranked: true,
-      ladderReset: seasonFilter ?? { endDate: null },
-    },
+  const rankedMatchWhere = {
+    ranked: true,
+    ladderReset: seasonFilter ?? { endDate: null },
   } as const;
 
-  const [distinctMatchIds, groupedBans] = await Promise.all([
-    prismaClient.characterBan.findMany({
-      where: characterBanWhere,
-      distinct: ["matchId"],
-      select: {
-        matchId: true,
-      },
-    }),
-    prismaClient.characterBan.groupBy({
-      by: ["characterId"],
-      _count: {
-        characterId: true,
-      },
-      where: characterBanWhere,
-    }),
-  ]);
+  const characterBanWhere = {
+    match: rankedMatchWhere,
+  } as const;
+
+  const [totalRankedMatches, distinctMatchIds, groupedBans] = await Promise.all(
+    [
+      prismaClient.match.count({
+        where: rankedMatchWhere,
+      }),
+      prismaClient.characterBan.findMany({
+        where: characterBanWhere,
+        distinct: ["matchId"],
+        select: {
+          matchId: true,
+        },
+      }),
+      prismaClient.characterBan.groupBy({
+        by: ["characterId"],
+        _count: {
+          characterId: true,
+        },
+        where: characterBanWhere,
+      }),
+    ]
+  );
 
   const totalMatchesWithBans = distinctMatchIds.length;
+  const rankedMatchesWithoutBans = Math.max(
+    totalRankedMatches - totalMatchesWithBans,
+    0
+  );
 
   if (totalMatchesWithBans === 0) {
+    const noDataMessage = rankedMatchesWithoutBans
+      ? `No bans were recorded for this season. Ranked matches without bans: ${rankedMatchesWithoutBans}`
+      : "No ranked ban data available.";
     await interaction.editReply({
-      content: "No ranked ban data available yet.",
+      content: noDataMessage,
     });
     return;
   }
@@ -85,7 +99,7 @@ export default async function handleBanRates(
     .setTitle("Ranked Ban Rates")
     .setDescription(description)
     .setFooter({
-      text: `Total ranked matches with bans: ${totalMatchesWithBans}`,
+      text: `Total ranked matches with bans: ${totalMatchesWithBans}\nRanked matches without bans: ${rankedMatchesWithoutBans}`,
     });
 
   await interaction.editReply({

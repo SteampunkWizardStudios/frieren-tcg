@@ -89,8 +89,8 @@ export const tcgMain = async (
   if (bansPerPlayer > 0) {
     const banPhaseIntro =
       bansPerPlayer === 1
-        ? "⭕ Ban phase started! Each player may ban 1 character."
-        : `⭕ Ban phase started! Each player may ban ${bansPerPlayer} characters.`;
+        ? "🔴 Ban phase started! Each player may ban 1 character."
+        : `🔴 Ban phase started! Each player may ban ${bansPerPlayer} characters.`;
     messageCache.push(`## ${banPhaseIntro}`, TCGThread.Gameroom);
     await sendToThread(
       messageCache.flush(TCGThread.Gameroom),
@@ -121,6 +121,32 @@ export const tcgMain = async (
       messageCache.push(`## ${announcement}`, TCGThread.Gameroom);
       messageCache.push(`## ${announcement}`, TCGThread.ChallengerThread);
       messageCache.push(`## ${announcement}`, TCGThread.OpponentThread);
+
+      await Promise.all([
+        sendToThread(
+          messageCache.flush(TCGThread.Gameroom),
+          TCGThread.Gameroom,
+          threadsMapping,
+          textSpeedMs
+        ),
+        sendToThread(
+          messageCache.flush(TCGThread.ChallengerThread),
+          TCGThread.ChallengerThread,
+          threadsMapping,
+          Math.max(200, textSpeedMs / 2)
+        ),
+        sendToThread(
+          messageCache.flush(TCGThread.OpponentThread),
+          TCGThread.OpponentThread,
+          threadsMapping,
+          Math.max(200, textSpeedMs / 2)
+        ),
+      ]);
+    } else {
+      const noBanMessage = "🟢 No characters were banned this match.";
+      messageCache.push(`## ${noBanMessage}`, TCGThread.Gameroom);
+      messageCache.push(`## ${noBanMessage}`, TCGThread.ChallengerThread);
+      messageCache.push(`## ${noBanMessage}`, TCGThread.OpponentThread);
 
       await Promise.all([
         sendToThread(
