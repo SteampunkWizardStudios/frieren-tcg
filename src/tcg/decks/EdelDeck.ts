@@ -137,9 +137,9 @@ export const mental_fog = new Card({
   title: "Mental Fog",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
   emoji: CardEmoji.EDEL_CARD,
-  description: ([spd, cost]) =>
-    `Eye Contact+1. Opponent's SPD-${spd}. Their highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, the opponent redraws 1 card.`,
-  effects: [2, 5],
+  description: ([atk, cost]) =>
+    `Eye Contact+1. Your opponent redraws 2 cards. Opp's ATK-${atk} for next 5 turns. Their highest empowered playable card costs an additional ${cost} HP for next 5 turns.`,
+  effects: [3, 5],
   hpCost: 5,
   cosmetic: {
     cardGif: mediaLinks.edel_mental_fog_gif,
@@ -155,13 +155,19 @@ export const mental_fog = new Card({
     sendToGameroom(
       `${name} hypnotizes ${opponent.name}. ${opponent.name} starts blanking out.`
     );
-    opponentStat(0, StatsEnum.SPD, -1);
+    const atkDebuff = calcEffect(0);
+    opponentStat(0, StatsEnum.ATK, -1);
+
+    for (let i = 0; i < 2; i++) {
+      redrawRandom(opponent, self);
+    }
+
     const cost = calcEffect(1);
 
     opponent.timedEffects.push(
       new TimedEffect({
         name: "Mental Fog",
-        description: `Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, redraw 1 card.`,
+        description: `ATK-${atkDebuff}. Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, redraw 1 card.`,
         turnDuration: 6,
         metadata: { mentalFog: true },
         activateEndOfTurnActionThisTurn: false,
@@ -172,27 +178,6 @@ export const mental_fog = new Card({
           );
           if (highestEmpoweredCard) {
             highestEmpoweredCard.hpCost += cost;
-            if (!highestEmpoweredCard.onNotPlayed) {
-              highestEmpoweredCard.onNotPlayed = function (
-                this: Card,
-                context
-              ) {
-                const { name } = context;
-                for (
-                  let i = 0;
-                  i <
-                  opponent.timedEffects.filter(
-                    (effect) => effect.metadata.mentalFog
-                  ).length;
-                  i++
-                ) {
-                  sendToGameroom(
-                    `${name} coudn't clear up the mental fog. ${name} redrew 1 card.`
-                  );
-                  redrawRandom(opponent, self);
-                }
-              };
-            }
           }
         },
         endOfTurnAction: (game, characterIndex) => {
@@ -202,8 +187,13 @@ export const mental_fog = new Card({
           );
           if (highestEmpoweredCard) {
             highestEmpoweredCard.hpCost -= cost;
-            highestEmpoweredCard.onNotPlayed = undefined;
           }
+        },
+        endOfTimedEffectAction: (game, _characterIndex) => {
+          sendToGameroom(
+            `The mental fog clears up. ${opponent.name} refocuses ${opponent.cosmetic.pronouns.reflexive}.`
+          );
+          opponent.adjustStat(atkDebuff, StatsEnum.SPD, game);
         },
       })
     );
