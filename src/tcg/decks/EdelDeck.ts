@@ -193,7 +193,7 @@ export const mental_fog = new Card({
           sendToGameroom(
             `The mental fog clears up. ${opponent.name} refocuses ${opponent.cosmetic.pronouns.reflexive}.`
           );
-          opponent.adjustStat(atkDebuff, StatsEnum.SPD, game);
+          opponent.adjustStat(atkDebuff, StatsEnum.ATK, game);
         },
       })
     );
