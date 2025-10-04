@@ -4,6 +4,7 @@ import TimedEffect from "@tcg/timedEffect";
 import { StatsEnum } from "@tcg/stats";
 import mediaLinks from "../formatting/mediaLinks";
 import { one_step_ahead } from "./EdelDeck";
+import DefaultCards from "./utilDecks/defaultCard";
 
 export const a_scatterShot = new Card({
   title: "Scatter Shot",
@@ -349,19 +350,19 @@ export const hypnoticCompulsion = new Card({
     sendToGameroom,
     opponentStat,
   }) => {
-    sendToGameroom(`${name} hypnotizes ${opponent.name}.`);
+    sendToGameroom(`${name} hypnotizes ${opponentName}.`);
     opponentStat(0, StatsEnum.ATK, -1);
-    if (!opponentLastCard) {
-      sendToGameroom(
-        `The opponent hasn't used any move yet. ${opponentName} is compelled to Do Nothing!`
-      );
-    }
 
     opponent.skipTurn = true;
     opponent.additionalMetadata.accessToDefaultCardOptions = false;
     if (opponentLastCard) {
       opponent.additionalMetadata.nextCardToPlay = new Card({
         ...opponentLastCard,
+        priority: -2,
+      });
+    } else {
+      opponent.additionalMetadata.nextCardToPlay = new Card({
+        ...DefaultCards.waitCard,
         priority: -2,
       });
     }
