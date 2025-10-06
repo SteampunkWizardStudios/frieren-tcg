@@ -8,7 +8,8 @@ import { CharacterEmoji } from "@tcg/formatting/emojis";
 import Pronouns from "@tcg/pronoun";
 import mediaLinks from "@tcg/formatting/mediaLinks";
 
-const LINIE_CHAIN_BONUS = 0.1;
+const LINIE_CHAIN_BONUS = 0.07;
+const LINIE_CHAIN_RESET_TURN_COUNT = 2;
 
 const linieStats = new Stats({
   [StatsEnum.HP]: 95.0,
@@ -34,7 +35,7 @@ const Linie = new CharacterData({
     abilityName: "Chain Attack",
     abilityEffectString: `After this character uses an attack, gain 1 Chain stack.
         All attacks this character does has its damage increased by <#Chain>*${(LINIE_CHAIN_BONUS * 100).toFixed(2)}%.
-        When this character does not attack in a turn, reset the count to 0.`,
+        When this character does not attack in ${LINIE_CHAIN_RESET_TURN_COUNT} turns in a row, reset the count to 0.`,
     abilityAttackEffect: (game, characterIndex) => {
       const character = game.getCharacter(characterIndex);
       game.additionalMetadata.attackModifier[characterIndex] =
@@ -57,12 +58,25 @@ const Linie = new CharacterData({
         }
         character.adjustStat(1, StatsEnum.Ability, game);
       } else {
-        if (character.stats.stats.Ability > 0) {
-          messageCache.push("Linie ended her chain", TCGThread.Gameroom);
+        character.additionalMetadata.linieEmptyTurnCount ??=
+          LINIE_CHAIN_RESET_TURN_COUNT;
+        character.additionalMetadata.linieEmptyTurnCount = Math.max(
+          character.additionalMetadata.linieEmptyTurnCount - 1,
+          0
+        );
+        if (character.additionalMetadata.linieEmptyTurnCount === 0) {
+          if (character.stats.stats.Ability > 0) {
+            messageCache.push("Linie ended her chain", TCGThread.Gameroom);
+          }
+          character.setStat(0, StatsEnum.Ability);
+          character.additionalMetadata.linieEmptyTurnCount =
+            LINIE_CHAIN_RESET_TURN_COUNT;
         }
-        character.setStat(0, StatsEnum.Ability);
       }
     },
+  },
+  additionalMetadata: {
+    linieEmptyTurnCount: LINIE_CHAIN_RESET_TURN_COUNT,
   },
 });
 
