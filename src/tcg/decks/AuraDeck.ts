@@ -377,9 +377,9 @@ export const auserlese = new Card({
   title: "Scales of Obedience - Auserlese",
   cardMetadata: { nature: Nature.Util, signature: true, hideEmpower: true },
   description: () =>
-    `Roll a D100. If the result of the roll > Opp's HP - Your HP, use your opponent's move as if it's your own. At this turn's end, if Your HP - Opp's HP >= 50, you win, and if Opp's HP - Your HP >= 50, you lose.`,
+    `Roll a D100. If the result of the roll > Opp's HP - Your HP, lose 10HP, then use your opponent's move as if it's your own. At this turn's end, if Your HP - Opp's HP >= 50, you win, and if Opp's HP - Your HP >= 50, you lose.`,
   priority: 13,
-  hpCost: 15,
+  hpCost: 5,
   emoji: CardEmoji.AURA_CARD,
   cosmetic: {
     cardGif: mediaLinks.aura_auserlese_gif,
@@ -410,6 +410,7 @@ export const auserlese = new Card({
         sendToGameroom(`[⠀](${mediaLinks.aura_auserleseContextShifted_gif})`);
       }
       sendToGameroom(`${name} forced a misdirection!`);
+      self.adjustStat(-10, StatsEnum.HP, game);
       game.additionalMetadata.auserleseContextReversal[opponentIndex] = true;
     } else {
       sendToGameroom(`The incantation was not strong enough.`);
