@@ -6,6 +6,7 @@ import TimedEffect from "@tcg/timedEffect";
 import { sleepy, mesmerized, weakened } from "@decks/utilDecks/edelStatuses";
 import mediaLinks from "../formatting/mediaLinks";
 import Game from "@tcg/game";
+import { CharacterName } from "../characters/metadata/CharacterName";
 
 const redrawRandom = (opponent: Character, self: Character) => {
   const randomIndex = Math.floor(Math.random() * opponent.hand.length);
@@ -202,16 +203,17 @@ export const mental_fog = new Card({
 
 export const clear_mind = new Card({
   title: "Clear Mind",
-  cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
+  cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
   description: ([hp, spd]) =>
-    `Eye Contact+1. Heal ${hp} + Forced Discard x 2 HP. SPD+${spd}.`,
+    `Heal ${hp} + Forced Discard x 2 HP. SPD+${spd}. Reset your Eye Contact count to 0.`,
   effects: [10, 2],
   cosmetic: {
     cardGif: mediaLinks.edel_clear_mind_gif,
   },
   cardAction: ({
     name,
+    characterName,
     possessive,
     sendToGameroom,
     selfStat,
@@ -219,11 +221,17 @@ export const clear_mind = new Card({
     self,
     calcEffect,
   }) => {
-    sendToGameroom(`${name} focuses and clears ${possessive} mind.`);
+    sendToGameroom(
+      `${name} focuses and clears ${possessive} mind. ${name} breaks eye contact with the opponent.`
+    );
 
     const hp = calcEffect(0) + self.additionalMetadata.forcedDiscards * 2;
     flatSelfStat(hp, StatsEnum.HP);
     selfStat(1, StatsEnum.SPD);
+
+    if (characterName === CharacterName.Edel) {
+      self.setStat(0, StatsEnum.Ability);
+    }
   },
 });
 
