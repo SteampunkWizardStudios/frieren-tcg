@@ -7,10 +7,6 @@ import {
 import type { Command } from "@src/types/command";
 import handlePlayerProfile from "./playerHandlers/profileHandler";
 import handleMatchHistory from "./playerHandlers/matchHandler";
-<<<<<<< HEAD
-=======
-import { handleVsCharacter } from "./playerHandlers/vsCharacterHandler";
->>>>>>> a940d0a62aaf6eba231712e02dcd5ca8c686ba4a
 import { handleVsRecord } from "./playerHandlers/handleVsRecord";
 import seasonAutocomplete, {
   seasonOption,
@@ -77,38 +73,6 @@ export const command: Command<ChatInputCommandInteraction> = {
             )
         )
         .addIntegerOption(seasonOption)
-<<<<<<< HEAD
-=======
-    )
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName("vs-character-record")
-        .setDescription("Get a player's record against a character")
-        .addUserOption((option) =>
-          option
-            .setName("player")
-            .setDescription(
-              "The player whose vs record you want to see, defaults to yourself"
-            )
-        )
-        .addStringOption((option) =>
-          option
-            .setName("player-character")
-            .setDescription(
-              "Select the character to get stats for, defaults to an overview."
-            )
-            .addChoices(CHAR_OPTIONS)
-        )
-        .addStringOption((option) =>
-          option
-            .setName("opponent-character")
-            .setDescription(
-              "Select the character to get stats against, defaults to an overview."
-            )
-            .addChoices(CHAR_OPTIONS)
-        )
-        .addIntegerOption(seasonOption)
->>>>>>> a940d0a62aaf6eba231712e02dcd5ca8c686ba4a
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
