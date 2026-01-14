@@ -1,33 +1,54 @@
 import prismaClient from "../../../prisma/client";
 
-export const createMatch = async (prop: {
+type CreateMatchProps = {
   ladderResetId: number;
   winnerId: number;
   winnerCharacterId: number;
   loserId: number;
   loserCharacterId: number;
   threadId: string;
-}): Promise<{ id: number }> => {
-  const {
-    ladderResetId,
-    winnerId,
-    winnerCharacterId,
-    loserId,
-    loserCharacterId,
-    threadId,
-  } = prop;
+  ranked: boolean;
+  bannedCharacterIds?: number[];
+};
 
-  return prismaClient.match.create({
-    data: {
-      ladderResetId,
-      winnerId,
-      winnerCharacterId,
-      loserId,
-      loserCharacterId,
-      threadId,
-    },
-    select: {
-      id: true,
-    },
+export const createMatch = async ({
+  ladderResetId,
+  winnerId,
+  winnerCharacterId,
+  loserId,
+  loserCharacterId,
+  threadId,
+  ranked,
+  bannedCharacterIds,
+}: CreateMatchProps): Promise<{ id: number }> => {
+  const uniqueBannedIds = Array.from(new Set(bannedCharacterIds ?? []));
+
+  return prismaClient.$transaction(async (tx) => {
+    const match = await tx.match.create({
+      data: {
+        ladderResetId,
+        winnerId,
+        winnerCharacterId,
+        loserId,
+        loserCharacterId,
+        threadId,
+        ranked,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (uniqueBannedIds.length > 0) {
+      await tx.characterBan.createMany({
+        data: uniqueBannedIds.map((characterId) => ({
+          matchId: match.id,
+          characterId,
+        })),
+        skipDuplicates: true,
+      });
+    }
+
+    return match;
   });
 };

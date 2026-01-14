@@ -21,6 +21,7 @@ export const buildChallengeButtonRespond = async (
   ranked: boolean,
   textSpeedMs: number,
   inviteLength: number,
+  showBanCount: boolean,
   gameMode?: GameMode
 ) => {
   const containerOpts = {
@@ -30,6 +31,7 @@ export const buildChallengeButtonRespond = async (
     gameOptions: gameSettings,
     textSpeedMs,
     inviteLength,
+    showBanCount,
   };
 
   const container = buildChallengeRequest(containerOpts);

@@ -4,6 +4,7 @@ import TimedEffect from "@tcg/timedEffect";
 import { StatsEnum } from "@tcg/stats";
 import mediaLinks from "../formatting/mediaLinks";
 import { one_step_ahead } from "./EdelDeck";
+import DefaultCards from "./utilDecks/defaultCard";
 
 export const a_scatterShot = new Card({
   title: "Scatter Shot",
@@ -270,6 +271,7 @@ export const reversePolarity = new Card({
   },
 });
 
+const restraintMagicSelfDefDebuff = 3;
 export const restraintMagic = new Card({
   title: "Restraint Magic",
   cardMetadata: { nature: Nature.Util },
@@ -278,7 +280,7 @@ export const restraintMagic = new Card({
     cardGif: mediaLinks.methode_restraintMagic_gif,
   },
   description: ([debuff]) =>
-    `Set your DEF to 1 until this turn's end. Opp's ATK-${debuff}, DEF-${debuff}, SPD-${debuff} for the next 4 turns.`,
+    `Your DEF-${restraintMagicSelfDefDebuff} for the next 4 turns. Opp's ATK-${debuff}, DEF-${debuff}, SPD-${debuff} for the next 4 turns.`,
   effects: [4],
   priority: 1,
   cardAction: ({
@@ -289,28 +291,13 @@ export const restraintMagic = new Card({
     calcEffect,
     flatSelfStat,
     opponentStat,
-    selfStats,
   }) => {
     sendToGameroom(`${name} casts restraint magic on ${opponent.name}.`);
-    const defDebuff = selfStats.DEF - 1;
-    flatSelfStat(-defDebuff, StatsEnum.DEF);
 
+    flatSelfStat(-1 * restraintMagicSelfDefDebuff, StatsEnum.DEF);
     opponentStat(0, StatsEnum.ATK, -1);
     opponentStat(0, StatsEnum.DEF, -1);
     opponentStat(0, StatsEnum.SPD, -1);
-
-    self.timedEffects.push(
-      new TimedEffect({
-        name: "Restraining",
-        description: `Your DEF is set to 1 until the end of this turn.`,
-        turnDuration: 1,
-        priority: -1,
-        metadata: { removableBySorganeil: false },
-        endOfTimedEffectAction: () => {
-          flatSelfStat(defDebuff, StatsEnum.DEF);
-        },
-      })
-    );
 
     const restraint = calcEffect(0);
     opponent.timedEffects.push(
@@ -325,6 +312,20 @@ export const restraintMagic = new Card({
           opponentStat(0, StatsEnum.ATK);
           opponentStat(0, StatsEnum.DEF);
           opponentStat(0, StatsEnum.SPD);
+        },
+      })
+    );
+
+    self.timedEffects.push(
+      new TimedEffect({
+        name: "Restraint Magic",
+        description: `DEF-${restraintMagicSelfDefDebuff}`,
+        turnDuration: 4,
+        priority: -2,
+        executeEndOfTimedEffectActionOnRemoval: true,
+        endOfTimedEffectAction: () => {
+          sendToGameroom(`${name} cannot sustain the retraint magic.`);
+          flatSelfStat(restraintMagicSelfDefDebuff, StatsEnum.DEF);
         },
       })
     );
@@ -349,19 +350,19 @@ export const hypnoticCompulsion = new Card({
     sendToGameroom,
     opponentStat,
   }) => {
-    sendToGameroom(`${name} hypnotizes ${opponent.name}.`);
+    sendToGameroom(`${name} hypnotizes ${opponentName}.`);
     opponentStat(0, StatsEnum.ATK, -1);
-    if (!opponentLastCard) {
-      sendToGameroom(
-        `The opponent hasn't used any move yet. ${opponentName} is compelled to Do Nothing!`
-      );
-    }
 
     opponent.skipTurn = true;
     opponent.additionalMetadata.accessToDefaultCardOptions = false;
     if (opponentLastCard) {
       opponent.additionalMetadata.nextCardToPlay = new Card({
         ...opponentLastCard,
+        priority: -2,
+      });
+    } else {
+      opponent.additionalMetadata.nextCardToPlay = new Card({
+        ...DefaultCards.waitCard,
         priority: -2,
       });
     }

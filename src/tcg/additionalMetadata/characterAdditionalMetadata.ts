@@ -32,6 +32,7 @@ export type CharacterAdditionalMetadata = {
   forcedDiscards: number;
   rollsCount: number;
   methodeFindsCute: boolean;
+  linieEmptyTurnCount?: number;
 
   auraArmyDamageAbsorbed?: boolean;
   auraArmyDamageAbsorbtion: number;

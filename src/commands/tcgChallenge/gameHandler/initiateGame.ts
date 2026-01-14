@@ -122,6 +122,7 @@ export const initiateGame = async (
             ranked,
             gameMode,
             gameThread,
+            bannedCharacters: gameRes.bannedCharacters,
           });
         } catch (error) {
           console.error(

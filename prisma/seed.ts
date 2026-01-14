@@ -42,6 +42,12 @@ async function main() {
     });
 
     await Promise.all(resetPromises);
+
+    await tx.banConfig.upsert({
+      where: { id: "ban-config" },
+      update: {},
+      create: {},
+    });
   });
 }
 

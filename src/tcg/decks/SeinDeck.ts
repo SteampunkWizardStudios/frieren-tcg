@@ -194,7 +194,7 @@ export const poisonCure = new Card({
     cardImageUrl: mediaLinks.sein_poisonCure_image,
     cardGif: mediaLinks.sein_poisonCure_gif,
   },
-  effects: [10],
+  effects: [12],
   cardAction: ({ name, sendToGameroom, selfStat }) => {
     sendToGameroom(`${name} applied a poison cure.`);
     selfStat(0, StatsEnum.HP);

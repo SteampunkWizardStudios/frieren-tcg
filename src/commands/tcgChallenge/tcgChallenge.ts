@@ -1,14 +1,18 @@
 import {
-  SlashCommandBuilder,
-  ChatInputCommandInteraction,
-  MessageFlags,
-  InteractionContextType,
-} from "discord.js";
+  MAX_INVITE_LENGTH,
+  MAX_TEXT_SPEED,
+  MIN_INVITE_LENGTH,
+  MIN_TEXT_SPEED,
+} from "@src/constants";
 import type { Command } from "@src/types/command";
-import { initiateChallengeRequest } from "./gameHandler/initiateChallengeRequest";
+import {
+  ChatInputCommandInteraction,
+  InteractionContextType,
+  MessageFlags,
+  SlashCommandBuilder,
+} from "discord.js";
 import { GAME_SETTINGS, GameMode } from "./gameHandler/gameSettings";
-import { MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
-import { MAX_INVITE_LENGTH, MIN_INVITE_LENGTH } from "@src/constants";
+import { initiateChallengeRequest } from "./gameHandler/initiateChallengeRequest";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()

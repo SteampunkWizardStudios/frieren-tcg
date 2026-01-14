@@ -19,6 +19,7 @@ export type ChallengeRequestOptions = {
   statusMessage?: string;
   includeButtons?: boolean;
   threadId?: string;
+  showBanCount?: boolean;
 };
 
 export const ACCEPT_BUTTON_ID = "tcg-accept";
@@ -34,6 +35,7 @@ export default function buildChallengeRequest({
   opponentId,
   includeButtons = true,
   threadId,
+  showBanCount = false,
 }: ChallengeRequestOptions) {
   const {
     turnDurationSeconds,
@@ -42,9 +44,15 @@ export default function buildChallengeRequest({
     prescienceMode,
     goddessMode,
     liteMode,
+    banCount,
   } = gameOptions;
 
-  const optsMap = {
+  const banCountLabel =
+    typeof banCount === "number" && banCount > 0
+      ? `${banCount} per player`
+      : "Disabled";
+
+  const optsMap: Record<string, string> = {
     "Turn Duration": `${turnDurationSeconds}s`,
     "Reveal Hand": revealHand ? "Yes" : "No",
     "Reveal Draw": revealDraw ? "Yes" : "No",
@@ -53,6 +61,10 @@ export default function buildChallengeRequest({
     "Lite Mode": liteMode ? "Yes" : "No",
     "Text Speed": `${textSpeedMs}ms`,
   };
+
+  if (showBanCount) {
+    optsMap["Ban Count"] = banCountLabel;
+  }
 
   const optsText = Object.entries(optsMap)
     .map(([key, value]) => `${key}: \`${value}\``)

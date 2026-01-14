@@ -6,6 +6,7 @@ import TimedEffect from "@tcg/timedEffect";
 import { sleepy, mesmerized, weakened } from "@decks/utilDecks/edelStatuses";
 import mediaLinks from "../formatting/mediaLinks";
 import Game from "@tcg/game";
+import { CharacterName } from "../characters/metadata/CharacterName";
 
 const redrawRandom = (opponent: Character, self: Character) => {
   const randomIndex = Math.floor(Math.random() * opponent.hand.length);
@@ -137,9 +138,9 @@ export const mental_fog = new Card({
   title: "Mental Fog",
   cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
   emoji: CardEmoji.EDEL_CARD,
-  description: ([spd, cost]) =>
-    `Eye Contact+1. Opponent's SPD-${spd}. Their highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, the opponent redraws 1 card.`,
-  effects: [2, 5],
+  description: ([atk, cost]) =>
+    `Eye Contact+1. Your opponent redraws 2 cards. Opp's ATK-${atk} for next 5 turns. Their highest empowered playable card costs an additional ${cost} HP for next 5 turns.`,
+  effects: [3, 5],
   hpCost: 5,
   cosmetic: {
     cardGif: mediaLinks.edel_mental_fog_gif,
@@ -155,13 +156,19 @@ export const mental_fog = new Card({
     sendToGameroom(
       `${name} hypnotizes ${opponent.name}. ${opponent.name} starts blanking out.`
     );
-    opponentStat(0, StatsEnum.SPD, -1);
+    const atkDebuff = calcEffect(0);
+    opponentStat(0, StatsEnum.ATK, -1);
+
+    for (let i = 0; i < 2; i++) {
+      redrawRandom(opponent, self);
+    }
+
     const cost = calcEffect(1);
 
     opponent.timedEffects.push(
       new TimedEffect({
         name: "Mental Fog",
-        description: `Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, redraw 1 card.`,
+        description: `ATK-${atkDebuff}. Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, redraw 1 card.`,
         turnDuration: 6,
         metadata: { mentalFog: true },
         activateEndOfTurnActionThisTurn: false,
@@ -172,27 +179,6 @@ export const mental_fog = new Card({
           );
           if (highestEmpoweredCard) {
             highestEmpoweredCard.hpCost += cost;
-            if (!highestEmpoweredCard.onNotPlayed) {
-              highestEmpoweredCard.onNotPlayed = function (
-                this: Card,
-                context
-              ) {
-                const { name } = context;
-                for (
-                  let i = 0;
-                  i <
-                  opponent.timedEffects.filter(
-                    (effect) => effect.metadata.mentalFog
-                  ).length;
-                  i++
-                ) {
-                  sendToGameroom(
-                    `${name} coudn't clear up the mental fog. ${name} redrew 1 card.`
-                  );
-                  redrawRandom(opponent, self);
-                }
-              };
-            }
           }
         },
         endOfTurnAction: (game, characterIndex) => {
@@ -202,8 +188,13 @@ export const mental_fog = new Card({
           );
           if (highestEmpoweredCard) {
             highestEmpoweredCard.hpCost -= cost;
-            highestEmpoweredCard.onNotPlayed = undefined;
           }
+        },
+        endOfTimedEffectAction: (game, _characterIndex) => {
+          sendToGameroom(
+            `The mental fog clears up. ${opponent.name} refocuses ${opponent.cosmetic.pronouns.reflexive}.`
+          );
+          opponent.adjustStat(atkDebuff, StatsEnum.ATK, game);
         },
       })
     );
@@ -212,16 +203,17 @@ export const mental_fog = new Card({
 
 export const clear_mind = new Card({
   title: "Clear Mind",
-  cardMetadata: { nature: Nature.Util, edelEyeContact: 1 },
+  cardMetadata: { nature: Nature.Util },
   emoji: CardEmoji.EDEL_CARD,
   description: ([hp, spd]) =>
-    `Eye Contact+1. Heal ${hp} + Forced Discard x 2 HP. SPD+${spd}.`,
+    `Heal ${hp} + Forced Discard x 2 HP. SPD+${spd}. Reset your Eye Contact count to 0.`,
   effects: [10, 2],
   cosmetic: {
     cardGif: mediaLinks.edel_clear_mind_gif,
   },
   cardAction: ({
     name,
+    characterName,
     possessive,
     sendToGameroom,
     selfStat,
@@ -229,11 +221,17 @@ export const clear_mind = new Card({
     self,
     calcEffect,
   }) => {
-    sendToGameroom(`${name} focuses and clears ${possessive} mind.`);
+    sendToGameroom(
+      `${name} focuses and clears ${possessive} mind. ${name} breaks eye contact with the opponent.`
+    );
 
     const hp = calcEffect(0) + self.additionalMetadata.forcedDiscards * 2;
     flatSelfStat(hp, StatsEnum.HP);
     selfStat(1, StatsEnum.SPD);
+
+    if (characterName === CharacterName.Edel) {
+      self.setStat(0, StatsEnum.Ability);
+    }
   },
 });
 

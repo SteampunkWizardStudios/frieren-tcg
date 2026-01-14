@@ -92,7 +92,10 @@ model Match {
   loserCharacterId Int
   loserCharacter   Character @relation("LoserCharacter", fields: [loserCharacterId], references: [id])
 
-  finishedAt DateTime @default(now())
+  ranked     Boolean   @default(false)
+  finishedAt DateTime  @default(now())
+
+  bans CharacterBan[]
 }
 
 model Character {
@@ -104,6 +107,18 @@ model Character {
   loserMatches       Match[]            @relation("LoserCharacter")
 
   favouritedByPlayers PlayerPreferences[] @relation("PlayerFavouriteCharacters")
+
+  bans CharacterBan[]
+}
+
+model CharacterBan {
+  id          Int       @id @default(autoincrement())
+  matchId     Int
+  match       Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  characterId Int
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  @@unique([matchId, characterId])
 }
 
 model CharacterMastery {
@@ -118,4 +133,11 @@ model CharacterMastery {
   losses        Int @default(0)
 
   @@unique([playerId, characterId])
+}
+
+model BanConfig {
+  id              String  @id @default("ban-config")
+  maxCount        Int     @default(0)
+  enabledRanked   Boolean @default(false)
+  enabledUnranked Boolean @default(false)
 }

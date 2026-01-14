@@ -1,13 +1,17 @@
 import {
-  SlashCommandBuilder,
-  ChatInputCommandInteraction,
-  MessageFlags,
-  InteractionContextType,
-} from "discord.js";
+  MAX_INVITE_LENGTH,
+  MAX_TEXT_SPEED,
+  MIN_INVITE_LENGTH,
+  MIN_TEXT_SPEED,
+} from "@src/constants";
 import type { Command } from "@src/types/command";
+import {
+  ChatInputCommandInteraction,
+  InteractionContextType,
+  MessageFlags,
+  SlashCommandBuilder,
+} from "discord.js";
 import { initiateChallengeRequest } from "./gameHandler/initiateChallengeRequest";
-import { MAX_TEXT_SPEED, MIN_TEXT_SPEED } from "@src/constants";
-import { MAX_INVITE_LENGTH, MIN_INVITE_LENGTH } from "@src/constants";
 
 export const command: Command<ChatInputCommandInteraction> = {
   data: new SlashCommandBuilder()
@@ -31,6 +35,16 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setName("reveal-active-card")
         .setDescription("Whether the player's active cards are revealed.")
         .setRequired(true)
+    )
+    .addIntegerOption((option) =>
+      option
+        .setName("bans")
+        .setDescription(
+          "Number of characters each player can ban (0 disables bans)."
+        )
+        .setRequired(true)
+        .setMinValue(0)
+        .setMaxValue(4)
     )
     .addUserOption((option) =>
       option
@@ -94,6 +108,7 @@ export const command: Command<ChatInputCommandInteraction> = {
       const prescienceMode =
         interaction.options.getBoolean("prescience-mode") ?? false;
       const liteMode = interaction.options.getBoolean("lite-mode") ?? undefined;
+      const banCount = interaction.options.getInteger("bans", true);
 
       initiateChallengeRequest({
         interaction,
@@ -104,6 +119,7 @@ export const command: Command<ChatInputCommandInteraction> = {
           goddessMode,
           prescienceMode,
           liteMode,
+          banCount,
         },
         ranked: false,
         gamemode: undefined,
