@@ -11,7 +11,6 @@ import Game from "@/src/tcg/game";
 import auraDeck from "@/src/tcg/decks/AuraDeck";
 
 const INITIAL_ARMY_STRENGTH = 15;
-const MAX_ARMY_STRENGTH = 50;
 
 const INITIAL_SWORDSMEN_COUNT = 0;
 export const SWORDSMEN_DAMAGE = 2;
@@ -48,7 +47,7 @@ const Aura = new CharacterData({
   ability: {
     abilityName: "Until the End of Time",
     abilityEffectString: `Aura controls an undead army to do her bidding. The army will move at turn end, and 50% of the damage targeted towards her will be transferred to the army instead as long as there is at least 1 soldier in her army.
-        Aura starts with ${INITIAL_ARMY_STRENGTH} Army Strength and ${INITIAL_SHIELDBEARERS_COUNT} Shieldbearers platoons. Aura can maintain a maximum of ${MAX_ARMY_STRENGTH}.
+        Aura starts with ${INITIAL_ARMY_STRENGTH} Army Strength and ${INITIAL_SHIELDBEARERS_COUNT} Shieldbearers platoons..
         At the end of every turn, Aura loses soldiers by the order she summoned them until #Soldier x ${SOLDIER_ARMY_STRENGTH} <= Army Strength (min: 0).`,
     abilityStartOfTurnEffect: (game, characterIndex, _messageCache) => {
       const self = game.getCharacter(characterIndex);
@@ -87,14 +86,14 @@ const Aura = new CharacterData({
     ) {
       const character = game.getCharacter(characterIndex);
       if (card.cardMetadata.armyStrength) {
-        const newArmyStrength = Math.max(
-          Math.min(
-            character.stats.stats.Ability + card.cardMetadata.armyStrength,
-            MAX_ARMY_STRENGTH
+        character.adjustStat(
+          Math.max(
+            card.cardMetadata.armyStrength,
+            -1 * character.stats.stats.Ability
           ),
-          0
+          StatsEnum.Ability,
+          game
         );
-        character.setStat(newArmyStrength, StatsEnum.Ability);
       }
     },
     abilityDefendEffect: (
