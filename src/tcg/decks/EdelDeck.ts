@@ -168,7 +168,7 @@ export const mental_fog = new Card({
     opponent.timedEffects.push(
       new TimedEffect({
         name: "Mental Fog",
-        description: `ATK-${atkDebuff}. Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns, and if it's not a status card and is not played, redraw 1 card.`,
+        description: `ATK-${atkDebuff}. Your highest empowered playable card costs an additional ${cost} HP for the next 5 turns`,
         turnDuration: 6,
         metadata: { mentalFog: true },
         activateEndOfTurnActionThisTurn: false,
