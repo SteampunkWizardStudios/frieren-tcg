@@ -184,7 +184,7 @@ const HOM_HP_CAP = 25;
 export const a_theHeightOfMagicBase = new Card({
   title: `"The Height of Magic"`,
   description: ([dmg]) =>
-    `When used with HP <= ${HOM_HP_CAP}, Priority+1. Strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20, and set HP to 1. Treat this card as "Spell to make a Field of Flowers+2" when used with HP > ${HOM_HP_CAP}.`,
+    `When used with HP <= ${HOM_HP_CAP}, Priority+1. Set HP to 1. Then, strike for DMG ${dmg}. Afterward, decreases DEF and SPD by 20. Treat this card as "Spell to make a Field of Flowers+2" when used with HP > ${HOM_HP_CAP}.`,
   emoji: CardEmoji.FRIEREN_CARD,
   cosmetic: {
     cardImageUrl: mediaLinks.heightOfMagic_image,
@@ -206,12 +206,13 @@ export const a_theHeightOfMagicBase = new Card({
       return;
     }
 
+	self.setStat(1, StatsEnum.HP);
+
     sendToGameroom("The Height of Magic is on display.");
     basicAttack(0);
 
     self.adjustStat(-20, StatsEnum.DEF, game);
     self.adjustStat(-20, StatsEnum.SPD, game);
-    self.setStat(1, StatsEnum.HP);
   },
 });
 
