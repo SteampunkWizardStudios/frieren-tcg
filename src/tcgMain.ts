@@ -61,7 +61,7 @@ export const tcgMain = async (
   challenger: User,
   opponent: User,
   gameThread: PublicThreadChannel<false>,
-  challengerThread: PrivateThreadChannel,
+  challengerThread: PrivateThreadChannel | PublicThreadChannel<false>,
   opponentThread: ThreadChannel<false>,
   gameSettings: GameSettings,
   textSpeedMs: number
