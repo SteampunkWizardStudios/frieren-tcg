@@ -227,11 +227,6 @@ const immortalWall = new Card({
           self.additionalMetadata.auraPlatoonQueue.filter(
             (p) => p === AuraPlatoon.Shieldbearers
           ).length;
-        console.log("Countering");
-        console.log(`shieldbearersCount: ${shieldbearersCount}`);
-        console.log(
-          `counter damages: ${self.additionalMetadata.auraCounterAttacksDamage}`
-        );
         self.additionalMetadata.auraCounterAttacksDamage.forEach(
           (damageFunc) => {
             flatAttack(damageFunc(shieldbearersCount));
@@ -258,10 +253,7 @@ const immortalWall = new Card({
           sendToGameroom("The army falls apart.");
           flatSelfStat(def, StatsEnum.DEF, -1);
           self.additionalMetadata.auraCounterAttacksDamage.shift();
-          console.log("Deducing");
-          console.log(
-            `counter damages: ${self.additionalMetadata.auraCounterAttacksDamage}`
-          );
+          
         },
       })
     );
