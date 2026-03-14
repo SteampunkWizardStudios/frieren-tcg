@@ -52,7 +52,7 @@ export async function sendCardPoll(
       question: { text: "Which card do you want your team to play?" },
       answers: cards.map((card) => ({
         emoji: card.emoji,
-        text: card.name,
+        text: truncateSpellName(card.name),
       })),
       duration: 1,
       allowMultiselect: false,
@@ -62,4 +62,19 @@ export async function sendCardPoll(
   setTimeout(async () => {
     await message.poll?.end();
   }, TRUE_DURATION);
+}
+
+const MAX_LENGTH = 55;
+const EMPOWER_LENGTH = 3;
+const ELLIPSIS = "...";
+
+function truncateSpellName(name: string) {
+  if (name.length <= MAX_LENGTH) return name;
+
+  const keepStart = MAX_LENGTH - ELLIPSIS.length - EMPOWER_LENGTH;
+  if (keepStart <= 0) {
+    return name.slice(-EMPOWER_LENGTH);
+  }
+
+  return name.slice(0, keepStart) + ELLIPSIS + name.slice(-EMPOWER_LENGTH);
 }

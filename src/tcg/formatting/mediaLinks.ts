@@ -236,6 +236,8 @@ const methodeCardLinks = {
   methode_piercing_gif: "https://c.tenor.com/q7ffBv9OS-sAAAAd/tenor.gif",
   methode_hypnoticCompulsion_gif:
     "https://cdn.discordapp.com/attachments/1360969158623232300/1396618033866211438/GIF_2404385183.gif?ex=687f6627&is=687e14a7&hm=c388e026d5468bbe089a941b13da3fddcedc02a9460bece2c3d3c210c40e9160&",
+  methode_scatterShot_gif:
+    "https://media.discordapp.net/attachments/1360969158623232300/1482464619091071088/Methode-Pingpong-Solide.gif?ex=69b70c44&is=69b5bac4&hm=93f04a1a72bf30a40a38de0145f5b6f81ddeb02cc788ef793c3bb2c734327271",
 };
 
 const seinCardLinks = {
