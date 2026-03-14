@@ -87,6 +87,11 @@ export const command: Command<ChatInputCommandInteraction> = {
       option
         .setName("lite-mode")
         .setDescription("Disable printing of media (GIFs/character portraits).")
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName("poll-cards")
+        .setDescription("Whether you want to send a vote for card choices.")
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -109,6 +114,7 @@ export const command: Command<ChatInputCommandInteraction> = {
         interaction.options.getBoolean("prescience-mode") ?? false;
       const liteMode = interaction.options.getBoolean("lite-mode") ?? undefined;
       const banCount = interaction.options.getInteger("bans", true);
+	  const pollCards = interaction.options.getBoolean("poll-cards") ?? false;
 
       initiateChallengeRequest({
         interaction,
@@ -120,6 +126,7 @@ export const command: Command<ChatInputCommandInteraction> = {
           prescienceMode,
           liteMode,
           banCount,
+		  pollCards,
         },
         ranked: false,
         gamemode: undefined,

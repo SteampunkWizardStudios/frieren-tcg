@@ -30,6 +30,7 @@ import {
   TCGThread,
   TCGThreads,
 } from "./tcgChatInteractions/sendGameMessage";
+import { sendCardPoll } from "./commands/cardPoll";
 
 const TURN_LIMIT = 50;
 
@@ -60,7 +61,7 @@ export const tcgMain = async (
   challenger: User,
   opponent: User,
   gameThread: PublicThreadChannel<false>,
-  challengerThread: PrivateThreadChannel,
+  challengerThread: PrivateThreadChannel | PublicThreadChannel<false>,
   opponentThread: ThreadChannel<false>,
   gameSettings: GameSettings,
   textSpeedMs: number
@@ -360,6 +361,14 @@ export const tcgMain = async (
       1: { draw: "", hand: "" },
     };
 
+    const characterToPollOptions: Record<
+      number,
+      { name: string; emoji: string }[]
+    > = {
+      0: [],
+      1: [],
+    };
+
     // get playable cards for round
     await Promise.all(
       game.characters.map(async (character, index) => {
@@ -417,24 +426,20 @@ export const tcgMain = async (
         );
 
         const draws: string[] = [];
-        // let vpollOptionsList = "";
-        // const optionsCount = Object.keys(currUsableCards).length;
 
         Object.keys(currUsableCards).forEach((key: string) => {
           const currCard = currUsableCards[key];
           draws.push(currCard.printCard(`- ${key}: `));
-          // vpollOptionsList += `${key}: ${currCard.getTitle()}`;
-          // if (index < optionsCount - 1) {
-          //   vpollOptionsList += ", ";
-          // }
+          if (currCard.title !== "Forfeit") {
+            characterToPollOptions[index].push({
+              name: currCard.getTitle(),
+              emoji: currCard.emoji,
+            });
+          }
         });
 
         const draw = draws.join("\n");
         messageCache.push(draw, useChannel);
-        // messageCache.push(
-        //   `Vpoll command - /vpoll name:Which Move To Use? options:${vpollOptionsList} end-time:2m multiselect:True`,
-        //   useChannel,
-        // );
 
         if (gameSettings.revealDraw) {
           characterToDetailsString[index].draw = draw;
@@ -448,6 +453,13 @@ export const tcgMain = async (
         );
       })
     );
+
+    if (gameSettings.pollCards) {
+      await Promise.all([
+        sendCardPoll(challengerThread, characterToPollOptions[0]),
+        sendCardPoll(opponentThread, characterToPollOptions[1]),
+      ]);
+    }
 
     // reveal hand and draw if set
     for (const [index, character] of game.characters.entries()) {

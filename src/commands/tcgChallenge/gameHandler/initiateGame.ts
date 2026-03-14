@@ -2,7 +2,6 @@ import {
   ChannelType,
   ChatInputCommandInteraction,
   MessageType,
-  PrivateThreadChannel,
   PublicThreadChannel,
   TextChannel,
   ThreadAutoArchiveDuration,
@@ -69,17 +68,20 @@ export const initiateGame = async (
         }
       })();
 
+	  const publicThread = gameSettings.pollCards;
+
       const [challengerThread, opponentThread] = await Promise.all([
         buildThread(
           channel,
           challenger,
-          gameId
-        ) as Promise<PrivateThreadChannel>,
+          gameId,
+		  publicThread,
+        ),
         buildThread(
           channel,
           opponent,
           gameId,
-          gameSettings.publicChallengedThread
+          publicThread ?? gameSettings.publicChallengedThread
         ),
       ]);
 

@@ -18,6 +18,7 @@ const client = new Client({
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessagePolls,
   ],
   partials: [Partials.Channel, Partials.Message],
 });
