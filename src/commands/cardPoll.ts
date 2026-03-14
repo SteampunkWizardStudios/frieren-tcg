@@ -1,4 +1,9 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
+import {
+  SlashCommandBuilder,
+  ChatInputCommandInteraction,
+  ThreadChannel,
+  SendableChannels
+} from "discord.js";
 import type { Command } from "@src/types/command";
 import { CardEmoji } from "@tcg/formatting/emojis";
 
@@ -15,28 +20,13 @@ export const command: Command<ChatInputCommandInteraction> = {
         .setRequired(true)
     ),
   async execute(interaction: ChatInputCommandInteraction) {
+	if (!interaction.channel?.isSendable()) return;
     const cardInput = interaction.options.getString("cards", true);
     const cards = parseCardInput(cardInput);
-
-    const interactionResponse = await interaction.reply({
-		content: `Turn ends <t:${Math.floor((Date.now() + TRUE_DURATION) / 1000)}:R>`,
-      poll: {
-        question: { text: "Which card do you want your team to play?" },
-        answers: cards.map((card) => ({
-          emoji: card.emoji,
-          text: card.name,
-        })),
-        duration: 1,
-        allowMultiselect: false,
-      },
-      withResponse: true,
-    });
-
-    setTimeout(async () => {
-      await interactionResponse.resource?.message?.poll?.end();
-    }, TRUE_DURATION);
+	await sendCardPoll(interaction.channel, cards);
   },
 };
+
 function parseCardInput(input: string) {
   return input
     .split(",")
@@ -50,4 +40,26 @@ function parseCardInput(input: string) {
       };
     })
     .filter((card) => card.name.length > 0);
+}
+
+export async function sendCardPoll(
+  channel: ThreadChannel | SendableChannels,
+  cards: { name: string; emoji: string }[]
+) {
+  const message = await channel.send({
+    content: `Vote ends <t:${Math.floor((Date.now() + TRUE_DURATION) / 1000)}:R>`,
+    poll: {
+      question: { text: "Which card do you want your team to play?" },
+      answers: cards.map((card) => ({
+        emoji: card.emoji,
+        text: card.name,
+      })),
+      duration: 1,
+      allowMultiselect: false,
+    },
+  });
+
+  setTimeout(async () => {
+    await message.poll?.end();
+  }, TRUE_DURATION);
 }
