@@ -10,6 +10,9 @@ export const a_scatterShot = new Card({
   title: "Scatter Shot",
   cardMetadata: { nature: Nature.Attack },
   emoji: CardEmoji.METHODE_CARD,
+  cosmetic: {
+	cardGif: mediaLinks.methode_scatterShot_gif,
+  },
   description: ([dmg]) =>
     `${dmg} DMG. Deal DMG ${dmg} x2 at the end of next turn`,
   effects: [4],
