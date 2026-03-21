@@ -10,9 +10,16 @@ type Config = {
   logPrismaReqs?: boolean;
 
   matchfindingPingId: string;
+
+  teamVote?: {
+    challengerChannel: string;
+    opponentChannel: string;
+  };
 };
 
-const config: Config = {
+const env_dev = process.env.NODE_ENV === "development";
+
+const config = {
   debugMode: false,
   maintenance: false,
 
@@ -24,6 +31,11 @@ const config: Config = {
   logPrismaReqs: true,
 
   matchfindingPingId: "1359352321955336336",
-} satisfies Config;
+
+  teamVote: {
+    challengerChannel: env_dev ? "1344400530314629170" : "1482775274499346522",
+    opponentChannel: env_dev ? "1344400506658881566" : "1482775131859452046",
+  },
+} as const satisfies Config;
 
 export default config;
