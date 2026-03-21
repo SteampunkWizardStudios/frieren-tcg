@@ -26,7 +26,7 @@ export async function sendToThread(
 ): Promise<boolean> {
   const targetThread = threadsMapping[thread];
 
-  if (targetThread && targetThread instanceof ThreadChannel) {
+  if (targetThread) {
     for (const message of messages) {
       // send message
       await targetThread.send(message);

@@ -72,12 +72,12 @@ export const initiateGame = async (
 
       const publicThread = gameSettings.pollCards;
 
-      const getChannel = interaction.client.channels.fetch;
-
       const [challengerThread, opponentThread] = gameSettings.pollCards
         ? await Promise.all([
-            getChannel(config.teamVote.challengerChannel),
-            getChannel(config.teamVote.opponentChannel),
+            interaction.client.channels.fetch(
+              config.teamVote.challengerChannel
+            ),
+            interaction.client.channels.fetch(config.teamVote.opponentChannel),
           ])
         : await Promise.all([
             buildThread(channel, challenger, gameId, publicThread),

@@ -11,7 +11,7 @@ type Config = {
 
   matchfindingPingId: string;
 
-  teamVote?: {
+  teamVote: {
     challengerChannel: string;
     opponentChannel: string;
   };
@@ -19,7 +19,7 @@ type Config = {
 
 const env_dev = process.env.NODE_ENV === "development";
 
-const config = {
+const config: Config = {
   debugMode: false,
   maintenance: false,
 
@@ -36,6 +36,6 @@ const config = {
     challengerChannel: env_dev ? "1344400530314629170" : "1482775274499346522",
     opponentChannel: env_dev ? "1344400506658881566" : "1482775131859452046",
   },
-} as const satisfies Config;
+};
 
 export default config;
