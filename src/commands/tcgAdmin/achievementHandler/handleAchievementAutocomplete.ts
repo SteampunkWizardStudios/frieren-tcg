@@ -19,9 +19,13 @@ export default async function handleAchievementAutocomplete(
         mode: "insensitive",
       },
     },
+    orderBy: {
+      id: "desc",
+    },
+    take: 25,
   });
 
-  const choices = achievements.map((achievement) => ({
+  const choices = achievements.reverse().map((achievement) => ({
     name: achievement.name,
     value: achievement.id.toString(),
   }));
