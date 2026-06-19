@@ -10,6 +10,7 @@ import {
   AdvancedRulesSection,
   showGameAdvancedRules,
 } from "./info/gameAdvancedRules";
+import { showGameExtraGuide } from "./info/gameExtraGuide";
 import { showCharacterInfo } from "./info/characterInfo";
 import { showRankingSystem } from "./info/rankingSystem";
 
@@ -20,17 +21,14 @@ export const command: Command<ChatInputCommandInteraction> = {
     .setContexts([InteractionContextType.Guild, InteractionContextType.BotDM])
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("how-to-play")
+        .setName("guide")
+        .setDescription("Get information about the game and how to play")
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("guide-extra")
         .setDescription(
-          "Get information about the game's rules and how-to-play"
-        )
-        .addBooleanOption((option) =>
-          option
-            .setName("detailed")
-            .setDescription(
-              "Show detailed game rules information. Default: False"
-            )
-            .setRequired(false)
+          "A guide on extra rules, edge cases and mechanics. Read after the regular guide."
         )
     )
     .addSubcommand((subcommand) =>
@@ -84,8 +82,11 @@ export const command: Command<ChatInputCommandInteraction> = {
 
     try {
       switch (subcommand) {
-        case "how-to-play":
+        case "guide":
           await showGameHowToPlay(interaction);
+          break;
+        case "guide-extra":
+          await showGameExtraGuide(interaction);
           break;
         case "advanced-rules":
           await showGameAdvancedRules(interaction);

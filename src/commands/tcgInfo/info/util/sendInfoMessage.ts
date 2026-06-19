@@ -4,6 +4,7 @@ import {
   ChatInputCommandInteraction,
   EmbedBuilder,
   MessageFlags,
+  ContainerBuilder,
   StringSelectMenuBuilder,
 } from "discord.js";
 
@@ -39,4 +40,19 @@ export const sendInfoMessage = async (
       flags: MessageFlags.Ephemeral,
     });
   }
+};
+
+export const sendInfoContainer = async (
+  interaction: ChatInputCommandInteraction,
+  container: ContainerBuilder
+) => {
+  const isDM = interaction.channel?.type === ChannelType.DM;
+  const flags = isDM
+    ? ([MessageFlags.IsComponentsV2] as const)
+    : ([MessageFlags.IsComponentsV2, MessageFlags.Ephemeral] as const);
+
+  return await interaction.reply({
+    components: [container],
+    flags,
+  });
 };
