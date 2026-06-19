@@ -1,8 +1,71 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import { ChatInputCommandInteraction, ContainerBuilder } from "discord.js";
 import { statDetails } from "@tcg/formatting/emojis";
-import { sendInfoMessage } from "./util/sendInfoMessage";
+import { sendInfoContainer } from "./util/sendInfoMessage";
+
+const aboutText = [
+  "## About",
+  "In https://discord.com/channels/738445835234181211/1357179037428088862 you can play Frierencord's community-developed Frieren-themed card game with other servers members in turn-based combat.",
+  "You can start playing by running `/tcg-challenge`",
+  "Once someone joins your match, you will be added to a *game thread* where you can see the action and a *move select thread* where you choose your moves each turn.",
+  "In your move select thread, start by picking a character. Characters have different stats, abilities and decks.",
+  "-# Note: All cards are provided as part of your chosen character's deck. No card collecting needed!",
+];
+const gameplayText = [
+  "## Gameplay",
+  "### Your Hand",
+  "When the game starts, you are drawn 6 cards into your hand from your *Draw Pile* and they're numbered 0-5. Four dice are rolled to determine which cards are activated for each turn.",
+  "Once you play a card, it is discarded into your *Discard Pile* and you draw a new card. Once your Draw Pile is empty, your Discard Pile is shuffled and it becomes your new Draw Pile. Most cards have at least one copy, meaning you can play it multiple times before you reshuffle.",
+  `There's two extra actions you can always take: **Wait** heals for ${statDetails.HP.emoji} 10 HP, and **Discard** discards your activated cards and draws the same number of cards.`,
+  "### Empowerment",
+  "Empowerment increases the effectiveness of your cards, starting at 0. For every level, the **bolded** numbers in the card's description increase by 10%.",
+  "Ex.) Fern's Zoltraak + 0 deals deals 7 base damage, and Zoltraak + 5 deals 10.5 damage.",
+  "Empowerment is increased when:",
+  "- During activation, you roll a repeat, each duplicate rolled increases empowerment.",
+  "- At the end of the turn, every active card that was not played is empowered.",
+  "- Playing **Wait** which empowers all cards in your hand.",
+  "- Playing **Discard** which empowers all cards in your hand that were not discarded.",
+  "### Your Turn",
+  "Once both players select a move, the results are shown in the game thread.",
+];
+const statsText = [
+  "## Stats",
+  `- ${statDetails.HP.emoji} **HP**: Health - If it hits 0, you lose.`,
+  `- ${statDetails.ATK.emoji} **ATK**: Attack - Increases the damage you deal by a flat amount.`,
+  `- ${statDetails.DEF.emoji} **DEF**: Defense - Reduces the damage you take by a flat amount.`,
+  `- ${statDetails.SPD.emoji} **SPD**: Speed - Determines who moves first`,
+];
+const charactersText = [
+  "## Characters",
+  "There are 17 character with unique stats, abilities, and decks.",
+  "You can view each character and their deck with `/tcg-info character`",
+];
+const welcomeText = [
+  "Those are the basics of Frieren TCG, but there's some additional rules and cases that you can read about with `/tcg-info guide-extra`",
+  "Also check out https://discord.com/channels/738445835234181211/1357740768349126686 for news and updates and https://discord.com/channels/738445835234181211/1359535195828654403 to discuss the game.",
+  "Have fun and see you in the city!",
+];
+const sections = [
+  aboutText,
+  gameplayText,
+  statsText,
+  charactersText,
+  welcomeText,
+];
+
+const container = new ContainerBuilder()
+  .setAccentColor(0xc5c3cc)
+  .addTextDisplayComponents((t) => t.setContent("# Frieren TCG - Guide"));
+for (const section of sections) {
+  container.addTextDisplayComponents((t) => t.setContent(section.join("\n")));
+}
 
 export async function showGameHowToPlay(
+  interaction: ChatInputCommandInteraction
+) {
+  sendInfoContainer(interaction, container);
+}
+
+/* export async function showGameHowToPlay(
   interaction: ChatInputCommandInteraction
 ) {
   const isDetailed = interaction.options.getBoolean("detailed");
@@ -54,3 +117,4 @@ export async function showGameHowToPlay(
 
   sendInfoMessage(interaction, embed, []);
 }
+ */
